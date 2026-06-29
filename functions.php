@@ -254,11 +254,36 @@ function flacso_get_contactos() {
 
 /**
  * ===========================================================
+ * CONTACT PAGE — VIRTUAL PAGE (sin crear página en DB)
+ * ===========================================================
+ */
+add_action('init', function () {
+    add_rewrite_rule('^contactos/?$', 'index.php?flacso_contact_page=1', 'top');
+});
+
+add_filter('query_vars', function ($vars) {
+    $vars[] = 'flacso_contact_page';
+    return $vars;
+});
+
+add_action('template_include', function ($template) {
+    if (get_query_var('flacso_contact_page')) {
+        global $wp_query;
+        $wp_query->is_404 = false;
+        $wp_query->is_page = true;
+        status_header(200);
+        return get_stylesheet_directory() . '/page-contacto.php';
+    }
+    return $template;
+});
+
+/**
+ * ===========================================================
  * CONTACT PAGE — FORCE BOOTSTRAP
  * ===========================================================
  */
 add_filter('flacso_needs_bootstrap', function ($needs) {
-    if (is_page('contacto')) {
+    if (is_page('contacto') || get_query_var('flacso_contact_page')) {
         return true;
     }
     return $needs;
