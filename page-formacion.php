@@ -175,12 +175,13 @@ get_header();
 
 // Meta Pixel: ViewContent al cargar + Click tracking en botones y cards
 (function() {
-	if (typeof fbq !== 'function') return;
+	if (typeof window.flacsoMetaTrack !== 'function') return;
 
 	// ViewContent: el usuario está viendo el listado completo de la oferta
-	fbq('track', 'ViewContent', {
-		content_name: 'Ver listado toda la oferta',
-		content_category: 'Oferta Académica'
+	window.flacsoMetaTrack('ViewContent', {
+		content_name: 'Listado oferta academica completa',
+		content_category: 'oferta_academica',
+		content_type: 'oferta_academica'
 	});
 
 	// Click tracking en botones del hero y tarjetas de programa
@@ -190,15 +191,15 @@ get_header();
 
 	clickTargets.forEach(function(el) {
 		el.addEventListener('click', function() {
-			var eventName = 'Click en ver Oferta';
+			var eventName = 'OfertaAcademicaClick';
 			var href = el.getAttribute('href') || '';
 			var title = el.innerText.trim();
 
 			// Detectar tipo por contenido del enlace o sección
 			if (href.indexOf('convenio') !== -1 || el.classList.contains('flacso-oferta-hero__btn--convenios')) {
-				eventName = 'Click en ver Convenios';
+				eventName = 'ConvenioClick';
 			} else if (href.indexOf('seminario') !== -1 || el.closest('#seminarios')) {
-				eventName = 'Click en ver Seminario';
+				eventName = 'SeminarioClick';
 			}
 
 			// En tarjetas, usar el título del programa
@@ -207,9 +208,10 @@ get_header();
 				title = cardTitle.innerText.trim();
 			}
 
-			fbq('trackCustom', eventName, {
+			window.flacsoMetaTrackCustom(eventName, {
 				content_name: title,
-				link_url: href
+				link_url: href,
+				content_category: 'oferta_academica'
 			});
 		});
 	});
