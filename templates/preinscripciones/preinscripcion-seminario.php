@@ -1077,21 +1077,67 @@ button.flacso-btn-primary {
                 </div>
             </div>
         </div>
+        <?php
+        $meta_payload = [
+            'content_name' => (string) $seminario_titulo,
+            'content_category' => 'seminario',
+            'content_ids' => ['seminario-' . (string) $seminario_id],
+            'status' => 'completed',
+            'flacso_stage' => 'preinscripcion_enviada',
+            'value' => $sem_tracking_value,
+            'currency' => (string) $sem_tracking_currency,
+        ];
+
+        $meta_email = strtolower(trim((string) $email));
+        if ($meta_email !== '') {
+            $meta_payload['em'] = hash('sha256', $meta_email);
+        }
+
+        $meta_phone = preg_replace('/\D+/', '', (string) $celular_e164);
+        if ($meta_phone !== '') {
+            $meta_payload['ph'] = hash('sha256', $meta_phone);
+        }
+
+        $meta_first_name = strtolower(trim((string) $nombre1));
+        if ($meta_first_name !== '') {
+            $meta_payload['fn'] = hash('sha256', $meta_first_name);
+        }
+
+        $meta_last_name = strtolower(trim((string) $apellido1));
+        if ($meta_last_name !== '') {
+            $meta_payload['ln'] = hash('sha256', $meta_last_name);
+        }
+
+        $meta_country = strtolower(trim((string) $pais_residencia));
+        if (preg_match('/^[a-z]{2}$/', $meta_country)) {
+            $meta_payload['country'] = hash('sha256', $meta_country);
+        }
+
+        $meta_birth_date = preg_replace('/\D+/', '', (string) $fecha_nacimiento);
+        if (strlen($meta_birth_date) === 8) {
+            $meta_payload['db'] = hash('sha256', $meta_birth_date);
+        }
+
+        $meta_gender_lookup = [
+            'mujer' => 'f',
+            'mujer trans' => 'f',
+            'varon' => 'm',
+            'varon trans' => 'm',
+            'f' => 'f',
+            'm' => 'm',
+        ];
+        $meta_gender_key = strtolower(trim((string) $genero));
+        if (isset($meta_gender_lookup[$meta_gender_key])) {
+            $meta_payload['ge'] = hash('sha256', $meta_gender_lookup[$meta_gender_key]);
+        }
+        ?>
         <script>
         (function() {
             if (typeof window.flacsoMetaTrack !== 'function') {
                 return;
             }
             try {
-                window.flacsoMetaTrack('SubmitApplication', {
-                    content_name: <?php echo wp_json_encode((string) $seminario_titulo); ?>,
-                    content_category: 'seminario',
-                    content_ids: ['seminario-' + <?php echo wp_json_encode((string) $seminario_id); ?>],
-                    status: 'completed',
-                    flacso_stage: 'preinscripcion_enviada',
-                    value: <?php echo $sem_tracking_value; ?>,
-                    currency: <?php echo wp_json_encode($sem_tracking_currency); ?>
-                });
+                window.flacsoMetaTrack('SubmitApplication', <?php echo wp_json_encode($meta_payload); ?>);
             } catch (e) {
                 if (window.console && typeof window.console.warn === 'function') {
                     console.warn('[Preinscripcion Seminario] Error enviando SubmitApplication:', e);
@@ -1455,6 +1501,79 @@ function validate_ci(ci) {
         } catch (e) {
             console.warn('[Preinscripcion Seminario] Error enviando evento Meta Pixel:', e);
         }
+    };
+
+    const normalizeMetaGender = (value) => {
+        const normalized = String(value || '').trim().toLowerCase();
+        if (!normalized) return '';
+        if (['f', 'female', 'mujer', 'mujer trans'].includes(normalized)) return 'f';
+        if (['m', 'male', 'varon', 'varón', 'varon trans', 'varón trans'].includes(normalized)) return 'm';
+        return '';
+    };
+
+    const normalizeMetaBirthDate = (value) => {
+        const raw = String(value || '').trim();
+        if (!raw) return '';
+
+        const isoMatch = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (isoMatch) {
+            return `${isoMatch[1]}${isoMatch[2]}${isoMatch[3]}`;
+        }
+
+        const digits = raw.replace(/\D/g, '');
+        return digits.length === 8 ? digits : '';
+    };
+
+    const hashForMeta = async (value, normalizer) => {
+        const normalized = typeof normalizer === 'function'
+            ? normalizer(value)
+            : String(value || '').trim().toLowerCase();
+        if (!normalized || !window.crypto || !window.crypto.subtle || typeof window.TextEncoder !== 'function') {
+            return '';
+        }
+
+        try {
+            const buf = await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(normalized));
+            return Array.from(new Uint8Array(buf)).map((byte) => byte.toString(16).padStart(2, '0')).join('');
+        } catch (e) {
+            console.warn('[Preinscripcion Seminario] No se pudo hashear un valor de Meta:', e);
+            return '';
+        }
+    };
+
+    const buildMetaPayload = async (basePayload, sourceData) => {
+        const countryCode = /^[a-z]{2}$/.test(String(sourceData.pais_residencia || '').trim().toLowerCase())
+            ? String(sourceData.pais_residencia || '').trim().toLowerCase()
+            : '';
+
+        const [
+            emHash,
+            phHash,
+            fnHash,
+            lnHash,
+            countryHash,
+            birthDateHash,
+            genderHash
+        ] = await Promise.all([
+            hashForMeta(sourceData.correo),
+            hashForMeta(sourceData.celular_e164, (value) => String(value || '').replace(/\D/g, '')),
+            hashForMeta(sourceData.nombre1),
+            hashForMeta(sourceData.apellido1),
+            hashForMeta(countryCode, (value) => String(value || '').trim().toLowerCase()),
+            hashForMeta(sourceData.fecha_nacimiento, normalizeMetaBirthDate),
+            hashForMeta(sourceData.genero, normalizeMetaGender)
+        ]);
+
+        const payload = Object.assign({}, basePayload);
+        if (emHash) payload.em = emHash;
+        if (phHash) payload.ph = phHash;
+        if (fnHash) payload.fn = fnHash;
+        if (lnHash) payload.ln = lnHash;
+        if (countryHash) payload.country = countryHash;
+        if (birthDateHash) payload.db = birthDateHash;
+        if (genderHash) payload.ge = genderHash;
+
+        return payload;
     };
 
     const appendMetaTestEventCode = (targetUrl) => {
@@ -2184,7 +2303,7 @@ function validate_ci(ci) {
                 console.log('[Preinscripcion] Respuesta recibida - Status:', response.status);
                 return response.text();
             })
-            .then(html => {
+            .then(async html => {
                 console.log('[Preinscripcion] HTML recibido (longitud):', html.length, 'caracteres');
                 
                 // Parsear la respuesta para detectar éxito o error
@@ -2198,13 +2317,23 @@ function validate_ci(ci) {
                 if (successContainer) {
                     console.log('[Preinscripcion] ✓ Preinscripción exitosa');
 
-                    const pixelPayload = {
+                    const pixelPayload = await buildMetaPayload({
                         content_name: '<?php echo esc_js($seminario_titulo); ?>',
                         content_category: 'preinscripcion_seminario',
+                        content_ids: ['seminario-<?php echo esc_js((string) $seminario_id); ?>'],
                         status: 'completed',
+                        flacso_stage: 'preinscripcion_enviada',
                         value: <?php echo $sem_tracking_value; ?>,
                         currency: <?php echo wp_json_encode($sem_tracking_currency); ?>
-                    };
+                    }, {
+                        correo: formData.get('correo'),
+                        celular_e164: formData.get('celular_e164'),
+                        nombre1: formData.get('nombre1'),
+                        apellido1: formData.get('apellido1'),
+                        pais_residencia: formData.get('pais_residencia'),
+                        fecha_nacimiento: formData.get('fecha_nacimiento'),
+                        genero: formData.get('genero')
+                    });
                     trackMetaEvent('SubmitApplication', pixelPayload);
                     
                     // Guardar en sessionStorage
