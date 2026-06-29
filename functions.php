@@ -277,6 +277,13 @@ add_action('template_include', function ($template) {
     return $template;
 });
 
+add_filter('pre_get_document_title', function ($title) {
+    if (get_query_var('flacso_contact_page')) {
+        return 'Contacto – ' . get_bloginfo('name');
+    }
+    return $title;
+});
+
 /**
  * ===========================================================
  * CONTACT PAGE — FORCE BOOTSTRAP

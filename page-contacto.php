@@ -11,129 +11,188 @@ if (!defined('ABSPATH')) {
 
 get_header();
 
-$telefono = get_theme_mod('flacso_contacto_telefono', '2481 7459');
-$correo   = get_theme_mod('flacso_contacto_email', 'secretaria@flacso.edu.uy');
+$telefono  = get_theme_mod('flacso_contacto_telefono', '2481 7459');
+$correo    = get_theme_mod('flacso_contacto_email', 'secretaria@flacso.edu.uy');
 $direccion = get_theme_mod('flacso_contacto_direccion', '8 de Octubre 2882, CP 11600, Montevideo');
 $maps_url  = get_theme_mod('flacso_contacto_maps_url', 'https://maps.google.com/?q=FLACSO+Uruguay+8+de+Octubre+2882+Montevideo');
 $embed_url = get_theme_mod('flacso_contacto_embed_url', '');
 $agenda_url = get_theme_mod('flacso_contacto_agenda_url', 'https://agenda.flacso.edu.uy/');
-$contactos  = flacso_get_contactos();
+
+$contactos = function_exists('flacso_get_contactos') ? flacso_get_contactos() : array();
+
+$telefono_tel = preg_replace('/\D/', '', $telefono);
 ?>
 
-<main class="flacso-page-contacto">
-    <div class="flacso-page-container">
+<main class="flacso-contact-page">
+    <div class="flacso-contact-shell">
 
-        <header class="flacso-page-hero">
-            <div class="flacso-hero-body">
-                <nav class="flacso-breadcrumb" aria-label="Navegación">
+        <header class="flacso-contact-hero">
+            <div class="flacso-contact-hero__content">
+                <nav class="flacso-contact-breadcrumb" aria-label="Navegación">
                     <a href="<?php echo esc_url(home_url('/')); ?>">Inicio</a>
-                    <span>/</span>
+                    <span aria-hidden="true">/</span>
                     <span>Contacto</span>
                 </nav>
 
-                <h1 class="flacso-page-hero-title">Contacto</h1>
-                <p class="flacso-page-hero-desc">
-                    Encontrá aquí los datos de Secretaría, el formulario de consulta y la ubicación de FLACSO Uruguay.
+                <p class="flacso-contact-eyebrow">FLACSO Uruguay</p>
+                <h1 class="flacso-contact-title">Contacto</h1>
+                <p class="flacso-contact-lead">
+                    Comunicate con Secretaría, enviá tu consulta o encontrá los datos de referencia de nuestras áreas.
                 </p>
             </div>
+
+            <aside class="flacso-contact-hero__panel" aria-label="Datos principales de contacto">
+                <div class="flacso-contact-quick">
+                    <span class="flacso-contact-quick__label">Secretaría</span>
+
+                    <a class="flacso-contact-quick__link" href="mailto:<?php echo esc_attr($correo); ?>">
+                        <?php echo esc_html($correo); ?>
+                    </a>
+
+                    <?php if ($telefono_tel) : ?>
+                        <a class="flacso-contact-quick__link" href="tel:<?php echo esc_attr($telefono_tel); ?>">
+                            <?php echo esc_html($telefono); ?>
+                        </a>
+                    <?php else : ?>
+                        <span class="flacso-contact-quick__link"><?php echo esc_html($telefono); ?></span>
+                    <?php endif; ?>
+
+                    <span class="flacso-contact-quick__address">
+                        <?php echo esc_html($direccion); ?>
+                    </span>
+                </div>
+            </aside>
         </header>
 
-        <div class="flacso-contacto-grid">
+        <section class="flacso-contact-main" aria-label="Formulario y datos de contacto">
+            <div class="flacso-contact-form-card">
+                <div class="flacso-contact-section-head">
+                    <p class="flacso-contact-section-kicker">Consultas</p>
+                    <h2>Formulario de consulta</h2>
+                    <p>
+                        Completá tus datos y el equipo de FLACSO Uruguay responderá tu consulta.
+                    </p>
+                </div>
 
-            <section class="flacso-contacto-card">
-                <h2 class="flacso-contacto-card-title">Datos de Secretaría</h2>
-                <p class="flacso-contacto-item">
-                    <strong>Teléfono:</strong>
-                    <a href="tel:<?php echo esc_attr(preg_replace('/\D/', '', $telefono)); ?>"><?php echo esc_html($telefono); ?></a>
-                </p>
-                <p class="flacso-contacto-item">
-                    <strong>Correo:</strong>
-                    <a href="mailto:<?php echo esc_attr($correo); ?>"><?php echo esc_html($correo); ?></a>
-                </p>
-            </section>
+                <div class="flacso-contact-form-wrap">
+                    <?php
+                    if (function_exists('fc_render_form')) {
+                        echo fc_render_form(array('titulo' => '', 'descripcion' => ''));
+                    } else {
+                        echo '<p class="flacso-contact-error">El formulario de consulta no está disponible en este momento.</p>';
+                    }
+                    ?>
+                </div>
+            </div>
 
-            <section class="flacso-contacto-card flacso-contacto-card--form">
-                <h2 class="flacso-contacto-card-title">Formulario de consulta</h2>
-                <?php
-                if (function_exists('fc_render_form')) {
-                    echo fc_render_form(array('titulo' => '', 'descripcion' => ''));
-                } else {
-                    echo '<p class="flacso-contacto-error">El formulario de consulta no está disponible en este momento.</p>';
-                }
-                ?>
-            </section>
+            <aside class="flacso-contact-info-card" aria-label="Datos de Secretaría">
+                <div class="flacso-contact-info-card__inner">
+                    <p class="flacso-contact-section-kicker">Secretaría</p>
+                    <h2>Datos de contacto</h2>
 
-        </div>
-
-        <?php if ($embed_url) : ?>
-            <section class="flacso-mapa-contacto" aria-label="Ubicación">
-                <div class="fmc-card">
-                    <header class="fmc-head">
-                        <div>
-                            <h2 class="fmc-title">Ubicación</h2>
-                            <p class="fmc-label">FLACSO Uruguay</p>
-                        </div>
-                        <span class="fmc-badge">FLACSO Uruguay</span>
-                    </header>
-
-                    <div class="fmc-body">
-                        <div class="fmc-panel">
-                            <div class="fmc-panel-card">
-                                <p class="fmc-panel-kicker">Dirección</p>
-                                <p class="fmc-address"><?php echo esc_html($direccion); ?></p>
-
-                                <div class="fmc-actions">
-                                    <?php if ($maps_url) : ?>
-                                        <a class="fmc-btn fmc-btn-primary" href="<?php echo esc_url($maps_url); ?>" target="_blank" rel="noopener noreferrer">
-                                            Abrir en Google Maps
-                                        </a>
-                                    <?php endif; ?>
-                                    <?php if ($agenda_url) : ?>
-                                        <a class="fmc-btn fmc-btn-secondary" href="<?php echo esc_url($agenda_url); ?>" target="_blank" rel="noopener noreferrer">
-                                            Agenda web
-                                        </a>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
+                    <div class="flacso-contact-data-list">
+                        <div class="flacso-contact-data">
+                            <span class="flacso-contact-data__label">Correo</span>
+                            <a href="mailto:<?php echo esc_attr($correo); ?>">
+                                <?php echo esc_html($correo); ?>
+                            </a>
                         </div>
 
-                        <div class="fmc-map-wrap">
-                            <iframe
-                                class="fmc-map"
-                                title="Ubicación de FLACSO Uruguay"
-                                src="<?php echo esc_url($embed_url); ?>"
-                                loading="lazy"
-                                referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <div class="flacso-contact-data">
+                            <span class="flacso-contact-data__label">Teléfono</span>
+                            <?php if ($telefono_tel) : ?>
+                                <a href="tel:<?php echo esc_attr($telefono_tel); ?>">
+                                    <?php echo esc_html($telefono); ?>
+                                </a>
+                            <?php else : ?>
+                                <span><?php echo esc_html($telefono); ?></span>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="flacso-contact-data">
+                            <span class="flacso-contact-data__label">Dirección</span>
+                            <span><?php echo esc_html($direccion); ?></span>
                         </div>
                     </div>
+
+                    <div class="flacso-contact-actions">
+                        <?php if ($maps_url) : ?>
+                            <a class="flacso-contact-btn flacso-contact-btn--primary" href="<?php echo esc_url($maps_url); ?>" target="_blank" rel="noopener noreferrer">
+                                Abrir en Google Maps
+                            </a>
+                        <?php endif; ?>
+
+                        <?php if ($agenda_url) : ?>
+                            <a class="flacso-contact-btn flacso-contact-btn--secondary" href="<?php echo esc_url($agenda_url); ?>" target="_blank" rel="noopener noreferrer">
+                                Agenda web
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <?php if ($embed_url) : ?>
+            <section class="flacso-contact-map-section" aria-label="Ubicación de FLACSO Uruguay">
+                <div class="flacso-contact-map-head">
+                    <div>
+                        <p class="flacso-contact-section-kicker">Ubicación</p>
+                        <h2>Visitá FLACSO Uruguay</h2>
+                        <p><?php echo esc_html($direccion); ?></p>
+                    </div>
+
+                    <?php if ($maps_url) : ?>
+                        <a class="flacso-contact-map-link" href="<?php echo esc_url($maps_url); ?>" target="_blank" rel="noopener noreferrer">
+                            Ver recorrido
+                        </a>
+                    <?php endif; ?>
+                </div>
+
+                <div class="flacso-contact-map-frame">
+                    <iframe
+                        title="Ubicación de FLACSO Uruguay"
+                        src="<?php echo esc_url($embed_url); ?>"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </section>
         <?php endif; ?>
 
         <?php if (!empty($contactos)) : ?>
-            <section class="flacso-otros-contactos" aria-label="Otros contactos">
-                <div class="foc-shell">
-                    <header class="foc-header">
-                        <h2 class="foc-title">Otros contactos</h2>
-                    </header>
+            <section class="flacso-contact-directory" aria-label="Otros contactos">
+                <div class="flacso-contact-directory-head">
+                    <p class="flacso-contact-section-kicker">Áreas</p>
+                    <h2>Otros contactos</h2>
+                    <p>Referencias específicas para consultas académicas, institucionales y administrativas.</p>
+                </div>
 
-                    <div class="foc-grid">
-                        <?php foreach ($contactos as $item) : ?>
-                            <article class="foc-card">
-                                <h3 class="foc-area"><?php echo esc_html($item['area']); ?></h3>
-                                <?php if (!empty($item['persona'])) : ?>
-                                    <p class="foc-persona"><?php echo esc_html($item['persona']); ?></p>
-                                <?php endif; ?>
-                                <?php if (!empty($item['email'])) : ?>
-                                    <a class="foc-email" href="mailto:<?php echo esc_attr($item['email']); ?>">
-                                        <?php echo esc_html($item['email']); ?>
-                                    </a>
-                                <?php else : ?>
-                                    <span class="foc-email foc-email--empty">Correo no disponible</span>
-                                <?php endif; ?>
-                            </article>
-                        <?php endforeach; ?>
-                    </div>
+                <div class="flacso-contact-directory-grid">
+                    <?php foreach ($contactos as $item) : ?>
+                        <?php
+                        $area    = isset($item['area']) ? trim((string) $item['area']) : '';
+                        $persona = isset($item['persona']) ? trim((string) $item['persona']) : '';
+                        $email   = isset($item['email']) ? sanitize_email($item['email']) : '';
+                        ?>
+                        <article class="flacso-contact-directory-card">
+                            <?php if ($area) : ?>
+                                <h3><?php echo esc_html($area); ?></h3>
+                            <?php endif; ?>
+
+                            <?php if ($persona) : ?>
+                                <p class="flacso-contact-directory-person">
+                                    <?php echo esc_html($persona); ?>
+                                </p>
+                            <?php endif; ?>
+
+                            <?php if ($email) : ?>
+                                <a class="flacso-contact-directory-email" href="mailto:<?php echo esc_attr($email); ?>">
+                                    <?php echo esc_html($email); ?>
+                                </a>
+                            <?php else : ?>
+                                <span class="flacso-contact-directory-empty">Correo no disponible</span>
+                            <?php endif; ?>
+                        </article>
+                    <?php endforeach; ?>
                 </div>
             </section>
         <?php endif; ?>
@@ -142,272 +201,367 @@ $contactos  = flacso_get_contactos();
 </main>
 
 <style>
-    .flacso-page-contacto {
+    .flacso-contact-page {
         --flacso-blue: #1d3a72;
+        --flacso-blue-2: #284f91;
         --flacso-blue-dark: #0f1a2d;
         --flacso-yellow: #fed222;
+        --flacso-green: #248138;
         --flacso-text: #1f2937;
         --flacso-muted: #64748b;
-        --flacso-border: #e2e8f0;
-        --flacso-bg: #f8fafc;
+        --flacso-soft: #e9edf2;
+        --flacso-border: rgba(29, 58, 114, 0.14);
+        --flacso-bg: #f8f9fa;
+        --flacso-card: #ffffff;
+        --flacso-radius-xl: 30px;
+        --flacso-radius-lg: 22px;
+        --flacso-shadow: 0 22px 55px rgba(15, 26, 45, 0.11);
 
-        background: var(--flacso-bg);
+        background:
+            radial-gradient(circle at 8% 0%, rgba(254, 210, 34, 0.18), transparent 28rem),
+            radial-gradient(circle at 100% 18%, rgba(29, 58, 114, 0.12), transparent 24rem),
+            var(--flacso-bg);
         color: var(--flacso-text);
         padding: 0 0 4.5rem;
     }
 
-    .flacso-page-container {
-        width: min(100% - 2rem, 1080px);
+    .flacso-contact-shell {
+        width: min(100% - 2rem, 1120px);
         margin: 0 auto;
     }
 
-    .flacso-breadcrumb {
+    .flacso-contact-hero {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+        gap: clamp(1.5rem, 3vw, 2.25rem);
+        align-items: stretch;
+        overflow: hidden;
+        margin: 0 0 1.35rem;
+        padding: clamp(1.5rem, 3.5vw, 2.6rem);
+        border-radius: 0 0 var(--flacso-radius-xl) var(--flacso-radius-xl);
+        background:
+            radial-gradient(circle at 88% 10%, rgba(254, 210, 34, 0.24), transparent 18rem),
+            linear-gradient(135deg, #0f1a2d 0%, #1d3a72 56%, #284f91 100%);
+        box-shadow: var(--flacso-shadow);
+        color: #ffffff;
+    }
+
+    .flacso-contact-hero::before {
+        content: "";
+        position: absolute;
+        width: 18rem;
+        height: 18rem;
+        right: -6rem;
+        bottom: -8rem;
+        border-radius: 999px;
+        background: rgba(254, 210, 34, 0.16);
+        pointer-events: none;
+    }
+
+    .flacso-contact-hero__content,
+    .flacso-contact-hero__panel {
+        position: relative;
+        z-index: 1;
+    }
+
+    .flacso-contact-breadcrumb {
         display: flex;
         align-items: center;
         flex-wrap: wrap;
         gap: 0.45rem;
+        margin-bottom: clamp(1.7rem, 3vw, 2.4rem);
+        color: rgba(255, 255, 255, 0.68);
         font-size: 0.9rem;
-        color: rgba(255, 255, 255, 0.7);
     }
 
-    .flacso-breadcrumb a {
+    .flacso-contact-breadcrumb a {
         color: #ffffff;
+        font-weight: 700;
         text-decoration: none;
-        font-weight: 500;
     }
 
-    .flacso-breadcrumb a:hover {
+    .flacso-contact-breadcrumb a:hover,
+    .flacso-contact-breadcrumb a:focus-visible {
         text-decoration: underline;
     }
 
-    .flacso-breadcrumb span {
-        color: rgba(255, 255, 255, 0.6);
+    .flacso-contact-eyebrow,
+    .flacso-contact-section-kicker {
+        margin: 0 0 0.65rem;
+        color: var(--flacso-blue);
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        line-height: 1.2;
+        text-transform: uppercase;
     }
 
-    .flacso-page-hero {
-        background:
-            radial-gradient(circle at top right, rgba(254, 210, 34, 0.16), transparent 34%),
-            linear-gradient(135deg, var(--flacso-blue-dark), var(--flacso-blue));
-        color: #ffffff;
-        border-radius: 22px;
-        padding: clamp(2rem, 4vw, 3.25rem);
-        margin-bottom: 2rem;
-        box-shadow: 0 18px 45px rgba(15, 26, 45, 0.14);
+    .flacso-contact-eyebrow {
+        color: var(--flacso-yellow);
     }
 
-    .flacso-page-hero .flacso-breadcrumb {
-        padding: 0 0 1rem;
-    }
-
-    .flacso-page-hero-title {
-        color: #ffffff;
-        font-size: clamp(2rem, 4.2vw, 3.4rem);
-        line-height: 1.08;
-        letter-spacing: -0.035em;
+    .flacso-contact-title {
         margin: 0;
-        font-weight: 800;
+        color: #ffffff;
+        font-size: clamp(2.45rem, 6vw, 4.7rem);
+        font-weight: 850;
+        line-height: 0.98;
+        letter-spacing: -0.055em;
     }
 
-    .flacso-page-hero-desc {
-        margin-top: 1rem;
-        font-size: 1.1rem;
-        color: rgba(255, 255, 255, 0.85);
-        line-height: 1.6;
-        max-width: 680px;
+    .flacso-contact-lead {
+        max-width: 690px;
+        margin: 1.1rem 0 0;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: clamp(1.04rem, 2vw, 1.22rem);
+        line-height: 1.68;
     }
 
-    .flacso-contacto-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.25rem;
-        margin-bottom: 2rem;
+    .flacso-contact-hero__panel {
+        display: flex;
+        align-items: flex-end;
     }
 
-    .flacso-contacto-card {
-        background: #ffffff;
-        border: 1px solid var(--flacso-border);
-        border-radius: 22px;
-        padding: 1.75rem;
-        box-shadow: 0 8px 28px rgba(15, 26, 45, 0.05);
+    .flacso-contact-quick {
+        width: 100%;
+        padding: 1.1rem;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.10);
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+        backdrop-filter: blur(14px);
     }
 
-    .flacso-contacto-card--form {
-        overflow: visible;
-    }
-
-    .flacso-contacto-card-title {
-        color: var(--flacso-blue);
-        font-size: 1.25rem;
-        font-weight: 800;
-        margin: 0 0 1.25rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 2px solid var(--flacso-yellow);
-    }
-
-    .flacso-contacto-item {
-        margin: 0.75rem 0;
-        font-size: 1.05rem;
-        line-height: 1.6;
-    }
-
-    .flacso-contacto-item strong {
+    .flacso-contact-quick__label {
+        display: inline-flex;
+        margin-bottom: 0.75rem;
+        padding: 0.38rem 0.7rem;
+        border-radius: 999px;
+        background: rgba(254, 210, 34, 0.96);
         color: var(--flacso-blue-dark);
-        min-width: 80px;
-        display: inline-block;
+        font-size: 0.77rem;
+        font-weight: 850;
     }
 
-    .flacso-contacto-item a {
-        color: var(--flacso-blue);
-        font-weight: 600;
+    .flacso-contact-quick__link,
+    .flacso-contact-quick__address {
+        display: block;
+        color: #ffffff;
+        font-size: 0.98rem;
+        line-height: 1.45;
+        word-break: break-word;
+    }
+
+    .flacso-contact-quick__link {
+        margin-top: 0.48rem;
+        font-weight: 750;
         text-decoration: none;
     }
 
-    .flacso-contacto-item a:hover {
+    .flacso-contact-quick__link:hover,
+    .flacso-contact-quick__link:focus-visible {
         text-decoration: underline;
     }
 
-    .flacso-contacto-error {
+    .flacso-contact-quick__address {
+        margin-top: 0.75rem;
+        color: rgba(255, 255, 255, 0.78);
+    }
+
+    .flacso-contact-main {
+        display: grid;
+        grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.75fr);
+        gap: 1.25rem;
+        align-items: start;
+        margin-bottom: 1.25rem;
+    }
+
+    .flacso-contact-form-card,
+    .flacso-contact-info-card,
+    .flacso-contact-map-section,
+    .flacso-contact-directory {
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(255, 255, 255, 0.85);
+        border-radius: var(--flacso-radius-xl);
+        box-shadow: 0 18px 45px rgba(15, 26, 45, 0.07);
+    }
+
+    .flacso-contact-form-card {
+        padding: clamp(1.25rem, 3vw, 2rem);
+    }
+
+    .flacso-contact-section-head {
+        max-width: 690px;
+        margin-bottom: 1.25rem;
+    }
+
+    .flacso-contact-section-head h2,
+    .flacso-contact-info-card h2,
+    .flacso-contact-map-head h2,
+    .flacso-contact-directory-head h2 {
+        margin: 0;
+        color: var(--flacso-blue-dark);
+        font-size: clamp(1.55rem, 3vw, 2.15rem);
+        font-weight: 850;
+        line-height: 1.12;
+        letter-spacing: -0.035em;
+    }
+
+    .flacso-contact-section-head p,
+    .flacso-contact-map-head p,
+    .flacso-contact-directory-head p {
+        margin: 0.65rem 0 0;
+        color: var(--flacso-muted);
+        font-size: 1rem;
+        line-height: 1.65;
+    }
+
+    .flacso-contact-form-wrap {
+        padding-top: 0.25rem;
+    }
+
+    .flacso-contact-form-wrap :where(input, select, textarea) {
+        border-radius: 14px !important;
+    }
+
+    .flacso-contact-form-wrap :where(button, input[type="submit"]) {
+        border-radius: 999px !important;
+        font-weight: 800 !important;
+    }
+
+    .flacso-contact-error {
+        margin: 0;
+        padding: 1rem;
+        border-radius: 16px;
+        background: rgba(29, 58, 114, 0.06);
         color: var(--flacso-muted);
         font-style: italic;
     }
 
-    /* ── Map block styles (replica) ── */
-    .flacso-mapa-contacto {
-        --fmc-primary: var(--flacso-blue);
-        --fmc-accent: var(--flacso-yellow);
-        --fmc-ink: var(--flacso-blue-dark);
-        --fmc-muted: var(--flacso-muted);
-        --fmc-border: rgba(29, 58, 114, 0.12);
-        --fmc-shadow: 0 18px 42px rgba(13, 30, 60, 0.08);
-        --fmc-radius-xl: clamp(18px, 4vw, 32px);
-        --fmc-radius-lg: 24px;
-        margin-bottom: 2rem;
-    }
-
-    .flacso-mapa-contacto .fmc-card {
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.84));
-        border: 1px solid rgba(255, 255, 255, 0.75);
-        border-radius: var(--fmc-radius-xl);
-        box-shadow: var(--fmc-shadow);
+    .flacso-contact-info-card {
+        position: sticky;
+        top: 1rem;
         overflow: hidden;
     }
 
-    .flacso-mapa-contacto .fmc-head {
+    .flacso-contact-info-card__inner {
+        padding: clamp(1.25rem, 2.5vw, 1.55rem);
+        background:
+            radial-gradient(circle at 100% 0%, rgba(254, 210, 34, 0.22), transparent 10rem),
+            linear-gradient(180deg, #ffffff 0%, rgba(233, 237, 242, 0.74) 100%);
+    }
+
+    .flacso-contact-data-list {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 1rem;
-        align-items: start;
-        padding: clamp(1.1rem, 2vw, 1.4rem) clamp(1.1rem, 2vw, 1.5rem);
-        border-bottom: 1px solid var(--fmc-border);
-        background: radial-gradient(circle at top right, rgba(254, 210, 34, 0.18), transparent 28%),
-            linear-gradient(180deg, rgba(29, 58, 114, 0.04), rgba(29, 58, 114, 0));
+        gap: 0.85rem;
+        margin-top: 1.25rem;
     }
 
-    .flacso-mapa-contacto .fmc-title {
-        margin: 0;
-        color: var(--fmc-ink);
-        font-size: clamp(1.25rem, 2vw, 1.6rem);
-        line-height: 1.15;
-        font-weight: 700;
-    }
-
-    .flacso-mapa-contacto .fmc-label {
-        margin: 0.3rem 0 0;
-        color: var(--fmc-muted);
-        font-size: 0.95rem;
-        line-height: 1.5;
-    }
-
-    .flacso-mapa-contacto .fmc-badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.5rem 0.8rem;
-        border-radius: 999px;
-        background: rgba(29, 58, 114, 0.08);
-        color: var(--fmc-primary);
-        font-size: 0.76rem;
-        font-weight: 600;
-        white-space: nowrap;
-    }
-
-    .flacso-mapa-contacto .fmc-body {
-        display: grid;
-        grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.1fr);
-    }
-
-    .flacso-mapa-contacto .fmc-panel {
-        padding: clamp(1.1rem, 2vw, 1.5rem);
-        background: linear-gradient(135deg, rgba(29, 58, 114, 0.04) 0%, rgba(255, 255, 255, 0.9) 100%);
-        border-right: 1px solid var(--fmc-border);
-    }
-
-    .flacso-mapa-contacto .fmc-panel-card {
-        background: rgba(255, 255, 255, 0.76);
-        border: 1px solid var(--fmc-border);
-        border-radius: var(--fmc-radius-lg);
+    .flacso-contact-data {
         padding: 1rem;
+        border: 1px solid var(--flacso-border);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.82);
     }
 
-    .flacso-mapa-contacto .fmc-panel-kicker {
-        margin: 0;
-        color: var(--fmc-muted);
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 0.14em;
+    .flacso-contact-data__label {
+        display: block;
+        margin-bottom: 0.35rem;
+        color: var(--flacso-muted);
+        font-size: 0.78rem;
+        font-weight: 850;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
     }
 
-    .flacso-mapa-contacto .fmc-address {
-        margin: 0.55rem 0 0;
-        color: var(--fmc-ink);
-        font-size: 1rem;
-        line-height: 1.65;
-        font-weight: 500;
+    .flacso-contact-data a,
+    .flacso-contact-data span {
+        color: var(--flacso-blue-dark);
+        font-size: 0.98rem;
+        font-weight: 700;
+        line-height: 1.45;
+        text-decoration: none;
+        word-break: break-word;
     }
 
-    .flacso-mapa-contacto .fmc-actions {
-        display: flex;
-        flex-direction: column;
+    .flacso-contact-data a:hover,
+    .flacso-contact-data a:focus-visible {
+        color: var(--flacso-blue);
+        text-decoration: underline;
+    }
+
+    .flacso-contact-actions {
+        display: grid;
         gap: 0.75rem;
-        margin-top: 1rem;
+        margin-top: 1.1rem;
     }
 
-    .flacso-mapa-contacto .fmc-btn {
+    .flacso-contact-btn,
+    .flacso-contact-map-link {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         min-height: 46px;
-        padding: 0.85rem 1.1rem;
+        padding: 0.82rem 1.1rem;
         border-radius: 999px;
-        font-size: 0.95rem;
-        font-weight: 700;
+        font-size: 0.94rem;
+        font-weight: 850;
+        line-height: 1.2;
+        text-align: center;
         text-decoration: none;
-        transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
     }
 
-    .flacso-mapa-contacto .fmc-btn:hover {
+    .flacso-contact-btn:hover,
+    .flacso-contact-btn:focus-visible,
+    .flacso-contact-map-link:hover,
+    .flacso-contact-map-link:focus-visible {
         transform: translateY(-2px);
     }
 
-    .flacso-mapa-contacto .fmc-btn-primary {
-        background: var(--fmc-accent);
-        color: var(--fmc-ink);
+    .flacso-contact-btn--primary {
+        background: var(--flacso-yellow);
+        color: var(--flacso-blue-dark);
+        box-shadow: 0 14px 28px rgba(254, 210, 34, 0.24);
     }
 
-    .flacso-mapa-contacto .fmc-btn-secondary {
-        background: #fff;
-        color: var(--fmc-primary);
+    .flacso-contact-btn--secondary {
+        background: #ffffff;
+        color: var(--flacso-blue);
         border: 1px solid rgba(29, 58, 114, 0.22);
     }
 
-    .flacso-mapa-contacto .fmc-map-wrap {
-        position: relative;
-        min-height: 320px;
-        background: linear-gradient(135deg, rgba(29, 58, 114, 0.08) 0%, rgba(255, 255, 255, 0.92) 50%, rgba(254, 210, 34, 0.16) 100%);
+    .flacso-contact-map-section {
+        overflow: hidden;
+        margin-bottom: 1.25rem;
     }
 
-    .flacso-mapa-contacto .fmc-map {
+    .flacso-contact-map-head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 1rem;
+        align-items: center;
+        padding: clamp(1.2rem, 2.5vw, 1.65rem);
+        border-bottom: 1px solid var(--flacso-border);
+        background:
+            radial-gradient(circle at 100% 0%, rgba(254, 210, 34, 0.18), transparent 15rem),
+            #ffffff;
+    }
+
+    .flacso-contact-map-link {
+        background: var(--flacso-blue);
+        color: #ffffff;
+        white-space: nowrap;
+    }
+
+    .flacso-contact-map-frame {
+        position: relative;
+        min-height: 390px;
+        background: var(--flacso-soft);
+    }
+
+    .flacso-contact-map-frame iframe {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -415,161 +569,178 @@ $contactos  = flacso_get_contactos();
         border: 0;
     }
 
-    /* ── Otros contactos block styles (replica) ── */
-    .flacso-otros-contactos {
-        --foc-primary: var(--flacso-blue);
-        --foc-ink: var(--flacso-blue-dark);
-        --foc-muted: var(--flacso-muted);
-        --foc-bg: #e9edf2;
-        --foc-surface: #ffffff;
-        --foc-border: rgba(29, 58, 114, 0.12);
-        --foc-radius-xl: clamp(18px, 4vw, 32px);
-        --foc-radius-lg: 22px;
-
-        background: linear-gradient(180deg, rgba(233, 237, 242, 0.95) 0%, rgba(235, 240, 247, 0.95) 100%);
-        border-radius: var(--foc-radius-xl);
-        border: 1px solid var(--foc-border);
-        padding: clamp(1.2rem, 2.8vw, 2rem);
-        overflow: hidden;
-        box-shadow: 0 20px 40px -32px rgba(16, 36, 78, 0.4);
+    .flacso-contact-directory {
+        padding: clamp(1.25rem, 3vw, 2rem);
+        background:
+            radial-gradient(circle at 0% 0%, rgba(254, 210, 34, 0.16), transparent 16rem),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(233, 237, 242, 0.88));
     }
 
-    .flacso-otros-contactos .foc-shell {
-        width: 100%;
-        margin: 0 auto;
-    }
-
-    .flacso-otros-contactos .foc-header {
-        margin: 0 0 1.35rem;
+    .flacso-contact-directory-head {
+        max-width: 720px;
+        margin: 0 auto 1.35rem;
         text-align: center;
     }
 
-    .flacso-otros-contactos .foc-title {
-        margin: 0;
-        color: var(--foc-ink);
-        font-size: clamp(1.7rem, 2.8vw, 2.4rem);
-        line-height: 1.15;
-        font-weight: 700;
-        letter-spacing: 0.01em;
-    }
-
-    .flacso-otros-contactos .foc-grid {
+    .flacso-contact-directory-grid {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 0.95rem;
     }
 
-    .flacso-otros-contactos .foc-card {
-        background: rgba(255, 255, 255, 0.9);
+    .flacso-contact-directory-card {
+        min-height: 150px;
+        padding: 1.05rem;
         border: 1px solid rgba(29, 58, 114, 0.12);
-        border-radius: var(--foc-radius-lg);
-        padding: 1rem 1rem 1.05rem;
-        box-shadow: 0 14px 30px -24px rgba(15, 23, 42, 0.3);
-        transition: transform 0.18s ease, box-shadow 0.18s ease;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 16px 34px -28px rgba(15, 26, 45, 0.45);
+        transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     }
 
-    .flacso-otros-contactos .foc-card:hover,
-    .flacso-otros-contactos .foc-card:focus-within {
-        transform: translateY(-2px);
-        box-shadow: 0 18px 34px -24px rgba(15, 23, 42, 0.38);
+    .flacso-contact-directory-card:hover,
+    .flacso-contact-directory-card:focus-within {
+        transform: translateY(-3px);
+        border-color: rgba(29, 58, 114, 0.24);
+        box-shadow: 0 20px 38px -28px rgba(15, 26, 45, 0.55);
     }
 
-    .flacso-otros-contactos .foc-area {
+    .flacso-contact-directory-card h3 {
         margin: 0;
-        color: var(--foc-ink);
+        color: var(--flacso-blue-dark);
         font-size: 1rem;
-        line-height: 1.4;
-        font-weight: 700;
+        font-weight: 850;
+        line-height: 1.35;
     }
 
-    .flacso-otros-contactos .foc-persona {
+    .flacso-contact-directory-person {
         margin: 0.55rem 0 0;
-        color: rgba(15, 26, 45, 0.78);
-        font-size: 0.95rem;
+        color: rgba(15, 26, 45, 0.72);
+        font-size: 0.94rem;
         line-height: 1.5;
     }
 
-    .flacso-otros-contactos .foc-email {
+    .flacso-contact-directory-email,
+    .flacso-contact-directory-empty {
         display: inline-block;
-        margin-top: 0.7rem;
-        color: var(--foc-primary);
-        font-size: 0.94rem;
-        font-weight: 700;
-        text-decoration: none;
+        margin-top: 0.75rem;
+        font-size: 0.92rem;
+        font-weight: 800;
+        line-height: 1.4;
         word-break: break-word;
     }
 
-    .flacso-otros-contactos .foc-email:hover,
-    .flacso-otros-contactos .foc-email:focus-visible {
+    .flacso-contact-directory-email {
+        color: var(--flacso-blue);
+        text-decoration: none;
+    }
+
+    .flacso-contact-directory-email:hover,
+    .flacso-contact-directory-email:focus-visible {
         text-decoration: underline;
     }
 
-    .flacso-otros-contactos .foc-email--empty {
-        color: var(--foc-muted);
-        font-weight: 600;
+    .flacso-contact-directory-empty {
+        color: var(--flacso-muted);
     }
 
-    @media (max-width: 860px) {
-        .flacso-page-container {
-            width: min(100% - 1.25rem, 1080px);
-        }
-
-        .flacso-page-hero {
-            border-radius: 18px;
-        }
-
-        .flacso-page-hero-title {
-            font-size: clamp(1.85rem, 9vw, 2.6rem);
-        }
-
-        .flacso-contacto-grid {
+    @media (max-width: 980px) {
+        .flacso-contact-hero,
+        .flacso-contact-main {
             grid-template-columns: 1fr;
+        }
+
+        .flacso-contact-info-card {
+            position: static;
+        }
+
+        .flacso-contact-directory-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
 
     @media (max-width: 767px) {
-        .flacso-mapa-contacto .fmc-head {
+        .flacso-contact-page {
+            padding-bottom: 3rem;
+        }
+
+        .flacso-contact-shell {
+            width: min(100% - 1.15rem, 1120px);
+        }
+
+        .flacso-contact-hero {
+            border-radius: 0 0 24px 24px;
+            padding: 1.25rem;
+        }
+
+        .flacso-contact-breadcrumb {
+            margin-bottom: 1.4rem;
+        }
+
+        .flacso-contact-lead {
+            font-size: 1rem;
+        }
+
+        .flacso-contact-main {
+            gap: 1rem;
+        }
+
+        .flacso-contact-form-card,
+        .flacso-contact-info-card,
+        .flacso-contact-map-section,
+        .flacso-contact-directory {
+            border-radius: 24px;
+        }
+
+        .flacso-contact-map-head {
             grid-template-columns: 1fr;
         }
 
-        .flacso-mapa-contacto .fmc-body {
+        .flacso-contact-map-link {
+            width: 100%;
+        }
+
+        .flacso-contact-map-frame {
+            min-height: 340px;
+        }
+
+        .flacso-contact-directory-grid {
             grid-template-columns: 1fr;
         }
 
-        .flacso-mapa-contacto .fmc-panel {
-            border-right: 0;
-            border-bottom: 1px solid var(--fmc-border);
-        }
-
-        .flacso-mapa-contacto .fmc-actions {
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
-
-        .flacso-mapa-contacto .fmc-actions .fmc-btn {
-            flex: 1 1 220px;
-        }
-
-        .flacso-mapa-contacto .fmc-map-wrap {
-            min-height: 380px;
-        }
-
-        .flacso-otros-contactos .foc-grid {
-            grid-template-columns: 1fr;
+        .flacso-contact-directory-head {
+            text-align: left;
         }
     }
 
     @media (max-width: 480px) {
-        .flacso-mapa-contacto .fmc-actions {
-            flex-direction: column;
+        .flacso-contact-hero {
+            padding: 1rem;
         }
 
-        .flacso-mapa-contacto .fmc-actions .fmc-btn {
+        .flacso-contact-title {
+            font-size: clamp(2.2rem, 18vw, 3.2rem);
+        }
+
+        .flacso-contact-quick {
+            border-radius: 20px;
+        }
+
+        .flacso-contact-form-card,
+        .flacso-contact-info-card__inner,
+        .flacso-contact-directory {
+            padding: 1rem;
+        }
+
+        .flacso-contact-actions {
+            gap: 0.65rem;
+        }
+
+        .flacso-contact-btn {
             width: 100%;
-            flex: initial;
         }
 
-        .flacso-mapa-contacto .fmc-map-wrap {
+        .flacso-contact-map-frame {
             min-height: 300px;
         }
     }
