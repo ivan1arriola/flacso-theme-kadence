@@ -606,9 +606,25 @@ function flacso_get_paises_consulta() {
             })
             .then(data => {
                 if (data.success) {
+                    const editorOk = data.data && data.data.editor_response && data.data.editor_response.ok === true;
+                    if (!editorOk) {
+                        throw new Error('El CRM no confirmó el guardado de la consulta.');
+                    }
+
+                    const seminarioId = window.datosConsultaSeminario.seminario_id;
+                    const seminarioTitulo = window.datosConsultaSeminario.seminario_titulo || "";
                     const pixelPayload = {
-                        content_name: window.datosConsultaSeminario.seminario_titulo || "",
-                        content_category: "consulta_seminario",
+                        lead_type: "consulta_wordpress_seminario",
+                        form_type: "consulta_seminario",
+                        lead_source: "wordpress_form",
+                        lead_context: "seminario",
+                        content_name: seminarioTitulo,
+                        content_category: "seminario",
+                        content_type: "seminario",
+                        content_ids: seminarioId ? ["seminario-" + seminarioId] : [],
+                        seminario_id: seminarioId,
+                        seminario_titulo: seminarioTitulo,
+                        flacso_stage: "consulta_enviada",
                         status: "submitted"
                     };
                     trackMetaEvent("Lead", pixelPayload);
