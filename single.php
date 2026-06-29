@@ -33,33 +33,34 @@ while (have_posts()) :
             </nav>
 
             <header class="flacso-post-hero">
-                <div class="flacso-post-kicker">
-                    <?php echo esc_html($primary_category); ?>
+                <div class="flacso-hero-body">
+                    <div class="flacso-post-kicker">
+                        <?php echo esc_html($primary_category); ?>
+                    </div>
+
+                    <h1 class="flacso-post-title">
+                        <?php the_title(); ?>
+                    </h1>
+
+                    <div class="flacso-post-date">
+                        <?php echo esc_html(get_the_date()); ?>
+                    </div>
                 </div>
-
-                <h1 class="flacso-post-title">
-                    <?php the_title(); ?>
-                </h1>
-
-                <div class="flacso-post-date">
-                    <?php echo esc_html(get_the_date()); ?>
-                </div>
-            </header>
-
-            <article class="flacso-post-layout">
 
                 <?php if (has_post_thumbnail()) : ?>
-                    <figure class="flacso-featured-wrap">
+                    <figure class="flacso-hero-figure">
                         <?php
                         the_post_thumbnail('large', array(
-                            'class' => 'flacso-featured-image',
+                            'class' => 'flacso-hero-image',
                             'alt'   => esc_attr(get_the_title()),
                         ));
                         ?>
                     </figure>
                 <?php endif; ?>
+            </header>
 
-                <div class="flacso-post-content">
+            <div class="flacso-post-columns">
+                <article class="flacso-post-content">
                     <?php
                     the_content();
 
@@ -68,54 +69,49 @@ while (have_posts()) :
                         'after'  => '</div>',
                     ));
                     ?>
-                </div>
+                </article>
 
-            </article>
+                <aside class="flacso-sidebar-news" aria-labelledby="flacso-sidebar-news-title">
+                    <h2 id="flacso-sidebar-news-title">Ver más novedades</h2>
 
-            <section class="flacso-more-news" aria-labelledby="flacso-more-news-title">
-                <div class="flacso-more-news-header">
-                    <h2 id="flacso-more-news-title">Últimas novedades</h2>
-                    <a href="<?php echo esc_url($blog_url); ?>">Ver todas</a>
-                </div>
-
-                <div class="flacso-more-news-grid">
                     <?php
                     $recent_posts = new WP_Query(array(
                         'post_type'           => 'post',
-                        'posts_per_page'      => 3,
+                        'posts_per_page'      => 5,
                         'post__not_in'        => array(get_the_ID()),
                         'ignore_sticky_posts' => true,
                     ));
 
                     if ($recent_posts->have_posts()) :
+                        echo '<ul class="flacso-sidebar-list">';
                         while ($recent_posts->have_posts()) :
                             $recent_posts->the_post();
                             ?>
-                            <article class="flacso-news-card">
-                                <a href="<?php the_permalink(); ?>" class="flacso-news-card-link">
+                            <li class="flacso-sidebar-item">
+                                <a href="<?php the_permalink(); ?>" class="flacso-sidebar-link">
                                     <?php if (has_post_thumbnail()) : ?>
-                                        <div class="flacso-news-thumb">
-                                            <?php the_post_thumbnail('medium_large'); ?>
-                                        </div>
+                                        <span class="flacso-sidebar-thumb">
+                                            <?php the_post_thumbnail('thumbnail'); ?>
+                                        </span>
                                     <?php endif; ?>
-
-                                    <div class="flacso-news-card-body">
-                                        <span class="flacso-news-date"><?php echo esc_html(get_the_date()); ?></span>
-                                        <h3><?php the_title(); ?></h3>
-                                    </div>
+                                    <span class="flacso-sidebar-text">
+                                        <span class="flacso-sidebar-date"><?php echo esc_html(get_the_date()); ?></span>
+                                        <span class="flacso-sidebar-title"><?php the_title(); ?></span>
+                                    </span>
                                 </a>
-                            </article>
+                            </li>
                             <?php
                         endwhile;
+                        echo '</ul>';
                         wp_reset_postdata();
                     else :
-                        ?>
-                        <p>No hay otras novedades disponibles.</p>
-                        <?php
+                        echo '<p class="flacso-sidebar-empty">No hay otras novedades disponibles.</p>';
                     endif;
                     ?>
-                </div>
-            </section>
+
+                    <a href="<?php echo esc_url($blog_url); ?>" class="flacso-sidebar-cta">Todas las novedades</a>
+                </aside>
+            </div>
 
         </div>
     </main>
@@ -160,6 +156,7 @@ while (have_posts()) :
             text-decoration: underline;
         }
 
+        /* ── Hero ── */
         .flacso-post-hero {
             background:
                 radial-gradient(circle at top right, rgba(254, 210, 34, 0.16), transparent 34%),
@@ -169,6 +166,14 @@ while (have_posts()) :
             padding: clamp(2rem, 4vw, 3.25rem);
             margin-bottom: 2rem;
             box-shadow: 0 18px 45px rgba(15, 26, 45, 0.14);
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .flacso-hero-body {
+            flex: 1 1 0;
+            min-width: 0;
         }
 
         .flacso-post-kicker {
@@ -204,35 +209,36 @@ while (have_posts()) :
             font-weight: 500;
         }
 
-        .flacso-post-layout {
-            background: #ffffff;
-            border: 1px solid var(--flacso-border);
-            border-radius: 22px;
-            overflow: hidden;
-            box-shadow: 0 8px 28px rgba(15, 26, 45, 0.05);
-        }
-
-        .flacso-featured-wrap {
+        .flacso-hero-figure {
+            flex: 0 0 140px;
             margin: 0;
-            padding: clamp(1rem, 3vw, 2rem);
-            background: #ffffff;
-            border-bottom: 1px solid var(--flacso-border);
-            display: flex;
-            justify-content: center;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            aspect-ratio: 1 / 1;
+            background: rgba(255, 255, 255, 0.08);
         }
 
-        .flacso-featured-image {
-            width: min(100%, 720px);
-            height: auto;
-            max-height: none;
+        .flacso-hero-image {
+            width: 100%;
+            height: 100%;
             display: block;
-            object-fit: contain;
-            border-radius: 16px;
+            object-fit: cover;
+        }
+
+        /* ── Columnas: contenido + sidebar ── */
+        .flacso-post-columns {
+            display: flex;
+            gap: 2.25rem;
+            align-items: flex-start;
         }
 
         .flacso-post-content {
-            max-width: 780px;
-            margin: 0 auto;
+            flex: 1 1 0;
+            min-width: 0;
+            background: #ffffff;
+            border: 1px solid var(--flacso-border);
+            border-radius: 22px;
             padding: clamp(1.5rem, 4vw, 3rem);
             font-size: 1.08rem;
             line-height: 1.78;
@@ -271,125 +277,177 @@ while (have_posts()) :
             margin-bottom: 1.4rem;
         }
 
-        .flacso-more-news {
-            margin-top: 2.25rem;
-        }
-
-        .flacso-more-news-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .flacso-more-news-header h2 {
-            color: var(--flacso-blue);
-            font-size: 1.35rem;
-            margin: 0;
-            font-weight: 800;
-        }
-
-        .flacso-more-news-header a {
-            color: var(--flacso-blue);
-            font-size: 0.95rem;
-            font-weight: 700;
-            text-decoration: none;
-        }
-
-        .flacso-more-news-header a:hover {
-            text-decoration: underline;
-        }
-
-        .flacso-more-news-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 1rem;
-        }
-
-        .flacso-news-card {
+        /* ── Sidebar "Ver más novedades" ── */
+        .flacso-sidebar-news {
+            flex: 0 0 300px;
+            position: sticky;
+            top: 2rem;
             background: #ffffff;
             border: 1px solid var(--flacso-border);
-            border-radius: 18px;
-            overflow: hidden;
-            transition: transform 0.18s ease, box-shadow 0.18s ease;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 18px rgba(15, 26, 45, 0.04);
         }
 
-        .flacso-news-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 26px rgba(15, 26, 45, 0.08);
+        .flacso-sidebar-news h2 {
+            color: var(--flacso-blue);
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin: 0 0 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--flacso-yellow);
         }
 
-        .flacso-news-card-link {
-            display: block;
-            height: 100%;
+        .flacso-sidebar-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .flacso-sidebar-item + .flacso-sidebar-item {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--flacso-border);
+        }
+
+        .flacso-sidebar-link {
+            display: flex;
+            gap: 0.75rem;
             color: inherit;
             text-decoration: none;
         }
 
-        .flacso-news-thumb {
-            aspect-ratio: 1 / 1;
-            background: #eef2f7;
-            overflow: hidden;
+        .flacso-sidebar-link:hover .flacso-sidebar-title {
+            color: var(--flacso-blue);
         }
 
-        .flacso-news-thumb img {
+        .flacso-sidebar-thumb {
+            flex: 0 0 56px;
+            width: 56px;
+            height: 56px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #eef2f7;
+        }
+
+        .flacso-sidebar-thumb img {
             width: 100%;
             height: 100%;
             display: block;
             object-fit: cover;
         }
 
-        .flacso-news-card-body {
-            padding: 1rem;
+        .flacso-sidebar-text {
+            flex: 1 1 0;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
         }
 
-        .flacso-news-date {
-            display: block;
+        .flacso-sidebar-date {
+            font-size: 0.78rem;
             color: var(--flacso-muted);
-            font-size: 0.82rem;
-            margin-bottom: 0.45rem;
         }
 
-        .flacso-news-card h3 {
+        .flacso-sidebar-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            line-height: 1.3;
             color: var(--flacso-blue-dark);
-            font-size: 1rem;
-            line-height: 1.35;
-            margin: 0;
-            font-weight: 800;
+            transition: color 0.15s;
         }
 
-        @media (max-width: 780px) {
+        .flacso-sidebar-empty {
+            color: var(--flacso-muted);
+            font-size: 0.9rem;
+        }
+
+        .flacso-sidebar-cta {
+            display: block;
+            margin-top: 1.25rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--flacso-border);
+            color: var(--flacso-blue);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .flacso-sidebar-cta:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 860px) {
             .flacso-single-container {
                 width: min(100% - 1.25rem, 1080px);
             }
 
             .flacso-post-hero {
+                flex-direction: column-reverse;
                 border-radius: 18px;
+                gap: 1.25rem;
+            }
+
+            .flacso-hero-figure {
+                flex: 0 0 auto;
+                width: min(100%, 280px);
+                aspect-ratio: 16 / 10;
             }
 
             .flacso-post-title {
                 font-size: clamp(1.85rem, 9vw, 2.6rem);
             }
 
-            .flacso-post-layout {
-                border-radius: 18px;
-            }
-
-            .flacso-featured-wrap {
-                padding: 0.85rem;
-            }
-
-            .flacso-featured-image {
-                border-radius: 12px;
+            .flacso-post-columns {
+                flex-direction: column;
             }
 
             .flacso-post-content {
+                border-radius: 18px;
                 font-size: 1rem;
                 line-height: 1.7;
             }
 
-            .flacso-more-news-grid {
+            .flacso-sidebar-news {
+                flex: none;
+                width: 100%;
+                position: static;
+            }
+
+            .flacso-sidebar-news h2 {
+                text-align: center;
+            }
+
+            .flacso-sidebar-list {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .flacso-sidebar-item + .flacso-sidebar-item {
+                margin-top: 0;
+                padding-top: 0;
+                border-top: none;
+            }
+
+            .flacso-sidebar-link {
+                flex-direction: column;
+            }
+
+            .flacso-sidebar-thumb {
+                flex: none;
+                width: 100%;
+                height: auto;
+                aspect-ratio: 16 / 9;
+                border-radius: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .flacso-sidebar-list {
                 grid-template-columns: 1fr;
             }
         }
