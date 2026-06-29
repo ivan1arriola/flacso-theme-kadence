@@ -266,30 +266,36 @@ foreach ($offers_flat as $item) {
 get_header();
 ?>
 
-<div id="inner-wrap" class="wrap kt-clear flacso-oferta-academica-premium">
-    <div id="primary" class="content-area">
-        <div class="content-container site-container" style="padding-top: 60px; padding-bottom: 60px;">
-            <header class="entry-header page-title flacso-taxonomy-hero" style="margin-bottom: 40px;">
-                <div class="flacso-taxonomy-hero__content">
-                    <h1 class="entry-title" style="color: var(--flacso-blue-dark); font-weight: 800; font-size: clamp(2.5rem, 5vw, 3.5rem); margin-bottom: 1rem;"><?php echo esc_html($taxonomy_name); ?></h1>
-                    
-                    <div class="taxonomy-description" style="font-size: 1.15rem; line-height: 1.6; max-width: 900px; color: #475569;">
-                        <p>
-                            Conocé las propuestas disponibles. Revisá la duración, modalidad, fecha de inicio y requisitos de inscripción de cada programa.
-                        </p>
-                    </div>
-                </div>
+<main class="flacso-taxonomy-oferta">
+    <div class="flacso-taxonomy-container">
 
-                <?php if (!empty($term_image_data['large']) || !empty($term_image_data['url'])) : ?>
-                    <div class="flacso-taxonomy-hero__media">
-                        <img
-                            src="<?php echo esc_url((string) ($term_image_data['large'] ?? $term_image_data['url'] ?? '')); ?>"
-                            alt="<?php echo esc_attr((string) ($term_image_data['alt'] ?? $taxonomy_name)); ?>"
-                            class="flacso-taxonomy-hero__image"
-                        />
-                    </div>
-                <?php endif; ?>
-            </header>
+        <header class="flacso-taxonomy-hero">
+            <div class="flacso-taxonomy-hero__body">
+                <nav class="flacso-taxonomy-breadcrumb" aria-label="Navegación">
+                    <a href="<?php echo esc_url(home_url('/')); ?>">Inicio</a>
+                    <span>/</span>
+                    <a href="<?php echo esc_url(home_url('/')); ?>">Oferta académica</a>
+                    <span>/</span>
+                    <span><?php echo esc_html($taxonomy_name); ?></span>
+                </nav>
+
+                <h1 class="flacso-taxonomy-hero__title"><?php echo esc_html($taxonomy_name); ?></h1>
+
+                <p class="flacso-taxonomy-hero__description">
+                    Conocé las propuestas disponibles. Revisá la duración, modalidad, fecha de inicio y requisitos de inscripción de cada programa.
+                </p>
+            </div>
+
+            <?php if (!empty($term_image_data['large']) || !empty($term_image_data['url'])) : ?>
+                <figure class="flacso-taxonomy-hero__figure">
+                    <img
+                        src="<?php echo esc_url((string) ($term_image_data['large'] ?? $term_image_data['url'] ?? '')); ?>"
+                        alt="<?php echo esc_attr((string) ($term_image_data['alt'] ?? $taxonomy_name)); ?>"
+                        class="flacso-taxonomy-hero__image"
+                    />
+                </figure>
+            <?php endif; ?>
+        </header>
 
             <div id="flacso-listado-ofertas"></div>
             <?php if (!empty($offers_flat)) : ?>
@@ -400,16 +406,51 @@ $card_cta = !empty($item['is_open'])
                     </div>
                 </div>
             <?php endif; ?>
-        </div>
     </div>
-</div>
+</main>
 
 <style>
-:root {
-    --flacso-blue-dark: #051938;
-    --flacso-blue-light: #163970;
-    --flacso-yellow: #fcd116;
-    --flacso-gray-bg: #f8fafc;
+.flacso-taxonomy-oferta {
+    --flacso-blue: #1d3a72;
+    --flacso-blue-dark: #0f1a2d;
+    --flacso-yellow: #fed222;
+    --flacso-text: #1f2937;
+    --flacso-muted: #64748b;
+    --flacso-border: #e2e8f0;
+    --flacso-bg: #f8fafc;
+
+    background: var(--flacso-bg);
+    color: var(--flacso-text);
+    padding: 0 0 4.5rem;
+}
+
+.flacso-taxonomy-container {
+    width: min(100% - 2rem, 1080px);
+    margin: 0 auto;
+}
+
+.flacso-taxonomy-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    padding: 0 0 1rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.flacso-taxonomy-breadcrumb a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.flacso-taxonomy-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.flacso-taxonomy-breadcrumb span {
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .flacso-ofertas-group + .flacso-ofertas-group {
@@ -417,38 +458,54 @@ $card_cta = !empty($item['is_open'])
 }
 
 .flacso-taxonomy-hero {
-    display: grid;
-    gap: 1.75rem;
+    background:
+        radial-gradient(circle at top right, rgba(254, 210, 34, 0.16), transparent 34%),
+        linear-gradient(135deg, var(--flacso-blue-dark), var(--flacso-blue));
+    color: #ffffff;
+    border-radius: 22px;
+    padding: clamp(2rem, 4vw, 3.25rem);
+    margin-bottom: 2rem;
+    box-shadow: 0 18px 45px rgba(15, 26, 45, 0.14);
+    display: flex;
+    gap: 2rem;
     align-items: center;
 }
 
-.flacso-taxonomy-hero__content {
+.flacso-taxonomy-hero__body {
+    flex: 1 1 0;
     min-width: 0;
 }
 
-.flacso-taxonomy-hero__media {
-    max-width: 420px;
-    width: 100%;
-    justify-self: start;
+.flacso-taxonomy-hero__title {
+    color: #ffffff;
+    font-size: clamp(2rem, 4.2vw, 3.4rem);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    margin: 0;
+    font-weight: 800;
+}
+
+.flacso-taxonomy-hero__description {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.6;
+    max-width: 680px;
+}
+
+.flacso-taxonomy-hero__figure {
+    flex: 0 0 220px;
+    margin: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
 }
 
 .flacso-taxonomy-hero__image {
     display: block;
     width: 100%;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
-    border-radius: 20px;
-    box-shadow: 0 18px 44px rgba(5, 25, 56, 0.14);
-}
-
-@media (min-width: 980px) {
-    .flacso-taxonomy-hero {
-        grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.9fr);
-    }
-
-    .flacso-taxonomy-hero__media {
-        justify-self: end;
-    }
 }
 
 .flacso-ofertas-group__title {
@@ -623,15 +680,15 @@ $card_cta = !empty($item['is_open'])
     fill: var(--flacso-yellow);
 }
 
-.flacso-taxonomy-hero__media {
+.flacso-taxonomy-hero__figure {
     position: relative;
 }
 
-.flacso-taxonomy-hero__media::after {
+.flacso-taxonomy-hero__figure::after {
     content: "";
     position: absolute;
     inset: 0;
-    border-radius: 20px;
+    border-radius: 16px;
     background: linear-gradient(135deg, rgba(22, 57, 112, 0.22), rgba(5, 25, 56, 0.08));
     pointer-events: none;
 }
@@ -663,29 +720,23 @@ $card_cta = !empty($item['is_open'])
 }
 
 @media (max-width: 767px) {
-    .flacso-oferta-academica-premium .content-container {
-        padding-top: 22px !important;
-        padding-bottom: 90px !important;
-    }
-
     .flacso-taxonomy-hero {
-        margin-bottom: 24px !important;
-        gap: 1rem;
+        flex-direction: column-reverse;
+        border-radius: 18px;
+        gap: 1.25rem;
     }
 
-    .flacso-taxonomy-hero .entry-title {
-        font-size: 2rem !important;
-        line-height: 1.05;
-        margin-bottom: 0.65rem !important;
+    .flacso-taxonomy-hero__title {
+        font-size: clamp(1.85rem, 9vw, 2.6rem);
     }
 
-    .taxonomy-description {
-        font-size: 0.98rem !important;
-        line-height: 1.45 !important;
+    .flacso-taxonomy-hero__figure {
+        flex: 0 0 auto;
+        width: min(100%, 220px);
     }
 
-    .flacso-taxonomy-hero__media {
-        display: none;
+    .flacso-taxonomy-hero__description {
+        font-size: 0.98rem;
     }
 
     .flacso-ofertas-group__title {

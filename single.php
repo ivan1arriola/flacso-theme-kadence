@@ -18,7 +18,7 @@ while (have_posts()) :
     $primary_category = !empty($post_categories) ? $post_categories[0]->name : 'Novedad';
 
     $blog_page_id = get_option('page_for_posts');
-    $blog_url     = $blog_page_id ? get_permalink($blog_page_id) : home_url('/noticias/');
+    $blog_url     = $blog_page_id ? get_permalink($blog_page_id) : home_url('/categoria/novedades/');
     ?>
 
     <main class="flacso-single-post">
