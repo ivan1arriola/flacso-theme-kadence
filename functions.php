@@ -2,6 +2,8 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
+require_once get_stylesheet_directory() . '/inc/open-graph.php';
+
 /**
  * ===========================================================
  * ENQUEUE STYLES Y SCRIPTS
@@ -130,6 +132,5 @@ function child_theme_enqueue_jquery_ui() {
     }
 }
 add_action('wp_enqueue_scripts', 'child_theme_enqueue_jquery_ui', 25);
-
 
 
