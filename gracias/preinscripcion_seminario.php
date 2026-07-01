@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 ?>
-<h1 class="mb-3" style="color: var(--global-palette1);">Gracias por tu preinscripción</h1>
+<h1 id="flacso-gracias-title" class="mb-3" style="color: var(--global-palette1);">Gracias por tu preinscripción</h1>
 <div class="flacso-gracias-mensaje mb-3">
     <p class="lead mb-2">Recibimos tus datos correctamente.</p>
     <p class="mb-2">El equipo de FLACSO Uruguay revisará la información y se comunicará contigo por correo electrónico.</p>
