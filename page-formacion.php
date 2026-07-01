@@ -173,46 +173,76 @@ get_header();
 	});
 })();
 
-// Meta Pixel: ViewContent al cargar + Click tracking en botones y cards
+// Meta Pixel y GA4: ViewContent/view_item_list al cargar + click tracking en botones y cards
 (function() {
-	if (typeof window.flacsoMetaTrack !== 'function') return;
+	function mapGA4EventName(eventName) {
+		if (eventName === "OfertaAcademicaClick") return "select_item";
+		if (eventName === "ConvenioClick") return "convenio_click";
+		if (eventName === "SeminarioClick") return "seminario_click";
+		return eventName;
+	}
 
-	// ViewContent: el usuario está viendo el listado completo de la oferta
-	window.flacsoMetaTrack('ViewContent', {
-		content_name: 'Listado oferta academica completa',
-		content_category: 'oferta_academica',
-		content_type: 'oferta_academica'
-	});
+	function trackGA4(eventName, params) {
+		if (typeof window.flacsoTrackGA4 === "function") {
+			window.flacsoTrackGA4(eventName, params || {});
+			return;
+		}
+		if (typeof window.gtag === "function") {
+			window.gtag("event", eventName, params || {});
+		}
+	}
 
-	// Click tracking en botones del hero y tarjetas de programa
+	var listPayload = {
+		content_name: "Listado oferta academica completa",
+		content_category: "oferta_academica",
+		content_type: "oferta_academica",
+		item_list_name: "Oferta academica completa"
+	};
+
+	if (typeof window.flacsoMetaTrack === "function") {
+		window.flacsoMetaTrack("ViewContent", listPayload);
+	} else {
+		trackGA4("view_item_list", listPayload);
+	}
+
 	var clickTargets = document.querySelectorAll(
-		'.flacso-oferta-hero__btn, .flacso-oa-card, .flacso-oferta-section__btn'
+		".flacso-oferta-hero__btn, .flacso-oa-card, .flacso-oferta-section__btn"
 	);
 
 	clickTargets.forEach(function(el) {
-		el.addEventListener('click', function() {
-			var eventName = 'OfertaAcademicaClick';
-			var href = el.getAttribute('href') || '';
-			var title = el.innerText.trim();
+		el.addEventListener("click", function() {
+			var eventName = "OfertaAcademicaClick";
+			var href = el.getAttribute("href") || "";
+			var title = (el.innerText || "").trim();
+			var category = "oferta_academica";
 
-			// Detectar tipo por contenido del enlace o sección
-			if (href.indexOf('convenio') !== -1 || el.classList.contains('flacso-oferta-hero__btn--convenios')) {
-				eventName = 'ConvenioClick';
-			} else if (href.indexOf('seminario') !== -1 || el.closest('#seminarios')) {
-				eventName = 'SeminarioClick';
+			if (href.indexOf("convenio") !== -1 || el.classList.contains("flacso-oferta-hero__btn--convenios")) {
+				eventName = "ConvenioClick";
+				category = "convenios";
+			} else if (href.indexOf("seminario") !== -1 || el.closest("#seminarios")) {
+				eventName = "SeminarioClick";
+				category = "seminarios";
 			}
 
-			// En tarjetas, usar el título del programa
-			var cardTitle = el.querySelector('.flacso-oa-card__title');
+			var cardTitle = el.querySelector(".flacso-oa-card__title");
 			if (cardTitle) {
 				title = cardTitle.innerText.trim();
 			}
 
-			window.flacsoMetaTrackCustom(eventName, {
+			var clickPayload = {
 				content_name: title,
 				link_url: href,
-				content_category: 'oferta_academica'
-			});
+				content_category: category,
+				item_name: title,
+				item_category: category,
+				item_list_name: "Oferta academica completa"
+			};
+
+			if (typeof window.flacsoMetaTrackCustom === "function") {
+				window.flacsoMetaTrackCustom(eventName, clickPayload);
+			} else {
+				trackGA4(mapGA4EventName(eventName), clickPayload);
+			}
 		});
 	});
 })();

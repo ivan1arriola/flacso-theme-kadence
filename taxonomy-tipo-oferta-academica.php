@@ -917,19 +917,6 @@ $card_cta = !empty($item['is_open'])
         var offerStatus = link.getAttribute('data-offer-status') || '';
         var destination = link.href || '';
 
-        if (typeof window.gtag === 'function') {
-            try {
-                window.gtag('event', 'oferta_academica_click', {
-                    event_category: 'oferta_academica',
-                    event_label: offerTitle,
-                    oferta_nombre: offerTitle,
-                    oferta_estado: offerStatus,
-                    tipo_oferta: termTitle,
-                    destination_url: destination
-                });
-            } catch (e) {}
-        }
-
         if (typeof window.flacsoMetaTrackCustom === 'function') {
             try {
                 window.flacsoMetaTrackCustom('OfertaAcademicaClick', {
