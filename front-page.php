@@ -17,6 +17,9 @@ get_header();
 do_action( 'kadence_before_content' );
 ?>
 
+	<?php if ( function_exists( 'flacso_homepage_builder_render' ) ) : ?>
+		<?php echo flacso_homepage_builder_render(); ?>
+	<?php else : ?>
 	<main id="main" class="site-main flacso-home-layout" role="main">
 		<div class="flacso-main-page flacso-homepage-completa">
 			<?php
@@ -62,6 +65,7 @@ do_action( 'kadence_before_content' );
 			?>
 		</div>
 	</main><!-- #main -->
+	<?php endif; ?>
 </div><!-- #primary -->
 
 <?php

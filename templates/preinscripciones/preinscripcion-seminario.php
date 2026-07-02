@@ -1084,9 +1084,12 @@ button.flacso-btn-primary {
             'content_ids' => ['seminario-' . (string) $seminario_id],
             'status' => 'completed',
             'flacso_stage' => 'preinscripcion_enviada',
-            'value' => $sem_tracking_value,
-            'currency' => (string) $sem_tracking_currency,
         ];
+
+        if ((float) $sem_tracking_value > 0 && preg_match('/^[A-Z]{3}$/', (string) $sem_tracking_currency)) {
+            $meta_payload['value'] = (float) $sem_tracking_value;
+            $meta_payload['currency'] = (string) $sem_tracking_currency;
+        }
 
         $meta_email = strtolower(trim((string) $email));
         if ($meta_email !== '') {
@@ -2317,15 +2320,21 @@ function validate_ci(ci) {
                 if (successContainer) {
                     console.log('[Preinscripcion] ✓ Preinscripción exitosa');
 
-                    const pixelPayload = await buildMetaPayload({
+                    const baseMetaPayload = {
                         content_name: '<?php echo esc_js($seminario_titulo); ?>',
                         content_category: 'preinscripcion_seminario',
                         content_ids: ['seminario-<?php echo esc_js((string) $seminario_id); ?>'],
                         status: 'completed',
-                        flacso_stage: 'preinscripcion_enviada',
-                        value: <?php echo $sem_tracking_value; ?>,
-                        currency: <?php echo wp_json_encode($sem_tracking_currency); ?>
-                    }, {
+                        flacso_stage: 'preinscripcion_enviada'
+                    };
+                    const trackingValue = Number(<?php echo wp_json_encode((float) $sem_tracking_value); ?>);
+                    const trackingCurrency = String(<?php echo wp_json_encode((string) $sem_tracking_currency); ?> || '').trim().toUpperCase();
+                    if (Number.isFinite(trackingValue) && trackingValue > 0 && /^[A-Z]{3}$/.test(trackingCurrency)) {
+                        baseMetaPayload.value = trackingValue;
+                        baseMetaPayload.currency = trackingCurrency;
+                    }
+
+                    const pixelPayload = await buildMetaPayload(baseMetaPayload, {
                         correo: formData.get('correo'),
                         celular_e164: formData.get('celular_e164'),
                         nombre1: formData.get('nombre1'),
