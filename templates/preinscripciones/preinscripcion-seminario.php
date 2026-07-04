@@ -234,6 +234,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preinscripcion_nonce'
             // Obtener IP y User Agent
             $ip_address = $_SERVER['REMOTE_ADDR'] ?? '';
             $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+            $posted_attribution = [];
+            if (function_exists('fc_sanitize_campaign_attribution_payload')) {
+                $posted_attribution = fc_sanitize_campaign_attribution_payload(
+                    wp_unslash($_POST),
+                    isset($_POST['landing_url']) ? esc_url_raw(wp_unslash($_POST['landing_url'])) : (function_exists('fc_get_current_request_url') ? fc_get_current_request_url() : ''),
+                    isset($_POST['referrer_url']) ? esc_url_raw(wp_unslash($_POST['referrer_url'])) : (wp_get_referer() ?: '')
+                );
+            }
+            $url_referer = $posted_attribution['referrer_url'] ?? '';
+            if ($url_referer === '') {
+                $url_referer = wp_get_referer() ?: '';
+            }
 
             // Preparar datos en formato especificado
             $form_data = [
@@ -268,8 +280,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preinscripcion_nonce'
                 ],
                 'meta' => [
                     'ip' => $ip_address,
-                    'ua' => $user_agent
-                ]
+                    'ua' => $user_agent,
+                    'url_referer' => $url_referer,
+                    'origen' => 'wordpress_preinscripcion_seminario',
+                    'campaign_id' => $posted_attribution['campaign_external_id'] ?? '',
+                    'attribution' => array_filter([
+                        'provider' => $posted_attribution['campaign_provider'] ?? '',
+                        'source' => $posted_attribution['campaign_source'] ?? '',
+                        'medium' => $posted_attribution['campaign_medium'] ?? '',
+                        'name' => $posted_attribution['campaign_name'] ?? '',
+                        'external_id' => $posted_attribution['campaign_external_id'] ?? '',
+                        'content' => $posted_attribution['campaign_content'] ?? '',
+                        'term' => $posted_attribution['campaign_term'] ?? '',
+                    ]),
+                ] + $posted_attribution
             ];
 
             // Procesar archivos si existen
@@ -1438,6 +1462,7 @@ button.flacso-btn-primary {
                 </p>
 
                 <?php wp_nonce_field('preinscripcion_nonce', 'preinscripcion_nonce'); ?>
+                <?php if (function_exists('fc_render_campaign_attribution_hidden_fields')) { fc_render_campaign_attribution_hidden_fields(function_exists('fc_get_current_request_url') ? fc_get_current_request_url() : '', wp_get_referer() ?: ''); } ?>
             </form>
                 </div>
             </div>
