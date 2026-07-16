@@ -6,9 +6,89 @@ Author: Kadence WP
 Author URI: https://www.kadencewp.com/
 Description: Kadence Theme is a lightweight yet full featured WordPress theme for creating beautiful fast loading and accessible websites, easier than ever. It features an easy to use drag and drop header and footer builder to build any type of header in minutes. It features a full library of gorgeous starter templates that are easy to modify with our intelligent global font and color controls. With extensive integration with the most popular 3rd party plugins, you can quickly build impressive ecommerce websites, course websites, business websites, and more.
 Tags: translation-ready,two-columns,right-sidebar,left-sidebar,footer-widgets,blog,custom-logo,custom-background,custom-menu,rtl-language-support,editor-style,threaded-comments,custom-colors,featured-images,wide-blocks,full-width-template,theme-options,e-commerce
-Version: 1.1.35.1783442306
-Updated: 2026-07-07 13:38:26
+Version: 1.1.36.1784221200
+Updated: 2026-07-16 14:00:00
 
 */
 
+/*
+ * Imágenes destacadas 4:5.
+ * La variable de fondo es asignada por assets/js/featured-images.js.
+ */
+.flacso-featured-image-45 {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5 !important;
+    overflow: hidden;
+    isolation: isolate;
+    background: #dfe5ec;
+}
 
+.flacso-featured-image-45::before {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    inset: -8%;
+    background-image: var(--flacso-featured-image);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(18px);
+    transform: scale(1.08);
+}
+
+.flacso-featured-image-45::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: rgba(8, 22, 43, 0.14);
+    pointer-events: none;
+}
+
+.flacso-featured-image-45 > img {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none;
+    object-fit: contain !important;
+    object-position: center;
+}
+
+/* Neutraliza proporciones y alturas históricas de los contenedores conocidos. */
+.flacso-hero-figure,
+.flacso-archive-card-thumb,
+.flacso-novedades-3d__image-link,
+.seminario-card__image-container,
+.seminario-card__media-link,
+.seminarios-featured__media,
+.evento-img,
+.charla-img,
+.flacso-premium-card__image-wrap,
+.flc-eventos-react__media {
+    aspect-ratio: 4 / 5 !important;
+    height: auto !important;
+    min-height: 0 !important;
+}
+
+.flacso-hero-figure > .flacso-featured-image-45,
+.flacso-archive-card-thumb > .flacso-featured-image-45,
+.flacso-novedades-3d__image-link > .flacso-featured-image-45,
+.seminario-card__image-container .flacso-featured-image-45,
+.seminario-card__media-link > .flacso-featured-image-45,
+.seminarios-featured__media > .flacso-featured-image-45,
+.evento-img > .flacso-featured-image-45,
+.charla-img > .flacso-featured-image-45,
+.flacso-premium-card__image-wrap > .flacso-featured-image-45,
+.flc-eventos-react__media > .flacso-featured-image-45 {
+    height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flacso-featured-image-45 > img {
+        transition: none !important;
+    }
+}

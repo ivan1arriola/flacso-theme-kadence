@@ -40,6 +40,21 @@ function child_theme_configurator_css() {
 endif;
 add_action( 'wp_enqueue_scripts', 'child_theme_configurator_css', 30 ); // prioridad 30 para cargar después de Bootstrap
 
+/**
+ * Normaliza la presentación de las imágenes destacadas en una relación 4:5.
+ * El script crea el fondo difuminado a partir de la propia imagen.
+ */
+function flacso_child_enqueue_featured_images() {
+    wp_enqueue_script(
+        'flacso-child-featured-images',
+        trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/featured-images.js',
+        array(),
+        wp_get_theme()->get( 'Version' ),
+        true
+    );
+}
+add_action( 'wp_enqueue_scripts', 'flacso_child_enqueue_featured_images', 35 );
+
 function flacso_child_enqueue_ga4_events() {
     wp_enqueue_script(
         'flacso-child-ga4-events',
@@ -311,5 +326,4 @@ add_filter('flacso_needs_bootstrap', function ($needs) {
     }
     return $needs;
 });
-
 
