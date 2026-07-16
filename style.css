@@ -6,8 +6,8 @@ Author: Kadence WP
 Author URI: https://www.kadencewp.com/
 Description: Kadence Theme is a lightweight yet full featured WordPress theme for creating beautiful fast loading and accessible websites, easier than ever. It features an easy to use drag and drop header and footer builder to build any type of header in minutes. It features a full library of gorgeous starter templates that are easy to modify with our intelligent global font and color controls. With extensive integration with the most popular 3rd party plugins, you can quickly build impressive ecommerce websites, course websites, business websites, and more.
 Tags: translation-ready,two-columns,right-sidebar,left-sidebar,footer-widgets,blog,custom-logo,custom-background,custom-menu,rtl-language-support,editor-style,threaded-comments,custom-colors,featured-images,wide-blocks,full-width-template,theme-options,e-commerce
-Version: 1.1.36.1784221200
-Updated: 2026-07-16 14:00:00
+Version: 1.1.36.1784236198
+Updated: 2026-07-16 18:09:58
 
 */
 
@@ -68,23 +68,11 @@ Updated: 2026-07-16 14:00:00
 .evento-img,
 .charla-img,
 .flacso-premium-card__image-wrap,
-.flc-eventos-react__media {
+.flc-eventos-react__media,
+.novedades-grid .card-img-container {
     aspect-ratio: 4 / 5 !important;
     height: auto !important;
     min-height: 0 !important;
-}
-
-.flacso-hero-figure > .flacso-featured-image-45,
-.flacso-archive-card-thumb > .flacso-featured-image-45,
-.flacso-novedades-3d__image-link > .flacso-featured-image-45,
-.seminario-card__image-container .flacso-featured-image-45,
-.seminario-card__media-link > .flacso-featured-image-45,
-.seminarios-featured__media > .flacso-featured-image-45,
-.evento-img > .flacso-featured-image-45,
-.charla-img > .flacso-featured-image-45,
-.flacso-premium-card__image-wrap > .flacso-featured-image-45,
-.flc-eventos-react__media > .flacso-featured-image-45 {
-    height: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -12,7 +12,8 @@
         '.evento-img img',
         '.charla-img img',
         '.flacso-premium-card__img',
-        '.flc-eventos-react__media img'
+        '.flc-eventos-react__media img',
+        '.novedades-grid .card-img-container img'
     ].join(',');
 
     function imageUrl(image) {
