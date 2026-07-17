@@ -210,7 +210,7 @@ while (have_posts()) :
         }
 
         .flacso-hero-figure {
-            flex: 0 0 140px;
+            flex: 0 0 clamp(230px, 18vw, 280px);
             margin: 0;
             border-radius: 14px;
             overflow: hidden;
