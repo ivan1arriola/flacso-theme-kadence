@@ -89,6 +89,26 @@ while (have_posts()) : the_post();
     $valor_uyu_15_descuento_text = $format_monto($valor_uyu_15_descuento);
     $valor_usd_text = $format_monto($valor_usd);
     $valor_usd_15_descuento_text = $format_monto($valor_usd_15_descuento);
+
+    // Las imágenes nuevas se cargan en formato 4:5. Detectamos la proporción
+    // desde los metadatos para conservar intacto el hero horizontal histórico.
+    $thumbnail_id = (int) get_post_thumbnail_id($post_id);
+    $is_featured_image_4x5 = false;
+    if ($thumbnail_id > 0) {
+        $thumbnail_meta = wp_get_attachment_metadata($thumbnail_id);
+        $thumbnail_width = isset($thumbnail_meta['width']) ? (int) $thumbnail_meta['width'] : 0;
+        $thumbnail_height = isset($thumbnail_meta['height']) ? (int) $thumbnail_meta['height'] : 0;
+
+        if ($thumbnail_width <= 0 || $thumbnail_height <= 0) {
+            $thumbnail_source = wp_get_attachment_image_src($thumbnail_id, 'full');
+            $thumbnail_width = isset($thumbnail_source[1]) ? (int) $thumbnail_source[1] : 0;
+            $thumbnail_height = isset($thumbnail_source[2]) ? (int) $thumbnail_source[2] : 0;
+        }
+
+        if ($thumbnail_width > 0 && $thumbnail_height > 0) {
+            $is_featured_image_4x5 = abs(($thumbnail_width / $thumbnail_height) - (4 / 5)) <= 0.03;
+        }
+    }
 ?>
 
 <style>
@@ -136,6 +156,19 @@ while (have_posts()) : the_post();
         background: linear-gradient(135deg, var(--global-palette8) 0%, var(--global-palette7) 100%);
         color: var(--global-palette6);
         font-size: 3rem;
+    }
+
+    .seminario-hero-image-4x5 {
+        width: min(100%, 440px);
+        aspect-ratio: 4 / 5;
+        margin-inline: auto;
+    }
+
+    .seminario-hero-image-4x5 img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
     
     .info-card {
@@ -577,6 +610,10 @@ while (have_posts()) : the_post();
     
     /* Responsive adjustments */
     @media (max-width: 768px) {
+        .seminario-hero-image-4x5 {
+            width: min(100%, 360px);
+        }
+
         .section-header h2 {
             font-size: 1.25rem;
         }
@@ -632,11 +669,11 @@ while (have_posts()) : the_post();
     </nav>
     
     <!-- Hero Section -->
-    <div class="row align-items-center mb-5">
+    <div class="row align-items-center mb-5<?php echo $is_featured_image_4x5 ? ' seminario-hero--portrait' : ''; ?>">
         <!-- Image Column -->
-        <div class="col-lg-6 mb-4 mb-lg-0">
+        <div class="<?php echo $is_featured_image_4x5 ? 'col-lg-5' : 'col-lg-6'; ?> mb-4 mb-lg-0">
             <?php if (has_post_thumbnail()) : ?>
-                <div class="ratio ratio-16x9 rounded-4 overflow-hidden shadow-lg">
+                <div class="<?php echo $is_featured_image_4x5 ? 'seminario-hero-image-4x5' : 'ratio ratio-16x9'; ?> rounded-4 overflow-hidden shadow-lg">
                     <?php the_post_thumbnail('large', array('class' => 'img-fluid w-100 h-100 object-fit-cover', 'loading' => 'eager')); ?>
                 </div>
             <?php else : ?>
@@ -647,7 +684,7 @@ while (have_posts()) : the_post();
         </div>
         
         <!-- Content Column -->
-        <div class="col-lg-6">
+        <div class="<?php echo $is_featured_image_4x5 ? 'col-lg-7' : 'col-lg-6'; ?>">
             <h1 class="fw-bold mb-4" style="color: var(--global-palette1);">
                 <?php echo esc_html(get_the_title()); ?>
             </h1>
