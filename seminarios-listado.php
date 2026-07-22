@@ -12,9 +12,9 @@ if (function_exists('flacso_global_styles')) {
 $hero_image_url = 'https://flacso.edu.uy/wp-content/uploads/2026/02/seminarios-artwork.png';
 $hoy = new DateTimeImmutable('today', wp_timezone());
 
-$posgrado_filtro = isset($_GET['posgrado']) ? intval($_GET['posgrado']) : 0;
+$posgrado_filtro = isset( $_GET['posgrado'] ) ? absint( wp_unslash( $_GET['posgrado'] ) ) : 0;
 if ($posgrado_filtro <= 0 && isset($_GET['programa'])) {
-    $posgrado_filtro = intval($_GET['programa']);
+    $posgrado_filtro = absint( wp_unslash( $_GET['programa'] ) );
 }
 
 $seminarios_por_posgrado = array();
@@ -587,10 +587,10 @@ $ofertas_con_seminarios_disponibles = array_keys($ofertas_con_seminarios_disponi
                     <h2 id="seminarios-ofertas-titulo" class="seminarios-ofertas__title"><?php esc_html_e('Seminarios por Programa', 'flacso-uruguay'); ?></h2>
                     <p class="seminarios-ofertas__subtitle"><?php esc_html_e('Explora los seminarios específicos asociados a nuestras Maestrías y Diplomas:', 'flacso-uruguay'); ?></p>
                 </header>
-                
+
                 <div class="seminarios-ofertas__grid">
-                    <?php 
-                    foreach ($ofertas_con_seminarios_disponibles as $oferta_id) : 
+                    <?php
+                    foreach ($ofertas_con_seminarios_disponibles as $oferta_id) :
                         $permalink = get_permalink($oferta_id);
                         $link_seminarios = trailingslashit($permalink) . 'seminarios/';
                         $titulo = get_the_title($oferta_id);
@@ -628,16 +628,4 @@ $ofertas_con_seminarios_disponibles = array_keys($ofertas_con_seminarios_disponi
     </main>
 </div>
 
-<script>
-(function() {
-    if (typeof window.flacsoMetaTrack !== 'function') return;
-    try {
-        window.flacsoMetaTrack('ViewContent', {
-            content_name: 'Listado de Seminarios',
-            content_category: 'listado_seminarios',
-            flacso_stage: 'listado_seminarios'
-        });
-    } catch (e) {}
-})();
-</script>
 <?php get_footer(); ?>

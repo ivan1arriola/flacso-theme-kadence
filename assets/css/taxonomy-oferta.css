@@ -1,0 +1,483 @@
+.flacso-taxonomy-oferta {
+    --flacso-blue: #1d3a72;
+    --flacso-blue-dark: #0f1a2d;
+    --flacso-yellow: #fed222;
+    --flacso-text: #1f2937;
+    --flacso-muted: #64748b;
+    --flacso-border: #e2e8f0;
+    --flacso-bg: #f8fafc;
+
+    background: var(--flacso-bg);
+    color: var(--flacso-text);
+    padding: 0 0 4.5rem;
+}
+
+.flacso-taxonomy-container {
+    width: min(100% - 2rem, 1080px);
+    margin: 0 auto;
+}
+
+.flacso-taxonomy-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    padding: 0 0 1rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.flacso-taxonomy-breadcrumb a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.flacso-taxonomy-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.flacso-taxonomy-breadcrumb span {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.flacso-ofertas-group + .flacso-ofertas-group {
+    margin-top: 1rem;
+}
+
+.flacso-taxonomy-hero {
+    background:
+        radial-gradient(circle at top right, rgba(254, 210, 34, 0.16), transparent 34%),
+        linear-gradient(135deg, var(--flacso-blue-dark), var(--flacso-blue));
+    color: #ffffff;
+    border-radius: 22px;
+    padding: clamp(2rem, 4vw, 3.25rem);
+    margin-bottom: 2rem;
+    box-shadow: 0 18px 45px rgba(15, 26, 45, 0.14);
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.flacso-taxonomy-hero__body {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.flacso-taxonomy-hero__title {
+    color: #ffffff;
+    font-size: clamp(2rem, 4.2vw, 3.4rem);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    margin: 0;
+    font-weight: 800;
+}
+
+.flacso-taxonomy-hero__description {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.6;
+    max-width: 680px;
+}
+
+.flacso-taxonomy-hero__figure {
+    flex: 0 0 220px;
+    margin: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+}
+
+.flacso-taxonomy-hero__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+.flacso-ofertas-group__title {
+    margin: 0 0 1.4rem;
+    padding: 0.7rem 0.9rem;
+    border-left: 4px solid var(--flacso-yellow);
+    border-radius: 6px;
+    background: var(--flacso-gray-bg);
+    color: var(--flacso-blue-dark);
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.flacso-ofertas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: 2rem;
+    padding-bottom: 2rem;
+}
+
+.flacso-ofertas-grid .grid-item-wrap {
+    width: 100%;
+}
+
+.flacso-premium-card {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    transform: translateY(0);
+}
+
+.flacso-premium-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(5, 25, 56, 0.12);
+}
+
+.flacso-premium-card__image-wrap {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+    background: #f1f5f9;
+}
+
+.flacso-premium-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.flacso-premium-card:hover .flacso-premium-card__img {
+    transform: scale(1.05);
+}
+
+.flacso-premium-card__img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #cbd5e1;
+}
+
+.flacso-premium-card__badges {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.flacso-badge {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.flacso-badge--open {
+    background: var(--flacso-yellow);
+    color: var(--flacso-blue-dark);
+}
+
+.flacso-premium-card__body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.flacso-premium-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 12px;
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.flacso-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.flacso-meta-item svg {
+    color: var(--flacso-blue-light);
+    flex: 0 0 auto;
+}
+
+.flacso-premium-card__title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.35;
+    margin-bottom: 12px;
+    color: var(--flacso-blue-dark);
+}
+
+.flacso-premium-card__title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.flacso-premium-card:hover .flacso-premium-card__title a {
+    color: var(--flacso-blue-light);
+}
+
+.flacso-premium-card__excerpt {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #475569;
+    margin-bottom: 24px;
+    flex-grow: 1;
+}
+
+.flacso-premium-card__footer {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.flacso-premium-card__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--flacso-blue-light);
+    transition: gap 0.3s ease;
+}
+
+.flacso-premium-card:hover .flacso-premium-card__cta {
+    gap: 12px;
+    color: var(--flacso-yellow);
+}
+
+.flacso-premium-card:hover .flacso-premium-card__cta svg {
+    fill: var(--flacso-yellow);
+}
+
+.flacso-taxonomy-hero__figure {
+    position: relative;
+}
+
+.flacso-taxonomy-hero__figure::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(22, 57, 112, 0.22), rgba(5, 25, 56, 0.08));
+    pointer-events: none;
+}
+
+.flacso-premium-card__cta {
+    width: 100%;
+    justify-content: center;
+    min-height: 46px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--flacso-blue-light);
+    color: #ffffff;
+    font-weight: 900;
+    text-align: center;
+}
+
+.flacso-premium-card__cta svg {
+    fill: #ffffff;
+}
+
+.flacso-premium-card:hover .flacso-premium-card__cta {
+    gap: 8px;
+    color: #ffffff;
+    background: var(--flacso-blue-dark);
+}
+
+.flacso-premium-card:hover .flacso-premium-card__cta svg {
+    fill: #ffffff;
+}
+
+@media (max-width: 767px) {
+    .flacso-taxonomy-hero {
+        flex-direction: column-reverse;
+        border-radius: 18px;
+        gap: 1.25rem;
+    }
+
+    .flacso-taxonomy-hero__title {
+        font-size: clamp(1.85rem, 9vw, 2.6rem);
+    }
+
+    .flacso-taxonomy-hero__figure {
+        flex: 0 0 auto;
+        width: min(100%, 220px);
+    }
+
+    .flacso-taxonomy-hero__description {
+        font-size: 0.98rem;
+    }
+
+    .flacso-ofertas-group__title {
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        background: #ffffff;
+        box-shadow: 0 6px 16px rgba(5, 25, 56, 0.08);
+    }
+
+    .flacso-ofertas-grid {
+        gap: 1rem;
+        grid-template-columns: 1fr;
+    }
+
+    .flacso-premium-card {
+        border-radius: 14px;
+        box-shadow: 0 6px 18px rgba(5, 25, 56, 0.08);
+    }
+
+    .flacso-premium-card__image-wrap {
+        height: 145px;
+    }
+
+    .flacso-premium-card__body {
+        padding: 16px;
+    }
+
+    .flacso-premium-card__meta {
+        gap: 8px;
+        margin-bottom: 10px;
+        font-size: 0.78rem;
+    }
+
+    .flacso-premium-card__title {
+        font-size: 1.08rem;
+        margin-bottom: 8px;
+    }
+
+    .flacso-premium-card__excerpt {
+        display: none;
+    }
+
+    .flacso-premium-card__footer {
+        padding-top: 12px;
+    }
+
+    .flacso-badge {
+        font-size: 0.68rem;
+        padding: 5px 9px;
+    }
+}
+.flacso-badge--soon {
+    background: #e9edf2;
+    color: var(--flacso-blue-dark);
+}
+.flacso-premium-card--link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.flacso-premium-card--link:hover,
+.flacso-premium-card--link:focus {
+    color: inherit;
+    text-decoration: none;
+}
+
+.flacso-premium-card--link:focus-visible {
+    outline: 3px solid var(--flacso-yellow);
+    outline-offset: 4px;
+}
+
+.flacso-premium-card__title {
+    transition: color 0.2s ease;
+}
+
+.flacso-premium-card:hover .flacso-premium-card__title {
+    color: var(--flacso-blue-light);
+}
+
+.flacso-premium-card__cta--open {
+    background: #248138;
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(36, 129, 56, 0.22);
+}
+
+.flacso-premium-card:hover .flacso-premium-card__cta--open {
+    background: #1b6d2b;
+    color: #ffffff;
+}
+
+.flacso-premium-card:hover .flacso-premium-card__cta--open svg {
+    fill: #ffffff;
+}
+
+@media (max-width: 767px) {
+    .flacso-premium-card__cta {
+        min-height: 50px;
+        font-size: 0.94rem;
+    }
+
+    .flacso-premium-card__meta {
+        row-gap: 6px;
+    }
+
+    .flacso-premium-card__badges {
+        top: 10px;
+        right: 10px;
+    }
+}
+.flacso-ofertas-listado {
+    margin-top: 0;
+}
+
+.flacso-ofertas-toolbar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0 0 1.4rem;
+    padding: 1rem 1.15rem;
+    border: 1px solid rgba(5, 25, 56, 0.08);
+    border-left: 5px solid var(--flacso-yellow);
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 8px 22px rgba(5, 25, 56, 0.05);
+}
+
+.flacso-ofertas-toolbar__title {
+    margin: 0;
+    color: var(--flacso-blue-dark);
+    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    font-weight: 900;
+    line-height: 1.2;
+}
+
+.flacso-meta-item--start {
+    padding: 0.28rem 0.5rem;
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: var(--flacso-blue-dark);
+}
+
+@media (max-width: 767px) {
+    .flacso-ofertas-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 1rem;
+        padding: 0.9rem;
+        border-radius: 12px;
+    }
+
+    }

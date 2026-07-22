@@ -1,0 +1,1657 @@
+.flacso-oferta-responsive {
+    --flacso-blue-dark: #051938;
+    --flacso-blue: #163970;
+    --flacso-blue-soft: #244f94;
+    --flacso-yellow: #fcd116;
+    --flacso-yellow-dark: #e1b900;
+    --flacso-bg: #f8fafc;
+    --flacso-text: #1f2937;
+    --flacso-muted: #64748b;
+    --flacso-border: rgba(15, 23, 42, 0.10);
+    --flacso-shadow-sm: 0 8px 22px rgba(15, 23, 42, 0.07);
+    --flacso-shadow-md: 0 18px 45px rgba(15, 23, 42, 0.11);
+    --flacso-radius-md: 22px;
+    --flacso-radius-lg: 34px;
+    background: #ffffff;
+    color: var(--flacso-text);
+}
+
+.flacso-oferta-responsive,
+.flacso-oferta-responsive * {
+    box-sizing: border-box;
+}
+
+.flacso-oferta-responsive .content-bg,
+.flacso-oferta-responsive .single-entry,
+.flacso-oferta-responsive .entry-content-wrap,
+.flacso-oferta-responsive .entry {
+    background: transparent;
+    box-shadow: none;
+}
+
+.flacso-oferta-responsive h1,
+.flacso-oferta-responsive h2,
+.flacso-oferta-responsive h3,
+.flacso-oferta-responsive h4,
+.flacso-oferta-responsive h5,
+.flacso-oferta-responsive h6,
+.flacso-oferta-responsive p,
+.flacso-oferta-responsive span,
+.flacso-oferta-responsive div {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.flacso-oferta-responsive .entry-content-wrap {
+    padding: 0;
+}
+
+.flacso-oa-container {
+    width: 100%;
+    max-width: 1180px;
+    margin-inline: auto;
+    padding-left: clamp(24px, 5vw, 40px);
+    padding-right: clamp(24px, 5vw, 40px);
+    box-sizing: border-box;
+}
+
+.flacso-oa-article {
+    overflow: hidden;
+}
+
+.flacso-oa-hero-v3 {
+    padding: clamp(44px, 7vw, 92px) 0 clamp(38px, 6vw, 74px);
+    background:
+        radial-gradient(circle at 88% 8%, rgba(252, 209, 22, 0.16), transparent 26%),
+        linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.flacso-oa-hero-v3__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(290px, 390px);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: end;
+    margin-bottom: clamp(28px, 5vw, 52px);
+}
+
+.flacso-oa-hero-v3__main {
+    min-width: 0;
+}
+
+.flacso-oa-hero-v3__eyebrow {
+    margin: 0 0 12px;
+    color: var(--flacso-blue);
+    font-size: clamp(0.86rem, 1.15vw, 1rem);
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    line-height: 1.25;
+    text-transform: uppercase;
+}
+
+.flacso-oa-hero-v3__title {
+    margin: 0;
+    color: var(--flacso-blue-dark);
+    font-size: clamp(2.6rem, 6.4vw, 5.8rem);
+    font-weight: 950;
+    letter-spacing: -0.065em;
+    line-height: 0.93;
+    text-wrap: balance;
+}
+
+.flacso-oa-hero-v3__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: clamp(22px, 3vw, 34px);
+}
+
+.flacso-oa-hero-v3__meta span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 8px 14px;
+    border: 1px solid var(--flacso-border);
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--flacso-blue);
+    font-size: 0.92rem;
+    font-weight: 800;
+    line-height: 1.2;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+}
+
+.flacso-oa-hero-v3__summary {
+    min-width: 0;
+    padding: clamp(22px, 3vw, 30px);
+    border: 1px solid var(--flacso-border);
+    border-radius: var(--flacso-radius-md);
+    background: #ffffff;
+    box-shadow: var(--flacso-shadow-sm);
+}
+
+.flacso-oa-hero-v3__tag {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    max-width: 100%;
+    margin-bottom: 16px;
+    padding: 9px 16px;
+    border-radius: 999px;
+    background: var(--flacso-blue-dark);
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.flacso-oa-hero-v3__cta {
+    color: #334155;
+    font-size: clamp(1rem, 1.25vw, 1.08rem);
+    font-weight: 650;
+    line-height: 1.55;
+}
+
+.flacso-oa-hero-v3__cta a {
+    color: var(--flacso-blue);
+    font-weight: 850;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 5px;
+}
+
+.flacso-oa-hero-v3__actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.flacso-oa-hero-v3__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.flacso-oa-hero-v3__button--primary {
+    background: var(--flacso-yellow);
+    color: var(--flacso-blue-dark);
+    box-shadow: 0 10px 22px rgba(252, 209, 22, 0.26);
+}
+
+.flacso-oa-hero-v3__button--primary:hover {
+    background: var(--flacso-blue-dark);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.flacso-oa-hero-v3__button--secondary {
+    border: 1px solid var(--flacso-border);
+    background: #ffffff;
+    color: var(--flacso-blue);
+}
+
+.flacso-oa-hero-v3__button--secondary:hover {
+    border-color: var(--flacso-blue);
+    background: var(--flacso-blue);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.flacso-oa-hero-v3__media {
+    position: relative;
+    min-height: clamp(320px, 45vw, 540px);
+    border-radius: var(--flacso-radius-lg);
+    overflow: hidden;
+    background: var(--flacso-blue-dark);
+    box-shadow: 0 24px 65px rgba(5, 25, 56, 0.16);
+    isolation: isolate;
+}
+
+.flacso-oa-hero-v3__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -3;
+}
+
+.flacso-oa-hero-v3__image--placeholder {
+    background:
+        radial-gradient(circle at 76% 24%, rgba(252, 209, 22, 0.28), transparent 28%),
+        linear-gradient(135deg, #1d3a72 0%, #0f1f3e 100%);
+}
+
+.flacso-oa-hero-v3__media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background:
+        linear-gradient(90deg, rgba(5, 25, 56, 0.84) 0%, rgba(5, 25, 56, 0.58) 46%, rgba(5, 25, 56, 0.22) 100%),
+        linear-gradient(180deg, rgba(5, 25, 56, 0.16) 0%, rgba(5, 25, 56, 0.76) 100%);
+}
+
+.flacso-oa-hero-v3__media-overlay {
+    position: absolute;
+    inset: clamp(22px, 3vw, 34px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    pointer-events: none;
+}
+
+.flacso-oa-hero-v3__logo {
+    width: clamp(150px, 18vw, 230px);
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.24));
+}
+
+.flacso-oa-main-section {
+    padding: clamp(40px, 7vw, 88px) 0 clamp(46px, 7vw, 92px);
+}
+
+.flacso-oa-main-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(26px, 5vw, 56px);
+    align-items: start;
+}
+
+.flacso-oa-main-content {
+    min-width: 0;
+}
+
+.flacso-oa-content-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(18px, 2.4vw, 26px);
+    align-items: start;
+}
+
+.flacso-oa-content-grid > .flacso-oa-content-card {
+    grid-column: span 6;
+    min-width: 0;
+}
+
+.flacso-oa-content-grid > .flacso-oa-content-card--wide {
+    grid-column: 1 / -1;
+}
+
+.flacso-oa-content-card {
+    border: 1px solid var(--flacso-border);
+    border-radius: var(--flacso-radius-md);
+    background: #ffffff;
+    box-shadow: var(--flacso-shadow-sm);
+    overflow: hidden;
+}
+
+.flacso-oa-content-card__header {
+    position: relative;
+    padding: 18px clamp(20px, 3vw, 28px);
+    border-bottom: 1px solid var(--flacso-border);
+    background:
+        linear-gradient(90deg, rgba(252, 209, 22, 0.20), transparent 52%),
+        #ffffff;
+}
+
+.flacso-oa-content-card__header::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 6px;
+    background: var(--flacso-blue);
+}
+
+.flacso-oa-content-card__header h2 {
+    margin: 0;
+    color: var(--flacso-blue);
+    font-size: clamp(1rem, 1.5vw, 1.17rem);
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    line-height: 1.25;
+    text-transform: uppercase;
+}
+
+.flacso-oa-content-card__body {
+    padding: clamp(22px, 4vw, 42px);
+    font-size: clamp(1rem, 1.3vw, 1.12rem);
+    line-height: 1.72;
+    color: #334155;
+}
+
+.flacso-oa-content-card__body > *:first-child,
+.flacso-oa-info-card__body > *:first-child {
+    margin-top: 0;
+}
+
+.flacso-oa-content-card__body > *:last-child,
+.flacso-oa-info-card__body > *:last-child {
+    margin-bottom: 0;
+}
+
+.flacso-oa-content-card__body img,
+.flacso-oa-info-card__body img,
+.flacso-oa-team-section img {
+    max-width: 100%;
+    height: auto;
+}
+
+.flacso-oa-content-card__body table,
+.flacso-oa-info-card__body table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+}
+
+.flacso-oa-content-card__body iframe,
+.flacso-oa-info-card__body iframe {
+    max-width: 100%;
+}
+
+.flacso-oa-next-start {
+    margin-top: clamp(20px, 3vw, 34px);
+}
+
+.flacso-oa-next-start--first {
+    margin-top: 0;
+}
+
+.flacso-oa-info-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(18px, 2.4vw, 26px);
+    align-items: start;
+    margin-top: clamp(24px, 4vw, 42px);
+}
+
+.flacso-oa-info-card {
+    min-width: 0;
+    height: fit-content;
+    border: 1px solid var(--flacso-border);
+    border-radius: var(--flacso-radius-md);
+    background: #ffffff;
+    box-shadow: var(--flacso-shadow-sm);
+    overflow: hidden;
+}
+
+.flacso-oa-info-card__header {
+    position: relative;
+    padding: 18px clamp(20px, 3vw, 28px);
+    border-bottom: 1px solid var(--flacso-border);
+    background:
+        linear-gradient(90deg, rgba(20, 56, 114, 0.08), transparent 52%),
+        #ffffff;
+}
+
+.flacso-oa-info-card__header::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 6px;
+    background: var(--flacso-blue);
+}
+
+.flacso-oa-info-card__header h3 {
+    margin: 0;
+    color: var(--flacso-blue);
+    font-size: clamp(1rem, 1.5vw, 1.17rem);
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    line-height: 1.25;
+    text-transform: uppercase;
+}
+
+.flacso-oa-info-card__body {
+    padding: clamp(20px, 3vw, 30px);
+    color: #334155;
+    font-size: clamp(0.98rem, 1.2vw, 1.06rem);
+    line-height: 1.7;
+}
+
+.flacso-oa-aside {
+    min-width: 0;
+    scroll-margin-top: 24px;
+}
+
+.flacso-oa-form-panel {
+    border-radius: var(--flacso-radius-md);
+    background:
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.60), transparent 34%),
+        var(--flacso-yellow);
+    color: var(--flacso-blue-dark);
+    box-shadow: var(--flacso-shadow-md);
+    overflow: hidden;
+}
+
+.flacso-oa-form-panel__header {
+    padding: clamp(22px, 3vw, 32px) clamp(20px, 3vw, 30px) 16px;
+}
+
+.flacso-oa-form-panel__header h2 {
+    margin: 0 0 8px;
+    color: var(--flacso-blue-dark);
+    font-size: clamp(1.45rem, 2.4vw, 2rem);
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+}
+
+.flacso-oa-form-panel__header p {
+    margin: 0;
+    color: rgba(5, 25, 56, 0.78);
+    font-size: 0.97rem;
+    line-height: 1.45;
+}
+
+.flacso-oa-form-panel__body {
+    padding: 0 clamp(20px, 3vw, 30px) clamp(22px, 3vw, 30px);
+}
+
+.flacso-oa-form-panel__footer {
+    padding: 0 clamp(20px, 3vw, 30px) clamp(22px, 3vw, 30px);
+}
+
+.flacso-oferta-responsive .flacso-oa-form-panel__body form,
+.flacso-oferta-responsive .flacso-oa-form-panel__body .flacso-consultas-formulario,
+.flacso-oferta-responsive .flacso-oa-form-panel__body .flacso-consultas-formulario-wrapper {
+    border: 0 !important;
+    outline: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-form-panel__body .flacso-consultas-formulario > h1,
+.flacso-oferta-responsive .flacso-oa-form-panel__body .flacso-consultas-formulario > h2,
+.flacso-oferta-responsive .flacso-oa-form-panel__body .flacso-consultas-formulario > h3,
+.flacso-oferta-responsive .flacso-oa-form-panel__body .flacso-consultas-formulario > p:first-of-type {
+    display: none !important;
+}
+
+.flacso-oferta-responsive .flacso-consultas-formulario {
+    background: transparent !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: var(--flacso-blue-dark);
+}
+
+.flacso-oferta-responsive .flacso-oa-consulta__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+}
+
+.flacso-oferta-responsive .flacso-oa-consulta__field {
+    margin-bottom: 14px;
+    text-align: left;
+}
+
+.flacso-oferta-responsive .flacso-oa-consulta__field label {
+    display: block;
+    margin-bottom: 7px;
+    color: rgba(5, 25, 56, 0.86);
+    font-size: 0.84rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.flacso-oferta-responsive .flacso-oa-consulta__field input,
+.flacso-oferta-responsive .flacso-oa-consulta__field textarea,
+.flacso-oferta-responsive .flacso-oa-consulta__field select,
+.flacso-oferta-responsive .flacso-consultas-formulario input,
+.flacso-oferta-responsive .flacso-consultas-formulario textarea,
+.flacso-oferta-responsive .flacso-consultas-formulario select {
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 14px;
+    border: 1px solid rgba(5, 25, 56, 0.12);
+    border-radius: 12px;
+    background: #ffffff;
+    color: var(--flacso-text);
+    font-size: 1rem;
+    line-height: 1.35;
+    box-shadow: 0 5px 14px rgba(5, 25, 56, 0.08);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.flacso-oferta-responsive .flacso-oa-consulta__field textarea,
+.flacso-oferta-responsive .flacso-consultas-formulario textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.flacso-oferta-responsive .flacso-oa-consulta__field input:focus,
+.flacso-oferta-responsive .flacso-oa-consulta__field textarea:focus,
+.flacso-oferta-responsive .flacso-oa-consulta__field select:focus,
+.flacso-oferta-responsive .flacso-consultas-formulario input:focus,
+.flacso-oferta-responsive .flacso-consultas-formulario textarea:focus,
+.flacso-oferta-responsive .flacso-consultas-formulario select:focus {
+    outline: none;
+    border-color: var(--flacso-blue);
+    box-shadow: 0 0 0 4px rgba(22, 57, 112, 0.15), 0 8px 20px rgba(5, 25, 56, 0.10);
+}
+
+.flacso-oferta-responsive .flacso-oa-consulta__submit,
+.flacso-oferta-responsive .flacso-consultas-formulario button[type="submit"],
+.flacso-oferta-responsive .flacso-consultas-formulario input[type="submit"] {
+    width: 100%;
+    min-height: 50px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--flacso-blue);
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    box-shadow: 0 10px 24px rgba(5, 25, 56, 0.18);
+    cursor: pointer;
+    transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.flacso-oferta-responsive .flacso-oa-consulta__submit:hover,
+.flacso-oferta-responsive .flacso-consultas-formulario button[type="submit"]:hover,
+.flacso-oferta-responsive .flacso-consultas-formulario input[type="submit"]:hover {
+    background: var(--flacso-blue-dark);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 14px 30px rgba(5, 25, 56, 0.24);
+}
+
+.flacso-oa-preinscripcion-btn,
+.flacso-oa-link-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 12px 20px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: 0.035em;
+    text-transform: uppercase;
+    transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.flacso-oa-preinscripcion-btn {
+    width: 100%;
+    background: var(--flacso-blue-dark);
+    color: #ffffff;
+    box-shadow: 0 10px 24px rgba(5, 25, 56, 0.18);
+}
+
+.flacso-oa-preinscripcion-btn:hover {
+    background: var(--flacso-blue);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.flacso-oa-cta-section {
+    padding: clamp(38px, 5vw, 68px) 0;
+    background: var(--flacso-blue);
+    color: #ffffff;
+}
+
+.flacso-oa-cta {
+    width: min(100%, 900px);
+    margin-inline: auto;
+    text-align: center;
+}
+
+.flacso-oa-cta p {
+    margin: 0;
+    color: #ffffff;
+    font-size: clamp(1.06rem, 2vw, 1.35rem);
+    font-weight: 650;
+    line-height: 1.55;
+    text-wrap: balance;
+}
+
+.flacso-oa-team-section {
+    position: relative;
+    padding: clamp(54px, 7vw, 96px) 0;
+    background:
+        radial-gradient(circle at 8% 0%, rgba(252, 209, 22, 0.16), transparent 30%),
+        linear-gradient(180deg, #f8fafc 0%, #eef3f8 100%);
+}
+
+.flacso-oa-section-header {
+    width: min(100%, 760px);
+    margin: 0 auto clamp(30px, 5vw, 58px);
+    text-align: center;
+}
+
+.flacso-oa-section-header h2 {
+    margin: 0;
+    color: var(--flacso-blue);
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    font-weight: 920;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    text-transform: uppercase;
+}
+
+.flacso-oa-team-grid,
+.flacso-oa-team-subgroups {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(38px, 5vw, 58px);
+}
+
+.flacso-oa-team-group-card {
+    min-width: 0;
+    height: fit-content;
+}
+
+.flacso-oa-team-group-card__title {
+    margin: 0 0 clamp(18px, 3vw, 28px);
+    color: var(--flacso-blue);
+    font-size: clamp(1.18rem, 2vw, 1.55rem);
+    font-weight: 900;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+}
+
+.flacso-oa-team-subgroup {
+    min-width: 0;
+}
+
+.flacso-oa-team-subgroup__title {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 clamp(18px, 2.6vw, 28px);
+    color: var(--flacso-blue-dark);
+    font-size: clamp(1.2rem, 3vw, 1.45rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.18;
+}
+
+.flacso-oa-team-subgroup__title::before {
+    content: "";
+    width: 42px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--flacso-yellow);
+    flex: 0 0 auto;
+}
+
+.flacso-oa-team-subgroup__description {
+    margin: calc(clamp(18px, 2.6vw, 28px) * -0.55) 0 clamp(18px, 2vw, 24px) 56px;
+    color: #44506b;
+    font-size: 0.98rem;
+    line-height: 1.72;
+}
+
+.flacso-oa-team-subgroup__description p {
+    margin: 0;
+}
+
+.flacso-oa-team-subgroup__description p + p {
+    margin-top: 0.85rem;
+}
+
+.flacso-oa-docentes-grid {
+    display: grid;
+    gap: clamp(18px, 2.4vw, 30px);
+    align-items: stretch;
+}
+
+.flacso-oa-docentes-grid--nivel-1 {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr));
+}
+
+.flacso-oa-docentes-grid--nivel-2 {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+}
+
+.flacso-oa-docentes-grid--nivel-3 {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: clamp(14px, 2vw, 22px);
+}
+
+.flacso-oa-docente-item {
+    min-width: 0;
+}
+
+.flacso-oa-docente-item > * {
+    height: 100%;
+}
+
+.flacso-oa-docente-item .flacso-docente-card,
+.flacso-oa-docente-item .dp-docente-card,
+.flacso-oa-docente-item article,
+.flacso-oa-docente-item .card {
+    height: 100%;
+    max-width: 100%;
+    min-width: 0;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+}
+
+.flacso-oa-person-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    height: 100%;
+    border: 1px solid rgba(15, 23, 42, 0.10);
+    border-radius: 24px;
+    background: #ffffff;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+    isolation: isolate;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.flacso-oa-person-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 100% 0%, rgba(252, 209, 22, 0.16), transparent 34%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.96));
+}
+
+.flacso-oa-person-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(22, 57, 112, 0.22);
+    box-shadow: 0 22px 48px rgba(15, 23, 42, 0.13);
+}
+
+.flacso-oa-person-card__media,
+.flacso-oa-person-card__header,
+.flacso-oa-person-card__content,
+.flacso-oa-person-card__header-info {
+    min-width: 0;
+}
+
+.flacso-oa-person-card__header {
+    display: flex;
+    align-items: center;
+    gap: clamp(14px, 2vw, 20px);
+}
+
+.flacso-oa-person-card__avatar-wrap,
+.flacso-oa-person-card__avatar-circle {
+    position: relative;
+    flex: 0 0 auto;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 30% 25%, rgba(252, 209, 22, 0.22), transparent 38%),
+        #e8eef7;
+}
+
+.flacso-oa-person-card__avatar-wrap > div,
+.flacso-oa-person-card__avatar-wrap .dp-docente-avatar,
+.flacso-oa-person-card__avatar-wrap img,
+.flacso-oa-person-card__avatar-circle > div,
+.flacso-oa-person-card__avatar-circle .dp-docente-avatar,
+.flacso-oa-person-card__avatar-circle img {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    margin: 0 !important;
+    object-fit: cover !important;
+}
+
+.flacso-oa-person-card__avatar-wrap .flacso-docente-card__initials,
+.flacso-oa-person-card__avatar-circle .flacso-docente-card__initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    background: var(--flacso-blue);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+}
+
+.flacso-oa-person-card__role-pill {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    max-width: 100%;
+    min-height: 24px;
+    margin: 0 0 8px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(252, 209, 22, 0.26);
+    color: var(--flacso-blue-dark);
+    font-size: 0.72rem;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: 0.055em;
+    text-transform: uppercase;
+}
+
+.flacso-oa-person-card__name {
+    margin: 0;
+    color: var(--flacso-blue-dark);
+    font-weight: 900;
+    line-height: 1.13;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+}
+
+.flacso-oa-person-card__academic {
+    margin: 8px 0 0;
+    color: #64748b;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.flacso-oa-person-card__cv {
+    color: #475569;
+    font-size: 0.94rem;
+    line-height: 1.62;
+}
+
+.flacso-oa-person-card__cv > *:first-child {
+    margin-top: 0;
+}
+
+.flacso-oa-person-card__cv > *:last-child {
+    margin-bottom: 0;
+}
+
+.flacso-oa-person-card__cv a {
+    color: var(--flacso-blue);
+    font-weight: 800;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+}
+
+.flacso-oa-person-card--nivel-1 {
+    display: grid;
+    grid-template-columns: minmax(180px, 230px) minmax(0, 1fr);
+    min-height: 310px;
+    border-radius: 28px;
+    border-left: 7px solid var(--flacso-yellow);
+}
+
+.flacso-oa-person-card--nivel-1 .flacso-oa-person-card__media {
+    padding: 20px 0 20px 20px;
+}
+
+.flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 22px;
+    box-shadow: 0 14px 30px rgba(5, 25, 56, 0.15);
+}
+
+.flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap > div,
+.flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap .dp-docente-avatar,
+.flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap img {
+    border-radius: 22px !important;
+}
+
+.flacso-oa-person-card--nivel-1 .flacso-oa-person-card__content {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(22px, 3vw, 34px);
+}
+
+.flacso-oa-person-card--nivel-1 .flacso-oa-person-card__name {
+    font-size: clamp(1.32rem, 2vw, 1.75rem);
+}
+
+.flacso-oa-person-card--nivel-1 .flacso-oa-person-card__cv {
+    margin-top: 18px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.flacso-oa-person-card--nivel-2 {
+    padding: clamp(20px, 2.4vw, 26px);
+}
+
+.flacso-oa-person-card--nivel-2 .flacso-oa-person-card__header {
+    align-items: flex-start;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.flacso-oa-person-card--nivel-2 .flacso-oa-person-card__avatar-circle {
+    width: 86px;
+    height: 86px;
+    border: 4px solid #ffffff;
+    border-radius: 22px;
+    box-shadow: 0 10px 24px rgba(5, 25, 56, 0.12);
+}
+
+.flacso-oa-person-card--nivel-2 .flacso-oa-person-card__avatar-circle > div,
+.flacso-oa-person-card--nivel-2 .flacso-oa-person-card__avatar-circle .dp-docente-avatar,
+.flacso-oa-person-card--nivel-2 .flacso-oa-person-card__avatar-circle img {
+    border-radius: 18px !important;
+}
+
+.flacso-oa-person-card--nivel-2 .flacso-oa-person-card__name {
+    font-size: clamp(1.08rem, 1.35vw, 1.24rem);
+}
+
+.flacso-oa-person-card--nivel-2 .flacso-oa-person-card__content {
+    margin-top: 16px;
+    flex: 1;
+}
+
+.flacso-oa-person-card--nivel-2 .flacso-oa-person-card__cv {
+    max-height: 165px;
+    overflow-y: auto;
+    padding-right: 8px;
+    font-size: 0.91rem;
+}
+
+.flacso-oa-person-card--nivel-3 {
+    justify-content: center;
+    padding: clamp(16px, 2vw, 20px);
+    border-radius: 20px;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.065);
+}
+
+.flacso-oa-person-card--nivel-3::before {
+    background:
+        radial-gradient(circle at 100% 0%, rgba(22, 57, 112, 0.07), transparent 34%),
+        #ffffff;
+}
+
+.flacso-oa-person-card--nivel-3 .flacso-oa-person-card__header {
+    gap: 14px;
+}
+
+.flacso-oa-person-card--nivel-3 .flacso-oa-person-card__avatar-circle {
+    width: 62px;
+    height: 62px;
+    border: 3px solid #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 8px 18px rgba(5, 25, 56, 0.10);
+}
+
+.flacso-oa-person-card--nivel-3 .flacso-oa-person-card__avatar-circle > div,
+.flacso-oa-person-card--nivel-3 .flacso-oa-person-card__avatar-circle .dp-docente-avatar,
+.flacso-oa-person-card--nivel-3 .flacso-oa-person-card__avatar-circle img {
+    border-radius: 15px !important;
+}
+
+.flacso-oa-person-card--nivel-3 .flacso-oa-person-card__name {
+    font-size: clamp(1rem, 1.2vw, 1.12rem);
+}
+
+.flacso-oa-person-card--nivel-3 .flacso-oa-person-card__academic {
+    font-size: 0.82rem;
+}
+
+.flacso-oa-person-card--nivel-3 .flacso-oa-person-card__role-pill {
+    margin-bottom: 6px;
+    padding: 4px 8px;
+    font-size: 0.66rem;
+}
+
+.flacso-oa-person-card__cv::-webkit-scrollbar {
+    width: 6px;
+}
+
+.flacso-oa-person-card__cv::-webkit-scrollbar-track {
+    background: rgba(226, 232, 240, 0.78);
+    border-radius: 999px;
+}
+
+.flacso-oa-person-card__cv::-webkit-scrollbar-thumb {
+    background: rgba(100, 116, 139, 0.48);
+    border-radius: 999px;
+}
+
+@media (max-width: 991.98px) {
+    .flacso-oa-docentes-grid--nivel-1,
+    .flacso-oa-docentes-grid--nivel-2 {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .flacso-oa-docentes-grid--nivel-3 {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    }
+}
+
+@media (max-width: 675.98px) {
+    .flacso-oa-docentes-grid,
+    .flacso-oa-docentes-grid--nivel-1,
+    .flacso-oa-docentes-grid--nivel-2,
+    .flacso-oa-docentes-grid--nivel-3 {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .flacso-oa-team-subgroup__title {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .flacso-oa-team-subgroup__description {
+        margin-left: 0;
+        font-size: 0.95rem;
+    }
+
+    .flacso-oa-person-card--nivel-1 {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+    }
+
+    .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__media {
+        padding: 24px 24px 0;
+    }
+
+    .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap {
+        aspect-ratio: 1 / 1;
+        width: 100%;
+        min-height: 0;
+    }
+
+    .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__cv,
+    .flacso-oa-person-card--nivel-2 .flacso-oa-person-card__cv {
+        max-height: none;
+        overflow: visible;
+        padding-right: 0;
+    }
+}
+
+
+.flacso-oa-seminarios-section {
+    padding: clamp(52px, 7vw, 90px) 0;
+    background: #ffffff;
+}
+
+.flacso-oa-seminarios-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: clamp(22px, 4vw, 34px);
+}
+
+.flacso-oa-seminarios-heading h2 {
+    margin: 0;
+    color: var(--flacso-blue);
+    font-size: clamp(1.65rem, 3.5vw, 2.6rem);
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    line-height: 1.1;
+}
+
+.flacso-oa-link-btn {
+    flex: 0 0 auto;
+    background: var(--flacso-blue);
+    color: #ffffff;
+    box-shadow: 0 10px 24px rgba(22, 57, 112, 0.18);
+}
+
+.flacso-oa-link-btn:hover {
+    background: var(--flacso-blue-dark);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.flacso-oa-seminarios-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(18px, 2.6vw, 28px);
+}
+
+.flacso-oa-seminario-card {
+    display: flex;
+    min-height: 190px;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid var(--flacso-border);
+    border-left: 6px solid var(--flacso-yellow);
+    border-radius: var(--flacso-radius-md);
+    background: #ffffff;
+    padding: clamp(20px, 3vw, 28px);
+    box-shadow: var(--flacso-shadow-sm);
+}
+
+.flacso-oa-seminario-card h3 {
+    margin: 0 0 18px;
+    font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+    font-weight: 850;
+    line-height: 1.35;
+}
+
+.flacso-oa-seminario-card h3 a {
+    color: var(--flacso-blue-dark);
+    text-decoration: none;
+}
+
+.flacso-oa-seminario-card h3 a:hover {
+    color: var(--flacso-blue);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.flacso-oa-seminario-card__date {
+    margin: auto 0 0;
+    color: var(--flacso-muted);
+    font-size: 0.94rem;
+    font-weight: 700;
+}
+
+.flacso-oferta-responsive .kt-accordion-pane {
+    border: 1px solid var(--flacso-border);
+    margin-bottom: 12px;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+    overflow: hidden;
+}
+
+.flacso-oferta-responsive .kt-blocks-accordion-header {
+    width: 100%;
+    border: 0;
+    background: var(--flacso-blue);
+    color: #ffffff;
+    padding: 18px 22px;
+    font-size: 1rem;
+    font-weight: 850;
+    line-height: 1.25;
+    text-align: left;
+}
+
+.flacso-oferta-responsive .kt-accordion-pane-active .kt-blocks-accordion-header {
+    background: var(--flacso-yellow);
+    color: var(--flacso-blue-dark);
+}
+
+@media (min-width: 700px) {
+    .flacso-oferta-responsive .flacso-oa-consulta__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 992px) {
+    .flacso-oa-main-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 390px);
+    }
+
+    .flacso-oa-aside__sticky {
+        position: sticky;
+        top: calc(var(--wp-admin--admin-bar--height, 0px) + 24px);
+    }
+}
+
+@media (min-width: 1200px) {
+    .flacso-oa-main-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(360px, 420px);
+    }
+}
+
+@media (max-width: 1199.98px) {
+    .flacso-oa-team-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 991.98px) {
+    .flacso-oa-hero-v3__intro {
+        grid-template-columns: minmax(0, 1fr);
+        align-items: start;
+    }
+
+    .flacso-oa-content-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .flacso-oa-content-grid > .flacso-oa-content-card,
+    .flacso-oa-content-grid > .flacso-oa-content-card--wide {
+        grid-column: 1 / -1;
+    }
+
+    .flacso-oa-hero-v3__summary {
+        width: min(100%, 680px);
+    }
+
+    .flacso-oa-aside {
+        order: -1;
+    }
+
+    .flacso-oa-form-panel {
+        max-width: 760px;
+        margin-inline: auto;
+    }
+
+    .flacso-oa-seminarios-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767.98px) {
+
+    .flacso-oa-hero-v3 {
+        padding-top: 34px;
+    }
+
+    .flacso-oa-hero-v3__title {
+        letter-spacing: -0.045em;
+    }
+
+    .flacso-oa-hero-v3__media {
+        min-height: 430px;
+    }
+
+    .flacso-oa-hero-v3__media::after {
+        background:
+            linear-gradient(180deg, rgba(5, 25, 56, 0.62) 0%, rgba(5, 25, 56, 0.84) 100%);
+    }
+
+    .flacso-oa-seminarios-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .flacso-oa-link-btn {
+        width: 100%;
+    }
+
+    .flacso-oa-seminarios-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 675.98px) {
+    .flacso-oa-docentes-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 575.98px) {
+    .flacso-oa-hero-v3__meta {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .flacso-oa-hero-v3__meta span {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .flacso-oa-hero-v3__media,
+    .flacso-oa-hero-v3__summary,
+    .flacso-oa-content-card,
+    .flacso-oa-info-card,
+    .flacso-oa-form-panel,
+    .flacso-oa-seminario-card,
+    .flacso-oa-team-group-card {
+        border-radius: 18px;
+    }
+}
+
+    .flacso-inscripciones-banner {
+        position: relative;
+        width: 100%;
+        aspect-ratio: auto;
+        overflow: hidden;
+        border-radius: var(--flacso-radius-md);
+        font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        margin-bottom: clamp(26px, 5vw, 56px);
+    }
+
+    .flacso-inscripciones-banner::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: linear-gradient(
+            to right,
+            rgba(5, 25, 56, 0.85) 0%,
+            rgba(5, 25, 56, 0.35) 60%,
+            rgba(5, 25, 56, 0.2) 100%
+        );
+        pointer-events: none;
+    }
+
+    .flacso-inscripciones-banner__img {
+        position: relative;
+        z-index: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        filter: brightness(0.9);
+    }
+
+    .flacso-inscripciones-banner__overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1.4rem 1.8rem;
+        color: #fff;
+        text-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
+        gap: 0.8rem;
+    }
+
+    .flacso-inscripciones-banner__top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 0.9rem;
+    }
+
+    .flacso-inscripciones-banner__tag {
+        font-weight: 700;
+        font-size: clamp(1.1rem, 2.1vw, 1.6rem);
+        line-height: 1.1;
+    }
+
+    .flacso-inscripciones-banner__logo {
+        max-width: clamp(180px, 22vw, 260px);
+        height: auto;
+        flex: 0 0 auto;
+    }
+
+    .flacso-inscripciones-banner__bottom {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 1.1rem;
+    }
+
+    .flacso-inscripciones-banner__cta {
+        font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+        font-weight: 700;
+        line-height: 1.25;
+        white-space: nowrap;
+    }
+
+    @media (max-width: 900px) {
+        .flacso-inscripciones-banner__overlay {
+            padding: 1.05rem 1.25rem;
+        }
+
+        .flacso-inscripciones-banner__bottom {
+            margin-bottom: 0.8rem;
+        }
+
+        .flacso-inscripciones-banner__cta {
+            font-size: 1rem;
+            white-space: normal;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .flacso-inscripciones-banner {
+            aspect-ratio: auto;
+        }
+
+        .flacso-inscripciones-banner__overlay {
+            padding: 0.9rem 1rem;
+            gap: 0.7rem;
+        }
+
+        .flacso-inscripciones-banner__top {
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .flacso-inscripciones-banner__tag {
+            font-size: 1.05rem;
+        }
+
+        .flacso-inscripciones-banner__logo {
+            max-width: 140px;
+        }
+
+        .flacso-inscripciones-banner__bottom {
+            margin-bottom: 0.5rem;
+        }
+
+        .flacso-inscripciones-banner__cta {
+            font-size: 0.95rem;
+            line-height: 1.2;
+        }
+    }
+
+    @media (max-width: 420px) {
+        .flacso-inscripciones-banner {
+            aspect-ratio: auto;
+        }
+
+        .flacso-inscripciones-banner__logo {
+            max-width: 120px;
+        }
+
+        .flacso-inscripciones-banner__cta {
+            font-size: 0.9rem;
+        }
+    }
+
+
+/* Ajustes mínimos para mejorar conversión y lectura en teléfonos */
+.flacso-inscripciones-banner__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    min-height: 48px;
+    max-width: 100%;
+    padding: 12px 20px;
+    border-radius: 999px;
+    background: var(--flacso-yellow);
+    color: var(--flacso-blue-dark);
+    font-size: 0.92rem;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: 0.035em;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: none;
+    text-transform: uppercase;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
+    transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+.flacso-inscripciones-banner__button:hover,
+.flacso-inscripciones-banner__button:focus {
+    background: #ffffff;
+    color: var(--flacso-blue-dark);
+    transform: translateY(-1px);
+}
+
+@media (max-width: 600px) {
+    .flacso-oferta-responsive .flacso-oa-container[style] {
+        padding-top: 14px !important;
+        padding-bottom: 12px !important;
+    }
+
+    .flacso-inscripciones-banner {
+        min-height: min(540px, 86svh) !important;
+        border-radius: 18px !important;
+    }
+
+    .flacso-inscripciones-banner::before {
+        background:
+            linear-gradient(180deg, rgba(5, 25, 56, 0.58) 0%, rgba(5, 25, 56, 0.88) 100%) !important;
+    }
+
+    .flacso-inscripciones-banner__overlay {
+        padding: 1rem !important;
+        gap: 0.85rem !important;
+    }
+
+    .flacso-inscripciones-banner__top {
+        align-items: center !important;
+        gap: 0.65rem !important;
+    }
+
+    .flacso-inscripciones-banner__tag {
+        padding: 4px 9px !important;
+        font-size: 0.72rem !important;
+        line-height: 1.1 !important;
+        letter-spacing: 0.045em !important;
+    }
+
+    .flacso-inscripciones-banner__logo {
+        max-width: 128px !important;
+    }
+
+    .flacso-inscripciones-banner__middle {
+        justify-content: flex-end !important;
+        margin: 0.9rem 0 !important;
+    }
+
+    .flacso-inscripciones-banner__eyebrow {
+        margin-bottom: 8px !important;
+        font-size: 0.78rem !important;
+        line-height: 1.2 !important;
+        letter-spacing: 0.055em !important;
+    }
+
+    .flacso-inscripciones-banner__title {
+        font-size: clamp(1.55rem, 8vw, 2.15rem) !important;
+        line-height: 1.08 !important;
+        letter-spacing: -0.03em !important;
+    }
+
+    .flacso-inscripciones-banner__excerpt {
+        display: none !important;
+    }
+
+    .flacso-inscripciones-banner__meta {
+        width: 100%;
+        gap: 0.5rem !important;
+        margin-top: 14px !important;
+    }
+
+    .flacso-inscripciones-banner__meta span {
+        width: 100%;
+        justify-content: center;
+        padding: 5px 10px !important;
+        font-size: 0.82rem !important;
+        line-height: 1.2 !important;
+        text-align: center;
+    }
+
+    .flacso-inscripciones-banner__bottom {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.75rem !important;
+        align-items: stretch !important;
+        margin-bottom: 0 !important;
+        text-align: left !important;
+    }
+
+    .flacso-inscripciones-banner__cta {
+        font-size: 0.92rem !important;
+        line-height: 1.25 !important;
+        white-space: normal !important;
+    }
+
+    .flacso-inscripciones-banner__button {
+        width: 100%;
+        min-height: 50px;
+        padding-inline: 14px;
+        font-size: 0.88rem;
+    }
+
+    .flacso-oa-main-section {
+        padding-top: 24px;
+        padding-bottom: 42px;
+    }
+
+    .flacso-oa-next-start--fullwidth {
+        margin-top: 0 !important;
+        margin-bottom: 1.25rem !important;
+    }
+
+    .flacso-oa-form-panel__header {
+        padding: 20px 16px 12px;
+    }
+
+    .flacso-oa-form-panel__body {
+        padding: 0 16px 18px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-consulta__field,
+    .flacso-oferta-responsive .flacso-consultas-formulario .form-group {
+        margin-bottom: 12px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-consulta__field input,
+    .flacso-oferta-responsive .flacso-oa-consulta__field textarea,
+    .flacso-oferta-responsive .flacso-oa-consulta__field select,
+    .flacso-oferta-responsive .flacso-consultas-formulario input,
+    .flacso-oferta-responsive .flacso-consultas-formulario textarea,
+    .flacso-oferta-responsive .flacso-consultas-formulario select {
+        min-height: 48px;
+        font-size: 16px;
+    }
+
+    .flacso-oa-content-card__body,
+    .flacso-oa-info-card__body {
+        padding: 18px 16px;
+        line-height: 1.62;
+    }
+
+    .flacso-oa-team-section,
+    .flacso-oa-seminarios-section {
+        padding: 40px 0;
+    }
+}
+
+@media (max-width: 420px) {
+    .flacso-inscripciones-banner {
+        min-height: min(510px, 88svh) !important;
+    }
+
+    .flacso-inscripciones-banner__logo {
+        max-width: 116px !important;
+    }
+
+    .flacso-inscripciones-banner__title {
+        font-size: clamp(1.42rem, 8.5vw, 1.95rem) !important;
+    }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    .flacso-oferta-responsive *,
+    .flacso-oferta-responsive *::before,
+    .flacso-oferta-responsive *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}

@@ -13,15 +13,15 @@ function format_fecha_espanol($fecha) {
     if (empty($fecha)) return '';
     $timestamp = strtotime($fecha);
     if ($timestamp === false) return esc_html($fecha);
-    
+
     $dias = array('Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado');
     $meses = array('', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-    
+
     $dia_semana = $dias[date('w', $timestamp)];
     $dia = date('j', $timestamp);
     $mes = $meses[date('n', $timestamp)];
     $ano = date('Y', $timestamp);
-    
+
     return "$dia_semana $dia de $mes $ano";
 }
 
@@ -30,12 +30,12 @@ function validar_ci_uy($ci) {
     $num = preg_replace('/[^0-9]/', '', (string)$ci);
     $len = strlen($num);
     if ($len < 7 || $len > 8) return false;
-    
+
     // Extraer base y dígito verificador
     $base = substr($num, 0, -1);
     $dv_ingresado = intval(substr($num, -1));
     $base = str_pad($base, 7, '0', STR_PAD_LEFT);
-    
+
     // Calcular dígito verificador
     $pesos = [2, 9, 8, 7, 6, 3, 4];
     $suma = 0;
@@ -43,13 +43,21 @@ function validar_ci_uy($ci) {
         $suma += intval($base[$i]) * $pesos[$i];
     }
     $dv_calc = (10 - ($suma % 10)) % 10;
-    
+
     return $dv_ingresado === $dv_calc;
 }
 
 // Enqueue Assets
 // Font Awesome
 wp_enqueue_style('fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css', [], '6.5.1');
+
+$preinscripcion_css_path = get_stylesheet_directory() . '/assets/css/preinscripcion-seminario.css';
+wp_enqueue_style(
+    'flacso-preinscripcion-seminario',
+    get_stylesheet_directory_uri() . '/assets/css/preinscripcion-seminario.css',
+    array( 'fontawesome' ),
+    is_readable( $preinscripcion_css_path ) ? (string) filemtime( $preinscripcion_css_path ) : wp_get_theme()->get( 'Version' )
+);
 
 // intl-tel-input
 wp_enqueue_style('intl-tel-input-css', 'https://cdn.jsdelivr.net/npm/intl-tel-input@25.15.0/build/css/intlTelInput.css', [], '25.15.0');
@@ -64,7 +72,7 @@ wp_enqueue_style('country-select-css', 'https://cdn.jsdelivr.net/npm/country-sel
 wp_enqueue_script('country-select-js', 'https://cdn.jsdelivr.net/npm/country-select-js@2.0.1/build/js/countrySelect.min.js', ['jquery'], '2.0.1', true);
 
 // Variables necesarias - Obtener ID del seminario desde la URL o el objeto actual
-$seminario_id = isset($_GET['ID']) ? intval($_GET['ID']) : get_queried_object_id();
+$seminario_id = isset( $_GET['ID'] ) ? absint( wp_unslash( $_GET['ID'] ) ) : get_queried_object_id();
 
 // Verificar que el seminario existe
 if (!$seminario_id || get_post_type($seminario_id) !== 'seminario' || get_post_status($seminario_id) !== 'publish') {
@@ -109,34 +117,35 @@ $nombre_full = '';
 $email = '';
 
 // Procesar formulario
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preinscripcion_nonce'])) {
+if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) && isset( $_POST['preinscripcion_nonce'] ) ) {
     // Validar nonce
-    if (!wp_verify_nonce($_POST['preinscripcion_nonce'], 'preinscripcion_nonce')) {
+    if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['preinscripcion_nonce'] ) ), 'preinscripcion_nonce' ) ) {
         $submission_error = 'Error de seguridad. Por favor intenta de nuevo.';
     } else {
         // Sanitizar datos
-        $nombre1 = sanitize_text_field($_POST['nombre1'] ?? '');
-        $nombre2 = sanitize_text_field($_POST['nombre2'] ?? '');
-        $apellido1 = sanitize_text_field($_POST['apellido1'] ?? '');
-        $apellido2 = sanitize_text_field($_POST['apellido2'] ?? '');
-        $correo = sanitize_email($_POST['correo'] ?? '');
-        $celular_e164 = isset($_POST['celular_e164']) ? sanitize_text_field($_POST['celular_e164']) : '';
-        $pais_residencia = sanitize_text_field($_POST['pais_residencia'] ?? '');
-        $tipo_documento = sanitize_text_field($_POST['tipo_documento'] ?? '');
-        $documento_ci = sanitize_text_field($_POST['documento_ci'] ?? '');
-        $documento_otro = sanitize_text_field($_POST['documento_otro'] ?? '');
-        $genero = sanitize_text_field($_POST['genero'] ?? '');
-        $genero_otra = sanitize_text_field($_POST['genero_otra'] ?? '');
-        $etnia = sanitize_text_field($_POST['etnia'] ?? '');
+        $posted = wp_unslash( $_POST );
+        $nombre1 = sanitize_text_field( $posted['nombre1'] ?? '' );
+        $nombre2 = sanitize_text_field( $posted['nombre2'] ?? '' );
+        $apellido1 = sanitize_text_field( $posted['apellido1'] ?? '' );
+        $apellido2 = sanitize_text_field( $posted['apellido2'] ?? '' );
+        $correo = sanitize_email( $posted['correo'] ?? '' );
+        $celular_e164 = sanitize_text_field( $posted['celular_e164'] ?? '' );
+        $pais_residencia = sanitize_text_field( $posted['pais_residencia'] ?? '' );
+        $tipo_documento = sanitize_text_field( $posted['tipo_documento'] ?? '' );
+        $documento_ci = sanitize_text_field( $posted['documento_ci'] ?? '' );
+        $documento_otro = sanitize_text_field( $posted['documento_otro'] ?? '' );
+        $genero = sanitize_text_field( $posted['genero'] ?? '' );
+        $genero_otra = sanitize_text_field( $posted['genero_otra'] ?? '' );
+        $etnia = sanitize_text_field( $posted['etnia'] ?? '' );
         // Combinar documento según el tipo
         $documento = ($tipo_documento === 'CI') ? $documento_ci : $documento_otro;
-        $fecha_nacimiento = sanitize_text_field($_POST['fecha_nacimiento'] ?? '');
-        $estudios = sanitize_text_field($_POST['estudios'] ?? '');
-        $ocupacion = sanitize_text_field($_POST['ocupacion'] ?? '');
-        $titulo_denominacion = sanitize_text_field($_POST['titulo_denominacion'] ?? '');
-        $posgrado_flacso = sanitize_text_field($_POST['posgrado_flacso'] ?? '');
-        $posgrado_cual = sanitize_text_field($_POST['posgrado_cual'] ?? '');
-        $acepta_difusion = sanitize_text_field($_POST['acepta_difusion'] ?? '');
+        $fecha_nacimiento = sanitize_text_field( $posted['fecha_nacimiento'] ?? '' );
+        $estudios = sanitize_text_field( $posted['estudios'] ?? '' );
+        $ocupacion = sanitize_text_field( $posted['ocupacion'] ?? '' );
+        $titulo_denominacion = sanitize_text_field( $posted['titulo_denominacion'] ?? '' );
+        $posgrado_flacso = sanitize_text_field( $posted['posgrado_flacso'] ?? '' );
+        $posgrado_cual = sanitize_text_field( $posted['posgrado_cual'] ?? '' );
+        $acepta_difusion = sanitize_text_field( $posted['acepta_difusion'] ?? '' );
 
         // Validaciones básicas
         if (!$nombre1) {
@@ -205,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preinscripcion_nonce'
         if (!$submission_error) {
             $max_size_bytes = 25 * 1024 * 1024; // 25 MB
             $total_size = 0;
-            
+
             // Sumar tamaño de documento_identidad
             if (!empty($_FILES['documento_identidad']['name'][0])) {
                 foreach ($_FILES['documento_identidad']['tmp_name'] as $key => $tmp_name) {
@@ -214,12 +223,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preinscripcion_nonce'
                     }
                 }
             }
-            
+
             // Sumar tamaño de título
             if (!empty($_FILES['titulo']['tmp_name']) && $_FILES['titulo']['error'] === UPLOAD_ERR_OK) {
                 $total_size += $_FILES['titulo']['size'];
             }
-            
+
             if ($total_size > $max_size_bytes) {
                 $size_mb = round($total_size / (1024 * 1024), 2);
                 $submission_error = "El tamaño total de los archivos ({$size_mb} MB) excede el límite de 25 MB. Por favor selecciona archivos más pequeños.";
@@ -324,7 +333,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preinscripcion_nonce'
             if (empty($webhook_url) && defined('FLACSO_PREINSCRIPCION_WEBHOOK')) {
                 $webhook_url = FLACSO_PREINSCRIPCION_WEBHOOK;
             }
-            
+
             if (!empty($webhook_url)) {
                 wp_remote_post($webhook_url, [
                     'body' => json_encode($form_data),
@@ -342,693 +351,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['preinscripcion_nonce'
 get_header();
 ?>
 
-<style>
-/*
- * FLACSO - Preinscripción seminarios
- * Modernización visual responsive sin modificar el contrato de datos.
- */
-.flacso-preinscripcion-seminario-main {
-    --flacso-azul: var(--global-palette1, #16396f);
-    --flacso-azul-oscuro: var(--global-palette3, #0f1a2d);
-    --flacso-amarillo: var(--global-palette2, #fed222);
-    --flacso-texto: var(--global-palette4, #2e2f34);
-    --flacso-muted: var(--global-palette5, #6b7280);
-    --flacso-borde: rgba(22, 57, 111, 0.14);
-    --flacso-fondo: #f6f8fb;
-    --flacso-card: #ffffff;
-    --flacso-radius-xl: 26px;
-    --flacso-radius-lg: 18px;
-    --flacso-radius-md: 12px;
-    --flacso-shadow-soft: 0 20px 60px rgba(15, 26, 45, 0.12);
-    --flacso-shadow-card: 0 10px 30px rgba(15, 26, 45, 0.08);
-    background: var(--flacso-fondo);
-    color: var(--flacso-texto);
-    overflow-x: clip;
-}
-
-.flacso-preinscripcion-seminario-main *,
-.flacso-preinscripcion-seminario-main *::before,
-.flacso-preinscripcion-seminario-main *::after {
-    box-sizing: border-box;
-}
-
-.flacso-preinscripcion-seminario-main .site-container,
-.flacso-preinscripcion-seminario-main .content-container {
-    width: min(1120px, calc(100% - 32px));
-    max-width: 1120px;
-    margin-inline: auto;
-}
-
-.preinsc-hero {
-    position: relative;
-    isolation: isolate;
-    min-height: clamp(360px, 46vw, 560px);
-    padding: clamp(32px, 6vw, 72px) 0;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    background:
-        radial-gradient(circle at 12% 10%, rgba(254, 210, 34, 0.28), transparent 30%),
-        linear-gradient(135deg, rgba(15, 26, 45, 0.97), rgba(22, 57, 111, 0.94));
-    color: #ffffff;
-}
-
-.preinsc-hero::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(90deg, rgba(15, 26, 45, 0.94) 0%, rgba(22, 57, 111, 0.82) 55%, rgba(15, 26, 45, 0.62) 100%);
-}
-
-.preinsc-hero-bg-image {
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: saturate(0.9) contrast(1.05);
-    transform: scale(1.02);
-}
-
-.preinsc-hero-grid {
-    width: min(1120px, calc(100% - 32px));
-    margin-inline: auto;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
-    gap: clamp(24px, 5vw, 56px);
-    align-items: center;
-}
-
-.btn-back-seminario {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    min-height: 42px;
-    padding: 0.65rem 0.9rem;
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    border-radius: 999px;
-    color: #ffffff !important;
-    text-decoration: none !important;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    transition: transform .2s ease, background .2s ease, border-color .2s ease;
-}
-
-.btn-back-seminario:hover,
-.btn-back-seminario:focus-visible {
-    transform: translateY(-1px);
-    background: rgba(255, 255, 255, 0.18);
-    border-color: rgba(255, 255, 255, 0.44);
-}
-
-.text-uppercase {
-    text-transform: uppercase;
-    letter-spacing: .12em;
-    font-size: .78rem;
-}
-
-.preinsc-title {
-    max-width: 820px;
-    margin: 0.5rem 0 1rem;
-    color: #ffffff !important;
-    font-size: clamp(2rem, 5vw, 4.6rem);
-    line-height: 0.98;
-    letter-spacing: -0.055em;
-    font-weight: 800;
-}
-
-.preinsc-subtitle {
-    margin: 0;
-    max-width: 680px;
-    color: rgba(255, 255, 255, 0.88) !important;
-    font-size: clamp(1.05rem, 2vw, 1.35rem);
-    line-height: 1.45;
-}
-
-.preinsc-steps {
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: var(--flacso-radius-xl);
-    padding: clamp(1.15rem, 2vw, 1.5rem);
-    background: rgba(255, 255, 255, 0.10);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
-    backdrop-filter: blur(14px);
-}
-
-.preinsc-steps ol {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 0.9rem;
-}
-
-.preinsc-steps li {
-    position: relative;
-    padding: 0.95rem 0.95rem 0.95rem 3rem;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.10);
-}
-
-.preinsc-steps li::before {
-    content: counter(list-item);
-    position: absolute;
-    left: 0.9rem;
-    top: 0.95rem;
-    width: 1.45rem;
-    height: 1.45rem;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background: var(--flacso-amarillo);
-    color: var(--flacso-azul-oscuro);
-    font-weight: 800;
-    font-size: 0.78rem;
-}
-
-.step-title {
-    color: #ffffff;
-    font-weight: 750;
-    line-height: 1.25;
-}
-
-.step-desc {
-    margin-top: 0.25rem;
-    color: rgba(255, 255, 255, 0.78);
-    font-size: 0.92rem;
-    line-height: 1.4;
-}
-
-.form-container {
-    width: min(100%, 800px);
-    margin-inline: auto;
-}
-
-.form-heading-eyebrow {
-    margin: 0 0 1.1rem;
-    color: var(--flacso-azul);
-    font-size: .86rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: .12em;
-}
-
-.flacso-formulario-card,
-.flacso-success-card {
-    width: 100%;
-    border: 1px solid var(--flacso-borde);
-    border-radius: var(--flacso-radius-xl);
-    background: var(--flacso-card);
-    box-shadow: var(--flacso-shadow-soft);
-}
-
-.flacso-formulario-body,
-.flacso-success-body {
-    padding: clamp(20px, 4vw, 42px);
-}
-
-.flacso-seccion {
-    position: relative;
-    padding: clamp(18px, 3vw, 28px);
-    border: 1px solid var(--flacso-borde);
-    border-radius: var(--flacso-radius-lg);
-    background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.88));
-    box-shadow: var(--flacso-shadow-card);
-}
-
-.flacso-seccion + .flacso-seccion {
-    margin-top: clamp(16px, 3vw, 24px);
-}
-
-.flacso-seccion-header {
-    display: flex;
-    gap: 0.85rem;
-    align-items: center;
-    margin-bottom: 1.15rem;
-}
-
-.flacso-seccion-icon {
-    flex: 0 0 auto;
-    width: 44px;
-    height: 44px;
-    border-radius: 14px;
-    display: grid;
-    place-items: center;
-    background: rgba(22, 57, 111, 0.10);
-    color: var(--flacso-azul);
-}
-
-.flacso-seccion-icon i {
-    margin: 0 !important;
-}
-
-.flacso-seccion-title {
-    margin: 0;
-    color: var(--flacso-azul-oscuro);
-    font-size: clamp(1.04rem, 1.8vw, 1.32rem);
-    line-height: 1.25;
-    font-weight: 800;
-}
-
-.flacso-campos-vertical {
-    display: grid;
-    gap: 1rem;
-}
-
-.flacso-preinscripcion-seminario-main .row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    width: 100%;
-}
-
-.flacso-preinscripcion-seminario-main .col-md-6,
-.flacso-preinscripcion-seminario-main .col-6 {
-    flex: 0 0 calc(50% - 0.5rem);
-    max-width: calc(50% - 0.5rem);
-    width: 100%;
-}
-
-.flacso-input-group {
-    min-width: 0;
-}
-
-.form-label,
-.flacso-input-group > .form-label,
-.flacso-input-group > span.form-label {
-    display: block;
-    margin-bottom: 0.45rem !important;
-    color: var(--flacso-azul-oscuro);
-    font-size: 0.94rem;
-    font-weight: 750;
-    line-height: 1.35;
-}
-
-.text-danger {
-    color: #b42318 !important;
-}
-
-.form-control-flacso,
-.form-select-flacso,
-.flacso-preinscripcion-seminario-main input[type="text"],
-.flacso-preinscripcion-seminario-main input[type="email"],
-.flacso-preinscripcion-seminario-main input[type="tel"],
-.flacso-preinscripcion-seminario-main input[type="date"],
-.flacso-preinscripcion-seminario-main input[type="file"],
-.flacso-preinscripcion-seminario-main select {
-    width: 100%;
-    min-height: 48px;
-    border: 1px solid rgba(22, 57, 111, 0.20) !important;
-    border-radius: 14px !important;
-    background-color: #ffffff !important;
-    color: #1f2937 !important;
-    font-size: 16px;
-    line-height: 1.4;
-    padding: 0.78rem 0.92rem;
-    transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
-}
-
-.flacso-preinscripcion-seminario-main input[type="file"] {
-    padding: 0.68rem 0.85rem;
-}
-
-.form-control-flacso:focus,
-.form-select-flacso:focus,
-.flacso-preinscripcion-seminario-main input:focus,
-.flacso-preinscripcion-seminario-main select:focus {
-    outline: none;
-    border-color: var(--flacso-azul) !important;
-    box-shadow: 0 0 0 4px rgba(22, 57, 111, 0.13) !important;
-}
-
-.form-control-flacso::placeholder {
-    color: #94a3b8;
-}
-
-.form-text,
-.phone-error-details {
-    display: block;
-    margin-top: 0.45rem;
-    color: var(--flacso-muted);
-    font-size: 0.86rem;
-    line-height: 1.35;
-}
-
-.invalid-feedback,
-.invalid-feedback-radio,
-.phone-error-details:not(.d-none) {
-    display: none;
-    margin-top: 0.45rem;
-    color: #b42318;
-    font-size: 0.86rem;
-    font-weight: 650;
-}
-
-.was-validated .form-control:invalid ~ .invalid-feedback,
-.was-validated .form-select:invalid ~ .invalid-feedback,
-.form-control.is-invalid ~ .invalid-feedback,
-.form-select.is-invalid ~ .invalid-feedback,
-.is-invalid ~ .invalid-feedback,
-.phone-error-details:not(.d-none) {
-    display: block;
-}
-
-.is-invalid {
-    border-color: #d92d20 !important;
-    box-shadow: 0 0 0 4px rgba(217, 45, 32, 0.10) !important;
-}
-
-.is-valid {
-    border-color: #12b76a !important;
-    box-shadow: 0 0 0 4px rgba(18, 183, 106, 0.10) !important;
-}
-
-.valid-feedback {
-    margin-top: .45rem;
-    color: #027a48;
-    font-size: .86rem;
-    font-weight: 650;
-}
-
-.d-none { display: none !important; }
-
-.flacso-radio-group {
-    width: 100%;
-}
-
-.flacso-radio-options {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 0.75rem !important;
-}
-
-.flacso-radio-options .col-6,
-.flacso-radio-options .col-md-6 {
-    grid-column: span 1 !important;
-}
-
-.form-check-radio {
-    position: relative;
-    min-height: 52px;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.form-check-input-radio {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.form-check-label-radio {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-height: 52px;
-    padding: .8rem 1rem;
-    border: 1px solid rgba(22, 57, 111, 0.18) !important;
-    border-radius: 14px;
-    background: #ffffff !important;
-    color: var(--flacso-azul-oscuro) !important;
-    font-weight: 750;
-    cursor: pointer;
-    transition: border-color .18s ease, box-shadow .18s ease, background .18s ease, transform .18s ease, color .18s ease;
-}
-
-.form-check-input-radio:checked + .form-check-label-radio {
-    border-color: var(--flacso-azul) !important;
-    background: var(--flacso-azul) !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 14px rgba(22, 57, 111, 0.24) !important;
-}
-
-.form-check-input-radio:focus-visible + .form-check-label-radio {
-    outline: 3px solid rgba(22, 57, 111, 0.24);
-    outline-offset: 2px;
-}
-
-.form-check-label-radio:hover {
-    transform: translateY(-1px);
-}
-
-.country-select,
-.iti {
-    width: 100% !important;
-}
-
-#celular {
-    padding-left: 52px;
-}
-
-.iti--separate-dial-code #celular {
-    padding-left: 96px !important;
-}
-
-.iti__country-list,
-.country-select .country-list {
-    max-width: min(420px, calc(100vw - 32px));
-    border-radius: 16px;
-    box-shadow: 0 18px 44px rgba(15, 26, 45, 0.18);
-    overflow-x: hidden;
-}
-
-.country-select .flag-emoji {
-    position: absolute;
-    right: 0.9rem;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    font-size: 1.2rem;
-}
-
-.alert {
-    width: min(100%, 980px);
-    margin: 0 auto 1.25rem;
-    padding: 1rem;
-    border-radius: var(--flacso-radius-lg);
-    border: 1px solid transparent;
-}
-
-.alert-danger {
-    border-color: rgba(217, 45, 32, .22);
-    background: #fff3f0;
-    color: #7a271a;
-}
-
-.d-flex { display: flex; }
-.align-items-start { align-items: flex-start; }
-.flex-shrink-0 { flex-shrink: 0; }
-.flex-grow-1 { flex-grow: 1; }
-.mx-auto { margin-inline: auto; }
-.text-center { text-align: center; }
-.w-100 { width: 100%; }
-.justify-content-center { justify-content: center; }
-
-.flacso-boton-envio {
-    margin-top: clamp(18px, 3vw, 28px);
-}
-
-.flacso-btn-primary,
-button.flacso-btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: .55rem;
-    min-height: 52px;
-    padding: 0.9rem 1.25rem;
-    border: 0;
-    border-radius: 16px;
-    background: linear-gradient(135deg, var(--flacso-azul), #24539a);
-    color: #ffffff !important;
-    font-weight: 800;
-    text-decoration: none !important;
-    cursor: pointer;
-    box-shadow: 0 12px 28px rgba(22, 57, 111, 0.24);
-    transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
-}
-
-.flacso-btn-primary:hover,
-.flacso-btn-primary:focus-visible {
-    transform: translateY(-1px);
-    filter: brightness(1.04);
-    box-shadow: 0 16px 34px rgba(22, 57, 111, 0.30);
-}
-
-.flacso-btn-primary:disabled {
-    cursor: progress;
-    opacity: .78;
-    transform: none;
-}
-
-.submit-loading-message {
-    color: var(--flacso-texto) !important;
-}
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.flacso-success-card {
-    max-width: 760px;
-    margin-inline: auto;
-}
-
-.flacso-success-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: clamp(20px, 4vw, 34px);
-    background: linear-gradient(135deg, rgba(22, 57, 111, 0.10), rgba(254, 210, 34, 0.18));
-    border-bottom: 1px solid var(--flacso-borde);
-}
-
-.flacso-success-header h3 {
-    margin: 0;
-    color: var(--flacso-azul-oscuro);
-    font-size: clamp(1.35rem, 3vw, 2rem);
-    line-height: 1.15;
-}
-
-.flacso-success-icon {
-    flex: 0 0 auto;
-    width: 56px;
-    height: 56px;
-    border-radius: 18px;
-    display: grid;
-    place-items: center;
-    background: #12b76a;
-    color: #ffffff;
-    box-shadow: 0 14px 24px rgba(18, 183, 106, 0.22);
-}
-
-.flacso-success-steps {
-    padding: 1rem;
-    border: 1px solid var(--flacso-borde);
-    border-radius: var(--flacso-radius-lg);
-    background: rgba(22, 57, 111, 0.04);
-}
-
-.flacso-success-steps h5 {
-    margin: 0 0 .75rem;
-    color: var(--flacso-azul-oscuro);
-    font-size: 1rem;
-}
-
-.flacso-success-steps ol {
-    margin: 0;
-    padding-left: 1.2rem;
-}
-
-@media (max-width: 900px) {
-    .preinsc-hero-grid {
-        grid-template-columns: 1fr;
-    }
-    .preinsc-steps {
-        max-width: 100%;
-    }
-}
-
-@media (max-width: 700px) {
-    .flacso-preinscripcion-seminario-main .site-container,
-    .flacso-preinscripcion-seminario-main .content-container,
-    .preinsc-hero-grid {
-        width: min(100% - 24px, 1120px);
-    }
-
-    .content-container.site-container {
-        padding-top: 2rem !important;
-        padding-bottom: 2rem !important;
-    }
-
-    .preinsc-hero {
-        min-height: auto;
-        padding: 28px 0 36px;
-    }
-
-    .preinsc-title {
-        letter-spacing: -0.035em;
-    }
-
-    .preinsc-steps li {
-        padding-right: 0.85rem;
-    }
-
-    .flacso-formulario-card,
-    .flacso-success-card,
-    .flacso-seccion {
-        border-radius: 18px;
-    }
-
-    .flacso-formulario-body,
-    .flacso-success-body,
-    .flacso-seccion {
-        padding: 16px;
-    }
-
-    .flacso-preinscripcion-seminario-main .row,
-    .flacso-radio-options {
-        grid-template-columns: 1fr !important;
-    }
-
-    .flacso-preinscripcion-seminario-main .col-md-6,
-    .flacso-preinscripcion-seminario-main .col-6 {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-
-    .flacso-seccion-header {
-        align-items: flex-start;
-    }
-
-    .flacso-seccion-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 12px;
-    }
-
-    .btn-back-seminario,
-    .flacso-btn-primary,
-    button.flacso-btn-primary {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .iti__country-list,
-    .country-select .country-list {
-        width: calc(100vw - 24px) !important;
-        max-width: calc(100vw - 24px) !important;
-    }
-}
-
-@media (max-width: 420px) {
-    .flacso-preinscripcion-seminario-main .site-container,
-    .flacso-preinscripcion-seminario-main .content-container,
-    .preinsc-hero-grid {
-        width: min(100% - 18px, 1120px);
-    }
-
-    .flacso-formulario-body,
-    .flacso-success-body,
-    .flacso-seccion {
-        padding: 14px;
-    }
-
-    .form-control-flacso,
-    .form-select-flacso,
-    .flacso-preinscripcion-seminario-main input[type="text"],
-    .flacso-preinscripcion-seminario-main input[type="email"],
-    .flacso-preinscripcion-seminario-main input[type="tel"],
-    .flacso-preinscripcion-seminario-main input[type="date"],
-    .flacso-preinscripcion-seminario-main input[type="file"],
-    .flacso-preinscripcion-seminario-main select {
-        border-radius: 12px !important;
-    }
-}
-
-
-</style>
 
 <main id="main" class="site-main flacso-preinscripcion-seminario-main">
 
@@ -1086,7 +408,7 @@ button.flacso-btn-primary {
                 </div>
                 <div class="flacso-success-body">
                     <p class="lead" style="margin-bottom: 1rem;">Gracias, <strong><?php echo esc_html($nombre_full); ?></strong>. Recibimos tu solicitud para el seminario <strong><?php echo esc_html($seminario_titulo); ?></strong>.</p>
-                    
+
                     <div class="flacso-success-steps" style="margin-bottom: 1.5rem;">
                         <h5>Próximos pasos</h5>
                         <ol>
@@ -1493,19 +815,19 @@ button.flacso-btn-primary {
 function validate_ci(ci) {
     // Limpiar entrada
     ci = ci.replace(/\D/g, '');
-    
+
     // Validar largo
     if (ci.length < 7 || ci.length > 8) return false;
-    
+
     // Extraer base y dígito verificador
     var dig = parseInt(ci[ci.length - 1]);
     var base = ci.substring(0, ci.length - 1);
-    
+
     // Rellenar con ceros a la izquierda si es necesario
     while (base.length < 7) {
         base = '0' + base;
     }
-    
+
     // Calcular dígito verificador
     var pesos = [2, 9, 8, 7, 6, 3, 4];
     var suma = 0;
@@ -1513,7 +835,7 @@ function validate_ci(ci) {
         suma += parseInt(base[i]) * pesos[i];
     }
     var dv_calc = (10 - (suma % 10)) % 10;
-    
+
     return dig === dv_calc;
 }
 
@@ -1733,12 +1055,12 @@ function validate_ci(ci) {
             const invalidFeedback = phoneInput.parentElement.querySelector('.invalid-feedback');
             const errorDetails = document.querySelector('.phone-error-details');
             const hidden = document.querySelector('#celular_e164');
-            
+
             if (!window._iti) return false;
 
             try {
                 const value = phoneInput.value.trim();
-                
+
                 // Si está vacío, no mostrar error aún (solo si es required al enviar)
                 if (!value) {
                     phoneInput.classList.remove('is-valid', 'is-invalid');
@@ -1750,7 +1072,7 @@ function validate_ci(ci) {
                 const isLocalNumber = /^\d{8,}$/.test(value.replace(/\D/g, ''));
                 const isInternational = window._iti.isValidNumber();
                 const startsWithPlus = value.trim().startsWith('+');
-                
+
                 if (isLocalNumber || isInternational) {
                     // Número válido (local o internacional)
                     phoneInput.classList.remove('is-invalid');
@@ -1761,7 +1083,7 @@ function validate_ci(ci) {
                         errorDetails.classList.add('d-none');
                         errorDetails.textContent = '';
                     }
-                    
+
                     // El campo celular_e164 SIEMPRE debe tener el número en formato internacional
                     // Si es local, se convierte usando intl-tel-input. Si es internacional, se normaliza a E.164
                     let e164Number = value;
@@ -1775,7 +1097,7 @@ function validate_ci(ci) {
                         }
                     }
                     if (hidden) hidden.value = e164Number;
-                    
+
                     console.info('[Preinscripcion] Teléfono válido', { mode: startsWithPlus ? 'international' : 'local' });
                     return true;
                 } else {
@@ -1785,7 +1107,7 @@ function validate_ci(ci) {
                     if (validFeedback) validFeedback.classList.add('d-none');
                     if (invalidFeedback) invalidFeedback.classList.remove('d-none');
                     if (hidden) hidden.value = '';
-                    
+
                     if (errorDetails) {
                         errorDetails.classList.remove('d-none');
                         errorDetails.textContent = 'El número ingresado no es válido.';
@@ -1827,7 +1149,7 @@ function validate_ci(ci) {
             try {
                 const countryData = window._iti.getSelectedCountryData();
                 const dialCode = countryData.dialCode;
-                
+
                 const helperText = document.querySelector('small.phone-helper-text');
                 if (helperText) {
                     helperText.textContent = `Puedes ingresar: número local o formato internacional (+${dialCode} ...)`;
@@ -1882,8 +1204,8 @@ function validate_ci(ci) {
 
             // Preseleccionar: POST → país del teléfono → Uruguay
             const preselected = '<?php echo isset($_POST["pais_residencia"]) ? esc_js(strtolower($_POST["pais_residencia"])) : ""; ?>'.toLowerCase();
-            const phoneCountry = (window._iti && window._iti.getSelectedCountryData) 
-                ? (window._iti.getSelectedCountryData().iso2 || '').toLowerCase() 
+            const phoneCountry = (window._iti && window._iti.getSelectedCountryData)
+                ? (window._iti.getSelectedCountryData().iso2 || '').toLowerCase()
                 : '';
             const toSelect = preselected || phoneCountry || 'uy';
             try { $countryInput.countrySelect('selectCountry', toSelect); } catch (e) {}
@@ -1926,7 +1248,7 @@ function validate_ci(ci) {
             $countryInput.on('change.countryselect input.countryselect', syncCountry);
 
             // Force initial selection and sync
-            try { 
+            try {
                 if (toSelect) {
                     $countryInput.countrySelect('selectCountry', toSelect);
                 }
@@ -1977,11 +1299,11 @@ function validate_ci(ci) {
     const campoOtroDoc = document.querySelector('#campo_otro_doc');
     const inputCi = document.querySelector('#documento_ci');
     const inputOtro = document.querySelector('#documento_otro');
-    
+
     if (tipoDoc && campoCi && campoOtroDoc && inputCi && inputOtro) {
         const toggleDocFields = () => {
             const tipo = tipoDoc.value;
-            
+
             if (tipo === 'CI') {
                 // Mostrar campo CI, ocultar otros
                 campoCi.style.display = 'block';
@@ -1998,7 +1320,7 @@ function validate_ci(ci) {
                 inputCi.removeAttribute('required');
                 inputCi.value = '';
                 inputOtro.classList.remove('is-invalid', 'is-valid');
-                
+
                 // Actualizar label según tipo
                 const labelOtro = campoOtroDoc.querySelector('label');
                 const placeholderOtro = tipo === 'Pasaporte' ? 'AB1234567' : 'Tu número de documento';
@@ -2014,16 +1336,16 @@ function validate_ci(ci) {
                 inputOtro.removeAttribute('required');
             }
         };
-        
+
         tipoDoc.addEventListener('change', toggleDocFields);
         toggleDocFields(); // Aplicar estado inicial
-        
+
         // Validación para CI: solo números
         inputCi.addEventListener('input', (e) => {
             // Eliminar cualquier carácter no numérico
             e.target.value = e.target.value.replace(/[^0-9]/g, '');
         });
-        
+
         // Validar CI al escribir
         inputCi.addEventListener('keyup', () => {
             const docValue = inputCi.value.trim();
@@ -2033,21 +1355,21 @@ function validate_ci(ci) {
                 inputCi.classList.toggle('is-valid', isValid);
             }
         });
-        
+
         inputCi.addEventListener('blur', () => {
             const docValue = inputCi.value.trim();
             if (!docValue) return;
-            
+
             const isValid = validate_ci(docValue);
             inputCi.classList.toggle('is-invalid', !isValid);
             inputCi.classList.toggle('is-valid', isValid);
-            
+
             const fb = document.querySelector('.ci-feedback');
             if (fb) {
                 fb.textContent = isValid ? '✓ Cédula válida.' : '✗ La cédula no es válida. Verifica que tenga 7 u 8 dígitos con dígito verificador.';
             }
         });
-        
+
         // Validación para otros documentos: 3-20 caracteres
         inputOtro.addEventListener('keyup', () => {
             const docValue = inputOtro.value.trim();
@@ -2057,11 +1379,11 @@ function validate_ci(ci) {
                 inputOtro.classList.toggle('is-valid', isValid);
             }
         });
-        
+
         inputOtro.addEventListener('blur', () => {
             const docValue = inputOtro.value.trim();
             if (!docValue) return;
-            
+
             const isValid = docValue.length >= 3 && docValue.length <= 20;
             inputOtro.classList.toggle('is-invalid', !isValid);
             inputOtro.classList.toggle('is-valid', isValid);
@@ -2074,30 +1396,30 @@ function validate_ci(ci) {
         const validateAge = () => {
             const value = fechaNacInput.value;
             if (!value) return;
-            
+
             const birthDate = new Date(value);
             const today = new Date();
             let age = today.getFullYear() - birthDate.getFullYear();
             const monthDiff = today.getMonth() - birthDate.getMonth();
-            
+
             // Ajustar si aún no cumplió años este año
             if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
                 age--;
             }
-            
+
             const isValid = age >= 17;
             fechaNacInput.classList.toggle('is-invalid', !isValid);
             fechaNacInput.classList.toggle('is-valid', isValid);
-            
+
             const feedback = fechaNacInput.parentElement.querySelector('.invalid-feedback');
             if (feedback && !isValid) {
                 feedback.textContent = 'Debes ser mayor de 17 años.';
             }
         };
-        
+
         fechaNacInput.addEventListener('change', validateAge);
         fechaNacInput.addEventListener('blur', validateAge);
-        
+
         // Validar al enviar
         const form = document.querySelector('#form-preinscripcion');
         if (form) {
@@ -2123,7 +1445,7 @@ function validate_ci(ci) {
             const maxSizeBytes = maxSizeMB * 1024 * 1024; // 25 MB en bytes
             let totalSize = 0;
             let fileSizeError = '';
-            
+
             // Sumar tamaño de documento_identidad
             const docIdentidadInput = liveForm.querySelector('#documento_identidad');
             if (docIdentidadInput && docIdentidadInput.files) {
@@ -2131,7 +1453,7 @@ function validate_ci(ci) {
                     totalSize += file.size;
                 }
             }
-            
+
             // Sumar tamaño de titulo
             const tituloInput = liveForm.querySelector('#titulo');
             if (tituloInput && tituloInput.files && tituloInput.files.length > 0) {
@@ -2139,15 +1461,15 @@ function validate_ci(ci) {
                     totalSize += file.size;
                 }
             }
-            
+
             if (totalSize > maxSizeBytes) {
                 const sizeMB = (totalSize / (1024 * 1024)).toFixed(2);
                 fileSizeError = `El tamaño total de los archivos (${sizeMB} MB) excede el límite de ${maxSizeMB} MB. Por favor selecciona archivos más pequeños.`;
             }
-            
+
             return { valid: !fileSizeError, error: fileSizeError };
         };
-        
+
         // Validar tamaño al cambiar archivos
         const fileInputs = liveForm.querySelectorAll('input[type="file"]');
         fileInputs.forEach(input => {
@@ -2178,7 +1500,7 @@ function validate_ci(ci) {
             if (el.id === 'celular') return; // ya validado por función dedicada
             if (el.id === 'documento_ci' || el.id === 'documento_otro') return; // ya validado por funciones dedicadas
             if (el.id === 'fecha_nacimiento') return; // ya validado por validateAge
-            
+
             const isRadio = el.type === 'radio';
             if (isRadio) {
                 const group = liveForm.querySelectorAll(`input[type="radio"][name="${el.name}"]`);
@@ -2201,12 +1523,12 @@ function validate_ci(ci) {
             el.addEventListener(evt, () => { validateField(el); });
             el.addEventListener('blur', () => { validateField(el); });
         });
-        
+
         // Bootstrap validation: agregar was-validated solo al enviar
         liveForm.addEventListener('submit', function(event) {
             event.preventDefault();
             event.stopPropagation();
-            
+
             // Validar tamaño de archivos antes de cualquier otra cosa
             const fileSizeValidation = validateFileSize();
             if (!fileSizeValidation.valid) {
@@ -2221,7 +1543,7 @@ function validate_ci(ci) {
                 errorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return false;
             }
-            
+
             // Validar country field
             const countryField = liveForm.querySelector('#pais_residencia');
             if (countryField) {
@@ -2229,22 +1551,22 @@ function validate_ci(ci) {
                 countryField.classList.toggle('is-invalid', !isCountryValid);
                 countryField.classList.toggle('is-valid', isCountryValid);
             }
-            
+
             // Validar tipo de documento y documento
             const tipoDocField = liveForm.querySelector('#tipo_documento');
             const docCiField = liveForm.querySelector('#documento_ci');
             const docOtroField = liveForm.querySelector('#documento_otro');
-            
+
             let docIsValid = false;
             const tipoDoc = tipoDocField.value;
-            
+
             if (!tipoDoc) {
                 tipoDocField.classList.add('is-invalid');
                 docIsValid = false;
             } else {
                 tipoDocField.classList.remove('is-invalid');
                 tipoDocField.classList.add('is-valid');
-                
+
                 // Validar solo el documento que está visible
                 if (tipoDoc === 'CI') {
                     const ciValue = docCiField.value.trim();
@@ -2258,22 +1580,22 @@ function validate_ci(ci) {
                     docOtroField.classList.toggle('is-valid', docIsValid);
                 }
             }
-            
+
             // Validar teléfono
             const phoneIsValid = (typeof window.validatePhoneNumber === 'function') ? window.validatePhoneNumber() : true;
-            
+
             // Validar todos los demás campos
             let isFormValid = liveForm.checkValidity() && docIsValid && phoneIsValid;
-            
+
             // Validar edad
             const ageField = liveForm.querySelector('#fecha_nacimiento');
             if (ageField && ageField.classList.contains('is-invalid')) {
                 isFormValid = false;
             }
-            
+
             // Marcar formulario como validado visualmente
             liveForm.classList.add('was-validated');
-            
+
             // Si no es válido, no enviar
             if (!isFormValid) {
                 console.warn('[Preinscripcion] Validación fallida', { phoneValid: phoneIsValid, documentValid: docIsValid, formValidity: liveForm.checkValidity() });
@@ -2284,11 +1606,11 @@ function validate_ci(ci) {
                 }
                 return false;
             }
-            
+
             // Si todo es válido, enviar vía AJAX
             console.info('[Preinscripcion] Formulario válido — enviando vía AJAX');
             console.log('[Preinscripcion] Iniciando proceso de envío...');
-            
+
             // Deshabilitar botón de envío y mostrar mensaje de carga
             const submitBtn = liveForm.querySelector('button[type="submit"]');
             const btnOriginalText = submitBtn.innerHTML;
@@ -2296,12 +1618,12 @@ function validate_ci(ci) {
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 0.5rem;"></i>Enviando...';
             console.log('[Preinscripcion] Botón de envío deshabilitado');
-            
+
             if (loadingMessage) {
                 loadingMessage.style.display = 'block';
                 console.log('[Preinscripcion] Mensaje de carga mostrado');
             }
-            
+
             // Preparar FormData (incluye archivos)
             const formData = new FormData(liveForm);
             console.log('[Preinscripcion] FormData preparado:', {
@@ -2311,7 +1633,7 @@ function validate_ci(ci) {
                 tipo_documento: formData.get('tipo_documento'),
                 pais_residencia: formData.get('pais_residencia')
             });
-            
+
             // Contar archivos
             const docIdentidadFiles = formData.getAll('documento_identidad[]');
             const tituloFile = formData.get('titulo');
@@ -2319,9 +1641,9 @@ function validate_ci(ci) {
                 documento_identidad: docIdentidadFiles.length + ' archivo(s)',
                 titulo: tituloFile ? '1 archivo' : 'ninguno'
             });
-            
+
             console.log('[Preinscripcion] Enviando petición POST a:', window.location.href);
-            
+
             // Enviar vía fetch
             fetch(window.location.href, {
                 method: 'POST',
@@ -2333,15 +1655,15 @@ function validate_ci(ci) {
             })
             .then(async html => {
                 console.log('[Preinscripcion] HTML recibido (longitud):', html.length, 'caracteres');
-                
+
                 // Parsear la respuesta para detectar éxito o error
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
-                
+
                 // Buscar el contenedor de éxito
                 const successContainer = doc.querySelector('.success-container');
                 console.log('[Preinscripcion] ¿Contenedor de éxito encontrado?', successContainer ? 'SÍ' : 'NO');
-                
+
                 if (successContainer) {
                     console.log('[Preinscripcion] ✓ Preinscripción exitosa');
 
@@ -2369,10 +1691,10 @@ function validate_ci(ci) {
                         genero: formData.get('genero')
                     });
                     trackMetaEvent('SubmitApplication', pixelPayload);
-                    
+
                     // Guardar en sessionStorage
                     sessionStorage.setItem('consultaPrograma', '<?php echo esc_js($seminario_titulo); ?>');
-                    
+
                     // Redirigir a la página de gracias (hija de la URL actual)
                     let currentUrl = window.location.href.split('?')[0];
                     if (!currentUrl.endsWith('/')) {
@@ -2383,17 +1705,17 @@ function validate_ci(ci) {
                     return;
                 } else {
                     console.warn('[Preinscripcion] ✗ Error en el envío - no se encontró contenedor de éxito');
-                    
+
                     // Error: buscar mensaje de error en la respuesta
                     const alertDanger = doc.querySelector('.alert-danger');
-                    
+
                     // Buscar o crear contenedor de error antes del formulario
                     let errorContainer = liveForm.previousElementSibling;
                     if (!errorContainer || !errorContainer.classList.contains('alert')) {
                         errorContainer = document.createElement('div');
                         liveForm.parentNode.insertBefore(errorContainer, liveForm);
                     }
-                    
+
                     if (alertDanger) {
                         errorContainer.className = 'alert alert-danger';
                         errorContainer.innerHTML = alertDanger.innerHTML;
@@ -2403,11 +1725,11 @@ function validate_ci(ci) {
                         errorContainer.innerHTML = '<div class="d-flex align-items-start"><div class="flex-shrink-0"><i class="fas fa-exclamation-circle" style="font-size: 2rem;"></i></div><div class="flex-grow-1" style="margin-left: 1rem;"><h4 style="margin: 0 0 0.5rem 0;">Error al enviar</h4><p style="margin: 0;">Hubo un problema al procesar tu preinscripción. Por favor verifica los datos e intenta nuevamente.</p></div></div>';
                         console.log('[Preinscripcion] Mensaje de error genérico mostrado');
                     }
-                    
+
                     // Scroll al error
                     errorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     console.log('[Preinscripcion] Scroll al error completado');
-                    
+
                     // Restaurar botón
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = btnOriginalText;
@@ -2424,20 +1746,20 @@ function validate_ci(ci) {
                     message: error.message,
                     stack: error.stack
                 });
-                
+
                 // Mostrar error genérico
                 let errorContainer = liveForm.previousElementSibling;
                 if (!errorContainer || !errorContainer.classList.contains('alert')) {
                     errorContainer = document.createElement('div');
                     liveForm.parentNode.insertBefore(errorContainer, liveForm);
                 }
-                
+
                 errorContainer.className = 'alert alert-danger';
                 errorContainer.innerHTML = '<div class="d-flex align-items-start"><div class="flex-shrink-0"><i class="fas fa-exclamation-circle" style="font-size: 2rem;"></i></div><div class="flex-grow-1" style="margin-left: 1rem;"><h4 style="margin: 0 0 0.5rem 0;">Error de conexión</h4><p style="margin: 0;">No se pudo conectar con el servidor. Por favor verifica tu conexión e intenta nuevamente.</p></div></div>';
-                
+
                 errorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 console.log('[Preinscripcion] Mensaje de error de conexión mostrado');
-                
+
                 // Restaurar botón
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = btnOriginalText;
@@ -2446,7 +1768,7 @@ function validate_ci(ci) {
                 }
                 console.log('[Preinscripcion] Botón de envío restaurado después de error');
             });
-            
+
             console.log('[Preinscripcion] Petición fetch iniciada, esperando respuesta...');
             return false;
         }, false);

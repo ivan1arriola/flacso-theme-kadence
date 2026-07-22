@@ -5,23 +5,6 @@ if (!defined('ABSPATH')) {
 
 get_header();
 
-// Enqueue Bootstrap CSS and JS
-if (!wp_style_is('bootstrap-css', 'registered')) {
-    wp_register_style('bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css', [], '5.3.2');
-}
-wp_enqueue_style('bootstrap-css');
-
-if (!wp_script_is('bootstrap-js', 'registered')) {
-    wp_register_script('bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js', array('jquery'), '5.3.2', true);
-}
-wp_enqueue_script('bootstrap-js');
-
-// Enqueue Bootstrap Icons
-if (!wp_style_is('bootstrap-icons', 'registered')) {
-    wp_register_style('bootstrap-icons', 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css', [], '1.11.3');
-}
-wp_enqueue_style('bootstrap-icons');
-
 /**
  * Convierte una fecha YYYY-MM-DD al formato español: "Lunes 20 de Enero 2026"
  */
@@ -29,15 +12,15 @@ function format_fecha_es($fecha) {
     if (empty($fecha)) return '';
     $timestamp = strtotime($fecha);
     if ($timestamp === false) return esc_html($fecha);
-    
+
     $dias = array('Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado');
     $meses = array('', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-    
+
     $dia_semana = $dias[date('w', $timestamp)];
     $dia = date('j', $timestamp);
     $mes = $meses[date('n', $timestamp)];
     $ano = date('Y', $timestamp);
-    
+
     return "$dia_semana $dia de $mes $ano";
 }
 
@@ -111,529 +94,6 @@ while (have_posts()) : the_post();
     }
 ?>
 
-<style>
-    /* Custom styles to complement Bootstrap usando variables del tema */
-    .seminario-breadcrumb {
-        font-size: 0.9rem;
-        color: var(--global-palette5);
-    }
-    
-    .seminario-breadcrumb a {
-        color: var(--global-palette5);
-        text-decoration: none;
-        transition: color 0.2s;
-    }
-    
-    .seminario-breadcrumb a:hover {
-        color: var(--global-palette1);
-    }
-    
-    .seminario-breadcrumb .breadcrumb-item.active {
-        color: var(--global-palette1);
-        font-weight: 600;
-    }
-    
-    .seminario-badge {
-        font-size: 0.8rem;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        border: 1.5px solid rgba(29, 58, 114, 0.15);
-        background-color: rgba(var(--global-palette9rgb), 0.1) !important;
-    }
-    
-    .seminario-badge-primary {
-        color: var(--global-palette1);
-        border-color: rgba(29, 58, 114, 0.2);
-    }
-    
-    .seminario-badge-secondary {
-        color: var(--global-palette14);
-        border-color: rgba(247, 99, 12, 0.2);
-        background-color: rgba(247, 99, 12, 0.1) !important;
-    }
-    
-    .seminario-image-placeholder {
-        background: linear-gradient(135deg, var(--global-palette8) 0%, var(--global-palette7) 100%);
-        color: var(--global-palette6);
-        font-size: 3rem;
-    }
-
-    .seminario-hero-image-4x5 {
-        width: min(100%, 440px);
-        aspect-ratio: 4 / 5;
-        margin-inline: auto;
-    }
-
-    .seminario-hero-image-4x5 img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    
-    .info-card {
-        transition: transform 0.3s, box-shadow 0.3s;
-        height: 100%;
-        border: 1px solid var(--global-palette7);
-        border-radius: 12px;
-        background-color: var(--global-palette9);
-    }
-    
-    .info-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
-    }
-    
-    .info-card-icon {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        color: var(--global-palette1);
-    }
-    
-    .section-header {
-        position: relative;
-        padding-bottom: 1rem;
-        margin-bottom: 2rem;
-    }
-    
-    .section-header h2 {
-        font-size: 1.5rem;
-        margin-bottom: 0;
-        color: var(--global-palette1);
-        font-family: var(--global-heading-font-family, var(--global-fallback-font));
-    }
-    
-    .section-header::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 60px;
-        height: 3px;
-        background: linear-gradient(90deg, var(--global-palette1) 0%, var(--global-palette2) 100%);
-        border-radius: 2px;
-    }
-    
-    .unidad-item {
-        counter-increment: unidad-counter;
-        position: relative;
-        padding: 1.5rem;
-        padding-left: 5rem;
-        margin-bottom: 1.5rem;
-        background: linear-gradient(135deg, var(--global-palette8) 0%, var(--global-palette9) 100%);
-        border-radius: 12px;
-        border-left: 4px solid var(--global-palette1);
-        border: 1px solid var(--global-palette7);
-        transition: transform 0.3s;
-    }
-    
-    .unidad-item:hover {
-        transform: translateX(5px);
-    }
-    
-    .unidad-item::before {
-        content: counter(unidad-counter);
-        position: absolute;
-        top: 1.5rem;
-        left: 1rem;
-        width: 2.5rem;
-        height: 2.5rem;
-        background: linear-gradient(135deg, var(--global-palette1) 0%, var(--global-palette3) 100%);
-        color: var(--global-palette9);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 800;
-        font-size: 1rem;
-        box-shadow: 0 4px 12px rgba(29, 58, 114, 0.3);
-    }
-    
-    .docente-card {
-        border-radius: 12px;
-        overflow: hidden;
-        border: 1px solid var(--global-palette7);
-        background-color: var(--global-palette9);
-        transition: transform 0.3s, box-shadow 0.3s;
-        height: 100%;
-    }
-    
-    .docente-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(0,0,0,0.1) !important;
-    }
-    
-    .docente-avatar {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        border: 4px solid var(--global-palette9);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    }
-    
-    .docente-avatar-placeholder {
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, var(--global-palette1) 0%, var(--global-palette12) 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--global-palette9);
-        font-size: 2rem;
-        font-weight: 900;
-        letter-spacing: 2px;
-    }
-    
-    .docente-bio-content {
-        max-height: 300px;
-        overflow-y: auto;
-        padding-right: 10px;
-    }
-    
-    .docente-bio-content::-webkit-scrollbar {
-        width: 6px;
-    }
-    
-    .docente-bio-content::-webkit-scrollbar-track {
-        background: var(--global-palette7);
-        border-radius: 10px;
-    }
-    
-    .docente-bio-content::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, var(--global-palette1) 0%, var(--global-palette2) 100%);
-        border-radius: 10px;
-    }
-    
-    .encuentro-item {
-        border-left: 4px solid var(--global-palette1);
-        background: linear-gradient(135deg, var(--global-palette8) 0%, var(--global-palette9) 100%);
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        transition: transform 0.3s, box-shadow 0.3s;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-    
-    .encuentro-item:hover {
-        transform: translateX(5px);
-        box-shadow: 0 8px 20px rgba(29, 58, 114, 0.15);
-    }
-    
-    .encuentro-header {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        margin-bottom: 0;
-    }
-    
-    .encuentro-dia-hora {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-        flex: 1;
-    }
-    
-    .encuentro-dia {
-        font-size: 1.1rem;
-        font-weight: 800;
-        color: var(--global-palette1);
-        line-height: 1.3;
-    }
-    
-    .encuentro-hora {
-        font-size: 1rem;
-        font-weight: 700;
-        color: var(--global-palette14);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-    }
-    
-    .encuentro-hora span {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .encuentro-hora-timezone {
-        font-size: 0.85rem;
-        color: var(--global-palette4);
-        margin-left: 0;
-    }
-    
-    .encuentro-hora-detalle {
-        font-size: 0.95rem;
-        color: var(--global-palette4);
-        margin-top: 0.3rem;
-    }
-    
-    .encuentro-plataforma {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.6rem 1rem;
-        background-color: var(--global-palette1);
-        color: white;
-        border-radius: 8px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        width: fit-content;
-        margin-top: 0.5rem;
-    }
-    
-    @media (min-width: 768px) {
-        .encuentro-item {
-            padding: 1.75rem 2rem;
-        }
-        
-        .encuentro-header {
-            flex-direction: row;
-            align-items: center;
-            gap: 1.5rem;
-            justify-content: space-between;
-        }
-        
-        .encuentro-dia {
-            font-size: 1.25rem;
-        }
-        
-        .encuentro-hora {
-            font-size: 1.05rem;
-        }
-        
-        .encuentro-plataforma {
-            margin-top: 0;
-        }
-    }
-    
-    @media (min-width: 992px) {
-        .encuentro-dia {
-            font-size: 1.3rem;
-        }
-        
-        .encuentro-hora {
-            font-size: 1.1rem;
-        }
-    }
-    
-    .btn-inscripcion {
-        padding: 1rem 2.5rem;
-        font-weight: 700;
-        border-radius: 50px;
-        transition: all 0.3s;
-        background-color: var(--global-palette-btn-bg);
-        border: none;
-        color: var(--global-palette-btn);
-        box-shadow: 0 4px 15px rgba(37, 129, 56, 0.3);
-        font-family: var(--global-body-font-family, var(--global-fallback-font));
-    }
-    
-    .btn-inscripcion:hover {
-        transform: translateY(-3px);
-        background-color: var(--global-palette-btn-bg-hover);
-        color: var(--global-palette-btn-hover);
-        box-shadow: 0 8px 25px rgba(27, 109, 43, 0.4);
-    }
-    
-    .final-cta {
-        background: linear-gradient(135deg, var(--global-palette1) 0%, var(--global-palette12) 100%);
-        border-radius: 16px;
-    }
-    
-    .final-cta h2 {
-        color: var(--global-palette9) !important;
-    }
-    
-    .final-cta p {
-        color: var(--global-palette9);
-    }
-    
-    .final-cta .btn-inscripcion {
-        background-color: var(--global-palette-btn-bg) !important;
-        color: var(--global-palette-btn) !important;
-        border: none !important;
-    }
-    
-    .final-cta .btn-inscripcion:hover {
-        background-color: var(--global-palette-btn-bg-hover) !important;
-        color: var(--global-palette-btn-hover) !important;
-    }
-    
-    .seminario-content,
-    .docente-bio-content {
-        line-height: 1.7;
-        color: var(--global-palette4);
-        font-family: var(--global-body-font-family, var(--global-fallback-font));
-    }
-    
-    .seminario-content ul,
-    .docente-bio-content ul,
-    .seminario-content ol,
-    .docente-bio-content ol {
-        padding-left: 1.5rem !important;
-        margin-bottom: 1.5rem !important;
-        list-style-type: initial !important;
-    }
-    
-    .seminario-content ul,
-    .docente-bio-content ul {
-        list-style-type: disc !important;
-    }
-    
-    .seminario-content ol,
-    .docente-bio-content ol {
-        list-style-type: decimal !important;
-    }
-    
-    .seminario-content li,
-    .docente-bio-content li {
-        margin-bottom: 0.8rem !important;
-        display: list-item !important;
-    }
-    
-    .seminario-content p,
-    .seminario-content div {
-        margin-bottom: 1.25rem !important;
-    }
-    
-    h1, h2, h3, h4, h5, h6 {
-        font-family: var(--global-heading-font-family, var(--global-fallback-font));
-    }
-    
-    .card-title {
-        font-family: var(--global-heading-font-family, var(--global-fallback-font));
-    }
-    
-    /* Grid manual para cards de información */
-    .info-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-    }
-    
-    @media (min-width: 768px) {
-        .info-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-    
-    @media (min-width: 992px) {
-        .info-grid {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-    
-    .info-grid > * {
-        min-height: 100%;
-    }
-
-    .inversion-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 1.5rem;
-    }
-
-    .inversion-card {
-        border: 1px solid var(--global-palette7);
-        border-radius: 12px;
-        background: var(--global-palette9);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-        overflow: hidden;
-    }
-
-    .inversion-card-head {
-        padding: 1rem 1.25rem;
-        background: var(--global-palette8);
-        border-bottom: 1px solid var(--global-palette7);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    .inversion-card-title {
-        margin: 0;
-        color: var(--global-palette1);
-        font-size: 1rem;
-        font-weight: 800;
-    }
-
-    .inversion-card-badge {
-        display: inline-block;
-        background: var(--global-palette2);
-        color: var(--global-palette3);
-        font-size: 0.75rem;
-        line-height: 1;
-        font-weight: 800;
-        border-radius: 999px;
-        padding: 0.4rem 0.6rem;
-    }
-
-    .inversion-card-body {
-        padding: 1.25rem;
-        display: grid;
-        gap: 1rem;
-    }
-
-    .inversion-monto {
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
-        align-items: baseline;
-    }
-
-    .inversion-monto-label {
-        color: var(--global-palette5);
-        font-size: 0.9rem;
-        font-weight: 600;
-    }
-
-    .inversion-monto-value {
-        color: var(--global-palette1);
-        font-size: 1.35rem;
-        font-weight: 900;
-        line-height: 1;
-        text-align: right;
-    }
-
-    .inversion-card-descuento .inversion-card-head {
-        background: rgba(254, 210, 34, 0.2);
-    }
-
-    .inversion-card-descuento .inversion-monto-value {
-        color: var(--global-palette-btn-bg);
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .seminario-hero-image-4x5 {
-            width: min(100%, 360px);
-        }
-
-        .section-header h2 {
-            font-size: 1.25rem;
-        }
-        
-        .info-card {
-            margin-bottom: 1rem;
-        }
-        
-        .unidad-item {
-            padding-left: 3.5rem;
-        }
-        
-        .unidad-item::before {
-            left: 0.5rem;
-            width: 2rem;
-            height: 2rem;
-            font-size: 0.9rem;
-        }
-    }
-</style>
 
 <main id="main" class="site-main flacso-cpt-seminario-main">
     <div class="flacso-cpt-seminario">
@@ -649,13 +109,13 @@ while (have_posts()) : the_post();
                 <a href="<?php echo home_url('/formacion'); ?>">Oferta académica (Formación)</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="<?php echo get_post_type_archive_link('seminario'); ?>">Seminarios</a>
+                <a href="<?php echo esc_url( get_post_type_archive_link( 'seminario' ) ); ?>">Seminarios</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
                 <?php echo esc_html(get_the_title()); ?>
             </li>
         </ol>
-        
+
         <!-- Badges: Posgrados (oferta academica asociada) -->
         <?php if (!empty($posgrados)) : ?>
             <div class="d-flex flex-wrap gap-2 mb-3">
@@ -667,7 +127,7 @@ while (have_posts()) : the_post();
             </div>
         <?php endif; ?>
     </nav>
-    
+
     <!-- Hero Section -->
     <div class="row align-items-center mb-5<?php echo $is_featured_image_4x5 ? ' seminario-hero--portrait' : ''; ?>">
         <!-- Image Column -->
@@ -682,13 +142,13 @@ while (have_posts()) : the_post();
                 </div>
             <?php endif; ?>
         </div>
-        
+
         <!-- Content Column -->
         <div class="<?php echo $is_featured_image_4x5 ? 'col-lg-7' : 'col-lg-6'; ?>">
             <h1 class="fw-bold mb-4" style="color: var(--global-palette1);">
                 <?php echo esc_html(get_the_title()); ?>
             </h1>
-            
+
             <!-- CTA Button -->
             <?php if ($abierto_publico && !empty($preinscripcion_url)) : ?>
                 <div class="mt-4">
@@ -704,13 +164,13 @@ while (have_posts()) : the_post();
             <?php endif; ?>
         </div>
     </div>
-    
+
     <!-- Información del Seminario -->
     <section class="py-5">
         <div class="section-header">
             <h2 class="fw-bold">Información del Seminario</h2>
         </div>
-        
+
         <div class="info-grid">
             <!-- Fechas -->
             <?php if (!empty($meta['periodo_inicio']) || !empty($meta['periodo_fin'])) : ?>
@@ -739,7 +199,7 @@ while (have_posts()) : the_post();
                     </div>
                 </div>
             <?php endif; ?>
-            
+
             <!-- Carga Horaria y Créditos -->
             <?php if (!empty($meta['carga_horaria']) || !empty($meta['creditos'])) : ?>
                 <div>
@@ -767,7 +227,7 @@ while (have_posts()) : the_post();
                     </div>
                 </div>
             <?php endif; ?>
-            
+
             <!-- Modalidad -->
             <?php if (!empty($meta['modalidad']) || !empty($meta['es_asincronico'])) : ?>
                 <div>
@@ -782,7 +242,7 @@ while (have_posts()) : the_post();
                     </div>
                 </div>
             <?php endif; ?>
-            
+
             <!-- Acreditación -->
             <?php if (!empty($meta['acredita_maestria']) || !empty($meta['acredita_doctorado'])) : ?>
                 <div>
@@ -794,14 +254,14 @@ while (have_posts()) : the_post();
                                 <?php
                                 $acreditacion_text = 'Acreditable a estudios de ';
                                 $acreditaciones = array();
-                                
+
                                 if (!empty($meta['acredita_maestria'])) {
                                     $acreditaciones[] = 'Maestría';
                                 }
                                 if (!empty($meta['acredita_doctorado'])) {
                                     $acreditaciones[] = 'Doctorado';
                                 }
-                                
+
                                 echo $acreditacion_text . implode(' y ', $acreditaciones);
                                 ?>
                             </p>
@@ -809,7 +269,7 @@ while (have_posts()) : the_post();
                     </div>
                 </div>
             <?php endif; ?>
-            
+
             <!-- Forma de Aprobación -->
             <?php if (!empty($meta['forma_aprobacion'])) : ?>
                 <div>
@@ -824,14 +284,14 @@ while (have_posts()) : the_post();
                     </div>
                 </div>
             <?php endif; ?>
-            
+
             <!-- Encuentros sincronicos Card -->
-            <?php 
+            <?php
             $encuentros_card = isset($meta['encuentros_sincronicos']) && is_array($meta['encuentros_sincronicos']) ? $meta['encuentros_sincronicos'] : array();
             $encuentros_card_validos = array_filter($encuentros_card, function($e) {
                 return !empty($e['fecha']);
             });
-            if (!empty($encuentros_card_validos) || !empty($meta['es_asincronico'])) : 
+            if (!empty($encuentros_card_validos) || !empty($meta['es_asincronico'])) :
             ?>
                 <div>
                     <div class="card info-card h-100 shadow-sm">
@@ -845,15 +305,15 @@ while (have_posts()) : the_post();
                                 </div>
                             <?php endif; ?>
                             <div style="font-size: 0.9rem; color: var(--global-palette4);">
-                                <?php foreach ($encuentros_card_validos as $index => $encuentro) : 
+                                <?php foreach ($encuentros_card_validos as $index => $encuentro) :
                                     $fecha = isset($encuentro['fecha']) ? $encuentro['fecha'] : '';
                                     $hora_inicio = isset($encuentro['hora_inicio']) ? $encuentro['hora_inicio'] : '';
                                     $hora_fin = isset($encuentro['hora_fin']) ? $encuentro['hora_fin'] : '';
                                     $plataforma = isset($encuentro['plataforma']) ? $encuentro['plataforma'] : 'zoom';
                                     $plataforma_otro = isset($encuentro['plataforma_otro']) ? $encuentro['plataforma_otro'] : '';
-                                    
+
                                     $plataforma_display = $plataforma === 'otro' ? $plataforma_otro : ucfirst($plataforma);
-                                    
+
                                     $dias_semana = array('Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado');
                                     $meses = array('', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
                                     $timestamp = strtotime($fecha);
@@ -866,7 +326,7 @@ while (have_posts()) : the_post();
                                             <?php echo esc_html($dia_semana . ', ' . $dia . ' de ' . $mes); ?>
                                         </div>
                                         <div style="color: var(--global-palette14); font-weight: 600;">
-                                            <?php 
+                                            <?php
                                             if (!empty($hora_inicio)) {
                                                 echo esc_html($hora_inicio);
                                             }
@@ -942,10 +402,10 @@ while (have_posts()) : the_post();
             </div>
         </section>
     <?php endif; ?>
-    
+
     <!-- Sección detallada de "Encuentros sincrónicos" removida a pedido:
          se conserva solo la tarjeta-resumen en la grilla de información. -->
-    
+
     <!-- Presentación del Seminario -->
     <?php if (!empty($meta['presentacion_seminario'])) : ?>
         <section class="py-5">
@@ -957,7 +417,7 @@ while (have_posts()) : the_post();
             </div>
         </section>
     <?php endif; ?>
-    
+
     <!-- Objetivo General -->
     <?php if (!empty($meta['objetivo_general'])) : ?>
         <section class="py-5">
@@ -969,7 +429,7 @@ while (have_posts()) : the_post();
             </div>
         </section>
     <?php endif; ?>
-    
+
     <!-- Objetivos Específicos -->
     <?php if (!empty($objetivos) && count($objetivos) >= 1) : ?>
         <section class="py-5">
@@ -988,7 +448,7 @@ while (have_posts()) : the_post();
             </ul>
         </section>
     <?php endif; ?>
-    
+
     <!-- Contenidos / Unidades Académicas -->
     <?php if (!empty($unidades)) : ?>
         <section class="py-5">
@@ -1015,7 +475,7 @@ while (have_posts()) : the_post();
             </div>
         </section>
     <?php endif; ?>
-    
+
     <!-- Docentes -->
     <?php if (!empty($docentes_posts)) : ?>
         <section class="py-5">
@@ -1024,29 +484,29 @@ while (have_posts()) : the_post();
                     Equipo Docente<?php echo count($docentes_posts) > 1 ? 's' : ''; ?>
                 </h2>
             </div>
-            
+
             <?php
                 $num_docentes = count($docentes_posts);
                 $col_class = 'col-12';
             ?>
-            
+
             <div class="row g-4">
-                <?php foreach ($docentes_posts as $docente) : 
+                <?php foreach ($docentes_posts as $docente) :
                     $doc_id = $docente->ID;
                     $nombre = (string)get_post_meta($doc_id, 'nombre', true);
                     $apellido = (string)get_post_meta($doc_id, 'apellido', true);
                     $nombre_completo = '';
-                    
+
                     if ($nombre && $apellido) {
                         $nombre_completo = trim($nombre . ' ' . $apellido);
                     } else {
                         $nombre_completo = $docente->post_title;
                     }
-                    
+
                     $prefijo_full = (string)get_post_meta($doc_id, 'prefijo_full', true);
                     $cv = (string)get_post_meta($doc_id, 'cv', true);
                     $cv_full = '';
-                    
+
                     if ($cv) {
                         $allowed = [
                             'p' => [], 'br' => [],
@@ -1092,7 +552,7 @@ while (have_posts()) : the_post();
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <?php if ($cv_full) : ?>
                                 <div class="card-body p-4 pt-3">
                                     <div class="docente-bio-content">
@@ -1106,7 +566,7 @@ while (have_posts()) : the_post();
             </div>
         </section>
     <?php endif; ?>
-    
+
     <!-- Final CTA -->
     <?php if ($abierto_publico && !empty($preinscripcion_url)) : ?>
         <section class="py-5">

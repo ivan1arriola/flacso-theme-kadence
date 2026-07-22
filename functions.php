@@ -16,11 +16,11 @@ add_action('init', function() {
     remove_action('wp_head', 'print_emoji_detection_script', 7);
     remove_action('admin_print_scripts', 'print_emoji_detection_script');
     remove_action('wp_print_styles', 'print_emoji_styles');
-    remove_action('admin_print_styles', 'print_emoji_styles'); 
+    remove_action('admin_print_styles', 'print_emoji_styles');
     remove_filter('the_content_feed', 'wp_staticize_emoji');
-    remove_filter('comment_text_rss', 'wp_staticize_emoji'); 
+    remove_filter('comment_text_rss', 'wp_staticize_emoji');
     remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
-    
+
     // Eliminar meta tags innecesarios
     remove_action('wp_head', 'wp_generator'); // Versión WP
     remove_action('wp_head', 'wlwmanifest_link'); // Windows Live Writer
@@ -44,7 +44,18 @@ add_action( 'wp_enqueue_scripts', 'child_theme_configurator_css', 30 ); // prior
  * Normaliza la presentación de las imágenes destacadas en una relación 4:5.
  * El script crea el fondo difuminado a partir de la propia imagen.
  */
+function flacso_child_needs_featured_images() {
+    return is_home()
+        || is_archive()
+        || is_singular( array( 'post', 'docente', 'seminario', 'oferta-academica', 'evento' ) )
+        || is_front_page();
+}
+
 function flacso_child_enqueue_featured_images() {
+    if ( ! flacso_child_needs_featured_images() ) {
+        return;
+    }
+
     wp_enqueue_script(
         'flacso-child-featured-images',
         trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/featured-images.js',
@@ -210,7 +221,7 @@ function child_theme_enqueue_jquery_ui() {
         '1.13.2'
     );
 
-    $needs_jquery_ui = apply_filters( 'flacso_needs_bootstrap', child_theme_needs_bootstrap() );
+    $needs_jquery_ui = apply_filters( 'flacso_needs_jquery_ui', false );
 
     if ( $needs_jquery_ui ) {
         wp_enqueue_script( 'jquery-ui-core' );
@@ -219,6 +230,78 @@ function child_theme_enqueue_jquery_ui() {
     }
 }
 add_action('wp_enqueue_scripts', 'child_theme_enqueue_jquery_ui', 25);
+
+/**
+ * Devuelve una versión de recurso basada en su fecha de modificación.
+ * Esto permite cachear indefinidamente y renovar la URL solamente al publicar.
+ */
+function flacso_child_asset_version( $relative_path ) {
+    $absolute_path = get_stylesheet_directory() . '/' . ltrim( $relative_path, '/' );
+
+    return is_readable( $absolute_path ) ? (string) filemtime( $absolute_path ) : wp_get_theme()->get( 'Version' );
+}
+
+/**
+ * Recursos específicos por plantilla. Evita CSS y JavaScript global innecesario.
+ */
+function flacso_child_enqueue_template_assets() {
+    global $template;
+
+    $template_assets = array(
+        'single-oferta-academica.php'         => 'single-oferta-academica',
+        'single-seminario.php'                => 'single-seminario',
+        'category-novedades.php'              => 'category-novedades',
+        'single.php'                          => 'single-post',
+        'single-docente.php'                  => 'single-docente',
+        'archive-docente.php'                 => 'archive-docente',
+        'taxonomy-tipo-oferta-academica.php'  => 'taxonomy-oferta',
+        'page-contacto.php'                   => 'page-contacto',
+        'consulta-seminario.php'              => 'consulta-seminario',
+        'page-formacion.php'                  => 'page-formacion',
+        'seminarios-listado.php'              => 'seminarios-listado',
+    );
+
+    $active_template = is_string( $template ) ? basename( $template ) : '';
+
+    foreach ( $template_assets as $template_file => $asset ) {
+        if ( $active_template !== $template_file ) {
+            continue;
+        }
+
+        $css_path = 'assets/css/' . $asset . '.css';
+        $js_path  = 'assets/js/' . $asset . '.js';
+
+        if ( is_readable( get_stylesheet_directory() . '/' . $css_path ) ) {
+            wp_enqueue_style(
+                'flacso-' . $asset,
+                get_stylesheet_directory_uri() . '/' . $css_path,
+                array( 'chld_thm_cfg_child' ),
+                flacso_child_asset_version( $css_path )
+            );
+        }
+
+        if ( is_readable( get_stylesheet_directory() . '/' . $js_path ) ) {
+            wp_enqueue_script(
+                'flacso-' . $asset,
+                get_stylesheet_directory_uri() . '/' . $js_path,
+                array(),
+                flacso_child_asset_version( $js_path ),
+                true
+            );
+        }
+
+        if ( 'consulta-seminario' === $asset ) {
+            wp_enqueue_script( 'jquery' );
+            wp_enqueue_style( 'intl-tel-input-css', 'https://cdn.jsdelivr.net/npm/intl-tel-input@24.2.0/build/css/intlTelInput.css', array(), '24.2.0' );
+            wp_enqueue_style( 'country-select-css', 'https://cdn.jsdelivr.net/npm/country-select-js@2.0.1/build/css/countrySelect.min.css', array(), '2.0.1' );
+            wp_enqueue_script( 'intl-tel-input-js', 'https://cdn.jsdelivr.net/npm/intl-tel-input@24.2.0/build/js/intlTelInput.min.js', array(), '24.2.0', true );
+            wp_enqueue_script( 'country-select-js', 'https://cdn.jsdelivr.net/npm/country-select-js@2.0.1/build/js/countrySelect.min.js', array( 'jquery' ), '2.0.1', true );
+        }
+
+        break;
+    }
+}
+add_action( 'wp_enqueue_scripts', 'flacso_child_enqueue_template_assets', 40 );
 
 /**
  * ===========================================================

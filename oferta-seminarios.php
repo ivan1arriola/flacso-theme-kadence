@@ -53,11 +53,11 @@ foreach ($seminarios_raw as $raw) {
     if (!$is_upcoming && !$is_started_recent) continue;
 
     $meta = class_exists('Seminario_Meta') ? Seminario_Meta::get_meta($seminario_id) : [];
-    
+
     // Formatear fecha larga
     $meses_es = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     $dias_semana_es = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-    $fecha_larga = sprintf('%s %d de %s de %s', 
+    $fecha_larga = sprintf('%s %d de %s de %s',
         $dias_semana_es[(int) $inicio_obj->format('w')],
         (int) $inicio_obj->format('j'),
         $meses_es[(int) $inicio_obj->format('n')],
@@ -103,7 +103,7 @@ if (function_exists('flacso_global_styles')) {
                 <div class="seminarios-hero__content">
                     <p class="seminarios-hero__kicker"><?php _e('Seminarios Exclusivos', 'flacso-uruguay'); ?></p>
                     <h1 class="seminarios-hero__title" style="font-size: 2.2rem; line-height: 1.3; margin-bottom: 1rem;"><?php echo esc_html(get_the_title($oferta_id)); ?></h1>
-                    
+
                     <div style="background: rgba(255, 255, 255, 0.1); padding: 1.25rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid rgba(255,255,255,0.2);">
                         <p class="seminarios-hero__subtitle" style="margin-bottom: 0; font-size: 1.05rem;">
                             <i class="bi bi-info-circle me-2" style="opacity: 0.9;"></i>
@@ -111,7 +111,7 @@ if (function_exists('flacso_global_styles')) {
                         </p>
                     </div>
 
-                    <?php 
+                    <?php
                     $volver_url = get_permalink($oferta_id);
                     if (class_exists('Oferta_Page_Adapter')) {
                         $associated_page_id = Oferta_Page_Adapter::get_page_id($oferta_id);

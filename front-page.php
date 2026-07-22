@@ -25,10 +25,10 @@ do_action( 'kadence_before_content' );
 			<?php
 			/**
 			 * FLACSO Homepage Sections
-			 * Las secciones se cargan directamente desde el plugin. 
+			 * Las secciones se cargan directamente desde el plugin.
 			 * Para cambiar el orden, simplemente mueve estas líneas.
 			 */
-			
+
 			$renderers = [
 				'hero'               => 'flacso_section_hero_render',
 				'festejos'           => 'flacso_section_festejos_render',

@@ -1,7 +1,7 @@
 <?php
 /**
  * Template: Consulta sobre Seminarios
- * 
+ *
  * Formulario para contactar sobre seminarios específicos
  * URL: /formacion/contactar-seminario/?ID=seminario_id
  * o /formacion/contactar-seminario/ para seleccionar seminario
@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
 get_header();
 
 // Obtener ID del seminario desde parámetro ?ID= (como en preinscripción)
-$seminario_id = isset($_GET['ID']) ? intval($_GET['ID']) : 0;
+$seminario_id = isset( $_GET['ID'] ) ? absint( wp_unslash( $_GET['ID'] ) ) : 0;
 $seminario_seleccionado = null;
 $solo_un_seminario = false;
 
@@ -39,13 +39,13 @@ if (!$solo_un_seminario) {
         'order'          => 'ASC'
     );
     $query = new WP_Query($args);
-    
+
     if ($query->have_posts()) {
         while ($query->have_posts()) {
             $query->the_post();
             $post_id = get_the_ID();
             $imagen = has_post_thumbnail() ? get_the_post_thumbnail_url($post_id, 'medium') : 'https://via.placeholder.com/300x200/16396f/ffffff?text=Seminario';
-            
+
             $seminarios_disponibles[] = [
                 'id'     => $post_id,
                 'titulo' => get_the_title(),
@@ -55,27 +55,6 @@ if (!$solo_un_seminario) {
     }
     wp_reset_postdata();
 }
-
-// Enqueuing de assets
-wp_enqueue_script('jquery');
-
-if (!wp_style_is('bootstrap-css', 'registered')) {
-    wp_register_style('bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css', [], '5.3.2');
-}
-wp_enqueue_style('bootstrap-css');
-
-if (!wp_script_is('bootstrap-js', 'registered')) {
-    wp_register_script('bootstrap-js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js', ['jquery'], '5.3.2', true);
-}
-wp_enqueue_script('bootstrap-js');
-
-// Assets para teléfono e país
-wp_enqueue_style('intl-tel-input-css', 'https://cdn.jsdelivr.net/npm/intl-tel-input@24.2.0/build/css/intlTelInput.css');
-wp_enqueue_style('country-select-css', 'https://cdn.jsdelivr.net/npm/country-select-js@2.0.1/build/css/countrySelect.min.css');
-
-wp_enqueue_script('intl-tel-input-js', 'https://cdn.jsdelivr.net/npm/intl-tel-input@24.2.0/build/js/intlTelInput.min.js', [], null, true);
-wp_enqueue_script('country-select-js', 'https://cdn.jsdelivr.net/npm/country-select-js@2.0.1/build/js/countrySelect.min.js', ['jquery'], null, true);
-wp_enqueue_script('intl-tel-utils', 'https://cdn.jsdelivr.net/npm/intl-tel-input@24.2.0/build/js/utils.js', [], null, true);
 
 // Función para obtener lista de países
 function flacso_get_paises_consulta() {
@@ -152,7 +131,7 @@ function flacso_get_paises_consulta() {
 
                 <div class="card-body p-4 p-md-5">
                     <form id="formulario-consulta-seminario" novalidate>
-                        
+
                         <!-- SECCIÓN: Selección de Seminario -->
                         <div class="mb-5">
                             <?php if ($solo_un_seminario && $seminario_seleccionado): ?>
@@ -161,20 +140,20 @@ function flacso_get_paises_consulta() {
                                 <div class="card border-primary bg-light">
                                     <div class="card-body text-center p-4">
                                         <?php
-                                        $img = has_post_thumbnail($seminario_seleccionado->ID) 
+                                        $img = has_post_thumbnail($seminario_seleccionado->ID)
                                             ? get_the_post_thumbnail_url($seminario_seleccionado->ID, 'medium')
                                             : 'https://via.placeholder.com/300x200/16396f/ffffff?text=Seminario';
                                         ?>
-                                        <img src="<?php echo esc_url($img); ?>" 
-                                             alt="<?php echo esc_attr($seminario_seleccionado->post_title); ?>" 
-                                             class="img-fluid rounded mb-3" 
+                                        <img src="<?php echo esc_url($img); ?>"
+                                             alt="<?php echo esc_attr($seminario_seleccionado->post_title); ?>"
+                                             class="img-fluid rounded mb-3"
                                              style="max-height: 150px; width: auto; object-fit: cover;">
                                         <h5 class="text-dark fw-bold mb-0"><?php echo esc_html($seminario_seleccionado->post_title); ?></h5>
                                     </div>
                                 </div>
                                 <input type="hidden" name="seminario_id" value="<?php echo (int)$seminario_seleccionado->ID; ?>">
                                 <input type="hidden" name="seminario_titulo" value="<?php echo esc_attr($seminario_seleccionado->post_title); ?>">
-                                
+
                             <?php elseif (!empty($seminarios_disponibles)): ?>
                                 <!-- Grid de selección múltiple -->
                                 <label class="form-label fw-bold fs-5 d-block mb-3">Selecciona el seminario sobre el que deseas consultar *</label>
@@ -182,15 +161,15 @@ function flacso_get_paises_consulta() {
                                     <?php foreach ($seminarios_disponibles as $seminario): ?>
                                         <div class="col-md-6 col-lg-4">
                                             <div class="seminario-card-consulta card h-100 border-2 shadow-sm cursor-pointer">
-                                                <input type="radio" name="seminario_id" 
-                                                       id="seminario-<?php echo $seminario['id']; ?>" 
-                                                       value="<?php echo (int)$seminario['id']; ?>" 
+                                                <input type="radio" name="seminario_id"
+                                                       id="seminario-<?php echo $seminario['id']; ?>"
+                                                       value="<?php echo (int)$seminario['id']; ?>"
                                                        data-titulo="<?php echo esc_attr($seminario['titulo']); ?>"
                                                        class="d-none" required>
                                                 <label for="seminario-<?php echo $seminario['id']; ?>" class="card-body text-center p-3 m-0 d-flex flex-column h-100">
-                                                    <img src="<?php echo esc_url($seminario['imagen']); ?>" 
-                                                         alt="<?php echo esc_attr($seminario['titulo']); ?>" 
-                                                         class="img-fluid rounded mb-3" 
+                                                    <img src="<?php echo esc_url($seminario['imagen']); ?>"
+                                                         alt="<?php echo esc_attr($seminario['titulo']); ?>"
+                                                         class="img-fluid rounded mb-3"
                                                          style="height: 120px; width: 100%; object-fit: cover;">
                                                     <h6 class="card-title mb-0 text-dark flex-grow-1 d-flex align-items-center justify-content-center">
                                                         <?php echo esc_html($seminario['titulo']); ?>
@@ -204,7 +183,7 @@ function flacso_get_paises_consulta() {
                                     Por favor selecciona un seminario.
                                 </div>
                                 <div class="form-text mt-2">Haz clic en el seminario sobre el que deseas consultar</div>
-                                
+
                             <?php else: ?>
                                 <div class="alert alert-warning text-center">
                                     <p class="mb-0">No hay seminarios disponibles en este momento.</p>
@@ -214,12 +193,12 @@ function flacso_get_paises_consulta() {
 
                         <!-- SECCIÓN: Datos personales -->
                         <?php if (!empty($seminarios_disponibles) || $solo_un_seminario): ?>
-                        
+
                         <div class="row g-3">
                             <!-- Nombre -->
                             <div class="col-md-6">
                                 <label for="nombre" class="form-label fw-bold">Nombre y Apellido *</label>
-                                <input type="text" class="form-control form-control-lg" name="nombre" id="nombre" 
+                                <input type="text" class="form-control form-control-lg" name="nombre" id="nombre"
                                        placeholder="Tu nombre completo" required>
                                 <div class="invalid-feedback">Por favor ingresa tu nombre.</div>
                             </div>
@@ -227,7 +206,7 @@ function flacso_get_paises_consulta() {
                             <!-- Correo -->
                             <div class="col-md-6">
                                 <label for="correo" class="form-label fw-bold">Correo Electrónico *</label>
-                                <input type="email" class="form-control form-control-lg" name="correo" id="correo" 
+                                <input type="email" class="form-control form-control-lg" name="correo" id="correo"
                                        placeholder="tu.email@ejemplo.com" required>
                                 <div class="invalid-feedback">Por favor ingresa un correo válido.</div>
                             </div>
@@ -251,7 +230,7 @@ function flacso_get_paises_consulta() {
                             <!-- Consulta -->
                             <div class="col-12">
                                 <label for="consulta" class="form-label fw-bold">Tu Consulta *</label>
-                                <textarea class="form-control form-control-lg" name="consulta" id="consulta" 
+                                <textarea class="form-control form-control-lg" name="consulta" id="consulta"
                                           rows="5" placeholder="Cuéntanos tu consulta, pregunta o comentario..." required></textarea>
                                 <div class="invalid-feedback">Por favor ingresa tu consulta.</div>
                             </div>
@@ -299,70 +278,6 @@ function flacso_get_paises_consulta() {
     </div>
 </div>
 
-<style>
-    .bg-primary {
-        background-color: var(--global-palette1, #1d3a72) !important;
-    }
-
-    .seminario-card-consulta {
-        transition: all 0.3s ease;
-        cursor: pointer;
-        border-color: #e0e0e0 !important;
-    }
-
-    .seminario-card-consulta:hover {
-        transform: translateY(-8px);
-        border-color: var(--global-palette1, #1d3a72) !important;
-        box-shadow: 0 12px 30px rgba(29, 58, 114, 0.2) !important;
-    }
-
-    .seminario-card-consulta input[type="radio"]:checked + label {
-        background-color: var(--global-palette7, #e9edf2);
-        border-radius: 0.5rem;
-    }
-
-    .seminario-card-consulta input[type="radio"]:checked + label::after {
-        content: "✓";
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 24px;
-        color: var(--global-palette1, #1d3a72);
-        font-weight: bold;
-    }
-
-    .cursor-pointer {
-        cursor: pointer;
-    }
-
-    .iti, .country-select {
-        display: block !important;
-        width: 100%;
-    }
-
-    .iti__selected-flag {
-        padding: 0 16px;
-    }
-
-    .iti__country-list {
-        z-index: 1000;
-    }
-
-    .form-control:focus {
-        border-color: var(--global-palette1, #1d3a72);
-        box-shadow: 0 0 0 0.2rem rgba(29, 58, 114, 0.25);
-    }
-
-    .btn-primary {
-        background-color: var(--global-palette1, #1d3a72);
-        border-color: var(--global-palette1, #1d3a72);
-    }
-
-    .btn-primary:hover {
-        background-color: var(--global-palette12, #1159af);
-        border-color: var(--global-palette12, #1159af);
-    }
-</style>
 
 <script>
     jQuery(document).ready(function($) {
@@ -508,7 +423,7 @@ function flacso_get_paises_consulta() {
                         </ul>
                     </div>
                 `);
-                
+
                 $('html, body').animate({
                     scrollTop: resultado.offset().top - 100
                 }, 500);
@@ -665,4 +580,3 @@ function flacso_get_paises_consulta() {
 
 <?php
 get_footer();
-

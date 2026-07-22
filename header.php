@@ -16,9 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
     <meta name="theme-color" content="#1d3a72">
 
     <?php if ( is_singular() ) : ?>
-        <meta name="page-id" content="<?php echo get_the_ID(); ?>">
-        <meta name="page-slug" content="<?php echo basename( get_permalink() ); ?>">
-        <meta name="page-type" content="<?php echo get_post_type(); ?>">
+        <meta name="page-id" content="<?php echo esc_attr( (string) get_the_ID() ); ?>">
+        <meta name="page-slug" content="<?php echo esc_attr( basename( get_permalink() ) ); ?>">
+        <meta name="page-type" content="<?php echo esc_attr( (string) get_post_type() ); ?>">
         <meta name="page-title" content="<?php echo esc_attr( get_the_title() ); ?>">
     <?php endif; ?>
 
@@ -55,4 +55,3 @@ do_action( 'kadence_before_wrapper' );
         <?php
         do_action( 'kadence_before_content' );
         ?>
-
