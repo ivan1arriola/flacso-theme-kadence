@@ -133,6 +133,7 @@
 
 .preinsc-steps ol {
     list-style: none;
+    counter-reset: preinsc-step;
     padding: 0;
     margin: 0;
     display: grid;
@@ -141,13 +142,17 @@
 
 .preinsc-steps li {
     position: relative;
+    counter-increment: preinsc-step;
+    /* kadence-compat.css turns these items into flex rows. This component
+       uses an absolutely positioned counter, so keep its text stacked. */
+    display: block;
     padding: 0.95rem 0.95rem 0.95rem 3rem;
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.10);
 }
 
 .preinsc-steps li::before {
-    content: counter(list-item);
+    content: counter(preinsc-step);
     position: absolute;
     left: 0.9rem;
     top: 0.95rem;
@@ -162,13 +167,13 @@
     font-size: 0.78rem;
 }
 
-.step-title {
+.preinsc-steps .step-title {
     color: #ffffff;
     font-weight: 750;
     line-height: 1.25;
 }
 
-.step-desc {
+.preinsc-steps .step-desc {
     margin-top: 0.25rem;
     color: rgba(255, 255, 255, 0.78);
     font-size: 0.92rem;
@@ -681,5 +686,3 @@ button.flacso-btn-primary {
         border-radius: 12px !important;
     }
 }
-
-
