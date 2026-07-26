@@ -252,6 +252,7 @@ function flacso_child_enqueue_template_assets() {
         'single-seminario.php'                => 'single-seminario',
         'category-novedades.php'              => 'category-novedades',
         'single.php'                          => 'single-post',
+        'single-evento.php'                   => 'single-post',
         'single-docente.php'                  => 'single-docente',
         'archive-docente.php'                 => 'archive-docente',
         'taxonomy-tipo-oferta-academica.php'  => 'taxonomy-oferta',

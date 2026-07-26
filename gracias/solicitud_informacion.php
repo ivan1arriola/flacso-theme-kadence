@@ -12,7 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
     <?php else : ?>
         <p class="lead mb-2">Hemos recibido tu solicitud de información correctamente.</p>
     <?php endif; ?>
-    <p class="mb-2">A la brevedad te estaremos enviando el programa y los detalles de cursada al correo electrónico que ingresaste.</p>
+    <?php if ( ! empty( $is_dynamic_form_gracias ) ) : ?>
+        <p class="mb-2">A la brevedad recibirás por correo la información correspondiente.</p>
+    <?php else : ?>
+        <p class="mb-2">A la brevedad te estaremos enviando el programa y los detalles de cursada al correo electrónico que ingresaste.</p>
+    <?php endif; ?>
     <p class="mb-0">
         Si tenés dudas, escribinos a
         <a href="mailto:<?php echo esc_attr( FLACSO_EMAIL_CONTACTO ); ?>" class="fw-semibold">

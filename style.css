@@ -6,8 +6,8 @@ Author: Kadence WP
 Author URI: https://www.kadencewp.com/
 Description: Kadence Theme is a lightweight yet full featured WordPress theme for creating beautiful fast loading and accessible websites, easier than ever. It features an easy to use drag and drop header and footer builder to build any type of header in minutes. It features a full library of gorgeous starter templates that are easy to modify with our intelligent global font and color controls. With extensive integration with the most popular 3rd party plugins, you can quickly build impressive ecommerce websites, course websites, business websites, and more.
 Tags: translation-ready,two-columns,right-sidebar,left-sidebar,footer-widgets,blog,custom-logo,custom-background,custom-menu,rtl-language-support,editor-style,threaded-comments,custom-colors,featured-images,wide-blocks,full-width-template,theme-options,e-commerce
-Version: 1.1.38.1784822849
-Updated: 2026-07-23 13:07:29
+Version: 1.1.39.1785087445
+Updated: 2026-07-26 14:37:25
 
 */
 
@@ -29,6 +29,38 @@ Updated: 2026-07-23 13:07:29
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
     outline: 3px solid var(--flacso-color-accent);
     outline-offset: 3px;
+}
+
+/*
+ * La fila superior de Kadence puede quedar con min-height: 0 desde el
+ * personalizador. El botón "Agenda Web" es más alto que los iconos sociales y
+ * terminaba desbordando la fila, superponiéndose a la barra de administración.
+ */
+#masthead .site-top-header-inner-wrap {
+    min-height: 2.75rem;
+    align-items: center;
+}
+
+#masthead .site-top-header-inner-wrap .site-header-section,
+#masthead .site-top-header-inner-wrap .site-header-item,
+#masthead .site-top-header-inner-wrap .header-button-wrap,
+#masthead .site-top-header-inner-wrap .header-button-inner-wrap {
+    min-height: 0;
+    align-items: center;
+}
+
+#masthead .site-top-header-inner-wrap .header-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-block: 0;
+    line-height: 1.2;
+}
+
+@media (max-width: 767px) {
+    #masthead .site-top-header-inner-wrap {
+        min-height: 2.5rem;
+    }
 }
 
 .screen-reader-text:focus {
