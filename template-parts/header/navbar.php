@@ -41,6 +41,11 @@ $header_cta = flacso_child_get_header_cta();
 			</div>
 
 			<nav id="flacso-primary-navigation" class="flacso-navbar__navigation" aria-label="<?php esc_attr_e( 'Navegación principal', 'kadence-child-flacso' ); ?>" data-flacso-menu>
+				<button class="flacso-navbar__drawer-close" type="button" data-flacso-menu-close>
+					<span><?php esc_html_e( 'Menú', 'kadence-child-flacso' ); ?></span>
+					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+					<span class="screen-reader-text"><?php esc_html_e( 'Cerrar menú', 'kadence-child-flacso' ); ?></span>
+				</button>
 				<?php
 				wp_nav_menu(
 					array(
@@ -53,6 +58,7 @@ $header_cta = flacso_child_get_header_cta();
 				);
 				?>
 			</nav>
+			<button class="flacso-navbar__overlay" type="button" tabindex="-1" aria-hidden="true" data-flacso-menu-overlay></button>
 
 			<div class="flacso-navbar__actions">
 				<button class="flacso-navbar__icon-button" type="button" aria-expanded="false" aria-controls="flacso-header-search" data-flacso-search-toggle>

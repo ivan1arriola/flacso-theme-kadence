@@ -3,6 +3,7 @@
 if ( !defined( 'ABSPATH' ) ) exit;
 
 require_once get_stylesheet_directory() . '/inc/open-graph.php';
+require_once get_stylesheet_directory() . '/template-parts/front-page/hero.php';
 
 /**
  * ===========================================================
@@ -44,6 +45,8 @@ add_action( 'wp_enqueue_scripts', 'child_theme_configurator_css', 30 ); // prior
  * Cabecera y pie institucionales del tema hijo.
  */
 function flacso_child_register_navigation_locations() {
+    add_theme_support( 'flacso-front-page-layout' );
+
     register_nav_menus(
         array(
             'header_utility'      => __( 'Cabecera: accesos superiores', 'kadence-child-flacso' ),
@@ -75,6 +78,37 @@ function flacso_child_enqueue_site_chrome() {
     );
 }
 add_action( 'wp_enqueue_scripts', 'flacso_child_enqueue_site_chrome', 45 );
+
+function flacso_child_enqueue_front_page_assets() {
+    if ( ! is_front_page() ) {
+        return;
+    }
+
+    $base_css_path = 'assets/css/front-page-base.css';
+    $css_path      = 'assets/css/front-page-hero.css';
+    $js_path       = 'assets/js/front-page-hero.js';
+
+    wp_enqueue_style(
+        'flacso-front-page-base',
+        get_stylesheet_directory_uri() . '/' . $base_css_path,
+        array( 'flacso-site-chrome' ),
+        flacso_child_asset_version( $base_css_path )
+    );
+    wp_enqueue_style(
+        'flacso-front-page-hero',
+        get_stylesheet_directory_uri() . '/' . $css_path,
+        array( 'flacso-front-page-base' ),
+        flacso_child_asset_version( $css_path )
+    );
+    wp_enqueue_script(
+        'flacso-front-page-hero',
+        get_stylesheet_directory_uri() . '/' . $js_path,
+        array(),
+        flacso_child_asset_version( $js_path ),
+        true
+    );
+}
+add_action( 'wp_enqueue_scripts', 'flacso_child_enqueue_front_page_assets', 50 );
 
 function flacso_child_primary_menu_fallback() {
     echo '<ul class="flacso-navbar__menu">';

@@ -36,7 +36,6 @@ do_action( 'kadence_before_content' );
 				'seminarios'         => 'flacso_section_seminarios_proximos_render',
 				// 'novedades_destacadas' (si existía) solía combinarse con novedades. Ahora se carga secuencial.
 				'novedades'          => 'flacso_section_novedades_render',
-				'novedades_busqueda' => 'flacso_section_novedades_busqueda_render',
 				'quienes'            => 'flacso_section_quienes_somos_render',
 				'instagram'          => 'flacso_section_instagram_render',
 				'posgrados'          => 'flacso_section_oferta_educativa_render',

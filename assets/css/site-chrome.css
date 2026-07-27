@@ -219,7 +219,7 @@
     opacity: 0;
     transform: translateY(8px);
     transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
-    z-index: 100004;
+    z-index: 999999;
 }
 
 .flacso-navbar__menu li:hover > .sub-menu,
@@ -243,6 +243,12 @@
 .flacso-navbar__menu .sub-menu a:focus-visible {
     background: #f4f7fb;
     color: var(--flacso-chrome-blue);
+}
+
+.flacso-navbar__drawer-close,
+.flacso-navbar__overlay,
+.flacso-navbar__submenu-toggle {
+    display: none;
 }
 
 .flacso-navbar__actions {
@@ -477,40 +483,137 @@
 }
 
 @media (max-width: 1080px) {
+    body.flacso-menu-open {
+        overflow: hidden;
+    }
+
+    .flacso-navbar__actions {
+        margin-left: auto;
+    }
+
     .flacso-navbar__navigation {
-        position: absolute;
+        position: fixed;
         visibility: hidden;
-        top: 100%;
+        z-index: 100006;
+        top: 0;
         right: 0;
-        left: 0;
-        max-height: calc(100vh - 120px);
-        padding: 0.65rem 20px 1.25rem;
+        bottom: 0;
+        left: auto;
+        width: min(390px, calc(100vw - 42px));
+        max-height: none;
+        padding: 0 1.15rem 1.5rem;
         overflow-y: auto;
-        border-top: 1px solid var(--flacso-chrome-line);
+        border-left: 1px solid var(--flacso-chrome-line);
         background: #fff;
-        box-shadow: 0 24px 50px rgba(13, 32, 62, 0.14);
-        opacity: 0;
-        transform: translateY(-8px);
+        box-shadow: -24px 0 60px rgba(13, 32, 62, 0.24);
+        opacity: 1;
+        transform: translateX(105%);
         transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
     }
 
     .flacso-navbar__navigation.is-open {
         visibility: visible;
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
+    }
+
+    .flacso-navbar__drawer-close {
+        position: sticky;
+        z-index: 2;
+        top: 0;
+        width: 100%;
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0;
+        border: 0;
+        border-bottom: 1px solid var(--flacso-chrome-line);
+        background: #fff;
+        color: var(--flacso-chrome-navy);
+        font-size: 1rem;
+        font-weight: 800;
+        cursor: pointer;
+    }
+
+    .flacso-navbar__drawer-close svg {
+        width: 24px;
+        height: 24px;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-width: 2;
+    }
+
+    .flacso-navbar__overlay {
+        position: fixed;
+        visibility: hidden;
+        z-index: 100005;
+        inset: 0;
+        display: block;
+        border: 0;
+        background: rgba(7, 20, 43, 0.58);
+        opacity: 0;
+        cursor: pointer;
+        transition: opacity 0.2s ease, visibility 0.2s;
+    }
+
+    .flacso-navbar__overlay.is-visible {
+        visibility: visible;
+        opacity: 1;
     }
 
     .flacso-navbar__menu {
         display: block;
+        padding-top: 0.5rem;
     }
 
     .flacso-navbar__menu > li {
-        display: block;
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 46px;
+        align-items: center;
         border-bottom: 1px solid #edf1f6;
     }
 
     .flacso-navbar__menu > li > a {
+        grid-column: 1;
         min-height: 54px;
+        padding-right: 0.5rem;
+    }
+
+    .flacso-navbar__menu > .menu-item-has-children > a::before {
+        display: none;
+    }
+
+    .flacso-navbar__submenu-toggle {
+        grid-column: 2;
+        grid-row: 1;
+        width: 42px;
+        height: 42px;
+        display: grid;
+        padding: 0;
+        place-items: center;
+        border: 0;
+        border-radius: 50%;
+        background: #f1f5fa;
+        color: var(--flacso-chrome-blue);
+        cursor: pointer;
+    }
+
+    .flacso-navbar__submenu-toggle svg {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2;
+        transition: transform 0.2s ease;
+    }
+
+    .flacso-navbar__submenu-toggle[aria-expanded="true"] svg {
+        transform: rotate(180deg);
     }
 
     .flacso-navbar__menu > .menu-item-has-children > a::before,
@@ -527,15 +630,40 @@
 
     .flacso-navbar__menu .sub-menu {
         position: static;
-        visibility: visible;
+        visibility: hidden;
+        grid-column: 1 / -1;
         width: auto;
         min-width: 0;
-        padding: 0 0 0.65rem 0.8rem;
+        max-height: 0;
+        padding: 0 0 0 0.8rem;
+        overflow: hidden !important;
         border: 0;
         background: transparent;
         box-shadow: none;
-        opacity: 1;
+        opacity: 0;
         transform: none;
+        transition: max-height 0.25s ease, opacity 0.2s ease, padding 0.2s ease, visibility 0.2s;
+    }
+
+    .flacso-navbar__menu li:hover > .sub-menu,
+    .flacso-navbar__menu li:focus-within > .sub-menu {
+        visibility: hidden;
+        max-height: 0;
+        padding-bottom: 0;
+        opacity: 0;
+    }
+
+    .flacso-navbar__menu .menu-item-has-children.is-submenu-open > .sub-menu,
+    .flacso-navbar__menu .menu-item-has-children.is-submenu-open:hover > .sub-menu,
+    .flacso-navbar__menu .menu-item-has-children.is-submenu-open:focus-within > .sub-menu {
+        visibility: visible;
+        max-height: 600px;
+        padding-bottom: 0.65rem;
+        opacity: 1;
+    }
+
+    .flacso-navbar__menu .sub-menu a {
+        padding-block: 0.65rem;
     }
 
     .flacso-navbar__menu-button {
@@ -549,6 +677,10 @@
     .flacso-footer__grid > div:last-child {
         display: none;
     }
+
+    body.admin-bar #wpadminbar #wp-admin-bar-top-secondary {
+        display: none;
+    }
 }
 
 @media (max-width: 680px) {
@@ -557,11 +689,25 @@
     }
 
     .flacso-topbar__inner {
-        justify-content: flex-end;
+        min-height: 0;
+        justify-content: center;
+        padding-block: 0.65rem;
     }
 
-    .flacso-topbar__menu li:not(:first-child) {
-        display: none;
+    .flacso-topbar__links,
+    .flacso-topbar__menu {
+        width: 100%;
+    }
+
+    .flacso-topbar__menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.45rem 1rem;
+        text-align: center;
+    }
+
+    .flacso-topbar__menu li {
+        display: block;
     }
 
     .flacso-navbar__inner {

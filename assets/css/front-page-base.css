@@ -1,0 +1,165 @@
+:root {
+    --flacso-section-max-width: var(--global-content-width, var(--kb-content-width, 1290px));
+    --flacso-section-gutter: var(--global-content-edge-padding, 20px);
+    --flacso-section-heading-color: var(--global-palette1, #163970);
+    --flacso-section-vertical-space: clamp(2rem, 5vw, 4.5rem);
+    --flacso-home-display-font: "Sora", var(--global-heading-font-family, "Trebuchet MS", sans-serif);
+    --flacso-home-body-font: "Manrope", var(--global-body-font-family, "Segoe UI", sans-serif);
+}
+
+.flacso-main-page {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: clip;
+    background: #f4f7fb;
+    color: #1f3048;
+    font-family: var(--flacso-home-body-font);
+}
+
+.flacso-main-page *,
+.flacso-main-page *::before,
+.flacso-main-page *::after {
+    box-sizing: border-box;
+}
+
+.flacso-homepage-completa::before,
+.flacso-homepage-completa::after {
+    display: none;
+}
+
+.flacso-home-layout {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+}
+
+.flacso-content-shell {
+    width: min(100%, var(--flacso-section-max-width));
+    margin-inline: auto;
+    padding-inline: var(--flacso-section-gutter);
+}
+
+.flacso-main-page .flacso-home-block {
+    width: 100%;
+    margin: 0 !important;
+    padding: var(--flacso-section-vertical-space) clamp(1rem, 3vw, 2rem) !important;
+    background: #fff;
+}
+
+.flacso-main-page .flacso-home-block:not(.flacso-home-block--hero):not(.flacso-home-block--instagram) {
+    --flacso-section-heading-color: #163970;
+}
+
+.flacso-main-page .flacso-home-block--hero {
+    padding: 0 !important;
+    background: transparent;
+}
+
+.flacso-main-page .flacso-home-block--eventos,
+.flacso-main-page .flacso-home-block--novedades_busqueda,
+.flacso-main-page .flacso-home-block--instagram {
+    background: #f4f7fb;
+}
+
+.flacso-main-page .flacso-home-block--seminarios,
+.flacso-main-page .flacso-home-block--quienes,
+.flacso-main-page .flacso-home-block--contacto {
+    background: #f8faf6;
+}
+
+.flacso-main-page .flacso-home-block--posgrados,
+.flacso-main-page .flacso-home-block--mailing,
+.flacso-main-page .flacso-home-block--congreso {
+    background: #fff9ef;
+}
+
+.flacso-main-page .flacso-home-block__surface {
+    position: relative;
+    width: min(100%, var(--flacso-section-max-width));
+    max-width: var(--flacso-section-max-width);
+    margin-inline: auto;
+}
+
+.flacso-main-page .flacso-home-block--hero .flacso-home-block__surface {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    overflow: visible;
+}
+
+.flacso-main-page .flacso-home-block__surface--card {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.flacso-main-page .flacso-home-block__surface--card::before,
+.flacso-main-page .flacso-home-block__surface--card::after {
+    display: none;
+}
+
+.flacso-main-page .flacso-home-block:not(.flacso-home-block--hero) .flacso-content-shell {
+    width: 100%;
+    max-width: none;
+    padding-inline: clamp(0.25rem, 2vw, 1rem);
+}
+
+.flacso-main-page h1,
+.flacso-main-page h2,
+.flacso-main-page h3,
+.flacso-main-page h4 {
+    font-family: var(--flacso-home-display-font);
+}
+
+.flacso-home-block:not(.flacso-home-block--hero) header {
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+}
+
+.flacso-home-block:not(.flacso-home-block--hero) h2 {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    color: var(--flacso-section-heading-color);
+    font-size: clamp(1.9rem, 2.6vw, 2.4rem);
+    font-weight: 750;
+    letter-spacing: 0;
+    line-height: 1.15;
+}
+
+.flacso-home-block:not(.flacso-home-block--hero) h2::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 3px;
+    margin-top: 0.65rem;
+    border-radius: 999px;
+    background: var(--global-palette-btn-bg, #248138);
+}
+
+.flacso-main-page .flacso-home-block--posgrados .nuestra-oferta-educativa-3d .oferta-educativa-titulo {
+    color: #163970 !important;
+}
+
+@media (max-width: 767.98px) {
+    .flacso-main-page .flacso-home-block {
+        padding: 1.75rem 0.85rem !important;
+    }
+
+    .flacso-main-page .flacso-home-block--hero {
+        padding: 0 !important;
+    }
+
+    .flacso-main-page .flacso-home-block__surface--card .flacso-content-shell {
+        padding-inline: 0;
+    }
+
+    .flacso-home-block:not(.flacso-home-block--hero) h2 {
+        font-size: clamp(1.45rem, 8vw, 2rem);
+    }
+}
