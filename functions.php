@@ -41,6 +41,97 @@ endif;
 add_action( 'wp_enqueue_scripts', 'child_theme_configurator_css', 30 ); // prioridad 30 para cargar después de Bootstrap
 
 /**
+ * Cabecera y pie institucionales del tema hijo.
+ */
+function flacso_child_register_navigation_locations() {
+    register_nav_menus(
+        array(
+            'header_utility'      => __( 'Cabecera: accesos superiores', 'kadence-child-flacso' ),
+            'header_cta'          => __( 'Cabecera: botón destacado', 'kadence-child-flacso' ),
+            'footer_formacion'     => __( 'Pie: Formación', 'kadence-child-flacso' ),
+            'footer_institucional' => __( 'Pie: Institucional', 'kadence-child-flacso' ),
+            'footer_accesos'       => __( 'Pie: Accesos', 'kadence-child-flacso' ),
+        )
+    );
+}
+add_action( 'after_setup_theme', 'flacso_child_register_navigation_locations', 20 );
+
+function flacso_child_enqueue_site_chrome() {
+    $css_path = 'assets/css/site-chrome.css';
+    $js_path  = 'assets/js/site-chrome.js';
+
+    wp_enqueue_style(
+        'flacso-site-chrome',
+        get_stylesheet_directory_uri() . '/' . $css_path,
+        array( 'chld_thm_cfg_child' ),
+        flacso_child_asset_version( $css_path )
+    );
+    wp_enqueue_script(
+        'flacso-site-chrome',
+        get_stylesheet_directory_uri() . '/' . $js_path,
+        array(),
+        flacso_child_asset_version( $js_path ),
+        true
+    );
+}
+add_action( 'wp_enqueue_scripts', 'flacso_child_enqueue_site_chrome', 45 );
+
+function flacso_child_primary_menu_fallback() {
+    echo '<ul class="flacso-navbar__menu">';
+    wp_list_pages(
+        array(
+            'title_li' => '',
+            'depth'    => 1,
+        )
+    );
+    echo '</ul>';
+}
+
+function flacso_child_utility_menu_fallback() {
+    $agenda_url = get_theme_mod( 'flacso_contacto_agenda_url', 'https://agenda.flacso.edu.uy/' );
+    $links = array(
+        'https://virtual.flacso.edu.uy/'       => __( 'Campus Virtual', 'kadence-child-flacso' ),
+        $agenda_url                            => __( 'Agenda', 'kadence-child-flacso' ),
+        'https://www.instagram.com/flacsouruguay/' => 'Instagram',
+    );
+
+    echo '<ul class="flacso-topbar__menu">';
+    foreach ( $links as $url => $label ) {
+        printf( '<li><a href="%1$s">%2$s</a></li>', esc_url( $url ), esc_html( $label ) );
+    }
+    echo '</ul>';
+}
+
+function flacso_child_get_header_cta() {
+    $fallback = array(
+        'label'  => __( 'Agenda Web', 'kadence-child-flacso' ),
+        'url'    => get_theme_mod( 'flacso_contacto_agenda_url', 'https://agenda.flacso.edu.uy/' ),
+        'target' => '',
+    );
+    $locations = get_nav_menu_locations();
+
+    if ( empty( $locations['header_cta'] ) ) {
+        return $fallback;
+    }
+
+    $items = wp_get_nav_menu_items( (int) $locations['header_cta'] );
+    if ( empty( $items ) || ! is_array( $items ) ) {
+        return $fallback;
+    }
+
+    $item = reset( $items );
+    if ( ! $item instanceof WP_Post || empty( $item->url ) || empty( $item->title ) ) {
+        return $fallback;
+    }
+
+    return array(
+        'label'  => wp_strip_all_tags( $item->title ),
+        'url'    => $item->url,
+        'target' => '_blank' === $item->target ? '_blank' : '',
+    );
+}
+
+/**
  * Normaliza la presentación de las imágenes destacadas en una relación 4:5.
  * El script crea el fondo difuminado a partir de la propia imagen.
  */
@@ -248,6 +339,8 @@ function flacso_child_enqueue_template_assets() {
     global $template;
 
     $template_assets = array(
+        'single-convenio.php'                 => 'convenio',
+        'archive-convenio.php'                => 'convenio',
         'single-oferta-academica.php'         => 'single-oferta-academica',
         'single-seminario.php'                => 'single-seminario',
         'category-novedades.php'              => 'category-novedades',

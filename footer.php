@@ -23,12 +23,7 @@ do_action( 'kadence_after_content' );
 	</div><!-- #inner-wrap -->
 	<?php
 	do_action( 'kadence_before_footer' );
-	/**
-	 * Kadence footer hook.
-	 *
-	 * @hooked Kadence/footer_markup - 10
-	 */
-	do_action( 'kadence_footer' );
+	get_template_part( 'template-parts/footer/site-footer' );
 
 	do_action( 'kadence_after_footer' );
 	?>

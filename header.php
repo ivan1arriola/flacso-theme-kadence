@@ -44,8 +44,8 @@ do_action( 'kadence_before_wrapper' );
     // Kadence antes del header
     do_action( 'kadence_before_header' );
 
-    // Header principal
-    do_action( 'kadence_header' );
+    // Cabecera propia del tema hijo. Conserva los datos y menús de WordPress.
+    get_template_part( 'template-parts/header/navbar' );
 
     // Kadence after header
     do_action( 'kadence_after_header' );
