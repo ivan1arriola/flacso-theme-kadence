@@ -22,6 +22,8 @@
     border-bottom: 1px solid rgba(211, 220, 232, 0.86);
     box-shadow: 0 8px 30px rgba(13, 32, 62, 0.04);
     backdrop-filter: blur(14px);
+    overflow: visible !important;
+    isolation: isolate;
 }
 
 .flacso-navbar,
@@ -114,6 +116,12 @@
     margin-left: auto;
 }
 
+@media (min-width: 1081px) {
+    .flacso-navbar__navigation {
+        overflow: visible !important;
+    }
+}
+
 .flacso-navbar__menu,
 .flacso-navbar__menu ul {
     margin: 0;
@@ -143,6 +151,29 @@
     font-weight: 720;
     line-height: 1.2;
     text-decoration: none;
+}
+
+.flacso-navbar__menu > .menu-item-has-children > a {
+    gap: 0.48rem;
+}
+
+.flacso-navbar__menu > .menu-item-has-children > a::before {
+    content: "";
+    order: 2;
+    width: 0.42rem;
+    height: 0.42rem;
+    margin-top: -0.22rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    opacity: 0.72;
+    transform: rotate(45deg);
+    transition: margin-top 0.18s ease, transform 0.18s ease;
+}
+
+.flacso-navbar__menu > .menu-item-has-children:hover > a::before,
+.flacso-navbar__menu > .menu-item-has-children:focus-within > a::before {
+    margin-top: 0.2rem;
+    transform: rotate(225deg);
 }
 
 .flacso-navbar__menu > li > a::after {
@@ -188,7 +219,7 @@
     opacity: 0;
     transform: translateY(8px);
     transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
-    z-index: 100002;
+    z-index: 100004;
 }
 
 .flacso-navbar__menu li:hover > .sub-menu,
@@ -296,6 +327,8 @@
 }
 
 .flacso-header-search {
+    position: relative;
+    z-index: 100002;
     border-top: 1px solid var(--flacso-chrome-line);
     background: #fff;
 }
@@ -478,6 +511,13 @@
 
     .flacso-navbar__menu > li > a {
         min-height: 54px;
+    }
+
+    .flacso-navbar__menu > .menu-item-has-children > a::before,
+    .flacso-navbar__menu > .menu-item-has-children:hover > a::before,
+    .flacso-navbar__menu > .menu-item-has-children:focus-within > a::before {
+        margin-top: -0.22rem;
+        transform: rotate(45deg);
     }
 
     .flacso-navbar__menu > li > a::after {

@@ -1,0 +1,345 @@
+.flacso-convenios-archive,
+.flacso-convenio-single {
+    --convenio-blue: #163970;
+    --convenio-navy: #0d203e;
+    --convenio-yellow: #fed222;
+    --convenio-line: #dce3ec;
+    --convenio-muted: #68768b;
+    background: #f5f7fb;
+    color: #172033;
+}
+
+.flacso-convenios-container {
+    width: min(1180px, calc(100% - 40px));
+    margin-inline: auto;
+}
+
+.flacso-convenios-hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(3.5rem, 7vw, 6.5rem) 0 clamp(3rem, 6vw, 5rem);
+    background:
+        radial-gradient(circle at 82% 10%, rgba(254, 210, 34, 0.14), transparent 25rem),
+        linear-gradient(125deg, #102a56, #16447d 58%, #2163a5);
+    color: #fff;
+}
+
+.flacso-convenios-breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    align-items: center;
+    margin-bottom: 1.6rem;
+    color: inherit;
+    font-size: 0.82rem;
+}
+
+.flacso-convenios-breadcrumb a {
+    color: inherit;
+    opacity: 0.82;
+    text-decoration: none;
+}
+
+.flacso-convenios-breadcrumb a:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.flacso-convenios-eyebrow {
+    display: inline-flex;
+    gap: 0.6rem;
+    align-items: center;
+    color: var(--convenio-blue);
+    font-size: 0.74rem;
+    font-weight: 850;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+}
+
+.flacso-convenios-eyebrow::before {
+    width: 24px;
+    height: 3px;
+    border-radius: 5px;
+    background: var(--convenio-yellow);
+    content: "";
+}
+
+.flacso-convenios-hero .flacso-convenios-eyebrow {
+    color: var(--convenio-yellow);
+}
+
+.flacso-convenios-hero h1 {
+    max-width: 760px;
+    margin: 0.6rem 0 1rem;
+    color: #fff;
+    font-size: clamp(2.7rem, 6vw, 5rem);
+    font-weight: 850;
+    letter-spacing: -0.05em;
+    line-height: 0.98;
+}
+
+.flacso-convenios-hero > div > p {
+    max-width: 680px;
+    margin: 0;
+    color: #dbe7f7;
+    font-size: clamp(1rem, 2vw, 1.15rem);
+}
+
+.flacso-convenios-search {
+    width: min(760px, 100%);
+    margin-top: 2rem;
+}
+
+.flacso-convenios-search label {
+    display: block;
+    margin-bottom: 0.45rem;
+    color: #edf5ff;
+    font-size: 0.84rem;
+    font-weight: 700;
+}
+
+.flacso-convenios-search__control {
+    position: relative;
+}
+
+.flacso-convenios-search__control svg {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: var(--convenio-blue);
+    stroke-linecap: round;
+    stroke-width: 2;
+    transform: translateY(-50%);
+}
+
+.flacso-convenios-search input {
+    width: 100%;
+    min-height: 54px;
+    padding: 0.8rem 1rem 0.8rem 3rem;
+    border: 2px solid transparent;
+    border-radius: 15px;
+    background: #fff;
+    color: #172033;
+    box-shadow: 0 18px 45px rgba(4, 17, 40, 0.18);
+}
+
+.flacso-convenios-search input:focus {
+    border-color: var(--convenio-yellow);
+    outline: 0;
+}
+
+.flacso-convenios-search > p {
+    margin: 0.55rem 0 0;
+    color: #c7d8ed;
+    font-size: 0.82rem;
+}
+
+.flacso-convenios-listing {
+    padding: clamp(3rem, 6vw, 5.5rem) 0;
+}
+
+.flacso-convenios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.flacso-convenio-card[hidden] {
+    display: none;
+}
+
+.flacso-convenio-card > a {
+    display: flex;
+    min-height: 280px;
+    height: 100%;
+    padding: 1.4rem;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid rgba(22, 57, 112, 0.16);
+    border-radius: 20px;
+    background: #fff;
+    color: inherit;
+    text-align: center;
+    text-decoration: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.flacso-convenio-card > a:hover,
+.flacso-convenio-card > a:focus-visible {
+    border-color: rgba(22, 57, 112, 0.5);
+    box-shadow: 0 18px 42px rgba(13, 32, 62, 0.12);
+    transform: translateY(-4px);
+}
+
+.flacso-convenio-card__logo {
+    display: grid;
+    width: 138px;
+    height: 138px;
+    padding: 0.75rem;
+    place-items: center;
+    border-radius: 16px;
+    background: #f1f4f9;
+}
+
+.flacso-convenio-card__logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.flacso-convenio-card h2 {
+    margin: 1rem 0 0;
+    color: var(--convenio-navy);
+    font-size: 1.08rem;
+    line-height: 1.3;
+}
+
+.flacso-convenio-card p {
+    margin: 0.55rem 0 0;
+    color: var(--convenio-muted);
+    font-size: 0.86rem;
+}
+
+.flacso-convenio-card > a > span {
+    margin-top: auto;
+    padding-top: 1rem;
+    color: var(--convenio-blue);
+    font-size: 0.86rem;
+    font-weight: 800;
+}
+
+.flacso-convenios-empty {
+    padding: 3rem 1rem;
+    border: 1px dashed rgba(22, 57, 112, 0.3);
+    border-radius: 18px;
+    background: #fff;
+    text-align: center;
+}
+
+.flacso-convenios-empty h2 {
+    margin: 0;
+    color: var(--convenio-blue);
+}
+
+.flacso-convenios-empty p {
+    margin: 0.5rem 0 0;
+    color: var(--convenio-muted);
+}
+
+.flacso-convenio-single {
+    padding: clamp(2.5rem, 5vw, 4rem) 0 clamp(4rem, 8vw, 7rem);
+}
+
+.flacso-convenio-single .flacso-convenios-breadcrumb {
+    color: #526176;
+}
+
+.flacso-convenio-single__card {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+    border: 1px solid var(--convenio-line);
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0 24px 70px rgba(15, 34, 67, 0.1);
+}
+
+.flacso-convenio-single__logo {
+    display: grid;
+    min-height: 330px;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    place-items: center;
+    border-radius: 22px;
+    background: #f1f4f9;
+}
+
+.flacso-convenio-single__logo img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+}
+
+.flacso-convenio-single h1 {
+    margin: 0.75rem 0 1.2rem;
+    color: var(--convenio-navy);
+    font-size: clamp(2.2rem, 5vw, 4.2rem);
+    font-weight: 850;
+    letter-spacing: -0.045em;
+    line-height: 1;
+}
+
+.flacso-convenio-single__description {
+    color: #46536a;
+    font-size: 1.04rem;
+    line-height: 1.75;
+}
+
+.flacso-convenio-single__description > :last-child {
+    margin-bottom: 0;
+}
+
+.flacso-convenio-single__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.8rem;
+}
+
+.flacso-convenio-button {
+    display: inline-flex;
+    min-height: 48px;
+    padding: 0 1.2rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    border: 1px solid #cbd5e3;
+    border-radius: 999px;
+    color: var(--convenio-blue);
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.flacso-convenio-button--primary {
+    border-color: var(--convenio-yellow);
+    background: var(--convenio-yellow);
+    color: var(--convenio-navy);
+}
+
+@media (max-width: 760px) {
+    .flacso-convenios-container {
+        width: min(100% - 28px, 1180px);
+    }
+
+    .flacso-convenios-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .flacso-convenio-card > a {
+        min-height: 240px;
+        padding: 1rem 0.75rem;
+    }
+
+    .flacso-convenio-card__logo {
+        width: 108px;
+        height: 108px;
+    }
+
+    .flacso-convenio-single__card {
+        grid-template-columns: 1fr;
+    }
+
+    .flacso-convenio-single__logo {
+        min-height: 240px;
+    }
+}
+
+@media (max-width: 440px) {
+    .flacso-convenios-grid {
+        grid-template-columns: 1fr;
+    }
+}
