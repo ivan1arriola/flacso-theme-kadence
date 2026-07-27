@@ -1,7 +1,8 @@
 .flacso-front-hero {
     --hero-yellow: #fed222;
+    --flacso-hero-admin-offset: 0px;
     position: relative;
-    min-height: clamp(520px, 67svh, 720px);
+    min-height: clamp(470px, 58svh, 620px);
     display: grid;
     align-items: center;
     overflow: hidden;
@@ -28,7 +29,7 @@
     grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr);
     align-items: center;
     gap: clamp(2rem, 5vw, 5rem);
-    padding-block: clamp(3.5rem, 8svh, 6rem);
+    padding-block: clamp(1.75rem, 3.8svh, 3rem);
 }
 
 .flacso-front-hero__content {
@@ -40,7 +41,7 @@
 .flacso-front-hero__kicker {
     display: inline-flex;
     width: fit-content;
-    margin: 0 0 1.5rem;
+    margin: 0 0 1rem;
     padding: 0.52rem 0.85rem;
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 999px;
@@ -52,10 +53,10 @@
 }
 
 .flacso-main-page .flacso-front-hero__title {
-    max-width: 13ch;
+    max-width: 14ch;
     margin: 0;
     color: #fff;
-    font-size: clamp(2.8rem, 5.3vw, 5.25rem);
+    font-size: clamp(2.8rem, min(5vw, 8.3svh), 4.6rem);
     font-weight: 800;
     letter-spacing: -0.055em;
     line-height: 0.98;
@@ -69,7 +70,7 @@
 
 .flacso-front-hero__subtitle {
     max-width: 48ch;
-    margin: 1.4rem 0 0;
+    margin: 1rem 0 0;
     color: #dbe7f7;
     font-size: clamp(1rem, 1.45vw, 1.23rem);
     line-height: 1.5;
@@ -79,11 +80,11 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    margin-top: 1.8rem;
+    margin-top: 1.25rem;
 }
 
 .flacso-front-hero__button {
-    min-height: 52px;
+    min-height: 48px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -129,14 +130,14 @@
 
 .flacso-front-hero__art {
     position: relative;
-    min-height: 430px;
+    min-height: 340px;
     display: grid;
     place-items: center;
 }
 
 .flacso-front-hero__globe {
     position: relative;
-    width: min(360px, 29vw);
+    width: min(320px, 26vw);
     aspect-ratio: 1;
     overflow: hidden;
     border-radius: 50%;
@@ -155,17 +156,34 @@
 
 .flacso-front-hero__orbit {
     position: absolute;
-    width: min(430px, 35vw);
+    width: min(400px, 33vw);
     aspect-ratio: 1;
     border: 1px solid rgba(255, 255, 255, 0.22);
     border-radius: 50%;
     box-shadow: 0 0 0 52px rgba(255, 255, 255, 0.035), 0 0 0 104px rgba(255, 255, 255, 0.02);
 }
 
+body.admin-bar .flacso-front-hero {
+    --flacso-hero-admin-offset: 32px;
+}
+
+@media (min-width: 901px) {
+    .flacso-front-hero {
+        width: 100%;
+        height: min(650px, calc(100svh - 120px - var(--flacso-hero-admin-offset)));
+        min-height: 0;
+    }
+
+    .flacso-front-hero__grid {
+        height: 100%;
+    }
+}
+
 .flacso-front-hero__year {
     position: absolute;
-    right: 2%;
-    bottom: 7%;
+    z-index: 3;
+    right: 0;
+    bottom: 2%;
     padding: 1rem 1.15rem;
     border-radius: 18px;
     background: #fff;
@@ -260,7 +278,7 @@
 
 @media (max-width: 600px) {
     .flacso-front-hero {
-        min-height: 520px;
+        min-height: 470px;
         text-align: center;
     }
 
@@ -293,6 +311,12 @@
 
     .flacso-front-hero-fab__link span {
         display: none;
+    }
+}
+
+@media (max-width: 782px) {
+    body.admin-bar .flacso-front-hero {
+        --flacso-hero-admin-offset: 46px;
     }
 }
 

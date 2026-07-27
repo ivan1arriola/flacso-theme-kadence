@@ -245,6 +245,37 @@
     color: var(--flacso-chrome-blue);
 }
 
+.flacso-navbar__menu .sub-menu :is(
+    .current-menu-item,
+    .current_page_item,
+    .current-menu-ancestor,
+    .current_page_ancestor
+) > a,
+.flacso-navbar__menu .sub-menu a[aria-current="page"] {
+    position: relative;
+    padding-left: 1rem;
+    background: #eef4fb;
+    color: var(--flacso-chrome-blue);
+    font-weight: 800;
+}
+
+.flacso-navbar__menu .sub-menu :is(
+    .current-menu-item,
+    .current_page_item,
+    .current-menu-ancestor,
+    .current_page_ancestor
+) > a::before,
+.flacso-navbar__menu .sub-menu a[aria-current="page"]::before {
+    content: "";
+    position: absolute;
+    top: 0.7rem;
+    bottom: 0.7rem;
+    left: 0.42rem;
+    width: 3px;
+    border-radius: 999px;
+    background: var(--flacso-chrome-yellow);
+}
+
 .flacso-navbar__drawer-close,
 .flacso-navbar__overlay,
 .flacso-navbar__submenu-toggle {
@@ -487,6 +518,16 @@
         overflow: hidden;
     }
 
+    .flacso-site-header {
+        z-index: 2147483600 !important;
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+    }
+
+    .flacso-navbar {
+        z-index: 2147483601 !important;
+    }
+
     .flacso-navbar__actions {
         margin-left: auto;
     }
@@ -494,7 +535,7 @@
     .flacso-navbar__navigation {
         position: fixed;
         visibility: hidden;
-        z-index: 100006;
+        z-index: 2147483647 !important;
         top: 0;
         right: 0;
         bottom: 0;
@@ -548,7 +589,7 @@
     .flacso-navbar__overlay {
         position: fixed;
         visibility: hidden;
-        z-index: 100005;
+        z-index: 2147483646 !important;
         inset: 0;
         display: block;
         border: 0;
