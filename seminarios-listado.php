@@ -53,6 +53,24 @@ if (post_type_exists('oferta-academica')) {
     foreach ($seminarios_por_posgrado as $seminario_id => $ofertas_relacionadas) {
         $seminarios_por_posgrado[$seminario_id] = array_values(array_unique(array_map('intval', $ofertas_relacionadas)));
     }
+
+    if (class_exists('Seminario_Helpers')) {
+        $integrados_ids = get_posts(array(
+            'post_type' => 'seminario',
+            'post_status' => 'publish',
+            'posts_per_page' => -1,
+            'fields' => 'ids',
+            'meta_key' => '_seminario_es_integrado',
+            'meta_value' => '1',
+        ));
+        foreach ($integrados_ids as $integrado_id) {
+            $ofertas_integradas = array();
+            foreach (Seminario_Helpers::get_component_posts($integrado_id) as $componente) {
+                $ofertas_integradas = array_merge($ofertas_integradas, $seminarios_por_posgrado[$componente->ID] ?? array());
+            }
+            $seminarios_por_posgrado[$integrado_id] = array_values(array_unique(array_map('intval', $ofertas_integradas)));
+        }
+    }
 }
 
 $meses_es = array('', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
@@ -151,14 +169,10 @@ $seminarios_query = new WP_Query(array(
     'post_type'      => 'seminario',
     'post_status'    => 'publish',
     'posts_per_page' => -1,
-    'orderby'        => 'fecha_inicio',
+    'orderby'        => 'date',
     'order'          => 'ASC',
     'meta_query'     => array(
         'relation' => 'AND',
-        'fecha_inicio' => array(
-            'key'     => '_seminario_periodo_inicio',
-            'compare' => 'EXISTS',
-        ),
         array(
             'relation' => 'OR',
             array(
@@ -179,7 +193,11 @@ if ($seminarios_query->have_posts()) {
         $seminarios_query->the_post();
 
         $seminario_id = get_the_ID();
-        $meta = class_exists('Seminario_Meta') ? Seminario_Meta::get_meta($seminario_id) : array();
+        if (class_exists('Seminario_Helpers') && Seminario_Helpers::get_integrated_parent($seminario_id)) {
+            continue;
+        }
+        $raw_meta = class_exists('Seminario_Meta') ? Seminario_Meta::get_meta($seminario_id) : array();
+        $meta = class_exists('Seminario_Helpers') ? Seminario_Helpers::get_display_meta($seminario_id, $raw_meta) : $raw_meta;
 
         $fecha_inicio = isset($meta['periodo_inicio']) ? (string) $meta['periodo_inicio'] : '';
         $inicio_obj = $parse_date($fecha_inicio);

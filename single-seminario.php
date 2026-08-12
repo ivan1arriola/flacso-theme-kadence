@@ -26,15 +26,23 @@ function format_fecha_es($fecha) {
 
 while (have_posts()) : the_post();
     $post_id = get_the_ID();
-    $meta = class_exists('Seminario_Meta') ? Seminario_Meta::get_meta($post_id) : array();
-    $abierto_publico = isset($meta['abierto_publico']) && $meta['abierto_publico'] === '0' ? false : true;
-    $posgrados = class_exists('Seminario_Taxonomies')
-        ? Seminario_Taxonomies::get_related_ofertas($post_id)
+    $raw_meta = class_exists('Seminario_Meta') ? Seminario_Meta::get_meta($post_id) : array();
+    $meta = class_exists('Seminario_Helpers') ? Seminario_Helpers::get_display_meta($post_id, $raw_meta) : $raw_meta;
+    $es_integrado = !empty($raw_meta['es_integrado']);
+    $integrado_padre = !$es_integrado && class_exists('Seminario_Helpers') ? Seminario_Helpers::get_integrated_parent($post_id) : null;
+    $abierto_publico = !metadata_exists('post', $post_id, '_seminario_abierto_publico') || !empty($meta['abierto_publico']);
+    if ($integrado_padre) {
+        $parent_meta = Seminario_Meta::get_meta($integrado_padre->ID);
+        $abierto_publico = !metadata_exists('post', $integrado_padre->ID, '_seminario_abierto_publico') || !empty($parent_meta['abierto_publico']);
+    }
+    $posgrados = class_exists('Seminario_Helpers')
+        ? Seminario_Helpers::get_related_offers($post_id)
         : array();
 
     // Extract array-based meta
-    $objetivos = isset($meta['objetivos_especificos']) && is_array($meta['objetivos_especificos']) ? $meta['objetivos_especificos'] : array();
-    $unidades = isset($meta['unidades_academicas']) && is_array($meta['unidades_academicas']) ? $meta['unidades_academicas'] : array();
+    $objetivos = !$es_integrado && isset($meta['objetivos_especificos']) && is_array($meta['objetivos_especificos']) ? $meta['objetivos_especificos'] : array();
+    $unidades = !$es_integrado && isset($meta['unidades_academicas']) && is_array($meta['unidades_academicas']) ? $meta['unidades_academicas'] : array();
+    $componentes_posts = $es_integrado && class_exists('Seminario_Helpers') ? Seminario_Helpers::get_component_posts($post_id) : array();
     $docentes_ids = isset($meta['docentes']) && is_array($meta['docentes']) ? $meta['docentes'] : array();
     $docentes_posts = array();
     if (!empty($docentes_ids)) {
@@ -128,6 +136,14 @@ while (have_posts()) : the_post();
         <?php endif; ?>
     </nav>
 
+    <?php if ($integrado_padre) : ?>
+        <div class="alert alert-info border-info shadow-sm mb-4" role="status" style="border-radius: 12px; background-color: #f0f9ff; color: #1d3a72;">
+            <strong>Este seminario forma parte de una propuesta integrada.</strong>
+            La inscripción y el arancel corresponden a
+            <a href="<?php echo esc_url(get_permalink($integrado_padre)); ?>" class="fw-bold"><?php echo esc_html(get_the_title($integrado_padre)); ?></a>.
+        </div>
+    <?php endif; ?>
+
     <!-- Hero Section -->
     <div class="row align-items-center mb-5<?php echo $is_featured_image_4x5 ? ' seminario-hero--portrait' : ''; ?>">
         <!-- Image Column -->
@@ -153,7 +169,7 @@ while (have_posts()) : the_post();
             <?php if ($abierto_publico && !empty($preinscripcion_url)) : ?>
                 <div class="mt-4">
                     <a href="<?php echo esc_url($preinscripcion_url); ?>" class="btn btn-inscripcion btn-lg">
-                        Inscríbete Ahora <i class="bi bi-arrow-right ms-2"></i>
+                        <?php echo $integrado_padre ? 'Inscribirse al seminario integrado' : 'Inscríbete Ahora'; ?> <i class="bi bi-arrow-right ms-2"></i>
                     </a>
                 </div>
             <?php elseif (!$abierto_publico) : ?>
@@ -271,7 +287,7 @@ while (have_posts()) : the_post();
             <?php endif; ?>
 
             <!-- Forma de Aprobación -->
-            <?php if (!empty($meta['forma_aprobacion'])) : ?>
+            <?php if (!$es_integrado && !empty($meta['forma_aprobacion'])) : ?>
                 <div>
                     <div class="card info-card h-100 shadow-sm">
                         <div class="card-body text-start p-4">
@@ -418,8 +434,78 @@ while (have_posts()) : the_post();
         </section>
     <?php endif; ?>
 
+    <?php if (!empty($componentes_posts)) : ?>
+        <section class="py-5 seminarios-componentes">
+            <div class="section-header">
+                <h2 class="fw-bold">Seminarios que integran la propuesta</h2>
+            </div>
+            <?php foreach ($componentes_posts as $componente) :
+                $componente_meta = class_exists('Seminario_Meta') ? Seminario_Meta::get_meta($componente->ID) : array();
+                $componente_objetivos = isset($componente_meta['objetivos_especificos']) && is_array($componente_meta['objetivos_especificos']) ? $componente_meta['objetivos_especificos'] : array();
+                $componente_unidades = isset($componente_meta['unidades_academicas']) && is_array($componente_meta['unidades_academicas']) ? $componente_meta['unidades_academicas'] : array();
+                $componente_encuentros = isset($componente_meta['encuentros_sincronicos']) && is_array($componente_meta['encuentros_sincronicos']) ? $componente_meta['encuentros_sincronicos'] : array();
+            ?>
+                <article class="card info-card shadow-sm mb-4">
+                    <div class="card-body p-4 p-lg-5">
+                        <h3 class="h4 fw-bold mb-3" style="color: var(--global-palette1);">
+                            <?php echo esc_html(get_the_title($componente)); ?>
+                        </h3>
+                        <?php if (!empty($componente_meta['periodo_inicio']) || !empty($componente_meta['periodo_fin'])) : ?>
+                            <p class="mb-3">
+                                <strong>Fechas:</strong>
+                                <?php
+                                $rango = array();
+                                if (!empty($componente_meta['periodo_inicio'])) $rango[] = format_fecha_es($componente_meta['periodo_inicio']);
+                                if (!empty($componente_meta['periodo_fin'])) $rango[] = format_fecha_es($componente_meta['periodo_fin']);
+                                echo esc_html(implode(' al ', $rango));
+                                ?>
+                            </p>
+                        <?php endif; ?>
+                        <?php if (!empty($componente_encuentros)) : ?>
+                            <div class="mb-4">
+                                <strong>Clases sincrónicas:</strong>
+                                <ul class="mt-2 mb-0">
+                                    <?php foreach ($componente_encuentros as $encuentro) :
+                                        if (empty($encuentro['fecha'])) continue;
+                                        $horario = trim(($encuentro['hora_inicio'] ?? '') . (!empty($encuentro['hora_fin']) ? ' a ' . $encuentro['hora_fin'] : ''));
+                                    ?>
+                                        <li><?php echo esc_html(format_fecha_es($encuentro['fecha']) . ($horario ? ', ' . $horario : '')); ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
+                        <?php if (!empty($componente_meta['objetivo_general'])) : ?>
+                            <h4 class="h5 fw-bold">Objetivo general</h4>
+                            <div class="seminario-content mb-4"><?php echo wp_kses_post($componente_meta['objetivo_general']); ?></div>
+                        <?php endif; ?>
+                        <?php if (!empty($componente_objetivos)) : ?>
+                            <h4 class="h5 fw-bold">Objetivos específicos</h4>
+                            <ul class="seminario-content mb-4">
+                                <?php foreach ($componente_objetivos as $objetivo) : ?><li><?php echo wp_kses_post($objetivo); ?></li><?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                        <?php if (!empty($componente_meta['forma_aprobacion'])) : ?>
+                            <h4 class="h5 fw-bold">Evaluación y aprobación</h4>
+                            <div class="seminario-content mb-4"><?php echo wp_kses_post($componente_meta['forma_aprobacion']); ?></div>
+                        <?php endif; ?>
+                        <?php if (!empty($componente_unidades)) : ?>
+                            <h4 class="h5 fw-bold">Contenidos y unidades</h4>
+                            <?php foreach ($componente_unidades as $unidad) : ?>
+                                <div class="unidad-item mb-3">
+                                    <?php if (!empty($unidad['titulo'])) : ?><h5 class="fw-bold mb-2"><?php echo esc_html($unidad['titulo']); ?></h5><?php endif; ?>
+                                    <?php if (!empty($unidad['contenido'])) : ?><div class="seminario-content"><?php echo wp_kses_post($unidad['contenido']); ?></div><?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                        <a href="<?php echo esc_url(get_permalink($componente)); ?>" class="btn btn-outline-primary mt-2">Ver ficha original</a>
+                    </div>
+                </article>
+            <?php endforeach; ?>
+        </section>
+    <?php endif; ?>
+
     <!-- Objetivo General -->
-    <?php if (!empty($meta['objetivo_general'])) : ?>
+    <?php if (!$es_integrado && !empty($meta['objetivo_general'])) : ?>
         <section class="py-5">
             <div class="section-header">
                 <h2 class="fw-bold">Objetivo General</h2>
@@ -576,7 +662,7 @@ while (have_posts()) : the_post();
                     Unite a este seminario y formá parte de nuestra comunidad académica.
                 </p>
                 <a href="<?php echo esc_url($preinscripcion_url); ?>" class="btn btn-inscripcion btn-lg px-5 py-3 fw-bold">
-                    Inscribirse ahora <i class="bi bi-arrow-right ms-2"></i>
+                    <?php echo $integrado_padre ? 'Inscribirse al seminario integrado' : 'Inscribirse ahora'; ?> <i class="bi bi-arrow-right ms-2"></i>
                 </a>
             </div>
         </section>
