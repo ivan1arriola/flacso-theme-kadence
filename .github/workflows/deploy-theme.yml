@@ -99,7 +99,6 @@ jobs:
 
           SOURCE="/tmp/kadence-child-flacso-${DEPLOY_SHA}"
           TARGET="/var/www/flacso.edu.uy/web/wp-content/themes/kadence-child-flacso"
-          PARENT="$(dirname "$TARGET")"
 
           cleanup() {
             rm -rf "$SOURCE"
@@ -108,15 +107,11 @@ jobs:
 
           test -f "$SOURCE/style.css"
           test -f "$SOURCE/functions.php"
-          test -d "$PARENT"
+          test -d "$TARGET"
+          test -f "$TARGET/style.css"
+          test -f "$TARGET/functions.php"
 
-          if [[ -d "$TARGET" ]]; then
-            OWNER_GROUP="$(stat -c '%U:%G' "$TARGET")"
-          else
-            OWNER_GROUP="$(stat -c '%U:%G' "$PARENT")"
-            sudo mkdir -p "$TARGET"
-          fi
-
+          OWNER_GROUP="$(stat -c '%U:%G' "$TARGET")"
           sudo rsync -a --delete --chown="$OWNER_GROUP" "$SOURCE/" "$TARGET/"
 
           test -f "$TARGET/style.css"
