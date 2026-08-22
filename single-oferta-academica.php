@@ -109,8 +109,10 @@ $proximo_formatted = $raw_proximo !== '' && class_exists('Oferta_Renderer')
     : trim($raw_proximo);
 $cohorte = trim((string) get_post_meta($post_id, 'cohorte', true));
 
-$modalidad_text = trim(wp_strip_all_tags((string) ($data['modalidad_html'] ?? '')));
-$modalidad_text = (string) preg_replace('/\s+/u', ' ', $modalidad_text);
+$modalidad_text = trim((string) ($data['modalidad_resumen'] ?? ''));
+if ($modalidad_text === '') {
+    $modalidad_text = trim((string) get_post_meta($post_id, 'modalidad_resumen', true));
+}
 
 $hero_quick_items = array();
 
