@@ -256,8 +256,8 @@ body.admin-bar .flacso-front-hero {
 }
 
 .flacso-front-hero-fab__link--primary {
-    background: var(--hero-yellow, #fed222);
-    color: #0d203e;
+    background: #163970;
+    color: #fff;
 }
 
 .flacso-front-hero-fab__icon {
@@ -271,7 +271,7 @@ body.admin-bar .flacso-front-hero {
 }
 
 .flacso-front-hero-fab__link--primary .flacso-front-hero-fab__icon {
-    background: rgba(13, 32, 62, 0.1);
+    background: rgba(255, 255, 255, 0.13);
 }
 
 .flacso-front-hero-fab__icon svg,
@@ -302,8 +302,8 @@ body.admin-bar .flacso-front-hero {
 
 .flacso-front-hero-fab__link--primary:hover,
 .flacso-front-hero-fab__link--primary:focus-visible {
-    background: #ffe063;
-    color: #0d203e;
+    background: #248138;
+    color: #fff;
 }
 
 .flacso-front-hero-fab__link:hover .flacso-front-hero-fab__arrow,
