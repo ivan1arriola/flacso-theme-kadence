@@ -1,7 +1,7 @@
 <?php
 /**
  * Template para página de preinscripción a seminarios
- * Version: 3.2.0 - UI moderna responsive sin cambios de contrato
+ * Version: 4.0.0 - Cabecera editorial responsive sin cambios de contrato
  */
 
 if (!defined('ABSPATH')) exit;
@@ -349,6 +349,14 @@ if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === sanitize_text_field( wp_u
 }
 
 get_header();
+
+$preinscripcion_year = wp_date('Y');
+if (!empty($fecha_inicio)) {
+    $fecha_inicio_timestamp = strtotime($fecha_inicio);
+    if ($fecha_inicio_timestamp !== false) {
+        $preinscripcion_year = wp_date('Y', $fecha_inicio_timestamp);
+    }
+}
 ?>
 
 
@@ -356,38 +364,56 @@ get_header();
 
 <!-- Hero Section -->
 <section class="preinsc-hero" aria-label="Preinscripción">
-    <?php if ($hero_image_url): ?>
-        <img src="<?php echo esc_url($hero_image_url); ?>" alt="" class="preinsc-hero-bg-image" aria-hidden="true">
-    <?php endif; ?>
-    <div class="preinsc-hero-grid">
-        <div>
-            <a href="<?php echo esc_url(get_permalink(intval($seminario_id))); ?>" class="btn-back-seminario" aria-label="Volver al seminario">
-                <i class="fas fa-arrow-left"></i>
-                <span>Volver al seminario</span>
-            </a>
+    <div class="preinsc-hero-shell">
+        <div class="preinsc-hero-card">
+            <div class="preinsc-hero-copy">
+                <a href="<?php echo esc_url(get_permalink(intval($seminario_id))); ?>" class="btn-back-seminario" aria-label="Volver al seminario">
+                    <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                    <span>Volver al seminario</span>
+                </a>
 
-            <p class="text-uppercase" style="margin-top: 1rem; opacity: 0.95; color: #ffffff !important;">
-                <i class="fas fa-clipboard-check" style="margin-right: 0.5rem;"></i>Preinscripción 2026
-            </p>
+                <p class="preinsc-context">
+                    <i class="fas fa-clipboard-check" aria-hidden="true"></i>
+                    <span>Preinscripción <?php echo esc_html($preinscripcion_year); ?></span>
+                </p>
 
-            <h1 class="preinsc-title">
-                <?php echo $seminario_titulo ? esc_html($seminario_titulo) : 'Preinscripción al seminario'; ?>
-            </h1>
+                <h1 class="preinsc-title">
+                    <?php echo $seminario_titulo ? esc_html($seminario_titulo) : 'Preinscripción al seminario'; ?>
+                </h1>
 
-            <p class="preinsc-subtitle">Completa el formulario para reservar tu lugar</p>
+                <p class="preinsc-subtitle">Completá el formulario para reservar tu lugar.</p>
+            </div>
+
+            <?php if ($hero_image_url): ?>
+                <figure class="preinsc-hero-media">
+                    <img src="<?php echo esc_url($hero_image_url); ?>" alt="" class="preinsc-hero-image" aria-hidden="true">
+                </figure>
+            <?php else: ?>
+                <div class="preinsc-hero-media preinsc-hero-media--placeholder" aria-hidden="true">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+            <?php endif; ?>
         </div>
 
         <aside class="preinsc-steps" aria-labelledby="preinsc-steps-title">
-            <p id="preinsc-steps-title" class="text-uppercase" style="font-weight:600; margin-bottom: 0.75rem; color: #ffffff !important;">Próximos pasos</p>
+            <div class="preinsc-steps-heading">
+                <h2 id="preinsc-steps-title">Cómo funciona la preinscripción</h2>
+                <p>Dos pasos para iniciar el proceso.</p>
+            </div>
             <ol>
                 <li>
-                    <div class="step-title">Completa tus datos</div>
-                    <div class="step-desc">Rellena el formulario con tus datos personales y académicos.</div>
+                    <span class="step-number" aria-hidden="true">1</span>
+                    <div class="step-copy">
+                        <div class="step-title">Completá tus datos</div>
+                        <div class="step-desc">Ingresá tu información personal y académica.</div>
+                    </div>
                 </li>
-                <!-- Paso eliminado: "Acepta los términos" no aplica -->
                 <li>
-                    <div class="step-title">Recibe confirmación por email</div>
-                    <div class="step-desc">Te enviaremos un correo con la confirmación y los pasos siguientes.</div>
+                    <span class="step-number" aria-hidden="true">2</span>
+                    <div class="step-copy">
+                        <div class="step-title">Recibí la confirmación</div>
+                        <div class="step-desc">Te enviaremos un correo con la información para continuar.</div>
+                    </div>
                 </li>
             </ol>
         </aside>
