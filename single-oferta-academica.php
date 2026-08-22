@@ -481,7 +481,6 @@ get_header();
                                 <?php endif; ?>
 
                                 <p class="flacso-oa-program-hero__availability<?php echo $inscripciones_abiertas ? ' is-open' : ''; ?>">
-                                    <strong><?php echo esc_html($hero_tag); ?></strong>
                                     <span><?php echo esc_html($banner_cta_text); ?></span>
                                 </p>
 
