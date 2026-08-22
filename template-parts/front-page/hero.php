@@ -124,8 +124,15 @@ if ( ! function_exists( 'flacso_section_hero_render' ) ) {
 			<aside class="flacso-front-hero-fab" data-flacso-front-hero-fab aria-label="<?php esc_attr_e( 'Accesos rápidos', 'kadence-child-flacso' ); ?>">
 				<?php foreach ( $floating as $floating_link ) : ?>
 					<a class="flacso-front-hero-fab__link flacso-front-hero-fab__link--<?php echo esc_attr( $floating_link['style'] ); ?>" href="<?php echo esc_url( $floating_link['url'] ); ?>">
+						<span class="flacso-front-hero-fab__icon" aria-hidden="true">
+							<?php if ( 'primary' === $floating_link['style'] ) : ?>
+								<svg viewBox="0 0 24 24"><path d="M3 7.5 12 3l9 4.5-9 4.5-9-4.5Z"></path><path d="M6.5 9.25V14c0 1.65 2.46 3 5.5 3s5.5-1.35 5.5-3V9.25"></path><path d="M21 8v6"></path></svg>
+							<?php else : ?>
+								<svg viewBox="0 0 24 24"><path d="M20 11.5a7.5 7.5 0 0 1-8 7.48 8.5 8.5 0 0 1-3.5-.98L4 20l1.4-4.2A7.5 7.5 0 1 1 20 11.5Z"></path><path d="M9 9.5a3 3 0 0 1 6 0c0 2-3 2-3 4"></path><path d="M12 16h.01"></path></svg>
+							<?php endif; ?>
+						</span>
 						<span><?php echo esc_html( $floating_link['label'] ); ?></span>
-						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+						<svg class="flacso-front-hero-fab__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
 					</a>
 				<?php endforeach; ?>
 			</aside>

@@ -212,17 +212,22 @@ body.admin-bar .flacso-front-hero {
 
 .flacso-front-hero-fab {
     position: fixed;
-    right: clamp(12px, 2vw, 28px);
-    bottom: calc(12px + env(safe-area-inset-bottom));
+    right: clamp(14px, 2.2vw, 32px);
+    bottom: calc(16px + env(safe-area-inset-bottom));
     z-index: 900;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.55rem;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 0.35rem;
+    padding: 0.38rem;
+    border: 1px solid rgba(22, 57, 112, 0.12);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 18px 48px rgba(5, 22, 52, 0.2);
+    backdrop-filter: blur(18px) saturate(1.35);
     opacity: 0;
     pointer-events: none;
-    transform: translateY(12px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform: translateY(16px) scale(0.98);
+    transition: opacity 0.24s ease, transform 0.24s ease;
 }
 
 .flacso-front-hero-fab.is-visible {
@@ -232,34 +237,78 @@ body.admin-bar .flacso-front-hero {
 }
 
 .flacso-front-hero-fab__link {
-    min-height: 46px;
+    min-height: 52px;
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
-    max-width: min(320px, calc(100vw - 24px));
-    padding: 0.65rem 1rem;
-    border: 1px solid #163970;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.97);
+    justify-content: center;
+    gap: 0.65rem;
+    max-width: min(300px, calc(100vw - 24px));
+    padding: 0.58rem 0.8rem 0.58rem 0.62rem;
+    border: 1px solid transparent;
+    border-radius: 15px;
+    background: transparent;
     color: #163970;
-    box-shadow: 0 10px 28px rgba(5, 22, 52, 0.24);
-    font-size: 0.86rem;
-    font-weight: 750;
+    font-size: 0.82rem;
+    font-weight: 800;
+    line-height: 1.15;
     text-decoration: none;
+    transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
 
 .flacso-front-hero-fab__link--primary {
-    border-color: var(--hero-yellow, #fed222);
     background: var(--hero-yellow, #fed222);
     color: #0d203e;
 }
 
-.flacso-front-hero-fab__link svg {
-    width: 17px;
+.flacso-front-hero-fab__icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    flex: none;
+    place-items: center;
+    border-radius: 11px;
+    background: rgba(22, 57, 112, 0.08);
+}
+
+.flacso-front-hero-fab__link--primary .flacso-front-hero-fab__icon {
+    background: rgba(13, 32, 62, 0.1);
+}
+
+.flacso-front-hero-fab__icon svg,
+.flacso-front-hero-fab__arrow {
+    width: 18px;
+    height: 18px;
     flex: none;
     fill: none;
     stroke: currentColor;
-    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+}
+
+.flacso-front-hero-fab__arrow {
+    width: 15px;
+    height: 15px;
+    opacity: 0.68;
+    transition: transform 0.2s ease;
+}
+
+.flacso-front-hero-fab__link:hover,
+.flacso-front-hero-fab__link:focus-visible {
+    background: #163970;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.flacso-front-hero-fab__link--primary:hover,
+.flacso-front-hero-fab__link--primary:focus-visible {
+    background: #ffe063;
+    color: #0d203e;
+}
+
+.flacso-front-hero-fab__link:hover .flacso-front-hero-fab__arrow,
+.flacso-front-hero-fab__link:focus-visible .flacso-front-hero-fab__arrow {
+    transform: translateX(2px);
 }
 
 @media (max-width: 900px) {
@@ -303,13 +352,29 @@ body.admin-bar .flacso-front-hero {
         width: min(100%, 340px);
     }
 
-    .flacso-front-hero-fab__link {
-        width: 46px;
-        padding-inline: 0;
-        justify-content: center;
+    .flacso-front-hero-fab {
+        right: 10px;
+        bottom: calc(10px + env(safe-area-inset-bottom));
+        left: 10px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        border-radius: 18px;
     }
 
-    .flacso-front-hero-fab__link span {
+    .flacso-front-hero-fab__link {
+        min-width: 0;
+        max-width: none;
+        padding: 0.45rem;
+        gap: 0.45rem;
+        font-size: clamp(0.69rem, 3.15vw, 0.8rem);
+    }
+
+    .flacso-front-hero-fab__icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 9px;
+    }
+
+    .flacso-front-hero-fab__arrow {
         display: none;
     }
 }
@@ -321,7 +386,10 @@ body.admin-bar .flacso-front-hero {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .flacso-front-hero__button {
+    .flacso-front-hero__button,
+    .flacso-front-hero-fab,
+    .flacso-front-hero-fab__link,
+    .flacso-front-hero-fab__arrow {
         transition: none;
     }
 }

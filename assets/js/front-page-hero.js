@@ -15,6 +15,8 @@
         new IntersectionObserver(function (entries) {
             floating.classList.toggle('is-visible', !entries[0].isIntersecting);
         }, { threshold: 0.2 }).observe(hero);
+    } else if (floating) {
+        floating.classList.add('is-visible');
     }
 
 }());
