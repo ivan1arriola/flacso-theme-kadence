@@ -311,6 +311,47 @@ body.admin-bar .flacso-front-hero {
     transform: translateX(2px);
 }
 
+@media (min-width: 601px) {
+    .flacso-front-hero-fab {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        border-radius: 18px;
+    }
+
+    .flacso-front-hero-fab__link {
+        width: 52px;
+        max-width: 230px;
+        justify-content: flex-start;
+        overflow: hidden;
+        padding: 0.55rem 0.52rem;
+        white-space: nowrap;
+        transition: width 0.22s ease, color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
+
+    .flacso-front-hero-fab__link > span:not(.flacso-front-hero-fab__icon) {
+        max-width: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-width 0.22s ease, opacity 0.16s ease;
+    }
+
+    .flacso-front-hero-fab__link:hover,
+    .flacso-front-hero-fab__link:focus-visible {
+        width: 220px;
+    }
+
+    .flacso-front-hero-fab__link:hover > span:not(.flacso-front-hero-fab__icon),
+    .flacso-front-hero-fab__link:focus-visible > span:not(.flacso-front-hero-fab__icon) {
+        max-width: 145px;
+        opacity: 1;
+    }
+
+    .flacso-front-hero-fab__arrow {
+        display: none;
+    }
+}
+
 @media (max-width: 900px) {
     .flacso-front-hero__grid {
         grid-template-columns: 1fr;
