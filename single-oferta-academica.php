@@ -18,7 +18,6 @@ if (!is_array($data)) {
 }
 
 $thumbnail_url = get_the_post_thumbnail_url($post_id, 'full');
-$logo_url = 'https://flacso.edu.uy/wp-content/uploads/2026/05/logo_flacso_uruguay_20anos_blanco.png';
 
 $tipo_oferta = '';
 $tipo_terms = get_the_terms($post_id, 'tipo-oferta-academica');
@@ -75,15 +74,6 @@ $hero_tag = $inscripciones_abiertas
     )
     : __('Próximamente', 'flacso-uruguay');
 
-$hero_cta_markup = $inscripciones_abiertas
-    ? sprintf(
-        '%s <a href="%s">%s</a>',
-        esc_html__('Descuentos especiales disponibles.', 'flacso-uruguay'),
-        esc_url($preinscripcion_url),
-        esc_html__('Solicitá información e inscribite hoy.', 'flacso-uruguay')
-    )
-    : esc_html__('Solicitá información y te avisaremos cuando abra la próxima cohorte.', 'flacso-uruguay');
-
 $hero_primary_label = $inscripciones_abiertas
     ? sprintf(
         /* translators: %s: academic year */
@@ -112,10 +102,44 @@ $normalize_duracion_html = function($html, $meses_str = '') {
     return (string) $html;
 };
 
-$programa_meta = array_filter([
-    !empty($data['abreviacion']) ? strtoupper((string) $data['abreviacion']) : '',
-    !empty($data['duracion_meses']) ? sprintf(__('Duración: %s', 'flacso-uruguay'), $format_duracion($data['duracion_meses'])) : '',
-]);
+$raw_proximo = (string) get_post_meta($post_id, 'proximo_inicio', true);
+$proximo_precision = (string) get_post_meta($post_id, 'proximo_inicio_precision', true);
+$proximo_formatted = $raw_proximo !== '' && class_exists('Oferta_Renderer')
+    ? Oferta_Renderer::format_proximo_inicio_text($raw_proximo, $proximo_precision)
+    : trim($raw_proximo);
+$cohorte = trim((string) get_post_meta($post_id, 'cohorte', true));
+
+$modalidad_text = trim(wp_strip_all_tags((string) ($data['modalidad_html'] ?? '')));
+$modalidad_text = (string) preg_replace('/\s+/u', ' ', $modalidad_text);
+
+$hero_quick_items = array();
+
+if ($proximo_formatted !== '') {
+    $hero_quick_items[] = array(
+        'icon'  => 'bi-calendar3',
+        'label' => __('Próximo inicio', 'flacso-uruguay'),
+        'value' => $proximo_formatted . ($cohorte !== '' ? ' · ' . $cohorte : ''),
+    );
+}
+
+if (!empty($data['duracion_meses'])) {
+    $duracion_text = $format_duracion($data['duracion_meses']);
+    if ($duracion_text !== '') {
+        $hero_quick_items[] = array(
+            'icon'  => 'bi-clock',
+            'label' => __('Duración', 'flacso-uruguay'),
+            'value' => $duracion_text,
+        );
+    }
+}
+
+if ($modalidad_text !== '') {
+    $hero_quick_items[] = array(
+        'icon'  => 'bi-camera-video',
+        'label' => __('Modalidad', 'flacso-uruguay'),
+        'value' => $modalidad_text,
+    );
+}
 
 $hero_badge_text = trim((string) ($data['carta_hero_etiqueta'] ?? get_post_meta($post_id, 'carta_hero_etiqueta', true)));
 $instancias_presenciales_meta = $data['carta_instancias_presenciales'] ?? get_post_meta($post_id, 'carta_instancias_presenciales', true);
@@ -405,70 +429,68 @@ get_header();
                     }
                     ?>
 
-                    <div class="flacso-oa-container flacso-oa-single-hero" style="padding-top: clamp(24px, 4vw, 48px); padding-bottom: clamp(16px, 3vw, 32px);">
-                        <section class="flacso-inscripciones-banner<?php echo $hero_badge_text !== '' ? ' flacso-inscripciones-banner--has-ribbon' : ''; ?>" style="margin-bottom: 0; min-height: clamp(400px, 40vw, 600px); position: relative; overflow: hidden; display: flex; flex-direction: column; border-radius: clamp(16px, 3vw, 28px);">
-                            <?php if ($hero_badge_text !== '') : ?>
-                                <div class="flacso-inscripciones-banner__ribbon">
-                                    <i class="bi bi-bookmark-star-fill" aria-hidden="true"></i>
-                                    <span><?php echo esc_html($hero_badge_text); ?></span>
-                                </div>
-                            <?php endif; ?>
-                            <img
-                                class="flacso-inscripciones-banner__img"
-                                src="<?php echo esc_url($banner_featured_url); ?>"
-                                alt="<?php echo esc_attr(get_the_title($post_id)); ?>"
-                                style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0;">
-
-                            <div class="flacso-inscripciones-banner__overlay" style="padding: clamp(2rem, 5vw, 4rem); position: relative; z-index: 2; display: flex; flex-direction: column; flex: 1;">
-                                <div class="flacso-inscripciones-banner__top" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
-                                    <div class="flacso-inscripciones-banner__tag" style="background: var(--flacso-yellow); color: var(--flacso-blue-dark); padding: 4px 12px; font-weight: 800; text-transform: uppercase; border-radius: 4px; flex-shrink: 0;">
-                                        <?php echo esc_html($hero_tag); ?>
-                                    </div>
+                    <div class="flacso-oa-container flacso-oa-single-hero">
+                        <section class="flacso-oa-program-hero" aria-labelledby="flacso-oa-program-title">
+                            <div class="flacso-oa-program-hero__media-wrap">
+                                <div class="flacso-oa-program-hero__media">
                                     <img
-                                        src="<?php echo esc_url($logo_url); ?>"
-                                        alt="FLACSO Uruguay"
-                                        class="flacso-inscripciones-banner__logo" style="flex-shrink: 0; max-width: 250px; height: auto;">
+                                        src="<?php echo esc_url($banner_featured_url); ?>"
+                                        alt="<?php echo esc_attr(get_the_title($post_id)); ?>"
+                                        loading="eager"
+                                        fetchpriority="high">
                                 </div>
+                            </div>
 
-                                <div class="flacso-inscripciones-banner__middle" style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; max-width: 1100px; margin: clamp(1.5rem, 3vw, 3rem) 0;">
+                            <div class="flacso-oa-program-hero__content">
+                                <div class="flacso-oa-program-hero__badges">
                                     <?php if ($tipo_oferta !== '') : ?>
-                                        <p class="flacso-inscripciones-banner__eyebrow" style="margin: 0 0 12px; color: #fcd116; font-size: clamp(0.9rem, 1.2vw, 1.05rem); font-weight: 850; letter-spacing: 0.08em; text-transform: uppercase;">
-                                            <?php echo esc_html($tipo_oferta); ?>
-                                        </p>
+                                        <p class="flacso-oa-program-hero__kicker"><?php echo esc_html($tipo_oferta); ?></p>
                                     <?php endif; ?>
-                                    <h1 class="flacso-inscripciones-banner__title" style="margin: 0; color: #ffffff; font-size: clamp(2rem, 4vw, 3.8rem); font-weight: 900; letter-spacing: -0.025em; line-height: 1.15; text-wrap: balance; text-shadow: 0 4px 16px rgba(0,0,0,0.6);">
-                                        <?php the_title(); ?>
-                                    </h1>
-                                    <?php if (has_excerpt()) : ?>
-                                        <div class="flacso-inscripciones-banner__excerpt" style="margin: 20px 0 0 0; color: rgba(255,255,255,0.95); font-size: clamp(1.05rem, 1.4vw, 1.25rem); font-weight: 500; line-height: 1.5; text-wrap: balance; text-shadow: 0 2px 8px rgba(0,0,0,0.5); max-width: 900px;">
-                                            <?php the_excerpt(); ?>
-                                        </div>
-                                    <?php endif; ?>
-
-                                    <?php if (!empty($programa_meta)) : ?>
-                                        <div class="flacso-inscripciones-banner__meta" style="margin-top: 24px; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
-                                            <?php foreach ($programa_meta as $meta_item) : ?>
-                                                <span style="background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); padding: 6px 16px; border-radius: 20px; color: white; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; border: 1px solid rgba(255,255,255,0.2);">
-                                                    <?php echo esc_html($meta_item); ?>
-                                                </span>
-                                            <?php endforeach; ?>
-                                        </div>
-                                    <?php endif; ?>
-
-                                    <?php if ($mostrar_instancias_presenciales) : ?>
-                                        <div class="flacso-inscripciones-banner__highlights">
-                                            <span class="flacso-inscripciones-banner__highlight flacso-inscripciones-banner__highlight--accent">
-                                                <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
-                                                <?php esc_html_e('Con instancias presenciales', 'flacso-uruguay'); ?>
-                                            </span>
-                                        </div>
+                                    <?php if ($hero_badge_text !== '') : ?>
+                                        <span class="flacso-oa-program-hero__custom-badge"><?php echo esc_html($hero_badge_text); ?></span>
                                     <?php endif; ?>
                                 </div>
 
-                                <div class="flacso-inscripciones-banner__bottom" style="margin-top: auto;">
-                                    <div class="flacso-inscripciones-banner__cta" style="font-size: clamp(1rem, 1.2vw, 1.15rem); color: white; font-weight: 600;">
-                                        <?php echo esc_html($banner_cta_text); ?>
+                                <h1 id="flacso-oa-program-title" class="flacso-oa-program-hero__title"><?php the_title(); ?></h1>
+
+                                <?php if (has_excerpt()) : ?>
+                                    <div class="flacso-oa-program-hero__excerpt"><?php the_excerpt(); ?></div>
+                                <?php endif; ?>
+
+                                <?php if (!empty($hero_quick_items)) : ?>
+                                    <div class="flacso-oa-program-hero__quick-meta" aria-label="<?php esc_attr_e('Datos principales', 'flacso-uruguay'); ?>">
+                                        <?php foreach ($hero_quick_items as $item) : ?>
+                                            <div class="flacso-oa-program-hero__quick-item">
+                                                <div class="flacso-oa-program-hero__quick-label">
+                                                    <i class="bi <?php echo esc_attr($item['icon']); ?>" aria-hidden="true"></i>
+                                                    <?php echo esc_html($item['label']); ?>
+                                                </div>
+                                                <div class="flacso-oa-program-hero__quick-value"><?php echo esc_html($item['value']); ?></div>
+                                            </div>
+                                        <?php endforeach; ?>
                                     </div>
+                                <?php endif; ?>
+
+                                <?php if ($mostrar_instancias_presenciales) : ?>
+                                    <p class="flacso-oa-program-hero__notice">
+                                        <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+                                        <?php esc_html_e('Con instancias presenciales', 'flacso-uruguay'); ?>
+                                    </p>
+                                <?php endif; ?>
+
+                                <p class="flacso-oa-program-hero__availability<?php echo $inscripciones_abiertas ? ' is-open' : ''; ?>">
+                                    <strong><?php echo esc_html($hero_tag); ?></strong>
+                                    <span><?php echo esc_html($banner_cta_text); ?></span>
+                                </p>
+
+                                <div class="flacso-oa-program-hero__actions">
+                                    <a href="<?php echo esc_url($hero_primary_url); ?>" class="flacso-oa-program-hero__button flacso-oa-program-hero__button--primary">
+                                        <?php echo esc_html($hero_primary_label); ?>
+                                        <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="#flacso-oa-contenido" class="flacso-oa-program-hero__button flacso-oa-program-hero__button--secondary">
+                                        <?php esc_html_e('Ver información', 'flacso-uruguay'); ?>
+                                    </a>
                                 </div>
                             </div>
                         </section>
@@ -476,35 +498,6 @@ get_header();
 
                     <section id="flacso-oa-contenido" class="flacso-oa-main-section">
                         <div class="flacso-oa-container">
-                            <?php
-                            $raw_proximo = get_post_meta($post_id, 'proximo_inicio', true);
-                            if ($raw_proximo) :
-                                $precision = get_post_meta($post_id, 'proximo_inicio_precision', true);
-
-                                $formatted = class_exists('Oferta_Renderer')
-                                    ? Oferta_Renderer::format_proximo_inicio_text((string) $raw_proximo, (string) $precision)
-                                    : trim((string) $raw_proximo);
-                                if ($formatted === '') $formatted = __('A definir', 'flacso-oferta-academica');
-
-                                $cohorte = trim((string) get_post_meta($post_id, 'cohorte', true));
-                                $label = esc_html__('Próximo inicio', 'flacso-oferta-academica');
-                                if ($cohorte !== '') {
-                                    $label .= '<span style="display: block; font-size: 0.88em; opacity: 0.85; font-weight: 500; margin-top: 3px;">(' . esc_html($cohorte) . ')</span>';
-                                }
-                            ?>
-                                <section class="flacso-oa-next-start flacso-oa-next-start--fullwidth" style="margin-top: -1rem; margin-bottom: 2rem;">
-                                    <div class="flacso-oferta-proximo-inicio" role="status" aria-live="polite">
-                                        <p class="flacso-oferta-proximo-inicio__pill" style="align-items: center;">
-                                            <span class="flacso-oferta-proximo-inicio__icon" aria-hidden="true"><i class="bi bi-calendar-event"></i></span>
-                                            <span class="flacso-oferta-proximo-inicio__content" style="display: flex; flex-direction: column; justify-content: center;">
-                                                <span class="flacso-oferta-proximo-inicio__label" style="line-height: 1.2;"><?php echo $label; ?></span>
-                                                <strong class="flacso-oferta-proximo-inicio__value"><?php echo esc_html($formatted); ?></strong>
-                                            </span>
-                                        </p>
-                                    </div>
-                                </section>
-                            <?php endif; ?>
-
                             <div class="flacso-oa-main-grid">
 
                                 <div class="flacso-oa-main-content">
