@@ -288,7 +288,16 @@ while (have_posts()) :
             </div>
         </section>
 
-        <section id="informacion" class="seminario-section" aria-labelledby="seminario-info-title">
+        <?php if (!empty($meta['presentacion_seminario'])) : ?>
+            <section class="seminario-section seminario-section--presentation" aria-labelledby="seminario-presentacion-title">
+                <div class="seminario-section-header">
+                    <h2 id="seminario-presentacion-title" class="seminario-section-title">Presentación del seminario</h2>
+                </div>
+                <div class="seminario-prose seminario-prose--lead"><?php echo wp_kses_post($meta['presentacion_seminario']); ?></div>
+            </section>
+        <?php endif; ?>
+
+        <section id="informacion" class="seminario-section seminario-section--information" aria-labelledby="seminario-info-title">
             <div class="seminario-section-header">
                 <h2 id="seminario-info-title" class="seminario-section-title">Información del seminario</h2>
             </div>
@@ -420,18 +429,18 @@ while (have_posts()) :
         </section>
 
         <?php if ($abierto_publico && $has_inversion) : ?>
-            <section class="seminario-section" aria-labelledby="seminario-inversion-title">
+            <section class="seminario-section seminario-section--investment" aria-labelledby="seminario-inversion-title">
                 <div class="seminario-section-header">
                     <h2 id="seminario-inversion-title" class="seminario-section-title">Inversión</h2>
                 </div>
 
-                <div class="seminario-investment-grid">
+                <div class="seminario-investment-grid<?php echo ($has_valor_general xor $has_valor_descuento) ? ' has-one-card' : ''; ?>">
                     <?php if ($has_valor_general) : ?>
-                        <article class="seminario-investment-card">
+                        <article class="seminario-investment-card" aria-label="Valor general del seminario">
                             <div class="seminario-investment-head">
                                 <h3 class="seminario-investment-title">Valor general</h3>
                             </div>
-                            <div class="seminario-amounts">
+                            <div class="seminario-amounts<?php echo (($valor_uyu !== null) xor ($valor_usd !== null)) ? ' has-one-amount' : ''; ?>">
                                 <?php if ($valor_uyu !== null) : ?>
                                     <div class="seminario-amount">
                                         <span class="seminario-amount-label">UYU</span>
@@ -449,12 +458,12 @@ while (have_posts()) :
                     <?php endif; ?>
 
                     <?php if ($has_valor_descuento) : ?>
-                        <article class="seminario-investment-card is-discount">
+                        <article class="seminario-investment-card is-discount" aria-label="Valor para la comunidad FLACSO">
                             <div class="seminario-investment-head">
                                 <h3 class="seminario-investment-title">Comunidad FLACSO</h3>
                                 <span class="seminario-discount-badge">15% OFF</span>
                             </div>
-                            <div class="seminario-amounts">
+                            <div class="seminario-amounts<?php echo (($valor_uyu_15_descuento !== null) xor ($valor_usd_15_descuento !== null)) ? ' has-one-amount' : ''; ?>">
                                 <?php if ($valor_uyu_15_descuento !== null) : ?>
                                     <div class="seminario-amount">
                                         <span class="seminario-amount-label">UYU</span>
@@ -471,15 +480,6 @@ while (have_posts()) :
                         </article>
                     <?php endif; ?>
                 </div>
-            </section>
-        <?php endif; ?>
-
-        <?php if (!empty($meta['presentacion_seminario'])) : ?>
-            <section class="seminario-section" aria-labelledby="seminario-presentacion-title">
-                <div class="seminario-section-header">
-                    <h2 id="seminario-presentacion-title" class="seminario-section-title">Presentación del seminario</h2>
-                </div>
-                <div class="seminario-prose"><?php echo wp_kses_post($meta['presentacion_seminario']); ?></div>
             </section>
         <?php endif; ?>
 
@@ -578,7 +578,7 @@ while (have_posts()) :
                                 </div>
                             <?php endif; ?>
 
-                            <div style="margin-top:22px;">
+                            <div class="seminario-component-action">
                                 <a href="<?php echo esc_url(get_permalink($componente)); ?>" class="seminario-btn-secondary">Ver ficha original</a>
                             </div>
                         </article>

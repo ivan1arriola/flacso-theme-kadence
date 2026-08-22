@@ -525,17 +525,23 @@
  * Extraído de single-seminario.php para mantener la plantilla libre de CSS embebido.
  */
     .flacso-seminario-page {
-        --seminario-primary: var(--global-palette1, #123b7a);
-        --seminario-primary-dark: #0d2f63;
-        --seminario-accent: var(--global-palette2, #489ddd);
-        --seminario-text: var(--global-palette4, #263342);
-        --seminario-muted: var(--global-palette5, #687386);
+        --seminario-primary: var(--global-palette1, #163970);
+        --seminario-primary-dark: #0d2d5c;
+        --seminario-accent: #248138;
+        --seminario-highlight: #fed222;
+        --seminario-text: #26364c;
+        --seminario-muted: #66758a;
         --seminario-surface: #ffffff;
-        --seminario-surface-soft: #f6f9fc;
-        --seminario-border: rgba(18, 59, 122, 0.13);
-        --seminario-shadow: 0 16px 44px rgba(25, 46, 78, 0.10);
-        --seminario-radius: 22px;
+        --seminario-surface-soft: #f4f7fb;
+        --seminario-border: rgba(22, 57, 112, 0.12);
+        --seminario-shadow: 0 20px 55px rgba(20, 47, 82, 0.1);
+        --seminario-radius: 26px;
+        padding-bottom: 1px;
+        background:
+            radial-gradient(circle at 8% 12%, rgba(36, 129, 56, 0.07), transparent 30rem),
+            #f4f7fb;
         color: var(--seminario-text);
+        font-family: var(--global-body-font-family, "Segoe UI", sans-serif);
         overflow-x: clip;
     }
 
@@ -546,7 +552,7 @@
     }
 
     .flacso-seminario-shell {
-        width: min(1180px, calc(100% - 32px));
+        width: min(1240px, calc(100% - 40px));
         margin-inline: auto;
     }
 
@@ -643,14 +649,19 @@
 
     .seminario-hero {
         display: grid;
-        grid-template-columns: minmax(300px, 0.82fr) minmax(0, 1.18fr);
-        gap: clamp(34px, 5vw, 72px);
+        grid-template-columns: minmax(300px, 0.78fr) minmax(0, 1.22fr);
+        gap: clamp(30px, 5vw, 68px);
         align-items: center;
-        padding: 24px 0 52px;
+        margin: 10px 0 22px;
+        padding: clamp(22px, 4vw, 42px);
+        border: 1px solid var(--seminario-border);
+        border-radius: 30px;
+        background: #ffffff;
+        box-shadow: var(--seminario-shadow);
     }
 
     .seminario-hero-media-wrap {
-        width: min(100%, 470px);
+        width: min(100%, 420px);
         justify-self: center;
     }
 
@@ -659,9 +670,9 @@
         width: 100%;
         aspect-ratio: 4 / 5;
         overflow: hidden;
-        border-radius: 26px;
-        background: #eaf0f6;
-        box-shadow: 0 24px 64px rgba(25, 46, 78, 0.18);
+        border-radius: 22px;
+        background: linear-gradient(145deg, #173b70, #0d2d5c);
+        box-shadow: 0 20px 48px rgba(25, 46, 78, 0.2);
         isolation: isolate;
     }
 
@@ -679,7 +690,7 @@
         display: block;
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
         object-position: center;
     }
 
@@ -694,11 +705,15 @@
     }
 
     .seminario-kicker {
-        margin: 0 0 12px;
-        color: var(--seminario-primary);
-        font-size: 0.8rem;
+        width: fit-content;
+        margin: 0 0 14px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #eaf5ec;
+        color: var(--seminario-accent);
+        font-size: 0.74rem;
         font-weight: 800;
-        letter-spacing: 0.095em;
+        letter-spacing: 0.065em;
         text-transform: uppercase;
     }
 
@@ -706,7 +721,8 @@
         max-width: 850px;
         margin: 0;
         color: var(--seminario-primary);
-        font-size: clamp(2rem, 4vw, 3.65rem);
+        font-family: var(--global-heading-font-family, sans-serif);
+        font-size: clamp(2rem, 4vw, 3.55rem);
         font-weight: 800;
         letter-spacing: -0.035em;
         line-height: 1.03;
@@ -725,7 +741,7 @@
         padding: 13px 14px;
         border: 1px solid var(--seminario-border);
         border-radius: 15px;
-        background: var(--seminario-surface-soft);
+        background: #f7f9fc;
     }
 
     .seminario-quick-label {
@@ -822,12 +838,16 @@
     }
 
     .seminario-section {
-        padding: 46px 0;
-        border-top: 1px solid var(--seminario-border);
+        margin: 16px 0;
+        padding: clamp(24px, 4vw, 42px);
+        border: 1px solid var(--seminario-border);
+        border-radius: var(--seminario-radius);
+        background: #ffffff;
+        box-shadow: 0 12px 38px rgba(20, 47, 82, 0.055);
     }
 
     .seminario-section:first-of-type {
-        border-top: 0;
+        border-top: 1px solid var(--seminario-border);
     }
 
     .seminario-section-header {
@@ -839,12 +859,38 @@
     }
 
     .seminario-section-title {
+        position: relative;
         margin: 0;
+        padding-bottom: 12px;
         color: var(--seminario-primary);
+        font-family: var(--global-heading-font-family, sans-serif);
         font-size: clamp(1.55rem, 2.3vw, 2.15rem);
         font-weight: 800;
         letter-spacing: -0.02em;
         line-height: 1.12;
+    }
+
+    .seminario-section-title::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 58px;
+        height: 3px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--seminario-primary) 0 62%, var(--seminario-accent) 62%);
+    }
+
+    .seminario-section--presentation {
+        background:
+            radial-gradient(circle at 96% 10%, rgba(254, 210, 34, 0.13), transparent 16rem),
+            #ffffff;
+    }
+
+    .seminario-prose--lead {
+        max-width: 78ch;
+        font-size: clamp(1.02rem, 1.35vw, 1.14rem);
+        line-height: 1.78;
     }
 
     .seminario-info-grid {
@@ -858,8 +904,8 @@
         padding: 20px;
         border: 1px solid var(--seminario-border);
         border-radius: 18px;
-        background: var(--seminario-surface);
-        box-shadow: 0 7px 24px rgba(25, 46, 78, 0.055);
+        background: #f8fafc;
+        box-shadow: none;
     }
 
     .seminario-info-card-head {
@@ -970,29 +1016,53 @@
     .seminario-investment-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
+        gap: 18px;
+        width: min(100%, 1040px);
+        margin-inline: auto;
+    }
+
+    .seminario-investment-grid.has-one-card {
+        width: min(100%, 560px);
+        grid-template-columns: 1fr;
+    }
+
+    .seminario-section--investment .seminario-section-header {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .seminario-section--investment .seminario-section-title::after {
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     .seminario-investment-card {
         position: relative;
         overflow: hidden;
-        padding: 24px;
+        min-height: 220px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
         border: 1px solid var(--seminario-border);
-        border-radius: 20px;
+        border-radius: 22px;
         background: #fff;
-        box-shadow: 0 8px 26px rgba(25, 46, 78, 0.06);
+        box-shadow: 0 12px 30px rgba(25, 46, 78, 0.07);
+        text-align: center;
     }
 
     .seminario-investment-card.is-discount {
-        border-color: rgba(72, 157, 221, 0.35);
-        background: linear-gradient(145deg, #f7fbff, #ffffff);
+        border-color: rgba(36, 129, 56, 0.28);
+        background: linear-gradient(145deg, #f3faf4, #ffffff);
     }
 
     .seminario-investment-head {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
         gap: 10px;
+        width: 100%;
         margin-bottom: 18px;
     }
 
@@ -1004,9 +1074,12 @@
     }
 
     .seminario-discount-badge {
+        position: absolute;
+        top: 18px;
+        right: 18px;
         padding: 5px 9px;
         border-radius: 999px;
-        background: var(--seminario-primary);
+        background: var(--seminario-accent);
         color: #fff;
         font-size: 0.72rem;
         font-weight: 850;
@@ -1014,14 +1087,27 @@
     }
 
     .seminario-amounts {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px 22px;
+        width: min(100%, 430px);
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        justify-content: center;
+    }
+
+    .seminario-amounts.has-one-amount {
+        grid-template-columns: minmax(0, 220px);
     }
 
     .seminario-amount {
         display: grid;
-        gap: 2px;
+        justify-items: center;
+        gap: 5px;
+        min-width: 0;
+        text-align: center;
+    }
+
+    .seminario-amount + .seminario-amount {
+        border-left: 1px solid var(--seminario-border);
     }
 
     .seminario-amount-label {
@@ -1033,10 +1119,11 @@
 
     .seminario-amount-value {
         color: var(--seminario-text);
-        font-size: clamp(1.45rem, 3vw, 2rem);
+        font-size: clamp(1.55rem, 2.5vw, 2.1rem);
         font-weight: 850;
         letter-spacing: -0.025em;
         line-height: 1.05;
+        white-space: nowrap;
     }
 
     .seminario-prose {
@@ -1171,6 +1258,10 @@
     .seminario-component .seminario-unit {
         margin-top: 12px;
         background: var(--seminario-surface-soft);
+    }
+
+    .seminario-component-action {
+        margin-top: 22px;
     }
 
     .seminario-teachers-grid {
@@ -1350,7 +1441,9 @@
         .seminario-hero {
             grid-template-columns: 1fr;
             gap: 24px;
-            padding: 12px 0 34px;
+            margin: 4px 0 12px;
+            padding: 16px;
+            border-radius: 22px;
         }
 
         .seminario-hero-media-wrap {
@@ -1391,7 +1484,9 @@
         }
 
         .seminario-section {
-            padding: 34px 0;
+            margin: 12px 0;
+            padding: 24px 18px;
+            border-radius: 20px;
         }
 
         .seminario-section-header {
@@ -1410,8 +1505,16 @@
 
         .seminario-info-card,
         .seminario-investment-card {
-            padding: 17px;
+            padding: 20px;
             border-radius: 16px;
+        }
+
+        .seminario-investment-card {
+            min-height: 190px;
+        }
+
+        .seminario-amounts {
+            width: 100%;
         }
 
         .seminario-prose {
@@ -1472,6 +1575,17 @@
 
         .seminario-meeting {
             grid-template-columns: 1fr;
+        }
+
+        .seminario-amounts {
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        .seminario-amount + .seminario-amount {
+            padding-top: 14px;
+            border-top: 1px solid var(--seminario-border);
+            border-left: 0;
         }
 
         .seminario-meeting-time,
