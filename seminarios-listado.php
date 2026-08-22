@@ -302,15 +302,7 @@ foreach ($seminarios_catalogo as $item) {
     $seminarios_agrupados[$key]['items'][] = $item;
 }
 
-$seminarios_abiertos = 0;
-foreach ($seminarios_catalogo as $seminario) {
-    if ($seminario['is_upcoming']) {
-        $seminarios_abiertos++;
-    }
-}
-
 $seminarios_total = count($seminarios_catalogo);
-$meses_total = count($seminarios_agrupados);
 ?>
 
 <div class="content-area flacso-seminarios-page">
@@ -327,38 +319,28 @@ $meses_total = count($seminarios_agrupados);
                 >
             <?php endif; ?>
 
-            <div class="seminarios-hero__overlay" aria-hidden="true"></div>
-            <div class="seminarios-hero__grid" aria-hidden="true"></div>
-
             <div class="site-container seminarios-hero__inner">
                 <div class="seminarios-hero__content">
-                    <p class="seminarios-hero__kicker"><?php esc_html_e('Formacion de posgrado FLACSO', 'flacso-uruguay'); ?></p>
-                    <h1 id="seminarios-page-title" class="seminarios-hero__title"><?php esc_html_e('Seminarios | FLACSO Uruguay', 'flacso-uruguay'); ?></h1>
+                    <h1 id="seminarios-page-title" class="seminarios-hero__title"><?php esc_html_e('Seminarios', 'flacso-uruguay'); ?></h1>
                     <p class="seminarios-hero__subtitle">
-                        <?php esc_html_e('Explora la oferta de seminarios y encontra fechas, modalidades, creditos y detalle de cada propuesta.', 'flacso-uruguay'); ?>
+                        <?php esc_html_e('Encontrá actividades de corta duración, con fechas y modalidades específicas.', 'flacso-uruguay'); ?>
                     </p>
 
-                    <div class="seminarios-hero__actions">
-                        <a class="seminarios-btn seminarios-btn--primary" href="#seminarios-destacados">
-                            <?php esc_html_e('Explorar seminarios', 'flacso-uruguay'); ?>
-                        </a>
-                        <a class="seminarios-btn seminarios-btn--ghost" href="https://flacso.edu.uy/preguntas-frecuentes/" target="_blank" rel="noopener noreferrer">
-                            <?php esc_html_e('Ver preguntas frecuentes', 'flacso-uruguay'); ?>
-                        </a>
+                    <div class="seminarios-hero__search">
+                        <i class="bi bi-search" aria-hidden="true"></i>
+                        <label class="screen-reader-text" for="seminarios-catalog-search"><?php esc_html_e('Buscar seminarios', 'flacso-uruguay'); ?></label>
+                        <input id="seminarios-catalog-search" type="search" placeholder="<?php esc_attr_e('Buscar por seminario, modalidad o palabra clave', 'flacso-uruguay'); ?>" autocomplete="off" data-seminar-search>
+                        <span class="seminarios-hero__search-count" data-seminar-search-count aria-live="polite"></span>
                     </div>
-                </div>
 
-                <div class="seminarios-hero__stats" aria-hidden="true">
-                    <article class="seminarios-stat">
-                        <span class="seminarios-stat__label"><?php esc_html_e('Seminarios', 'flacso-uruguay'); ?></span>
-                        <strong class="seminarios-stat__value"><?php echo esc_html($seminarios_abiertos); ?></strong>
-                        <span class="seminarios-stat__meta"><?php esc_html_e('disponibles', 'flacso-uruguay'); ?></span>
-                    </article>
-                    <article class="seminarios-stat">
-                        <span class="seminarios-stat__label"><?php esc_html_e('Meses activos', 'flacso-uruguay'); ?></span>
-                        <strong class="seminarios-stat__value"><?php echo esc_html($meses_total); ?></strong>
-                        <span class="seminarios-stat__meta"><?php esc_html_e('con oferta vigente', 'flacso-uruguay'); ?></span>
-                    </article>
+                    <?php if (!empty($seminarios_agrupados)) : ?>
+                        <nav class="seminarios-hero__months" aria-label="<?php esc_attr_e('Filtrar seminarios por mes', 'flacso-uruguay'); ?>">
+                            <button class="is-active" type="button" data-seminar-month="all" aria-pressed="true"><?php esc_html_e('Todos', 'flacso-uruguay'); ?></button>
+                            <?php foreach ($seminarios_agrupados as $month_key => $grupo) : ?>
+                                <button type="button" data-seminar-month="<?php echo esc_attr($month_key); ?>" aria-pressed="false"><?php echo esc_html($grupo['month_label']); ?></button>
+                            <?php endforeach; ?>
+                        </nav>
+                    <?php endif; ?>
                 </div>
             </div>
         </header>
@@ -376,7 +358,7 @@ $meses_total = count($seminarios_agrupados);
                         $featured_badge = sprintf('Inicio hace %d dias', $seminario_destacado['days_since_start']);
                     }
                     ?>
-                    <article class="seminarios-featured" aria-labelledby="seminario-destacado-titulo">
+                    <article class="seminarios-featured" aria-labelledby="seminario-destacado-titulo" data-seminar-featured data-month="<?php echo esc_attr($seminario_destacado['month_key']); ?>" data-search="<?php echo esc_attr(implode(' ', array_filter([$seminario_destacado['title'], $seminario_destacado['description'], $seminario_destacado['modality'], $seminario_destacado['date_long']]))); ?>">
                         <a class="seminarios-featured__link" href="<?php echo esc_url($seminario_destacado['permalink']); ?>">
                             <div class="seminarios-featured__media">
                                 <?php if (!empty($seminario_destacado['image_url'])) : ?>
@@ -468,7 +450,7 @@ $meses_total = count($seminarios_agrupados);
                     <?php if (!empty($seminarios_agrupados)) : ?>
                         <div class="seminarios-listado__months">
                             <?php foreach ($seminarios_agrupados as $grupo) : ?>
-                                <section class="seminarios-month" aria-label="<?php echo esc_attr($grupo['month_label']); ?>">
+                                <section class="seminarios-month" aria-label="<?php echo esc_attr($grupo['month_label']); ?>" data-seminar-month-section>
                                     <div class="seminarios-month__title-wrap">
                                         <span class="seminarios-month__dot" aria-hidden="true"></span>
                                         <h3 class="seminarios-month__title"><?php echo esc_html($grupo['month_label']); ?></h3>
@@ -476,7 +458,7 @@ $meses_total = count($seminarios_agrupados);
 
                                     <div class="seminarios-grid">
                                         <?php foreach ($grupo['items'] as $seminario_item) : ?>
-                                            <article class="seminario-card<?php echo $seminario_item['is_started_recent'] ? ' is-recent' : ''; ?>">
+                                            <article class="seminario-card<?php echo $seminario_item['is_started_recent'] ? ' is-recent' : ''; ?>" data-seminar-item data-month="<?php echo esc_attr($seminario_item['month_key']); ?>" data-search="<?php echo esc_attr(implode(' ', array_filter([$seminario_item['title'], $seminario_item['description'], $seminario_item['modality'], $seminario_item['date_long']]))); ?>">
                                                 <a class="seminario-card__media-link" href="<?php echo esc_url($seminario_item['permalink']); ?>">
                                                     <?php if (!empty($seminario_item['image_url'])) : ?>
                                                         <img
@@ -566,6 +548,11 @@ $meses_total = count($seminarios_agrupados);
                                     </div>
                                 </section>
                             <?php endforeach; ?>
+                        </div>
+                        <div class="seminarios-empty" role="status" data-seminarios-filter-empty hidden>
+                            <span class="seminarios-empty__icon" aria-hidden="true"><i class="bi bi-search"></i></span>
+                            <h3><?php esc_html_e('No encontramos seminarios', 'flacso-uruguay'); ?></h3>
+                            <p><?php esc_html_e('Probá con otra palabra o seleccioná otro mes.', 'flacso-uruguay'); ?></p>
                         </div>
                     <?php else : ?>
                         <div class="seminarios-empty" role="status">
