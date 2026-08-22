@@ -265,6 +265,14 @@
     padding: clamp(40px, 7vw, 88px) 0 clamp(46px, 7vw, 92px);
 }
 
+.flacso-oa-article > .flacso-oa-single-hero {
+    margin-bottom: 0;
+}
+
+.flacso-oa-article > .flacso-oa-single-hero + .flacso-oa-main-section {
+    padding-top: clamp(8px, 1.5vw, 18px);
+}
+
 .flacso-oa-main-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
