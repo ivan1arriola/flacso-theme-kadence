@@ -70,16 +70,9 @@ jobs:
           echo "software_version=$software_version" >> "$GITHUB_OUTPUT"
           echo "Theme version for $GITHUB_SHA: $software_version"
 
-      - name: Validate PHP syntax
+      - name: Validate theme
         shell: bash
-        run: |
-          set -euo pipefail
-          while IFS= read -r -d '' file; do
-            php -l "$file"
-          done < <(find . -type f -name '*.php' \
-            -not -path './vendor/*' \
-            -not -path './node_modules/*' \
-            -print0)
+        run: bash bin/check-theme.sh
 
       - name: Build theme ZIP artifact
         shell: bash

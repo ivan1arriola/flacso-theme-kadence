@@ -38,18 +38,13 @@ La versión base solo debe cambiarse manualmente cuando corresponda iniciar una 
 
 No se utiliza `./build`, `package-theme.sh` ni otro script local para preparar entregas.
 
-La validación mínima antes de publicar cambios es:
+La validación antes de publicar cambios es:
 
 ```bash
-while IFS= read -r -d '' file; do
-  php -l "$file"
-done < <(find . -type f -name '*.php' \
-  -not -path './vendor/*' \
-  -not -path './node_modules/*' \
-  -print0)
+bash bin/check-theme.sh
 ```
 
-`bin/check-theme.sh` añade controles arquitectónicos más estrictos. Actualmente detecta estilos embebidos legacy en `single-seminario.php`, por lo que esa deuda debe resolverse antes de convertirlo en un gate obligatorio de CI.
+`bin/check-theme.sh` valida sintaxis PHP, enlaces externos seguros y que las plantillas no vuelvan a introducir estilos embebidos. El workflow de producción lo ejecuta como gate antes de crear el artifact.
 
 ## Despliegue a producción
 
@@ -59,7 +54,7 @@ El flujo oficial es:
 
 1. checkout del SHA que activó el workflow;
 2. cálculo de la versión efectiva;
-3. validación de archivos requeridos y sintaxis PHP;
+3. validación de archivos requeridos, sintaxis PHP y separación del CSS;
 4. creación del ZIP como artifact;
 5. copia por SSH a un staging exclusivo bajo `/tmp`;
 6. sincronización con `rsync --delete` exclusivamente sobre la carpeta del tema;
@@ -118,4 +113,3 @@ El artifact y el despliegue excluyen:
 - herramientas de desarrollo bajo `bin/`;
 - `README.md`, `ARCHITECTURE.md` y `phpcs.xml.dist`;
 - logs y archivos temporales del sistema.
-
