@@ -46,7 +46,7 @@ if (!function_exists('flacso_seminario_format_monto')) {
 
 if (!function_exists('flacso_seminario_render_docente')) {
     /**
-     * Renderiza una ficha docente reutilizable en seminarios simples e integrados.
+     * Renderiza una ficha docente tanto en seminarios simples como en componentes.
      */
     function flacso_seminario_render_docente($docente) {
         $doc_id = $docente->ID;
@@ -68,11 +68,11 @@ if (!function_exists('flacso_seminario_render_docente')) {
             $cv_full = wp_kses(wpautop(trim($cv)), $allowed);
         }
 
-        $inic = 'DC';
+        $iniciales = 'DC';
         if ($nombre && $apellido) {
-            $inic = mb_substr($nombre, 0, 1) . mb_substr($apellido, 0, 1);
+            $iniciales = mb_substr($nombre, 0, 1) . mb_substr($apellido, 0, 1);
         } elseif ($nombre) {
-            $inic = mb_substr($nombre, 0, 2);
+            $iniciales = mb_substr($nombre, 0, 2);
         }
         ?>
         <article class="seminario-teacher">
@@ -91,10 +91,9 @@ if (!function_exists('flacso_seminario_render_docente')) {
                     );
                     ?>
                 <?php else : ?>
-                    <div class="seminario-teacher-placeholder"><?php echo esc_html(strtoupper($inic)); ?></div>
+                    <div class="seminario-teacher-placeholder"><?php echo esc_html(strtoupper($iniciales)); ?></div>
                 <?php endif; ?>
             </div>
-
             <div>
                 <h3 class="seminario-teacher-name"><?php echo esc_html($nombre_completo); ?></h3>
                 <?php if ($prefijo_full) : ?><p class="seminario-teacher-prefix"><?php echo esc_html($prefijo_full); ?></p><?php endif; ?>
@@ -769,64 +768,8 @@ while (have_posts()) :
 
     .seminario-units {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
-        gap: 18px;
+        gap: 16px;
         counter-reset: seminario-unit;
-    }
-
-    .seminario-unit--catalog {
-        display: flex;
-        min-width: 0;
-        height: 100%;
-        padding: 0;
-        flex-direction: column;
-        overflow: hidden;
-        box-shadow: 0 7px 24px rgba(25, 46, 78, 0.05);
-    }
-
-    .seminario-unit--catalog::before {
-        content: none;
-    }
-
-    .seminario-unit-heading {
-        display: grid;
-        grid-template-columns: 42px minmax(0, 1fr);
-        gap: 13px;
-        align-items: center;
-        min-height: 78px;
-        padding: 16px 20px;
-        border-bottom: 1px solid var(--seminario-border);
-        background: linear-gradient(145deg, #f5f9fd, #fff);
-    }
-
-    .seminario-unit-number {
-        display: grid;
-        place-items: center;
-        width: 42px;
-        height: 42px;
-        border-radius: 12px;
-        background: var(--seminario-primary);
-        color: #fff;
-        font-size: .78rem;
-        font-weight: 850;
-        letter-spacing: .04em;
-    }
-
-    .seminario-unit-number::before {
-        content: counter(seminario-unit, decimal-leading-zero);
-    }
-
-    .seminario-unit--catalog .seminario-unit-title {
-        margin: 0;
-        color: var(--seminario-primary);
-        font-size: 1.06rem;
-        font-weight: 800;
-        line-height: 1.3;
-    }
-
-    .seminario-unit-content {
-        padding: 20px;
-        flex: 1;
     }
 
     .seminario-unit {
@@ -906,7 +849,7 @@ while (have_posts()) :
 
     .seminario-teachers-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 16px;
     }
 
@@ -1154,26 +1097,7 @@ while (have_posts()) :
             padding: 18px;
         }
 
-        .seminario-unit--catalog {
-            padding: 0;
-        }
-
-        .seminario-unit-heading {
-            grid-template-columns: 38px minmax(0, 1fr);
-            min-height: 70px;
-            padding: 14px 16px;
-        }
-
-        .seminario-unit-number {
-            width: 38px;
-            height: 38px;
-        }
-
-        .seminario-unit-content {
-            padding: 17px;
-        }
-
-        .seminario-unit:not(.seminario-unit--catalog)::before {
+        .seminario-unit::before {
             position: static;
             display: block;
             margin-bottom: 8px;
@@ -1331,15 +1255,6 @@ while (have_posts()) :
             </div>
         </section>
 
-        <?php if (!empty($meta['presentacion_seminario'])) : ?>
-            <section class="seminario-section" aria-labelledby="seminario-presentacion-title">
-                <div class="seminario-section-header">
-                    <h2 id="seminario-presentacion-title" class="seminario-section-title">Presentación del seminario</h2>
-                </div>
-                <div class="seminario-prose"><?php echo wp_kses_post($meta['presentacion_seminario']); ?></div>
-            </section>
-        <?php endif; ?>
-
         <section id="informacion" class="seminario-section" aria-labelledby="seminario-info-title">
             <div class="seminario-section-header">
                 <h2 id="seminario-info-title" class="seminario-section-title">Información del seminario</h2>
@@ -1471,6 +1386,70 @@ while (have_posts()) :
             </div>
         </section>
 
+        <?php if ($abierto_publico && $has_inversion) : ?>
+            <section class="seminario-section" aria-labelledby="seminario-inversion-title">
+                <div class="seminario-section-header">
+                    <h2 id="seminario-inversion-title" class="seminario-section-title">Inversión</h2>
+                </div>
+
+                <div class="seminario-investment-grid">
+                    <?php if ($has_valor_general) : ?>
+                        <article class="seminario-investment-card">
+                            <div class="seminario-investment-head">
+                                <h3 class="seminario-investment-title">Valor general</h3>
+                            </div>
+                            <div class="seminario-amounts">
+                                <?php if ($valor_uyu !== null) : ?>
+                                    <div class="seminario-amount">
+                                        <span class="seminario-amount-label">UYU</span>
+                                        <span class="seminario-amount-value">$<?php echo esc_html(flacso_seminario_format_monto($valor_uyu)); ?></span>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if ($valor_usd !== null) : ?>
+                                    <div class="seminario-amount">
+                                        <span class="seminario-amount-label">USD</span>
+                                        <span class="seminario-amount-value">U$S <?php echo esc_html(flacso_seminario_format_monto($valor_usd)); ?></span>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </article>
+                    <?php endif; ?>
+
+                    <?php if ($has_valor_descuento) : ?>
+                        <article class="seminario-investment-card is-discount">
+                            <div class="seminario-investment-head">
+                                <h3 class="seminario-investment-title">Comunidad FLACSO</h3>
+                                <span class="seminario-discount-badge">15% OFF</span>
+                            </div>
+                            <div class="seminario-amounts">
+                                <?php if ($valor_uyu_15_descuento !== null) : ?>
+                                    <div class="seminario-amount">
+                                        <span class="seminario-amount-label">UYU</span>
+                                        <span class="seminario-amount-value">$<?php echo esc_html(flacso_seminario_format_monto($valor_uyu_15_descuento)); ?></span>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if ($valor_usd_15_descuento !== null) : ?>
+                                    <div class="seminario-amount">
+                                        <span class="seminario-amount-label">USD</span>
+                                        <span class="seminario-amount-value">U$S <?php echo esc_html(flacso_seminario_format_monto($valor_usd_15_descuento)); ?></span>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </article>
+                    <?php endif; ?>
+                </div>
+            </section>
+        <?php endif; ?>
+
+        <?php if (!empty($meta['presentacion_seminario'])) : ?>
+            <section class="seminario-section" aria-labelledby="seminario-presentacion-title">
+                <div class="seminario-section-header">
+                    <h2 id="seminario-presentacion-title" class="seminario-section-title">Presentación del seminario</h2>
+                </div>
+                <div class="seminario-prose"><?php echo wp_kses_post($meta['presentacion_seminario']); ?></div>
+            </section>
+        <?php endif; ?>
+
         <?php if (!empty($componentes_posts)) : ?>
             <section class="seminario-section" aria-labelledby="seminario-componentes-title">
                 <div class="seminario-section-header">
@@ -1484,7 +1463,7 @@ while (have_posts()) :
                         $componente_unidades = !empty($componente_meta['unidades_academicas']) && is_array($componente_meta['unidades_academicas']) ? $componente_meta['unidades_academicas'] : array();
                         $componente_encuentros = !empty($componente_meta['encuentros_sincronicos']) && is_array($componente_meta['encuentros_sincronicos']) ? $componente_meta['encuentros_sincronicos'] : array();
                         $componente_docentes_ids = !empty($componente_meta['docentes']) && is_array($componente_meta['docentes']) ? $componente_meta['docentes'] : array();
-                        $componente_docentes_posts = !empty($componente_docentes_ids)
+                        $componente_docentes = !empty($componente_docentes_ids)
                             ? get_posts(array(
                                 'post_type'      => 'docente',
                                 'post__in'       => $componente_docentes_ids,
@@ -1557,10 +1536,10 @@ while (have_posts()) :
                                 <?php endforeach; ?>
                             <?php endif; ?>
 
-                            <?php if (!empty($componente_docentes_posts)) : ?>
+                            <?php if (!empty($componente_docentes)) : ?>
                                 <h4>Equipo docente</h4>
                                 <div class="seminario-teachers-grid seminario-teachers-grid--component">
-                                    <?php foreach ($componente_docentes_posts as $componente_docente) : ?>
+                                    <?php foreach ($componente_docentes as $componente_docente) : ?>
                                         <?php flacso_seminario_render_docente($componente_docente); ?>
                                     <?php endforeach; ?>
                                 </div>
@@ -1613,14 +1592,9 @@ while (have_posts()) :
                             continue;
                         }
                     ?>
-                        <article class="seminario-unit seminario-unit--catalog">
-                            <div class="seminario-unit-heading">
-                                <span class="seminario-unit-number" aria-hidden="true"></span>
-                                <h3 class="seminario-unit-title"><?php echo esc_html($titulo !== '' ? $titulo : 'Unidad'); ?></h3>
-                            </div>
-                            <?php if ($contenido !== '') : ?>
-                                <div class="seminario-unit-content seminario-prose"><?php echo wp_kses_post($contenido); ?></div>
-                            <?php endif; ?>
+                        <article class="seminario-unit">
+                            <?php if ($titulo !== '') : ?><h3><?php echo esc_html($titulo); ?></h3><?php endif; ?>
+                            <?php if ($contenido !== '') : ?><div class="seminario-prose"><?php echo wp_kses_post($contenido); ?></div><?php endif; ?>
                         </article>
                     <?php endforeach; ?>
                 </div>
@@ -1637,61 +1611,6 @@ while (have_posts()) :
                     <?php foreach ($docentes_posts as $docente) : ?>
                         <?php flacso_seminario_render_docente($docente); ?>
                     <?php endforeach; ?>
-                </div>
-            </section>
-        <?php endif; ?>
-
-        <?php if ($abierto_publico && $has_inversion) : ?>
-            <section class="seminario-section" aria-labelledby="seminario-inversion-title">
-                <div class="seminario-section-header">
-                    <h2 id="seminario-inversion-title" class="seminario-section-title">Inversión</h2>
-                </div>
-
-                <div class="seminario-investment-grid">
-                    <?php if ($has_valor_general) : ?>
-                        <article class="seminario-investment-card">
-                            <div class="seminario-investment-head">
-                                <h3 class="seminario-investment-title">Valor general</h3>
-                            </div>
-                            <div class="seminario-amounts">
-                                <?php if ($valor_uyu !== null) : ?>
-                                    <div class="seminario-amount">
-                                        <span class="seminario-amount-label">UYU</span>
-                                        <span class="seminario-amount-value">$<?php echo esc_html(flacso_seminario_format_monto($valor_uyu)); ?></span>
-                                    </div>
-                                <?php endif; ?>
-                                <?php if ($valor_usd !== null) : ?>
-                                    <div class="seminario-amount">
-                                        <span class="seminario-amount-label">USD</span>
-                                        <span class="seminario-amount-value">U$S <?php echo esc_html(flacso_seminario_format_monto($valor_usd)); ?></span>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                        </article>
-                    <?php endif; ?>
-
-                    <?php if ($has_valor_descuento) : ?>
-                        <article class="seminario-investment-card is-discount">
-                            <div class="seminario-investment-head">
-                                <h3 class="seminario-investment-title">Comunidad FLACSO</h3>
-                                <span class="seminario-discount-badge">15% OFF</span>
-                            </div>
-                            <div class="seminario-amounts">
-                                <?php if ($valor_uyu_15_descuento !== null) : ?>
-                                    <div class="seminario-amount">
-                                        <span class="seminario-amount-label">UYU</span>
-                                        <span class="seminario-amount-value">$<?php echo esc_html(flacso_seminario_format_monto($valor_uyu_15_descuento)); ?></span>
-                                    </div>
-                                <?php endif; ?>
-                                <?php if ($valor_usd_15_descuento !== null) : ?>
-                                    <div class="seminario-amount">
-                                        <span class="seminario-amount-label">USD</span>
-                                        <span class="seminario-amount-value">U$S <?php echo esc_html(flacso_seminario_format_monto($valor_usd_15_descuento)); ?></span>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                        </article>
-                    <?php endif; ?>
                 </div>
             </section>
         <?php endif; ?>

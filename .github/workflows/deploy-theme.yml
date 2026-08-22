@@ -1,0 +1,225 @@
+name: Deploy WordPress Theme
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-wordpress-theme-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  THEME_SLUG: kadence-child-flacso
+  THEME_FILE: style.css
+  WP_ROOT: /var/www/clients/client2/web5/web
+  THEME_TARGET: /var/www/clients/client2/web5/web/wp-content/themes/kadence-child-flacso
+
+jobs:
+  deploy:
+    name: Validate and deploy theme to production
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout triggering commit
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Verify checkout and required files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -f "$THEME_FILE"
+          test -f functions.php
+          grep -Fq 'Theme Name: Kadence Child FLACSO' "$THEME_FILE"
+
+          symlink="$(find . -path './.git' -prune -o -type l -print -quit)"
+          if [[ -n "$symlink" ]]; then
+            echo "::error::Production package must not contain symbolic links: $symlink"
+            exit 1
+          fi
+
+      - name: Calculate and apply software version
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          current_version="$(grep -m1 -E '^Version:[[:space:]]*' "$THEME_FILE" | sed -E 's/^Version:[[:space:]]*//')"
+          if [[ ! "$current_version" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)(\.[0-9]+)?$ ]]; then
+            echo "::error::Invalid theme version in $THEME_FILE: $current_version"
+            exit 1
+          fi
+
+          base_version="${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.${BASH_REMATCH[3]}"
+          revision="$(git rev-list --count HEAD)"
+          software_version="${base_version}.${revision}"
+          updated_at="$(git show -s --format=%cd --date=format:'%Y-%m-%d %H:%M:%S' HEAD)"
+
+          sed -i -E "s/^Version:.*/Version: ${software_version}/" "$THEME_FILE"
+          sed -i -E "s/^Updated:.*/Updated: ${updated_at}/" "$THEME_FILE"
+
+          grep -Fqx "Version: ${software_version}" "$THEME_FILE"
+          echo "SOFTWARE_VERSION=$software_version" >> "$GITHUB_ENV"
+          echo "software_version=$software_version" >> "$GITHUB_OUTPUT"
+          echo "Theme version for $GITHUB_SHA: $software_version"
+
+      - name: Validate PHP syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' file; do
+            php -l "$file"
+          done < <(find . -type f -name '*.php' \
+            -not -path './vendor/*' \
+            -not -path './node_modules/*' \
+            -print0)
+
+      - name: Build theme ZIP artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP_NAME="${THEME_SLUG}-${SOFTWARE_VERSION}-${GITHUB_SHA::7}.zip"
+          zip -r "$ZIP_NAME" . \
+            -x "$ZIP_NAME" \
+               '.git/*' \
+               '.github/*' \
+               'node_modules/*' \
+               'vendor/*' \
+               'bin/*' \
+               '.DS_Store' \
+               'Thumbs.db' \
+               'README.md' \
+               'ARCHITECTURE.md' \
+               'phpcs.xml.dist' \
+               '*.log'
+          echo "ZIP_NAME=$ZIP_NAME" >> "$GITHUB_ENV"
+
+      - name: Upload theme ZIP artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: theme-zip-${{ steps.version.outputs.software_version }}-${{ github.sha }}
+          path: ${{ env.ZIP_NAME }}
+          if-no-files-found: error
+
+      - name: Configure SSH
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${EC2_HOST:?Missing EC2_HOST secret}"
+          : "${EC2_USER:?Missing EC2_USER secret}"
+          : "${EC2_SSH_KEY:?Missing EC2_SSH_KEY secret}"
+
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$EC2_SSH_KEY" > ~/.ssh/theme_deploy_key
+          chmod 600 ~/.ssh/theme_deploy_key
+          ssh-keyscan -H "$EC2_HOST" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Upload triggering commit to remote staging
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          REMOTE_STAGE="/tmp/${THEME_SLUG}-${GITHUB_SHA}"
+          SSH_OPTIONS=(-i ~/.ssh/theme_deploy_key -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
+          RSYNC_RSH="ssh ${SSH_OPTIONS[*]}"
+
+          ssh "${SSH_OPTIONS[@]}" "$EC2_USER@$EC2_HOST" \
+            bash -se -- "$REMOTE_STAGE" <<'REMOTE'
+          remote_stage="$1"
+          rm -rf -- "$remote_stage"
+          install -m 700 -d "$remote_stage"
+          REMOTE
+
+          rsync -az --delete \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='node_modules/' \
+            --exclude='vendor/' \
+            --exclude='bin/' \
+            --exclude='.DS_Store' \
+            --exclude='Thumbs.db' \
+            --exclude='README.md' \
+            --exclude='ARCHITECTURE.md' \
+            --exclude='phpcs.xml.dist' \
+            --exclude='*.log' \
+            -e "$RSYNC_RSH" \
+            ./ "$EC2_USER@$EC2_HOST:$REMOTE_STAGE/"
+
+      - name: Activate files and smoke-test WordPress
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          SSH_OPTIONS=(-i ~/.ssh/theme_deploy_key -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes)
+
+          ssh "${SSH_OPTIONS[@]}" "$EC2_USER@$EC2_HOST" \
+            bash -se -- "$GITHUB_SHA" "$SOFTWARE_VERSION" <<'REMOTE'
+          set -euo pipefail
+
+          DEPLOY_SHA="$1"
+          EXPECTED_VERSION="$2"
+          SOURCE="/tmp/kadence-child-flacso-${DEPLOY_SHA}"
+          WP_ROOT="/var/www/clients/client2/web5/web"
+          TARGET="${WP_ROOT}/wp-content/themes/kadence-child-flacso"
+
+          cleanup() {
+            rm -rf "$SOURCE"
+          }
+          trap cleanup EXIT
+
+          test -f "$SOURCE/style.css"
+          test -f "$SOURCE/functions.php"
+          test -d "$WP_ROOT"
+          test -d "$TARGET"
+          test -f "$TARGET/style.css"
+          test -f "$TARGET/functions.php"
+
+          sudo -n /usr/bin/rsync \
+            -a --delete --delay-updates \
+            --chown=web5:client2 \
+            --chmod=D755,F644 \
+            "$SOURCE/" "$TARGET/"
+
+          test -f "$TARGET/style.css"
+          test -f "$TARGET/functions.php"
+
+          WP_BIN="$(command -v wp)"
+          test -n "$WP_BIN"
+
+          validate_wordpress() {
+            cd "$WP_ROOT"
+            sudo -n -u web5 -- "$WP_BIN" core is-installed
+            sudo -n -u web5 -- "$WP_BIN" theme is-active kadence-child-flacso
+            deployed_version="$(sudo -n -u web5 -- "$WP_BIN" theme get kadence-child-flacso --field=version)"
+            if [[ "$deployed_version" != "$EXPECTED_VERSION" ]]; then
+              echo "Expected theme version $EXPECTED_VERSION, found $deployed_version." >&2
+              return 1
+            fi
+            echo "Deployed theme version: $deployed_version"
+          }
+
+          if ! validation_output="$(validate_wordpress 2>&1)"; then
+            printf '%s\n' "$validation_output"
+            echo 'WordPress smoke test or theme activation check failed.' >&2
+            exit 1
+          fi
+          printf '%s\n' "$validation_output"
+
+          echo "Commit $DEPLOY_SHA (version $EXPECTED_VERSION) deployed successfully to $TARGET"
+          REMOTE
