@@ -101,10 +101,8 @@
     }
     
     .unidad-item {
-        counter-increment: unidad-counter;
         position: relative;
         padding: 1.5rem;
-        padding-left: 5rem;
         margin-bottom: 1.5rem;
         background: linear-gradient(135deg, var(--global-palette8) 0%, var(--global-palette9) 100%);
         border-radius: 12px;
@@ -115,24 +113,6 @@
     
     .unidad-item:hover {
         transform: translateX(5px);
-    }
-    
-    .unidad-item::before {
-        content: counter(unidad-counter);
-        position: absolute;
-        top: 1.5rem;
-        left: 1rem;
-        width: 2.5rem;
-        height: 2.5rem;
-        background: linear-gradient(135deg, var(--global-palette1) 0%, var(--global-palette3) 100%);
-        color: var(--global-palette9);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 800;
-        font-size: 1rem;
-        box-shadow: 0 4px 12px rgba(29, 58, 114, 0.3);
     }
     
     .docente-card {
@@ -1182,27 +1162,14 @@
     .seminario-units {
         display: grid;
         gap: 16px;
-        counter-reset: seminario-unit;
     }
 
     .seminario-unit {
         position: relative;
-        padding: 22px 22px 22px 76px;
+        padding: 22px;
         border: 1px solid var(--seminario-border);
         border-radius: 18px;
         background: #fff;
-        counter-increment: seminario-unit;
-    }
-
-    .seminario-unit::before {
-        content: counter(seminario-unit, decimal-leading-zero);
-        position: absolute;
-        top: 22px;
-        left: 22px;
-        color: rgba(18, 59, 122, 0.34);
-        font-size: 0.82rem;
-        font-weight: 850;
-        letter-spacing: .04em;
     }
 
     .seminario-unit h3,
@@ -1524,12 +1491,6 @@
 
         .seminario-unit {
             padding: 18px;
-        }
-
-        .seminario-unit::before {
-            position: static;
-            display: block;
-            margin-bottom: 8px;
         }
 
         .seminario-component {
