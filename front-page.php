@@ -9,6 +9,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Capa visual específica de la portada.
+ *
+ * Se encola después de los estilos del plugin para que el tema siga siendo la
+ * fuente de verdad de presentación, mientras el plugin conserva datos y marcado.
+ */
+add_action(
+	'wp_enqueue_scripts',
+	static function () {
+		$relative_path = 'assets/css/front-page-refresh.css';
+		$absolute_path = get_stylesheet_directory() . '/' . $relative_path;
+		$version       = file_exists( $absolute_path ) ? (string) filemtime( $absolute_path ) : wp_get_theme()->get( 'Version' );
+
+		wp_enqueue_style(
+			'flacso-front-page-refresh',
+			get_stylesheet_directory_uri() . '/' . $relative_path,
+			array( 'flacso-front-page-base', 'flacso-main-page-base' ),
+			$version
+		);
+	},
+	100
+);
+
 get_header();
 
 do_action( 'kadence_before_content' );
