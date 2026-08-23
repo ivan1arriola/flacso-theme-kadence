@@ -12,15 +12,42 @@
     var searchToggle = header.querySelector('[data-flacso-search-toggle]');
     var searchField = header.querySelector('#flacso-header-search-field');
 
+    function setSubmenuState(item, opening) {
+        if (!item) return;
+
+        var link = item.querySelector(':scope > a');
+        var toggle = item.querySelector(':scope > .flacso-navbar__submenu-toggle');
+        var label = link ? link.textContent.trim() : 'esta sección';
+
+        item.classList.toggle('is-submenu-open', opening);
+
+        if (toggle) {
+            toggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
+            toggle.setAttribute('aria-label', (opening ? 'Ocultar' : 'Mostrar') + ' submenú de ' + label);
+        }
+    }
+
+    function closeOtherSubmenus(activeItem) {
+        if (!menu) return;
+
+        Array.prototype.forEach.call(menu.querySelectorAll('.menu-item-has-children.is-submenu-open'), function (item) {
+            if (item !== activeItem) setSubmenuState(item, false);
+        });
+    }
+
+    function closeAllSubmenus() {
+        if (!menu) return;
+
+        Array.prototype.forEach.call(menu.querySelectorAll('.menu-item-has-children.is-submenu-open'), function (item) {
+            setSubmenuState(item, false);
+        });
+    }
+
     function closeMenu(returnFocus) {
         if (!menu || !menuToggle) return;
         menu.classList.remove('is-open');
         if (menuOverlay) menuOverlay.classList.remove('is-visible');
-        Array.prototype.forEach.call(menu.querySelectorAll('.is-submenu-open'), function (item) {
-            item.classList.remove('is-submenu-open');
-            var toggle = item.querySelector(':scope > .flacso-navbar__submenu-toggle');
-            if (toggle) toggle.setAttribute('aria-expanded', 'false');
-        });
+        closeAllSubmenus();
         menuToggle.setAttribute('aria-expanded', 'false');
         menuToggle.querySelector('.screen-reader-text').textContent = 'Abrir menú';
         document.body.classList.remove('flacso-menu-open');
@@ -54,9 +81,9 @@
 
             toggle.addEventListener('click', function () {
                 var opening = toggle.getAttribute('aria-expanded') !== 'true';
-                item.classList.toggle('is-submenu-open', opening);
-                toggle.setAttribute('aria-expanded', opening ? 'true' : 'false');
-                toggle.setAttribute('aria-label', (opening ? 'Ocultar' : 'Mostrar') + ' submenú de ' + link.textContent.trim());
+
+                if (opening) closeOtherSubmenus(item);
+                setSubmenuState(item, opening);
             });
         });
 
@@ -69,6 +96,7 @@
             menuToggle.querySelector('.screen-reader-text').textContent = opening ? 'Cerrar menú' : 'Abrir menú';
             document.body.classList.toggle('flacso-menu-open', opening);
             if (opening) {
+                closeAllSubmenus();
                 var firstLink = menu.querySelector('a');
                 if (firstLink) firstLink.focus();
             }
