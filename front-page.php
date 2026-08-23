@@ -30,7 +30,6 @@ do_action( 'kadence_before_content' );
 			 */
 			$renderers = [
 				'hero'       => 'flacso_section_hero_render',
-				'festejos'   => 'flacso_section_festejos_render',
 				'eventos'    => 'flacso_section_eventos_render',
 				'seminarios' => 'flacso_section_seminarios_proximos_render',
 				'novedades'  => 'flacso_section_novedades_render',
