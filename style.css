@@ -4,10 +4,10 @@ Theme URI: https://www.kadencewp.com/kadence-theme/
 Template: kadence
 Author: Kadence WP
 Author URI: https://www.kadencewp.com/
-Description: Kadence Theme is a lightweight yet full featured WordPress theme for creating beautiful fast loading and accessible websites, easier than ever. It features an easy to use drag and drop header and footer builder to build any type of header in minutes. It features a full library of gorgeous starter templates that are easy to modify with our intelligent global font and color controls. With extensive integration with the most popular 3rd party plugins, you can quickly build impressive ecommerce websites, course websites, business websites, and more.
+Description: Kadence Theme is a lightweight yet full featured theme for creating beautiful fast loading and accessible websites, easier than ever. It features an easy to use drag and drop header and footer builder to build any type of header in minutes. It features a full library of gorgeous starter templates that are easy to modify with our intelligent global font and color controls. With extensive integration with the most popular 3rd party plugins, you can quickly build impressive ecommerce websites, course websites, and more.
 Tags: translation-ready,two-columns,right-sidebar,left-sidebar,footer-widgets,blog,custom-logo,custom-background,custom-menu,rtl-language-support,editor-style,threaded-comments,custom-colors,featured-images,wide-blocks,full-width-template,theme-options,e-commerce
-Version: 1.1.52
-Updated: 2026-08-12 01:52:49
+Version: 1.1.53
+Updated: 2026-08-23 12:37:00
 
 */
 
@@ -70,6 +70,8 @@ Updated: 2026-08-12 01:52:49
 /*
  * Imágenes destacadas 4:5.
  * La variable de fondo es asignada por assets/js/featured-images.js.
+ * La portada de Novedades queda fuera de este normalizador: su relación 4:5
+ * y su recorte pertenecen al componente del plugin flacso-uruguay-plugin.
  */
 .flacso-featured-image-45 {
     position: relative;
@@ -117,7 +119,6 @@ Updated: 2026-08-12 01:52:49
 /* Neutraliza proporciones y alturas históricas de los contenedores conocidos. */
 .flacso-hero-figure,
 .flacso-archive-card-thumb,
-.flacso-novedades-3d__image-link,
 .seminario-card__image-container,
 .seminario-card__media-link,
 .seminarios-featured__media,
