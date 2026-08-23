@@ -6,7 +6,6 @@
         '.kadence-post-image img',
         '.flacso-hero-figure .flacso-hero-image',
         '.flacso-archive-card-thumb img',
-        '.flacso-novedades-3d__image',
         '.seminario-card__image',
         '.seminarios-featured__image',
         '.evento-img img',
