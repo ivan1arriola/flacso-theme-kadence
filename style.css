@@ -6,8 +6,8 @@ Author: Kadence WP
 Author URI: https://www.kadencewp.com/
 Description: Kadence Theme is a lightweight yet full featured theme for creating beautiful fast loading and accessible websites, easier than ever. It features an easy to use drag and drop header and footer builder to build any type of header in minutes. It features a full library of gorgeous starter templates that are easy to modify with our intelligent global font and color controls. With extensive integration with the most popular 3rd party plugins, you can quickly build impressive ecommerce websites, course websites, and more.
 Tags: translation-ready,two-columns,right-sidebar,left-sidebar,footer-widgets,blog,custom-logo,custom-background,custom-menu,rtl-language-support,editor-style,threaded-comments,custom-colors,featured-images,wide-blocks,full-width-template,theme-options,e-commerce
-Version: 1.1.53
-Updated: 2026-08-23 12:37:00
+Version: 1.1.54
+Updated: 2026-08-23 12:50:00
 
 */
 
@@ -130,6 +130,27 @@ Updated: 2026-08-23 12:37:00
     aspect-ratio: 4 / 5 !important;
     height: auto !important;
     min-height: 0 !important;
+}
+
+/*
+ * Integración con los componentes de portada del plugin.
+ * Kadence puede aplicar colores distintos a enlaces visitados y a párrafos;
+ * una tarjeta fotográfica de Oferta Académica debe conservar su esquema claro.
+ * El plugin mantiene la definición visual completa y estas reglas sólo evitan
+ * que los estados globales del tema la contradigan.
+ */
+.flacso-main-page .flacso-oferta-mosaico__card,
+.flacso-main-page .flacso-oferta-mosaico__card:visited,
+.flacso-main-page .flacso-oferta-mosaico__card:hover,
+.flacso-main-page .flacso-oferta-mosaico__card:focus-visible {
+    color: #ffffff;
+}
+
+.flacso-main-page .flacso-oferta-mosaico__description,
+.flacso-main-page .flacso-oferta-mosaico__description p,
+.flacso-main-page .flacso-oferta-mosaico__link,
+.flacso-main-page .flacso-oferta-mosaico__link span {
+    color: inherit;
 }
 
 @media (prefers-reduced-motion: reduce) {
