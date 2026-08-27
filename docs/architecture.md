@@ -15,3 +15,4 @@
 
 ## 4. Comunicación e Integraciones
 - **Hacia el Plugin (`flacso-uruguay-plugin`)**: Consume datos y emite eventos de tracking llamando a `flacsoMetaTrackCustom(...)`.
+
