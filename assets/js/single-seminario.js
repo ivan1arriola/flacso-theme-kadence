@@ -38,13 +38,7 @@
         }
 
         if (typeof window.flacsoTrackGA4 === "function") {
-            window.flacsoTrackGA4(
-                String(eventName || "")
-                    .toLowerCase()
-                    .replace(/[^a-z0-9_]+/g, "_")
-                    .replace(/^_+|_+$/g, ""),
-                payload
-            );
+            window.flacsoTrackGA4(eventName, payload);
         }
     }
 
@@ -105,7 +99,7 @@
     markSectionViewed(
         "general_information",
         document.getElementById("informacion"),
-        "SeminarioInformationView",
+        "seminario_information_view",
         {
             section_name: "informacion_general"
         }
@@ -115,7 +109,7 @@
     markSectionViewed(
         "prices",
         investmentSection,
-        "SeminarioPriceView",
+        "seminario_price_view",
         Object.assign({
             section_name: "precios"
         }, collectPrices(investmentSection))
@@ -149,7 +143,7 @@
             action = "ver_informacion";
         }
 
-        trackMetaAndGoogle("SeminarioCtaClick", {
+        trackMetaAndGoogle("seminario_cta_click", {
             event_category: "seminario",
             event_label: label,
             cta_action: action,
