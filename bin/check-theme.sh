@@ -17,4 +17,16 @@ if rg -n '^<style>|^</style>' "$theme_dir" -g '*.php' -g '!**/carta-template.php
     exit 1
 fi
 
+if rg -n 'trailingslashit\(get_permalink\([^)]*\)\).*preinscripcion' \
+    "$theme_dir/single-oferta-academica.php" \
+    "$theme_dir/templates/preinscripciones/carta-template.php"; then
+    echo 'El tema no debe construir URLs de preinscripción; debe usar el resolver del plugin.' >&2
+    exit 1
+fi
+
+if ! rg -q 'data-flacso-preinscription-cta' "$theme_dir/single-oferta-academica.php" "$theme_dir/single-seminario.php"; then
+    echo 'Los CTA deben conservar el marcador semántico usado por analytics.' >&2
+    exit 1
+fi
+
 echo 'Tema FLACSO: sintaxis, enlaces externos y separación de CSS correctos.'

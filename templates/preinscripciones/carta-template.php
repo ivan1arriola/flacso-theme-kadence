@@ -223,9 +223,14 @@ $reconocido_mec = isset($data['reconocido_mec'])
     ? flacso_carta_bool($data['reconocido_mec'])
     : $is_maestria;
 
-$mostrar_carta = isset($data['inscripciones_abiertas'])
-    ? flacso_carta_bool($data['inscripciones_abiertas'])
-    : flacso_carta_bool(get_post_meta($post_id, 'inscripciones_abiertas', true));
+$preinscription_cta = function_exists('flacso_get_preinscription_cta')
+    ? flacso_get_preinscription_cta($post_id)
+    : null;
+$mostrar_carta = is_array($preinscription_cta)
+    ? !empty($preinscription_cta['is_open'])
+    : (isset($data['inscripciones_abiertas'])
+        ? flacso_carta_bool($data['inscripciones_abiertas'])
+        : flacso_carta_bool(get_post_meta($post_id, 'inscripciones_abiertas', true)));
 $reconocimiento_int = isset($data['reconocimiento_internacional'])
     ? flacso_carta_bool($data['reconocimiento_internacional'])
     : ($is_maestria || (int) $post_id === 12316);
@@ -366,7 +371,9 @@ if (isset($data['mostrar_expedicion_titulo']) && $data['mostrar_expedicion_titul
 
 $mostrar_costos_envio = !empty($data['mostrar_costos_envio']);
 $mostrar_convenio_iin = !empty($data['convenio_iin_oea']);
-$url_inscripcion = trailingslashit(get_permalink($post_id)) . 'preinscripcion';
+$url_inscripcion = is_array($preinscription_cta)
+    ? (string) ($preinscription_cta['url'] ?? '')
+    : '';
 ?>
 
 <div id="primary" class="content-area flacso-carta-virtual">
@@ -451,7 +458,7 @@ $url_inscripcion = trailingslashit(get_permalink($post_id)) . 'preinscripcion';
 
                     <div class="fc-hero-actions">
                         <?php if ($mostrar_carta) : ?>
-                            <a class="fc-primary-button" href="<?php echo esc_url($url_inscripcion); ?>" aria-label="Abrir formulario de preinscripción para <?php echo esc_attr($titulo); ?>">
+                            <a class="fc-primary-button" data-flacso-preinscription-cta="1" href="<?php echo esc_url($url_inscripcion); ?>" aria-label="Abrir formulario de preinscripción para <?php echo esc_attr($titulo); ?>">
                                 <i class="bi bi-pencil-square" aria-hidden="true"></i>
                                 Formulario de preinscripción
                             </a>
@@ -939,13 +946,13 @@ $url_inscripcion = trailingslashit(get_permalink($post_id)) . 'preinscripcion';
                     <p><strong>Formación 100% a distancia</strong></p>
                 </div>
 
-                <a href="<?php echo esc_url($url_inscripcion); ?>" aria-label="Abrir formulario de preinscripción para <?php echo esc_attr($titulo); ?>">
+                <a data-flacso-preinscription-cta="1" href="<?php echo esc_url($url_inscripcion); ?>" aria-label="Abrir formulario de preinscripción para <?php echo esc_attr($titulo); ?>">
                     <i class="bi bi-pencil-square" aria-hidden="true"></i>
                     Formulario de Preinscripción
                 </a>
             </section>
 
-            <a class="fc-floating-preinscripcion is-hidden" href="<?php echo esc_url($url_inscripcion); ?>" aria-label="Abrir formulario de preinscripción para <?php echo esc_attr($titulo); ?>" aria-hidden="true" tabindex="-1">
+            <a class="fc-floating-preinscripcion is-hidden" data-flacso-preinscription-cta="1" href="<?php echo esc_url($url_inscripcion); ?>" aria-label="Abrir formulario de preinscripción para <?php echo esc_attr($titulo); ?>" aria-hidden="true" tabindex="-1">
                 <i class="bi bi-pencil-square" aria-hidden="true"></i>
                 <span class="fc-floating-copy">
                     <strong>Formulario de preinscripción</strong>

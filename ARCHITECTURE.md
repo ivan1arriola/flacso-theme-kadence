@@ -11,6 +11,14 @@ El tema hijo contiene únicamente presentación y compatibilidad con Kadence. Lo
 
 Los recursos específicos se cargan mediante el nombre real de la plantilla y usan `filemtime()` como versión. No deben agregarse bloques `<style>` a las plantillas ni cargar dependencias después de `get_header()`. `carta-template.php` es la única excepción: su CSS permanece embebido porque el documento se distribuye como carta/HTML autocontenido.
 
+## CTA de preinscripción
+
+El tema no interpreta `flujo_preinscripcion` ni construye destinos. Obtiene
+estado, mensajes y URL mediante `flacso_get_preinscription_cta()` o
+`flacso_get_preinscription_url()` del plugin. Los enlaces usan
+`data-flacso-preinscription-cta="1"`; el tracking GA4/Meta reconoce ese atributo
+y agrega al destino los parámetros de campaña conservados en `sessionStorage`.
+
 ## Componentes
 
 Cuando una sección de plantilla vuelva a utilizarse, debe trasladarse a `template-parts/<dominio>/` y recibir sus datos mediante el tercer argumento de `get_template_part()`. El componente escapa sus atributos y texto en el punto de salida.

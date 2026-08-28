@@ -50,14 +50,21 @@ $has_visible_html = static function ($html): bool {
 $has_main_content = $has_visible_html($filtered_main_content) || $has_visible_html($descripcion_html);
 
 $inscripciones_meta = get_post_meta($post_id, 'inscripciones_abiertas', true);
+$preinscription_cta = function_exists('flacso_get_preinscription_cta')
+    ? flacso_get_preinscription_cta($post_id)
+    : null;
 
-$inscripciones_abiertas = !empty($data['inscripciones_abiertas'])
+$inscripciones_abiertas = is_array($preinscription_cta)
+    ? !empty($preinscription_cta['is_open'])
+    : (!empty($data['inscripciones_abiertas'])
     || $inscripciones_meta === '1'
     || $inscripciones_meta === 'true'
     || $inscripciones_meta === true
-    || $inscripciones_meta === 1;
+    || $inscripciones_meta === 1);
 
-$preinscripcion_url = trailingslashit(get_permalink($post_id)) . 'preinscripcion/';
+$preinscripcion_url = is_array($preinscription_cta)
+    ? (string) ($preinscription_cta['url'] ?? '')
+    : '';
 $inscripciones_year = class_exists('Oferta_Data_Schema')
     ? Oferta_Data_Schema::resolve_inscripciones_year($data['proximo_inicio'] ?? '', $data['cohorte'] ?? '')
     : '';
@@ -419,8 +426,12 @@ get_header();
                         $banner_featured_url = 'data:image/svg+xml;base64,' . base64_encode($svg);
                     }
 
-                    $custom_mensaje = get_post_meta($post_id, 'inscripciones_mensaje', true);
-                    $custom_mensaje_cerrado = get_post_meta($post_id, 'inscripciones_mensaje_cerrado', true);
+                    $custom_mensaje = is_array($preinscription_cta)
+                        ? ($preinscription_cta['open_message'] ?? '')
+                        : get_post_meta($post_id, 'inscripciones_mensaje', true);
+                    $custom_mensaje_cerrado = is_array($preinscription_cta)
+                        ? ($preinscription_cta['closed_message'] ?? '')
+                        : get_post_meta($post_id, 'inscripciones_mensaje_cerrado', true);
                     $default_mensaje_abierto = get_option('flacso_inscripciones_mensaje_abierto_default', 'Descuentos especiales disponibles. Solicitá información e inscribite hoy.');
                     $default_mensaje_cerrado = get_option('flacso_inscripciones_mensaje_cerrado_default', 'Mantente atento a nuestras próximas aperturas.');
 
@@ -485,7 +496,7 @@ get_header();
                                 </p>
 
                                 <div class="flacso-oa-program-hero__actions">
-                                    <a href="<?php echo esc_url($hero_primary_url); ?>" class="flacso-oa-program-hero__button flacso-oa-program-hero__button--primary">
+                                    <a href="<?php echo esc_url($hero_primary_url); ?>"<?php echo $inscripciones_abiertas ? ' data-flacso-preinscription-cta="1"' : ''; ?> class="flacso-oa-program-hero__button flacso-oa-program-hero__button--primary">
                                         <?php echo esc_html($hero_primary_label); ?>
                                         <i class="bi bi-arrow-right" aria-hidden="true"></i>
                                     </a>
