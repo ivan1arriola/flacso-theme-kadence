@@ -496,7 +496,7 @@ get_header();
                                 </p>
 
                                 <div class="flacso-oa-program-hero__actions">
-                                    <a href="<?php echo esc_url($hero_primary_url); ?>"<?php echo $inscripciones_abiertas ? ' data-flacso-preinscription-cta="1"' : ''; ?> class="flacso-oa-program-hero__button flacso-oa-program-hero__button--primary">
+                                    <a href="<?php echo esc_url($hero_primary_url); ?>"<?php echo $inscripciones_abiertas ? ' data-flacso-preinscription-cta="1" data-flacso-cta-flow="' . esc_attr(is_array($preinscription_cta) ? ($preinscription_cta['flow'] ?? 'legacy_editor') : 'legacy_editor') . '" data-flacso-instance-id="' . esc_attr(is_array($preinscription_cta) ? ($preinscription_cta['instance_id'] ?? 0) : 0) . '"' : ''; ?> class="flacso-oa-program-hero__button flacso-oa-program-hero__button--primary">
                                         <?php echo esc_html($hero_primary_label); ?>
                                         <i class="bi bi-arrow-right" aria-hidden="true"></i>
                                     </a>

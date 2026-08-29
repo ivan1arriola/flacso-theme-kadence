@@ -247,22 +247,6 @@ function flacso_child_flush_posts_using_attachment( $metadata, $attachment_id ) 
 }
 add_filter( 'wp_update_attachment_metadata', 'flacso_child_flush_posts_using_attachment', 20, 2 );
 
-function flacso_child_enqueue_ga4_events() {
-    wp_enqueue_script(
-        'flacso-child-ga4-events',
-        trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/ga4-events.js',
-        array(),
-        wp_get_theme()->get( 'Version' ),
-        true
-    );
-    wp_add_inline_script(
-        'flacso-child-ga4-events',
-        'window.flacsoGA4Config = window.flacsoGA4Config || ' . wp_json_encode( array( 'siteArea' => 'flacso_theme' ) ) . ';',
-        'before'
-    );
-}
-add_action( 'wp_enqueue_scripts', 'flacso_child_enqueue_ga4_events', 5 );
-
 // Carga Bootstrap 5 y Bootstrap Icons
 /**
  * Determina si la página actual requiere Bootstrap y jQuery UI.

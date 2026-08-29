@@ -184,7 +184,9 @@ if ($ofertas_query->have_posts()) {
         $post_id = get_the_ID();
         $thumbnail_url = get_the_post_thumbnail_url($post_id, 'medium_large');
         $inscripciones_abiertas = get_post_meta($post_id, 'inscripciones_abiertas', true);
-        $is_open = ($inscripciones_abiertas === '1' || $inscripciones_abiertas === 'true' || $inscripciones_abiertas === true || $inscripciones_abiertas === 1);
+        $is_open = function_exists('flacso_offer_accepts_preinscriptions')
+            ? flacso_offer_accepts_preinscriptions($post_id)
+            : ($inscripciones_abiertas === '1' || $inscripciones_abiertas === 'true' || $inscripciones_abiertas === true || $inscripciones_abiertas === 1);
 
         $duracion_meses = get_post_meta($post_id, 'duracion_meses', true);
         if (is_array($duracion_meses)) {

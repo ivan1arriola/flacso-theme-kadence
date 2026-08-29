@@ -151,13 +151,23 @@ while (have_posts()) :
         ));
     }
 
+    $preinscription_cta = function_exists('flacso_get_preinscription_cta')
+        ? flacso_get_preinscription_cta($post_id)
+        : null;
+
     $seminario_slug = get_post_field('post_name', $post_id);
     $default_url = home_url('/formacion/seminarios/' . $seminario_slug . '/preinscripcion/');
-    $preinscripcion_url = apply_filters('flacso_seminario_preinscripcion_url', $default_url, $post_id);
-    if (function_exists('flacso_get_open_preinscription_instance') && flacso_get_open_preinscription_instance($post_id) > 0) {
-        $abierto_publico = function_exists('flacso_offer_accepts_preinscriptions')
-            ? flacso_offer_accepts_preinscriptions($post_id)
-            : $abierto_publico;
+
+    if (is_array($preinscription_cta)) {
+        $abierto_publico = !empty($preinscription_cta['is_open']);
+        $preinscripcion_url = (string) ($preinscription_cta['url'] ?? $default_url);
+    } else {
+        $preinscripcion_url = apply_filters('flacso_seminario_preinscripcion_url', $default_url, $post_id);
+        if (function_exists('flacso_get_open_preinscription_instance') && flacso_get_open_preinscription_instance($post_id) > 0) {
+            $abierto_publico = function_exists('flacso_offer_accepts_preinscriptions')
+                ? flacso_offer_accepts_preinscriptions($post_id)
+                : $abierto_publico;
+        }
     }
 
     $valor_uyu = isset($meta['valor_uyu']) && $meta['valor_uyu'] !== '' ? (float) $meta['valor_uyu'] : null;
@@ -278,7 +288,13 @@ while (have_posts()) :
 
                 <?php if ($abierto_publico && !empty($preinscripcion_url)) : ?>
                     <div class="seminario-hero-actions">
-                        <a href="<?php echo esc_url($preinscripcion_url); ?>" data-flacso-preinscription-cta="1" class="seminario-btn-primary">
+                        <a
+                            href="<?php echo esc_url($preinscripcion_url); ?>"
+                            data-flacso-preinscription-cta="1"
+                            data-flacso-cta-flow="<?php echo esc_attr(is_array($preinscription_cta) ? ($preinscription_cta['flow'] ?? 'legacy_editor') : 'legacy_editor'); ?>"
+                            data-flacso-instance-id="<?php echo esc_attr(is_array($preinscription_cta) ? ($preinscription_cta['instance_id'] ?? 0) : 0); ?>"
+                            class="seminario-btn-primary"
+                        >
                             <?php echo esc_html($integrado_padre ? 'Inscribirse al seminario integrado' : 'Inscribirse ahora'); ?>
                             <i class="bi bi-arrow-right" aria-hidden="true"></i>
                         </a>
@@ -659,7 +675,13 @@ while (have_posts()) :
                     <h2 id="seminario-cta-title">¿Querés participar?</h2>
                     <p>Completá la preinscripción para recibir la información necesaria y continuar con el proceso de inscripción.</p>
                 </div>
-                <a href="<?php echo esc_url($preinscripcion_url); ?>" data-flacso-preinscription-cta="1" class="seminario-btn-primary">
+                <a
+                    href="<?php echo esc_url($preinscripcion_url); ?>"
+                    data-flacso-preinscription-cta="1"
+                    data-flacso-cta-flow="<?php echo esc_attr(is_array($preinscription_cta) ? ($preinscription_cta['flow'] ?? 'legacy_editor') : 'legacy_editor'); ?>"
+                    data-flacso-instance-id="<?php echo esc_attr(is_array($preinscription_cta) ? ($preinscription_cta['instance_id'] ?? 0) : 0); ?>"
+                    class="seminario-btn-primary"
+                >
                     <?php echo esc_html($integrado_padre ? 'Inscribirse al seminario integrado' : 'Inscribirse ahora'); ?>
                     <i class="bi bi-arrow-right" aria-hidden="true"></i>
                 </a>
