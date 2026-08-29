@@ -1,4 +1,13 @@
 <?php
+/**
+ * Catálogo público de seminarios.
+ *
+ * Compatible con la base legacy y con el modelo académico unificado.
+ * Utiliza el View Model centralizado de inc/academic-public-model.php.
+ *
+ * @package kadence-child-flacso
+ */
+
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -12,70 +21,14 @@ if (function_exists('flacso_global_styles')) {
 $hero_image_url = 'https://flacso.edu.uy/wp-content/uploads/2026/02/seminarios-artwork.png';
 $hoy = new DateTimeImmutable('today', wp_timezone());
 
-$posgrado_filtro = isset( $_GET['posgrado'] ) ? absint( wp_unslash( $_GET['posgrado'] ) ) : 0;
+$posgrado_filtro = isset($_GET['posgrado']) ? absint(wp_unslash($_GET['posgrado'])) : 0;
 if ($posgrado_filtro <= 0 && isset($_GET['programa'])) {
-    $posgrado_filtro = absint( wp_unslash( $_GET['programa'] ) );
+    $posgrado_filtro = absint(wp_unslash($_GET['programa']));
 }
 
-$seminarios_por_posgrado = array();
-if (post_type_exists('oferta-academica')) {
-    $ofertas_ids = get_posts(array(
-        'post_type'      => 'oferta-academica',
-        'post_status'    => 'publish',
-        'posts_per_page' => -1,
-        'fields'         => 'ids',
-        'meta_query'     => array(
-            array(
-                'key'     => '_oferta_seminarios_ids',
-                'compare' => 'EXISTS',
-            ),
-        ),
-    ));
-
-    foreach ($ofertas_ids as $oferta_id) {
-        $seminarios_ids = get_post_meta($oferta_id, '_oferta_seminarios_ids', true);
-        if (!is_array($seminarios_ids) || empty($seminarios_ids)) {
-            continue;
-        }
-
-        foreach ($seminarios_ids as $seminario_id) {
-            $seminario_id = (int) $seminario_id;
-            if ($seminario_id <= 0) {
-                continue;
-            }
-            if (!isset($seminarios_por_posgrado[$seminario_id])) {
-                $seminarios_por_posgrado[$seminario_id] = array();
-            }
-            $seminarios_por_posgrado[$seminario_id][] = (int) $oferta_id;
-        }
-    }
-
-    foreach ($seminarios_por_posgrado as $seminario_id => $ofertas_relacionadas) {
-        $seminarios_por_posgrado[$seminario_id] = array_values(array_unique(array_map('intval', $ofertas_relacionadas)));
-    }
-
-    if (class_exists('Seminario_Helpers')) {
-        $integrados_ids = get_posts(array(
-            'post_type' => 'seminario',
-            'post_status' => 'publish',
-            'posts_per_page' => -1,
-            'fields' => 'ids',
-            'meta_key' => '_seminario_es_integrado',
-            'meta_value' => '1',
-        ));
-        foreach ($integrados_ids as $integrado_id) {
-            $ofertas_integradas = array();
-            foreach (Seminario_Helpers::get_component_posts($integrado_id) as $componente) {
-                $ofertas_integradas = array_merge($ofertas_integradas, $seminarios_por_posgrado[$componente->ID] ?? array());
-            }
-            $seminarios_por_posgrado[$integrado_id] = array_values(array_unique(array_map('intval', $ofertas_integradas)));
-        }
-    }
-}
-
-$meses_es = array('', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-$dias_semana_es = array('Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado');
-$fallback_variants = array('a', 'b', 'c', 'd');
+$meses_es = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+$dias_semana_es = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+$fallback_variants = ['a', 'b', 'c', 'd'];
 
 $parse_date = static function ($value) {
     if (!is_string($value) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
@@ -109,41 +62,15 @@ $days_diff = static function (DateTimeImmutable $from, DateTimeImmutable $to) {
 
 $get_docentes_label = static function ($docentes_meta) {
     if (!is_array($docentes_meta) || empty($docentes_meta)) {
-        return 'Docentes a confirmar';
+        return __('Docentes a confirmar', 'flacso-uruguay');
     }
 
     $docentes_count = count(array_values(array_filter(array_map('intval', $docentes_meta))));
     if ($docentes_count <= 0) {
-        return 'Docentes a confirmar';
+        return __('Docentes a confirmar', 'flacso-uruguay');
     }
 
-    return $docentes_count === 1 ? '1 docente' : sprintf('%d docentes', $docentes_count);
-};
-
-$get_description = static function ($post_id, $meta) {
-    $description = '';
-
-    if (!empty($meta['presentacion_seminario'])) {
-        $description = wp_strip_all_tags((string) $meta['presentacion_seminario']);
-    }
-
-    if ($description === '' && !empty($meta['objetivo_general'])) {
-        $description = wp_strip_all_tags((string) $meta['objetivo_general']);
-    }
-
-    if ($description === '') {
-        $description = wp_strip_all_tags((string) get_the_excerpt($post_id));
-    }
-
-    if ($description === '') {
-        $description = wp_strip_all_tags((string) get_post_field('post_content', $post_id));
-    }
-
-    if ($description === '') {
-        $description = 'Informacion disponible proximamente.';
-    }
-
-    return wp_trim_words($description, 34, '...');
+    return $docentes_count === 1 ? __('1 docente', 'flacso-uruguay') : sprintf(__('%d docentes', 'flacso-uruguay'), $docentes_count);
 };
 
 $get_creditos_value = static function ($value) {
@@ -163,119 +90,106 @@ $get_creditos_value = static function ($value) {
     return rtrim(rtrim(number_format($number, 1, '.', ''), '0'), '.');
 };
 
-$seminarios_catalogo = array();
+$catalog_raw = function_exists('flacso_theme_get_seminars_catalog')
+    ? flacso_theme_get_seminars_catalog()
+    : [];
 
-$seminarios_query = new WP_Query(array(
-    'post_type'      => 'seminario',
-    'post_status'    => 'publish',
-    'posts_per_page' => -1,
-    'orderby'        => 'date',
-    'order'          => 'ASC',
-    'meta_query'     => array(
-        'relation' => 'AND',
-        array(
-            'relation' => 'OR',
-            array(
-                'key'     => '_seminario_abierto_publico',
-                'compare' => 'NOT EXISTS',
-            ),
-            array(
-                'key'     => '_seminario_abierto_publico',
-                'value'   => '0',
-                'compare' => '!=',
-            ),
-        ),
-    ),
-));
+$seminarios_catalogo = [];
+$seminarios_por_posgrado = [];
 
-if ($seminarios_query->have_posts()) {
-    while ($seminarios_query->have_posts()) {
-        $seminarios_query->the_post();
+foreach ($catalog_raw as $item_context) {
+    $seminario_id = (int) $item_context['offer_id'];
 
-        $seminario_id = get_the_ID();
-        if (class_exists('Seminario_Helpers') && Seminario_Helpers::get_integrated_parent($seminario_id)) {
-            continue;
-        }
-        $raw_meta = class_exists('Seminario_Meta') ? Seminario_Meta::get_meta($seminario_id) : array();
-        $meta = class_exists('Seminario_Helpers') ? Seminario_Helpers::get_display_meta($seminario_id, $raw_meta) : $raw_meta;
-
-        $fecha_inicio = isset($meta['periodo_inicio']) ? (string) $meta['periodo_inicio'] : '';
-        $inicio_obj = $parse_date($fecha_inicio);
-        if (!$inicio_obj) {
-            continue;
-        }
-
-        $dias_hasta_inicio = $days_diff($hoy, $inicio_obj);
-        $dias_desde_inicio = $dias_hasta_inicio < 0 ? abs($dias_hasta_inicio) : 0;
-
-        $is_upcoming = $dias_hasta_inicio >= 0;
-        $is_started_recent = $dias_hasta_inicio < 0 && $dias_hasta_inicio >= -7;
-        $is_visible = $is_upcoming || $is_started_recent;
-
-        if (!$is_visible) {
-            continue;
-        }
-
-        $posgrado_ids = isset($seminarios_por_posgrado[$seminario_id]) ? $seminarios_por_posgrado[$seminario_id] : array();
-        if ($posgrado_filtro > 0 && !in_array($posgrado_filtro, $posgrado_ids, true)) {
-            continue;
-        }
-
-        $title = trim((string) ($meta['nombre'] ?? ''));
-        if ($title === '') {
-            $title = get_the_title($seminario_id);
-        }
-        if ($title === '') {
-            $title = 'Seminario sin titulo';
-        }
-
-        $modalidad = trim(wp_strip_all_tags((string) ($meta['modalidad'] ?? '')));
-        if ($modalidad === '') {
-            $modalidad = 'No especificado';
-        }
-
-        $creditos = $get_creditos_value($meta['creditos'] ?? '');
-        $carga_horaria = '';
-        if (isset($meta['carga_horaria']) && is_numeric($meta['carga_horaria']) && (int) $meta['carga_horaria'] > 0) {
-            $carga_horaria = (string) (int) $meta['carga_horaria'];
-        }
-
-        $month_key = $inicio_obj->format('Y-m');
-        $month_label = $format_month($inicio_obj);
-        $fecha_larga = $format_date_long($inicio_obj);
-
-        $image_url = get_the_post_thumbnail_url($seminario_id, 'large');
-        $permalink = get_permalink($seminario_id);
-
-        $seminarios_catalogo[] = array(
-            'id'             => $seminario_id,
-            'title'          => $title,
-            'description'    => $get_description($seminario_id, $meta),
-            'month_key'      => $month_key,
-            'month_label'    => $month_label,
-            'date_long'      => $fecha_larga,
-            'days_left'      => $dias_hasta_inicio,
-            'days_since_start' => $dias_desde_inicio,
-            'is_upcoming'    => $is_upcoming,
-            'is_started_recent' => $is_started_recent,
-            'modality'       => $modalidad,
-            'credits'        => $creditos,
-            'carga_horaria'  => $carga_horaria,
-            'docentes_label' => $get_docentes_label($meta['docentes'] ?? array()),
-            'image_url'      => $image_url ? $image_url : '',
-            'permalink'      => $permalink ? $permalink : '#',
-            'timestamp'      => $inicio_obj->getTimestamp(),
-            'fallback'       => $fallback_variants[$seminario_id % count($fallback_variants)],
-        );
+    // Si es componente de un seminario integrado, se omite como tarjeta independiente del listado
+    if (!empty($item_context['relations']['integrated_parent'])) {
+        continue;
     }
+
+    $fecha_inicio = (string) ($item_context['instance']['fecha_inicio'] ?? '');
+    $inicio_obj = $parse_date($fecha_inicio);
+    if (!$inicio_obj) {
+        continue;
+    }
+
+    $dias_hasta_inicio = $days_diff($hoy, $inicio_obj);
+    $dias_desde_inicio = $dias_hasta_inicio < 0 ? abs($dias_hasta_inicio) : 0;
+
+    $is_upcoming = $dias_hasta_inicio >= 0;
+    $is_started_recent = $dias_hasta_inicio < 0 && $dias_hasta_inicio >= -7;
+    $is_visible = $is_upcoming || $is_started_recent;
+
+    if (!$is_visible) {
+        continue;
+    }
+
+    // Programas vinculados
+    $related_progs = $item_context['relations']['related_programs'] ?? [];
+    $related_ids = array_map(static function ($p) {
+        return (int) $p['id'];
+    }, $related_progs);
+
+    $seminarios_por_posgrado[$seminario_id] = $related_ids;
+
+    if ($posgrado_filtro > 0 && !in_array($posgrado_filtro, $related_ids, true)) {
+        continue;
+    }
+
+    $title = (string) $item_context['title'];
+    $modalidad = trim(wp_strip_all_tags((string) ($item_context['instance']['modalidad'] ?? '')));
+    if ($modalidad === '') {
+        $modalidad = __('No especificado', 'flacso-uruguay');
+    }
+
+    $creditos = $get_creditos_value($item_context['academic']['creditos'] ?? '');
+    $carga_horaria = '';
+    if (!empty($item_context['academic']['carga_horaria']) && is_numeric($item_context['academic']['carga_horaria'])) {
+        $carga_horaria = (string) (int) $item_context['academic']['carga_horaria'];
+    }
+
+    $month_key = $inicio_obj->format('Y-m');
+    $month_label = $format_month($inicio_obj);
+    $fecha_larga = $format_date_long($inicio_obj);
+
+    $image_url = (string) ($item_context['thumbnail_url'] ?? '');
+    $permalink = (string) ($item_context['permalink'] ?? get_permalink($seminario_id));
+
+    $desc_raw = (string) ($item_context['academic']['presentacion'] ?? '');
+    if ($desc_raw === '') {
+        $desc_raw = (string) ($item_context['academic']['objetivo_general'] ?? '');
+    }
+    if ($desc_raw === '') {
+        $desc_raw = (string) get_the_excerpt($seminario_id);
+    }
+    $description = wp_trim_words(wp_strip_all_tags($desc_raw), 34, '...');
+
+    $docentes_meta = $item_context['instance']['docentes_ids'] ?? [];
+
+    $seminarios_catalogo[] = [
+        'id'               => $seminario_id,
+        'title'            => $title,
+        'description'      => $description,
+        'month_key'        => $month_key,
+        'month_label'      => $month_label,
+        'date_long'        => $fecha_larga,
+        'days_left'        => $dias_hasta_inicio,
+        'days_since_start' => $dias_desde_inicio,
+        'is_upcoming'      => $is_upcoming,
+        'is_started_recent'=> $is_started_recent,
+        'modality'         => $modalidad,
+        'credits'          => $creditos,
+        'carga_horaria'    => $carga_horaria,
+        'docentes_label'   => $get_docentes_label($docentes_meta),
+        'image_url'        => $image_url,
+        'permalink'        => $permalink,
+        'timestamp'        => $inicio_obj->getTimestamp(),
+        'fallback'         => $fallback_variants[$seminario_id % count($fallback_variants)],
+    ];
 }
-wp_reset_postdata();
 
 usort($seminarios_catalogo, static function ($a, $b) {
     if ($a['timestamp'] === $b['timestamp']) {
         return $a['id'] <=> $b['id'];
     }
-
     return $a['timestamp'] <=> $b['timestamp'];
 });
 
@@ -290,14 +204,14 @@ if (!$seminario_destacado && !empty($seminarios_catalogo)) {
     $seminario_destacado = $seminarios_catalogo[0];
 }
 
-$seminarios_agrupados = array();
+$seminarios_agrupados = [];
 foreach ($seminarios_catalogo as $item) {
     $key = $item['month_key'];
     if (!isset($seminarios_agrupados[$key])) {
-        $seminarios_agrupados[$key] = array(
+        $seminarios_agrupados[$key] = [
             'month_label' => $item['month_label'],
-            'items'       => array(),
-        );
+            'items'       => [],
+        ];
     }
     $seminarios_agrupados[$key]['items'][] = $item;
 }
@@ -349,116 +263,110 @@ $seminarios_total = count($seminarios_catalogo);
             <div class="site-container">
                 <?php if ($seminario_destacado) : ?>
                     <?php
-                    $featured_badge = 'Fecha a confirmar';
+                    $featured_badge = __('Fecha a confirmar', 'flacso-uruguay');
                     if ($seminario_destacado['is_upcoming']) {
                         $featured_badge = $seminario_destacado['days_left'] === 0
-                            ? 'Comienza hoy'
-                            : sprintf('Faltan %d dias', $seminario_destacado['days_left']);
+                            ? __('Comienza hoy', 'flacso-uruguay')
+                            : sprintf(__('Faltan %d días', 'flacso-uruguay'), $seminario_destacado['days_left']);
                     } elseif ($seminario_destacado['is_started_recent']) {
-                        $featured_badge = sprintf('Inicio hace %d dias', $seminario_destacado['days_since_start']);
+                        $featured_badge = sprintf(__('Inició hace %d días', 'flacso-uruguay'), $seminario_destacado['days_since_start']);
                     }
                     ?>
-                    <article class="seminarios-featured" aria-labelledby="seminario-destacado-titulo" data-seminar-featured data-month="<?php echo esc_attr($seminario_destacado['month_key']); ?>" data-search="<?php echo esc_attr(implode(' ', array_filter([$seminario_destacado['title'], $seminario_destacado['description'], $seminario_destacado['modality'], $seminario_destacado['date_long']]))); ?>">
-                        <a class="seminarios-featured__link" href="<?php echo esc_url($seminario_destacado['permalink']); ?>">
-                            <div class="seminarios-featured__media">
-                                <?php if (!empty($seminario_destacado['image_url'])) : ?>
-                                    <img
-                                        src="<?php echo esc_url($seminario_destacado['image_url']); ?>"
-                                        alt="<?php echo esc_attr($seminario_destacado['title']); ?>"
-                                        class="seminarios-featured__image"
-                                        loading="lazy"
-                                        decoding="async"
-                                    >
-                                <?php else : ?>
-                                    <div class="seminarios-featured__fallback seminarios-featured__fallback--<?php echo esc_attr($seminario_destacado['fallback']); ?>" aria-hidden="true">
-                                        <span>S</span>
-                                    </div>
-                                <?php endif; ?>
-
-                                <div class="seminarios-featured__media-overlay" aria-hidden="true"></div>
-
-                                <div class="seminarios-featured__chips" aria-hidden="true">
-                                    <span class="seminarios-chip seminarios-chip--light"><?php esc_html_e('Proximo destacado', 'flacso-uruguay'); ?></span>
-                                    <span class="seminarios-chip seminarios-chip--warning"><?php echo esc_html($featured_badge); ?></span>
+                    <article class="seminario-featured" aria-labelledby="seminario-destacado-titulo">
+                        <a class="seminario-featured__media-link" href="<?php echo esc_url($seminario_destacado['permalink']); ?>">
+                            <?php if (!empty($seminario_destacado['image_url'])) : ?>
+                                <img
+                                    src="<?php echo esc_url($seminario_destacado['image_url']); ?>"
+                                    alt="<?php echo esc_attr($seminario_destacado['title']); ?>"
+                                    class="seminario-featured__image"
+                                    loading="eager"
+                                >
+                            <?php else : ?>
+                                <div class="seminario-featured__fallback seminario-featured__fallback--<?php echo esc_attr($seminario_destacado['fallback']); ?>" aria-hidden="true">
+                                    <span>FLACSO</span>
                                 </div>
-
-                                <div class="seminarios-featured__heading">
-                                    <span class="seminarios-featured__kicker"><?php esc_html_e('Seminarios FLACSO', 'flacso-uruguay'); ?></span>
-                                    <h2 id="seminario-destacado-titulo"><?php echo esc_html($seminario_destacado['title']); ?></h2>
-                                </div>
-                            </div>
-
-                            <div class="seminarios-featured__content">
-                                <p class="seminarios-featured__description"><?php echo esc_html($seminario_destacado['description']); ?></p>
-
-                                <ul class="seminarios-featured__meta" role="list">
-                                    <li>
-                                        <i class="bi bi-calendar3" aria-hidden="true"></i>
-                                        <span><?php echo esc_html($seminario_destacado['date_long']); ?></span>
-                                    </li>
-                                    <li>
-                                        <i class="bi bi-laptop" aria-hidden="true"></i>
-                                        <span><?php echo esc_html($seminario_destacado['modality']); ?></span>
-                                    </li>
-                                    <li>
-                                        <i class="bi bi-people" aria-hidden="true"></i>
-                                        <span><?php echo esc_html($seminario_destacado['docentes_label']); ?></span>
-                                    </li>
-                                    <?php if (!empty($seminario_destacado['credits'])) : ?>
-                                        <li>
-                                            <i class="bi bi-award" aria-hidden="true"></i>
-                                            <span><?php echo esc_html($seminario_destacado['credits'] . ' creditos'); ?></span>
-                                        </li>
-                                    <?php endif; ?>
-                                    <?php if (!empty($seminario_destacado['carga_horaria'])) : ?>
-                                        <li>
-                                            <i class="bi bi-clock" aria-hidden="true"></i>
-                                            <span><?php echo esc_html($seminario_destacado['carga_horaria'] . ' horas'); ?></span>
-                                        </li>
-                                    <?php endif; ?>
-                                </ul>
-
-                                <div class="seminarios-featured__footer">
-                                    <span class="seminarios-featured__cta-text"><?php esc_html_e('Ver detalle del seminario', 'flacso-uruguay'); ?></span>
-                                    <span class="seminarios-featured__cta-icon" aria-hidden="true">
-                                        <i class="bi bi-arrow-right"></i>
-                                    </span>
-                                </div>
-                            </div>
+                            <?php endif; ?>
+                            <div class="seminario-featured__overlay" aria-hidden="true"></div>
                         </a>
+
+                        <div class="seminario-featured__body">
+                            <div class="seminario-featured__top">
+                                <span class="seminarios-chip seminarios-chip--gold"><?php esc_html_e('Próximo inicio', 'flacso-uruguay'); ?></span>
+                                <span class="seminarios-chip seminarios-chip--soft"><?php echo esc_html($featured_badge); ?></span>
+                            </div>
+
+                            <h2 id="seminario-destacado-titulo" class="seminario-featured__title">
+                                <a href="<?php echo esc_url($seminario_destacado['permalink']); ?>">
+                                    <?php echo esc_html($seminario_destacado['title']); ?>
+                                </a>
+                            </h2>
+
+                            <p class="seminario-featured__description">
+                                <?php echo esc_html($seminario_destacado['description']); ?>
+                            </p>
+
+                            <ul class="seminario-featured__meta" role="list">
+                                <li>
+                                    <i class="bi bi-calendar3" aria-hidden="true"></i>
+                                    <span><?php echo esc_html($seminario_destacado['date_long']); ?></span>
+                                </li>
+                                <li>
+                                    <i class="bi bi-laptop" aria-hidden="true"></i>
+                                    <span><?php echo esc_html($seminario_destacado['modality']); ?></span>
+                                </li>
+                                <li>
+                                    <i class="bi bi-people" aria-hidden="true"></i>
+                                    <span><?php echo esc_html($seminario_destacado['docentes_label']); ?></span>
+                                </li>
+                            </ul>
+
+                            <div class="seminario-featured__footer">
+                                <span class="seminario-featured__credits">
+                                    <?php
+                                    if (!empty($seminario_destacado['credits'])) {
+                                        echo esc_html($seminario_destacado['credits'] . ' ' . __('créditos', 'flacso-uruguay'));
+                                    } else {
+                                        esc_html_e('Créditos a confirmar', 'flacso-uruguay');
+                                    }
+                                    ?>
+                                </span>
+                                <a class="seminarios-btn seminarios-btn--primary" href="<?php echo esc_url($seminario_destacado['permalink']); ?>">
+                                    <?php esc_html_e('Ver seminario', 'flacso-uruguay'); ?>
+                                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
                     </article>
                 <?php endif; ?>
 
-                <div class="seminarios-listado" aria-labelledby="seminarios-destacados-titulo">
-                    <header class="seminarios-listado__header">
-                        <div class="seminarios-listado__heading">
-                            <h2 id="seminarios-destacados-titulo"><?php esc_html_e('Seminarios por mes', 'flacso-uruguay'); ?></h2>
-                            <p><?php esc_html_e('Visualiza rapidamente fechas, modalidad y docentes de cada propuesta vigente.', 'flacso-uruguay'); ?></p>
+                <div class="seminarios-catalog" aria-label="<?php esc_attr_e('Catálogo de seminarios', 'flacso-uruguay'); ?>">
+                    <div class="seminarios-catalog__header">
+                        <div>
+                            <h2 id="seminarios-catalogo-titulo"><?php esc_html_e('Próximas propuestas', 'flacso-uruguay'); ?></h2>
+                            <p class="seminarios-catalog__lead"><?php esc_html_e('Explora el cronograma completo de seminarios con inscripción abierta.', 'flacso-uruguay'); ?></p>
                         </div>
-                        <span class="seminarios-listado__counter">
-                            <?php
-                            echo esc_html(
-                                sprintf(
-                                    _n('%d seminario', '%d seminarios', $seminarios_total, 'flacso-uruguay'),
-                                    $seminarios_total
-                                )
-                            );
-                            ?>
+                        <span class="seminarios-catalog__total">
+                            <?php printf(esc_html__('%d seminarios disponibles', 'flacso-uruguay'), (int) $seminarios_total); ?>
                         </span>
-                    </header>
+                    </div>
 
                     <?php if (!empty($seminarios_agrupados)) : ?>
-                        <div class="seminarios-listado__months">
-                            <?php foreach ($seminarios_agrupados as $grupo) : ?>
-                                <section class="seminarios-month" aria-label="<?php echo esc_attr($grupo['month_label']); ?>" data-seminar-month-section>
-                                    <div class="seminarios-month__title-wrap">
-                                        <span class="seminarios-month__dot" aria-hidden="true"></span>
-                                        <h3 class="seminarios-month__title"><?php echo esc_html($grupo['month_label']); ?></h3>
-                                    </div>
+                        <div class="seminarios-groups" data-seminarios-groups>
+                            <?php foreach ($seminarios_agrupados as $month_key => $grupo) : ?>
+                                <section class="seminarios-group" data-month-group="<?php echo esc_attr($month_key); ?>" aria-labelledby="grupo-<?php echo esc_attr($month_key); ?>">
+                                    <header class="seminarios-group__header">
+                                        <h3 id="grupo-<?php echo esc_attr($month_key); ?>" class="seminarios-group__title"><?php echo esc_html($grupo['month_label']); ?></h3>
+                                        <span class="seminarios-group__count"><?php printf(esc_html__('%d seminarios', 'flacso-uruguay'), count($grupo['items'])); ?></span>
+                                    </header>
 
                                     <div class="seminarios-grid">
                                         <?php foreach ($grupo['items'] as $seminario_item) : ?>
-                                            <article class="seminario-card<?php echo $seminario_item['is_started_recent'] ? ' is-recent' : ''; ?>" data-seminar-item data-month="<?php echo esc_attr($seminario_item['month_key']); ?>" data-search="<?php echo esc_attr(implode(' ', array_filter([$seminario_item['title'], $seminario_item['description'], $seminario_item['modality'], $seminario_item['date_long']]))); ?>">
+                                            <article
+                                                class="seminario-card<?php echo $seminario_item['is_started_recent'] ? ' is-recent' : ''; ?>"
+                                                data-seminar-card
+                                                data-month="<?php echo esc_attr($month_key); ?>"
+                                                data-search="<?php echo esc_attr(strtolower(remove_accents($seminario_item['title'] . ' ' . $seminario_item['description'] . ' ' . $seminario_item['modality']))); ?>"
+                                            >
                                                 <a class="seminario-card__media-link" href="<?php echo esc_url($seminario_item['permalink']); ?>">
                                                     <?php if (!empty($seminario_item['image_url'])) : ?>
                                                         <img
@@ -466,22 +374,20 @@ $seminarios_total = count($seminarios_catalogo);
                                                             alt="<?php echo esc_attr($seminario_item['title']); ?>"
                                                             class="seminario-card__image"
                                                             loading="lazy"
-                                                            decoding="async"
                                                         >
                                                     <?php else : ?>
                                                         <div class="seminario-card__fallback seminario-card__fallback--<?php echo esc_attr($seminario_item['fallback']); ?>" aria-hidden="true">
-                                                            <span>S</span>
+                                                            <span>FLACSO</span>
                                                         </div>
                                                     <?php endif; ?>
 
                                                     <div class="seminario-card__overlay" aria-hidden="true"></div>
 
                                                     <div class="seminario-card__badges" aria-hidden="true">
-                                                        <span class="seminarios-chip seminarios-chip--light"><?php echo esc_html($seminario_item['month_label']); ?></span>
                                                         <?php if ($seminario_item['is_started_recent']) : ?>
                                                             <span class="seminarios-chip seminarios-chip--dark"><?php esc_html_e('Iniciado recientemente', 'flacso-uruguay'); ?></span>
                                                         <?php elseif ($seminario_item['is_upcoming']) : ?>
-                                                            <span class="seminarios-chip seminarios-chip--sky"><?php esc_html_e('Proximamente', 'flacso-uruguay'); ?></span>
+                                                            <span class="seminarios-chip seminarios-chip--sky"><?php esc_html_e('Próximamente', 'flacso-uruguay'); ?></span>
                                                         <?php endif; ?>
                                                     </div>
                                                 </a>
@@ -506,7 +412,7 @@ $seminarios_total = count($seminarios_catalogo);
                                                                     echo esc_html(
                                                                         $seminario_item['days_left'] === 0
                                                                             ? __('Comienza hoy', 'flacso-uruguay')
-                                                                            : sprintf(__('Faltan %d dias', 'flacso-uruguay'), $seminario_item['days_left'])
+                                                                            : sprintf(__('Faltan %d días', 'flacso-uruguay'), $seminario_item['days_left'])
                                                                     );
                                                                     ?>
                                                                 </span>
@@ -514,7 +420,7 @@ $seminarios_total = count($seminarios_catalogo);
                                                         <?php elseif ($seminario_item['is_started_recent']) : ?>
                                                             <li>
                                                                 <i class="bi bi-clock" aria-hidden="true"></i>
-                                                                <span><?php echo esc_html(sprintf(__('Inicio hace %d dias', 'flacso-uruguay'), $seminario_item['days_since_start'])); ?></span>
+                                                                <span><?php echo esc_html(sprintf(__('Inició hace %d días', 'flacso-uruguay'), $seminario_item['days_since_start'])); ?></span>
                                                             </li>
                                                         <?php endif; ?>
                                                         <li>
@@ -531,9 +437,9 @@ $seminarios_total = count($seminarios_catalogo);
                                                         <span class="seminario-card__credits">
                                                             <?php
                                                             if (!empty($seminario_item['credits'])) {
-                                                                echo esc_html($seminario_item['credits'] . ' creditos');
+                                                                echo esc_html($seminario_item['credits'] . ' ' . __('créditos', 'flacso-uruguay'));
                                                             } else {
-                                                                esc_html_e('Creditos a confirmar', 'flacso-uruguay');
+                                                                esc_html_e('Créditos a confirmar', 'flacso-uruguay');
                                                             }
                                                             ?>
                                                         </span>
@@ -572,8 +478,7 @@ $seminarios_total = count($seminarios_catalogo);
         </section>
 
 <?php
-// Lógica para detectar qué programas tienen seminarios disponibles actualmente
-$ofertas_con_seminarios_disponibles = array();
+$ofertas_con_seminarios_disponibles = [];
 foreach ($seminarios_catalogo as $item) {
     if (isset($seminarios_por_posgrado[$item['id']])) {
         foreach ($seminarios_por_posgrado[$item['id']] as $oferta_id) {

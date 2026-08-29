@@ -86,16 +86,20 @@ $seminario_slug = get_post_field('post_name', $seminario_id);
 // Imagen destacada para usar como fondo del hero
 $hero_image_url = get_the_post_thumbnail_url($seminario_id, 'full');
 
-// Meta fields
-$fecha_inicio = get_post_meta($seminario_id, '_seminario_periodo_inicio', true);
-$fecha_fin = get_post_meta($seminario_id, '_seminario_periodo_fin', true);
-$modalidad = get_post_meta($seminario_id, '_seminario_modalidad', true);
-$creditos = get_post_meta($seminario_id, '_seminario_creditos', true);
-$carga_horaria = get_post_meta($seminario_id, '_seminario_carga_horaria', true);
+// Meta fields via View Model
+$sem_context = function_exists('flacso_theme_get_seminar_context')
+    ? flacso_theme_get_seminar_context($seminario_id)
+    : [];
+
+$fecha_inicio = (string) ($sem_context['instance']['fecha_inicio'] ?? '');
+$fecha_fin = (string) ($sem_context['instance']['fecha_fin'] ?? '');
+$modalidad = (string) ($sem_context['instance']['modalidad'] ?? '');
+$creditos = $sem_context['academic']['creditos'] ?? '';
+$carga_horaria = $sem_context['academic']['carga_horaria'] ?? '';
 
 // Precios para Meta Pixel tracking
-$sem_valor_uyu = get_post_meta($seminario_id, '_seminario_valor_uyu', true);
-$sem_valor_usd = get_post_meta($seminario_id, '_seminario_valor_usd', true);
+$sem_valor_uyu = $sem_context['instance']['valor_uyu'] ?? null;
+$sem_valor_usd = $sem_context['instance']['valor_usd'] ?? null;
 $sem_tracking_value = 0;
 $sem_tracking_currency = 'USD';
 

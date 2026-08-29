@@ -23,13 +23,24 @@ if (!function_exists('flacso_oferta_archive_uppercase_label')) {
 
 if (!function_exists('flacso_oferta_archive_get_start_data')) {
     function flacso_oferta_archive_get_start_data(int $post_id): array {
-        $raw = get_post_meta($post_id, 'proximo_inicio', true);
-        if (is_array($raw)) {
-            $raw = reset($raw);
+        $context = function_exists('flacso_theme_get_offer_context')
+            ? flacso_theme_get_offer_context($post_id)
+            : [];
+
+        $raw = (string) ($context['instance']['fecha_inicio'] ?? '');
+        $precision = strtolower(trim((string) ($context['instance']['precision_fecha_inicio'] ?? '')));
+
+        if ($raw === '') {
+            $raw_legacy = get_post_meta($post_id, 'proximo_inicio', true);
+            if (is_array($raw_legacy)) {
+                $raw_legacy = reset($raw_legacy);
+            }
+            $raw = trim((string) $raw_legacy);
+            if ($precision === '') {
+                $precision = strtolower(trim((string) get_post_meta($post_id, 'proximo_inicio_precision', true)));
+            }
         }
 
-        $raw = trim((string) $raw);
-        $precision = strtolower(trim((string) get_post_meta($post_id, 'proximo_inicio_precision', true)));
         $label = $raw;
 
         if ($raw !== '' && class_exists('Oferta_Renderer')) {
@@ -140,7 +151,14 @@ if (!function_exists('flacso_oferta_archive_get_start_data')) {
 
 $term = get_queried_object();
 $taxonomy_name = $term->name;
-if ($term->slug === 'maestria') {
+if (class_exists('FLACSO_Oferta_Academica') && method_exists('FLACSO_Oferta_Academica', 'tipos')) {
+    $tipos = FLACSO_Oferta_Academica::tipos();
+    if (isset($tipos[$term->slug])) {
+        $taxonomy_name = $tipos[$term->slug];
+    }
+} elseif ($term->slug === 'doctorado') {
+    $taxonomy_name = 'Doctorados';
+} elseif ($term->slug === 'maestria') {
     $taxonomy_name = 'Maestrías';
 } elseif ($term->slug === 'especializacion') {
     $taxonomy_name = 'Especializaciones';
@@ -148,6 +166,8 @@ if ($term->slug === 'maestria') {
     $taxonomy_name = 'Diplomados';
 } elseif ($term->slug === 'diploma') {
     $taxonomy_name = 'Diplomas';
+} elseif ($term->slug === 'seminario') {
+    $taxonomy_name = 'Seminarios';
 }
 
 $term_image_data = null;

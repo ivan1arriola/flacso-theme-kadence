@@ -19,15 +19,30 @@ fi
 
 if grep -rn -E 'trailingslashit\(get_permalink\([^)]*\)\).*preinscripcion' \
     "$theme_dir/single-oferta-academica.php" \
+    "$theme_dir/single-seminario.php" \
+    "$theme_dir/template-parts/oferta/default.php" \
+    "$theme_dir/template-parts/oferta/seminario.php" \
     "$theme_dir/templates/preinscripciones/carta-template.php"; then
     echo 'El tema no debe construir URLs de preinscripción; debe usar el resolver del plugin.' >&2
     exit 1
 fi
 
-if ! grep -q 'data-flacso-preinscription-cta' "$theme_dir/single-oferta-academica.php" || \
-   ! grep -q 'data-flacso-preinscription-cta' "$theme_dir/single-seminario.php"; then
+if ! grep -q 'data-flacso-preinscription-cta' "$theme_dir/template-parts/oferta/default.php" || \
+   ! grep -q 'data-flacso-preinscription-cta' "$theme_dir/template-parts/oferta/seminario.php"; then
     echo 'Los CTA deben conservar el marcador semántico usado por analytics.' >&2
     exit 1
 fi
 
-echo 'Tema FLACSO: sintaxis, enlaces externos y separación de CSS correctos.'
+# El acceso a metadatos legacy de seminarios e instancias debe encapsularse en inc/academic-public-model.php
+if grep -rn -E "get_post_meta\([^,]+,\s*['\"](_seminario_periodo_inicio|_seminario_periodo_fin|_seminario_docentes|_seminario_modalidad|_oferta_seminarios_ids)['\"]" \
+    --include='*.php' \
+    --exclude-dir='inc' \
+    --exclude-dir='tests' \
+    --exclude='consulta-seminario.php' \
+    --exclude='oferta-seminarios.php' \
+    "$theme_dir"; then
+    echo 'No se deben consultar metadatos legacy directamente fuera de inc/academic-public-model.php.' >&2
+    exit 1
+fi
+
+echo 'Tema FLACSO: sintaxis, enlaces externos, contratos de CTA y separación de CSS correctos.'

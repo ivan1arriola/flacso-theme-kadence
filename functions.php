@@ -2,6 +2,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
+require_once get_stylesheet_directory() . '/inc/academic-public-model.php';
 require_once get_stylesheet_directory() . '/inc/open-graph.php';
 require_once get_stylesheet_directory() . '/template-parts/front-page/hero.php';
 
@@ -378,6 +379,13 @@ function flacso_child_enqueue_template_assets() {
     foreach ( $template_assets as $template_file => $asset ) {
         if ( $active_template !== $template_file ) {
             continue;
+        }
+
+        if ( 'single-oferta-academica' === $asset && is_singular( 'oferta-academica' ) ) {
+            $offer_type = function_exists( 'flacso_theme_get_offer_type' ) ? flacso_theme_get_offer_type( (int) get_the_ID() ) : '';
+            if ( 'seminario' === $offer_type ) {
+                $asset = 'single-seminario';
+            }
         }
 
         $css_path = 'assets/css/' . $asset . '.css';
