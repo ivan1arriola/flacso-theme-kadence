@@ -369,6 +369,7 @@ function flacso_child_enqueue_template_assets() {
         'archive-docente.php'                 => 'archive-docente',
         'taxonomy-tipo-oferta-academica.php'  => 'taxonomy-oferta',
         'page-contacto.php'                   => 'page-contacto',
+        'page-preguntas-frecuentes.php'       => 'page-faq',
         'consulta-seminario.php'              => 'consulta-seminario',
         'page-formacion.php'                  => 'page-formacion',
         'seminarios-listado.php'              => 'seminarios-listado',
