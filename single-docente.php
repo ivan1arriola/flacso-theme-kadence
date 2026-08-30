@@ -34,7 +34,6 @@ while (have_posts()) :
         $docentes_url = home_url('/docentes/');
     }
 
-    $docente_correos = function_exists('dp_get_docente_emails') ? dp_get_docente_emails($docente_id) : [];
     $docente_redes = function_exists('dp_get_docente_socials') ? dp_get_docente_socials($docente_id) : [];
 
     // Color institucional FLACSO con gradiente moderno
@@ -99,46 +98,26 @@ while (have_posts()) :
                     </section>
                 </main>
 
-                <!-- Sidebar: Contacto y Redes -->
+                <!-- Sidebar: Redes y Enlaces -->
                 <aside class="docente-sidebar">
-                    <section class="docente-card contact-section">
-                        <div class="card-header">
-                            <h3>Información de Contacto</h3>
-                        </div>
-
-                        <?php if (!empty($docente_correos)) : ?>
-                            <div class="contact-methods">
-                                <?php foreach ($docente_correos as $correo) :
-                                    $email = $correo['email'] ?? '';
-                                    if (!$email) continue;
-                                    $label = !empty($correo['label']) ? $correo['label'] : 'Email';
-                                ?>
-                                    <div class="contact-item">
-                                        <span class="label"><?php echo esc_html($label); ?></span>
-                                        <a href="mailto:<?php echo esc_attr(antispambot($email)); ?>" class="value">
-                                            <?php echo esc_html(antispambot($email)); ?>
-                                        </a>
-                                    </div>
-                                <?php endforeach; ?>
+                    <?php if (!empty($docente_redes)) : ?>
+                        <section class="docente-card contact-section">
+                            <div class="card-header">
+                                <h3>Redes y Enlaces</h3>
                             </div>
-                        <?php else : ?>
-                            <p class="empty-compact">Sin correos públicos</p>
-                        <?php endif; ?>
-
-                        <?php if (!empty($docente_redes)) : ?>
                             <div class="social-grid">
                                 <?php foreach ($docente_redes as $red) :
                                     $url = $red['url'] ?? '';
                                     if (!$url) continue;
                                     $label = !empty($red['label']) ? $red['label'] : 'Perfil';
                                 ?>
-                                    <a href="<?php echo esc_url($url); ?>" target="_blank" rel="noopener" class="social-btn">
+                                    <a href="<?php echo esc_url($url); ?>" target="_blank" rel="noopener noreferrer" class="social-btn">
                                         <?php echo esc_html($label); ?>
                                     </a>
                                 <?php endforeach; ?>
                             </div>
-                        <?php endif; ?>
-                    </section>
+                        </section>
+                    <?php endif; ?>
 
                     <?php if (current_user_can('edit_post', $docente_id)) : ?>
                         <div class="admin-notice">
