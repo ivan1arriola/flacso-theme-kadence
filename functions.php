@@ -311,14 +311,10 @@ function child_theme_enqueue_bootstrap() {
         true
     );
 
-    // Permitir a plugins o plantillas forzar la carga de Bootstrap
-    $needs_bootstrap = apply_filters( 'flacso_needs_bootstrap', child_theme_needs_bootstrap() );
-
-    if ( $needs_bootstrap ) {
-        wp_enqueue_style( 'bootstrap-css' );
-        wp_enqueue_style( 'bootstrap-icons' );
-        wp_enqueue_script( 'bootstrap-js' );
-    }
+    // Bootstrap forma parte de la base visual del tema FLACSO.
+    wp_enqueue_style( 'bootstrap-css' );
+    wp_enqueue_style( 'bootstrap-icons' );
+    wp_enqueue_script( 'bootstrap-js' );
 }
 add_action('wp_enqueue_scripts', 'child_theme_enqueue_bootstrap', 20); // prioridad 20, antes del child CSS
 
