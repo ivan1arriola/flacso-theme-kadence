@@ -12,6 +12,10 @@
             return;
         }
 
+        items.forEach(function (item, index) {
+            var order = parseInt(item.getAttribute('data-flacso-faq-order'), 10);
+            item.style.setProperty('--faq-order', Number.isNaN(order) ? index : order);
+        });
         root.classList.add('flacso-faq--reveal');
 
         var observer = new IntersectionObserver(function (entries) {
