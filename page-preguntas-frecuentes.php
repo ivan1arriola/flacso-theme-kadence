@@ -29,11 +29,10 @@ get_header();
                 'intro'        => __('Aquí encontrarás respuestas a las preguntas más frecuentes sobre la oferta educativa de la Facultad Latinoamericana de Ciencias Sociales (FLACSO) Uruguay.', 'kadence-child-flacso'),
                 'nivel_titulo' => 'h1',
             ]); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-        } else {
-            while (have_posts()) {
-                the_post();
-                the_content();
-            }
+        } elseif (current_user_can('manage_options')) {
+            echo '<p class="flacso-faq__empty">'
+                . esc_html__('El módulo de preguntas frecuentes no está disponible.', 'kadence-child-flacso')
+                . '</p>';
         }
         ?>
     </div>
