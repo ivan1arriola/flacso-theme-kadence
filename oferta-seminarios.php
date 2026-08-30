@@ -24,60 +24,68 @@ if (get_post_type($oferta_id) !== 'oferta-academica') {
     }
 }
 
-$seminarios_raw = [];
-if (class_exists('Oferta_Seminarios_Integration')) {
-    $seminarios_raw = Oferta_Seminarios_Integration::get_programa_seminarios_data($oferta_id);
-}
+$seminarios_raw = function_exists('flacso_theme_get_program_seminars_catalog')
+    ? flacso_theme_get_program_seminars_catalog((int) $oferta_id)
+    : [];
 
-// Procesar seminarios para el formato de catálogo
+// Procesar el View Model canónico para el formato de catálogo.
 $hoy = new DateTimeImmutable('today', wp_timezone());
 $seminarios_catalogo = [];
 $fallback_variants = ['a', 'b', 'c', 'd'];
 
-foreach ($seminarios_raw as $raw) {
-    $seminario_id = $raw['id'];
+foreach ($seminarios_raw as $context) {
+    $seminario_id = (int) ($context['offer_id'] ?? 0);
+    $academic = $context['academic'] ?? [];
+    $instance = $context['instance'] ?? [];
     $inicio_obj = null;
-    if (!empty($raw['fecha_inicio'])) {
-        $inicio_obj = DateTimeImmutable::createFromFormat('Y-m-d|', $raw['fecha_inicio'], wp_timezone());
+    if (!empty($instance['fecha_inicio'])) {
+        $inicio_obj = DateTimeImmutable::createFromFormat('Y-m-d|', (string) $instance['fecha_inicio'], wp_timezone());
     }
 
-    if (!$inicio_obj) continue;
+    if (!$inicio_obj) {
+        continue;
+    }
 
     $dias_hasta_inicio = (int) floor(($inicio_obj->getTimestamp() - $hoy->getTimestamp()) / DAY_IN_SECONDS);
     $dias_desde_inicio = $dias_hasta_inicio < 0 ? abs($dias_hasta_inicio) : 0;
-
     $is_upcoming = $dias_hasta_inicio >= 0;
     $is_started_recent = $dias_hasta_inicio < 0 && $dias_hasta_inicio >= -7;
 
-    // Solo mostrar vigentes o iniciados recientemente
-    if (!$is_upcoming && !$is_started_recent) continue;
+    if (!$is_upcoming && !$is_started_recent) {
+        continue;
+    }
 
-    $meta = class_exists('Seminario_Meta') ? Seminario_Meta::get_meta($seminario_id) : [];
-
-    // Formatear fecha larga
     $meses_es = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     $dias_semana_es = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-    $fecha_larga = sprintf('%s %d de %s de %s',
+    $fecha_larga = sprintf(
+        '%s %d de %s de %s',
         $dias_semana_es[(int) $inicio_obj->format('w')],
         (int) $inicio_obj->format('j'),
         $meses_es[(int) $inicio_obj->format('n')],
         $inicio_obj->format('Y')
     );
 
+    $description = (string) ($academic['presentacion'] ?? '');
+    if ($description === '') {
+        $description = (string) get_the_excerpt($seminario_id);
+    }
+
     $seminarios_catalogo[] = [
         'id'                => $seminario_id,
-        'title'             => $raw['titulo'],
-        'description'       => wp_trim_words($raw['excerpt'] ? $raw['excerpt'] : $raw['contenido'], 30),
+        'title'             => (string) ($context['title'] ?? get_the_title($seminario_id)),
+        'description'       => wp_trim_words(wp_strip_all_tags($description), 30),
         'date_long'         => $fecha_larga,
         'days_left'         => $dias_hasta_inicio,
         'days_since_start'  => $dias_desde_inicio,
         'is_upcoming'       => $is_upcoming,
         'is_started_recent' => $is_started_recent,
-        'modality'          => $raw['modalidad'] ? $raw['modalidad'] : 'No especificado',
-        'credits'           => get_post_meta($seminario_id, '_seminario_creditos', true),
-        'docentes_label'    => 'Docentes a confirmar', // Simplificado o extraer de meta
-        'image_url'         => $raw['thumbnail'] ? wp_get_attachment_image_url($raw['thumbnail'], 'large') : '',
-        'permalink'         => $raw['permalink'],
+        'modality'          => !empty($instance['modalidad']) ? wp_strip_all_tags($instance['modalidad']) : 'No especificado',
+        'credits'           => $academic['creditos'] ?? '',
+        'docentes_label'    => !empty($instance['docentes_ids'])
+            ? sprintf(_n('%d docente', '%d docentes', count($instance['docentes_ids']), 'flacso-uruguay'), count($instance['docentes_ids']))
+            : __('Docentes a confirmar', 'flacso-uruguay'),
+        'image_url'         => (string) ($context['thumbnail_url'] ?? ''),
+        'permalink'         => (string) ($context['permalink'] ?? get_permalink($seminario_id)),
         'fallback'          => $fallback_variants[$seminario_id % count($fallback_variants)],
         'timestamp'         => $inicio_obj->getTimestamp(),
     ];
