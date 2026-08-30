@@ -168,7 +168,7 @@ function flacso_theme_get_virtual_seminario_preinscripcion_og_context() {
     }
 
     $seminario_id = isset($_GET['ID']) ? absint(wp_unslash($_GET['ID'])) : get_queried_object_id();
-    if ($seminario_id <= 0 || get_post_type($seminario_id) !== 'seminario') {
+    if ($seminario_id <= 0 || !function_exists('flacso_theme_is_seminar') || !flacso_theme_is_seminar($seminario_id)) {
         return [];
     }
 

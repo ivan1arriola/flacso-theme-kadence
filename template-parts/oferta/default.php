@@ -712,30 +712,34 @@ if ($inscripciones_abiertas) {
                     <?php endif; ?>
 
                     <?php
-                    if (class_exists('Oferta_Seminarios_Integration')) :
-                        $seminarios_all = Oferta_Seminarios_Integration::get_programa_seminarios_data($post_id);
+                    if (function_exists('flacso_theme_get_program_seminars_catalog')) :
+                        $seminarios_all = flacso_theme_get_program_seminars_catalog($post_id);
                         $seminarios = [];
                         $hoy = new DateTimeImmutable('today', wp_timezone());
 
-                        if (is_array($seminarios_all)) {
-                            foreach ($seminarios_all as $seminario) {
-                                if (empty($seminario['fecha_inicio'])) {
-                                    continue;
-                                }
-
-                                $inicio_obj = DateTimeImmutable::createFromFormat('Y-m-d|', $seminario['fecha_inicio'], wp_timezone());
-                                if (!$inicio_obj) {
-                                    continue;
-                                }
-
-                                $dias_hasta_inicio = (int) floor(($inicio_obj->getTimestamp() - $hoy->getTimestamp()) / DAY_IN_SECONDS);
-                                $is_upcoming = $dias_hasta_inicio >= 0;
-                                $is_started_recent = $dias_hasta_inicio < 0 && $dias_hasta_inicio >= -7;
-
-                                if ($is_upcoming || $is_started_recent) {
-                                    $seminarios[] = $seminario;
-                                }
+                        foreach ($seminarios_all as $seminario_context) {
+                            $seminario_instance = $seminario_context['instance'] ?? [];
+                            $fecha_inicio = (string) ($seminario_instance['fecha_inicio'] ?? '');
+                            if ($fecha_inicio === '') {
+                                continue;
                             }
+
+                            $inicio_obj = DateTimeImmutable::createFromFormat('Y-m-d|', $fecha_inicio, wp_timezone());
+                            if (!$inicio_obj) {
+                                continue;
+                            }
+
+                            $dias_hasta_inicio = (int) floor(($inicio_obj->getTimestamp() - $hoy->getTimestamp()) / DAY_IN_SECONDS);
+                            if ($dias_hasta_inicio < -7) {
+                                continue;
+                            }
+
+                            $seminarios[] = [
+                                'id'           => (int) ($seminario_context['offer_id'] ?? 0),
+                                'titulo'       => (string) ($seminario_context['title'] ?? ''),
+                                'permalink'    => (string) ($seminario_context['permalink'] ?? ''),
+                                'fecha_inicio' => $fecha_inicio,
+                            ];
                         }
 
                         usort($seminarios, static function ($a, $b) {
