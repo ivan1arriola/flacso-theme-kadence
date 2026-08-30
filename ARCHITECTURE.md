@@ -11,6 +11,20 @@ El tema hijo contiene únicamente presentación y compatibilidad con Kadence. Lo
 
 Los recursos específicos se cargan mediante el nombre real de la plantilla y usan `filemtime()` como versión. No deben agregarse bloques `<style>` a las plantillas ni cargar dependencias después de `get_header()`. `carta-template.php` es la única excepción: su CSS permanece embebido porque el documento se distribuye como carta/HTML autocontenido.
 
+## Adaptador académico público
+
+`inc/academic-public-model.php` es la única frontera del tema con
+`OfertaAcademica`, `InstanciaOferta` y sus relaciones. La capa:
+
+- prioriza las clases y funciones públicas del plugin;
+- arma View Models de sólo lectura para las plantillas;
+- encapsula los metadatos legacy necesarios durante Release A;
+- nunca calcula la apertura de preinscripciones ni escribe datos académicos.
+
+Los seminarios unificados siguen usando la presentación y los recursos de
+`single-seminario`, aunque WordPress resuelva la URL mediante
+`single-oferta-academica.php`.
+
 ## CTA de preinscripción
 
 El tema no interpreta `flujo_preinscripcion` ni construye destinos. Obtiene

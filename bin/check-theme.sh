@@ -7,6 +7,8 @@ while IFS= read -r -d '' php_file; do
     php -l "$php_file" >/dev/null
 done < <(find "$theme_dir" -type f -name '*.php' -print0)
 
+php "$theme_dir/tests/academic-public-model-test.php"
+
 if grep -rn -P 'target="_blank"(?![^>]*\brel=)' --include='*.php' "$theme_dir"; then
     echo 'Hay enlaces target="_blank" sin rel="noopener noreferrer".' >&2
     exit 1
@@ -33,15 +35,13 @@ if ! grep -q 'data-flacso-preinscription-cta' "$theme_dir/template-parts/oferta/
     exit 1
 fi
 
-# El acceso a metadatos legacy de seminarios e instancias debe encapsularse en inc/academic-public-model.php
-if grep -rn -E "get_post_meta\([^,]+,\s*['\"](_seminario_periodo_inicio|_seminario_periodo_fin|_seminario_docentes|_seminario_modalidad|_oferta_seminarios_ids)['\"]" \
+# El acceso a metadatos legacy de seminarios e instancias se encapsula en el adaptador.
+if grep -rn -E "get_post_meta\\([^,]+,\\s*['\"](_seminario_periodo_inicio|_seminario_periodo_fin|_seminario_docentes|_seminario_modalidad|_oferta_seminarios_ids|_flacso_fecha_inicio|_flacso_fecha_fin|_flacso_modalidad|_flacso_docentes)['\"]" \
     --include='*.php' \
     --exclude-dir='inc' \
     --exclude-dir='tests' \
-    --exclude='consulta-seminario.php' \
-    --exclude='oferta-seminarios.php' \
     "$theme_dir"; then
-    echo 'No se deben consultar metadatos legacy directamente fuera de inc/academic-public-model.php.' >&2
+    echo 'Los templates deben consumir inc/academic-public-model.php y no metadatos académicos directos.' >&2
     exit 1
 fi
 

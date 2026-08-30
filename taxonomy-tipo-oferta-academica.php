@@ -23,13 +23,21 @@ if (!function_exists('flacso_oferta_archive_uppercase_label')) {
 
 if (!function_exists('flacso_oferta_archive_get_start_data')) {
     function flacso_oferta_archive_get_start_data(int $post_id): array {
-        $raw = get_post_meta($post_id, 'proximo_inicio', true);
+        $context = function_exists('flacso_theme_get_offer_context')
+            ? flacso_theme_get_offer_context($post_id)
+            : [];
+        $instance = is_array($context) ? ($context['instance'] ?? []) : [];
+
+        $raw = $instance['fecha_inicio'] ?? get_post_meta($post_id, 'proximo_inicio', true);
         if (is_array($raw)) {
             $raw = reset($raw);
         }
 
         $raw = trim((string) $raw);
-        $precision = strtolower(trim((string) get_post_meta($post_id, 'proximo_inicio_precision', true)));
+        $precision = strtolower(trim((string) (
+            $instance['precision_fecha_inicio']
+            ?? get_post_meta($post_id, 'proximo_inicio_precision', true)
+        )));
         $label = $raw;
 
         if ($raw !== '' && class_exists('Oferta_Renderer')) {

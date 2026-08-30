@@ -18,42 +18,51 @@ $seminario_id = isset( $_GET['ID'] ) ? absint( wp_unslash( $_GET['ID'] ) ) : 0;
 $seminario_seleccionado = null;
 $solo_un_seminario = false;
 
-// Si se pasó ID, validar que existe
-if ($seminario_id > 0) {
-    $seminario = get_post($seminario_id);
-    if ($seminario && $seminario->post_type === 'seminario' && $seminario->post_status === 'publish') {
-        $seminario_seleccionado = $seminario;
-        $solo_un_seminario = true;
+// Aceptar tanto OfertaAcademica tipo seminario como el CPT legacy durante Release A.
+if ($seminario_id > 0 && function_exists('flacso_theme_get_seminar_context')) {
+    $selected_context = flacso_theme_get_seminar_context($seminario_id);
+    if (!empty($selected_context) && get_post_status($seminario_id) === 'publish') {
+        $seminario_seleccionado = get_post($seminario_id);
+        $solo_un_seminario = (bool) $seminario_seleccionado;
     }
 }
 
-// Si no hay seminario seleccionado, obtener todos los seminarios disponibles
+// Si no hay seminario seleccionado, usar el catálogo normalizado.
 $seminarios_disponibles = [];
 if (!$solo_un_seminario) {
-    $args = array(
-        'post_type'      => 'seminario',
-        'posts_per_page' => -1,
-        'post_status'    => 'publish',
-        'orderby'        => 'meta_value',
-        'meta_key'       => '_seminario_periodo_inicio',
-        'order'          => 'ASC'
-    );
-    $query = new WP_Query($args);
+    $catalog = function_exists('flacso_theme_get_seminars_catalog')
+        ? flacso_theme_get_seminars_catalog()
+        : [];
 
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            $post_id = get_the_ID();
-            $imagen = has_post_thumbnail() ? get_the_post_thumbnail_url($post_id, 'medium') : 'https://via.placeholder.com/300x200/16396f/ffffff?text=Seminario';
-
-            $seminarios_disponibles[] = [
-                'id'     => $post_id,
-                'titulo' => get_the_title(),
-                'imagen' => $imagen
-            ];
+    foreach ($catalog as $context) {
+        $post_id = (int) ($context['offer_id'] ?? 0);
+        if ($post_id <= 0) {
+            continue;
         }
+        $imagen = (string) ($context['thumbnail_url'] ?? '');
+        if ($imagen === '') {
+            $imagen = 'https://via.placeholder.com/300x200/16396f/ffffff?text=Seminario';
+        }
+        $seminarios_disponibles[] = [
+            'id'     => $post_id,
+            'titulo' => (string) ($context['title'] ?? get_the_title($post_id)),
+            'imagen' => $imagen,
+            'fecha'  => (string) ($context['instance']['fecha_inicio'] ?? ''),
+        ];
     }
-    wp_reset_postdata();
+
+    usort($seminarios_disponibles, static function (array $a, array $b): int {
+        if ($a['fecha'] === $b['fecha']) {
+            return strcasecmp($a['titulo'], $b['titulo']);
+        }
+        if ($a['fecha'] === '') {
+            return 1;
+        }
+        if ($b['fecha'] === '') {
+            return -1;
+        }
+        return strcmp($a['fecha'], $b['fecha']);
+    });
 }
 
 // Función para obtener lista de países

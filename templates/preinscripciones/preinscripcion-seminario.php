@@ -74,35 +74,47 @@ wp_enqueue_script('country-select-js', 'https://cdn.jsdelivr.net/npm/country-sel
 // Variables necesarias - Obtener ID del seminario desde la URL o el objeto actual
 $seminario_id = isset( $_GET['ID'] ) ? absint( wp_unslash( $_GET['ID'] ) ) : get_queried_object_id();
 
-// Verificar que el seminario existe
-if (!$seminario_id || get_post_type($seminario_id) !== 'seminario' || get_post_status($seminario_id) !== 'publish') {
-    // Redirigir a página de seminarios si no hay ID válido
+// Validar contra el modelo público unificado, con fallback al CPT legacy.
+$seminario_context = function_exists('flacso_theme_get_seminar_context')
+    ? flacso_theme_get_seminar_context((int) $seminario_id)
+    : [];
+if (empty($seminario_context) || get_post_status($seminario_id) !== 'publish') {
     wp_redirect(site_url('/formacion/seminarios/'));
     exit;
 }
 
-$seminario_titulo = get_the_title($seminario_id);
-$seminario_slug = get_post_field('post_name', $seminario_id);
-// Imagen destacada para usar como fondo del hero
-$hero_image_url = get_the_post_thumbnail_url($seminario_id, 'full');
+$registration = $seminario_context['registration'] ?? [];
+if (
+    ($registration['flow'] ?? 'legacy_editor') !== 'legacy_editor'
+    && !empty($registration['url'])
+) {
+    // El gestor nuevo vive fuera de WordPress; el formulario local queda sólo
+    // como compatibilidad del flujo legacy.
+    wp_redirect((string) $registration['url']);
+    exit;
+}
 
-// Meta fields
-$fecha_inicio = get_post_meta($seminario_id, '_seminario_periodo_inicio', true);
-$fecha_fin = get_post_meta($seminario_id, '_seminario_periodo_fin', true);
-$modalidad = get_post_meta($seminario_id, '_seminario_modalidad', true);
-$creditos = get_post_meta($seminario_id, '_seminario_creditos', true);
-$carga_horaria = get_post_meta($seminario_id, '_seminario_carga_horaria', true);
+$seminario_titulo = (string) ($seminario_context['title'] ?? get_the_title($seminario_id));
+$seminario_slug = (string) ($seminario_context['slug'] ?? get_post_field('post_name', $seminario_id));
+$hero_image_url = (string) ($seminario_context['thumbnail_url'] ?? '');
+$academic = $seminario_context['academic'] ?? [];
+$instance = $seminario_context['instance'] ?? [];
 
-// Precios para Meta Pixel tracking
-$sem_valor_uyu = get_post_meta($seminario_id, '_seminario_valor_uyu', true);
-$sem_valor_usd = get_post_meta($seminario_id, '_seminario_valor_usd', true);
+$fecha_inicio = (string) ($instance['fecha_inicio'] ?? '');
+$fecha_fin = (string) ($instance['fecha_fin'] ?? '');
+$modalidad = (string) ($instance['modalidad'] ?? '');
+$creditos = $academic['creditos'] ?? '';
+$carga_horaria = $academic['carga_horaria'] ?? '';
+
+$sem_valor_uyu = $instance['valor_uyu'] ?? null;
+$sem_valor_usd = $instance['valor_usd'] ?? null;
 $sem_tracking_value = 0;
 $sem_tracking_currency = 'USD';
 
-if ($sem_valor_usd !== '' && $sem_valor_usd !== null && (float)$sem_valor_usd > 0) {
+if ($sem_valor_usd !== '' && $sem_valor_usd !== null && (float) $sem_valor_usd > 0) {
     $sem_tracking_value = (float) $sem_valor_usd;
-} elseif ($sem_valor_uyu !== '' && $sem_valor_uyu !== null && (float)$sem_valor_uyu > 0) {
-    $sem_tracking_value = round((float)$sem_valor_uyu / 40.0);
+} elseif ($sem_valor_uyu !== '' && $sem_valor_uyu !== null && (float) $sem_valor_uyu > 0) {
+    $sem_tracking_value = round((float) $sem_valor_uyu / 40.0);
     if ($sem_tracking_value <= 0) {
         $sem_tracking_value = 1;
     }

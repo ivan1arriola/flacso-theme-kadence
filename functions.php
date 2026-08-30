@@ -2,6 +2,7 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
+require_once get_stylesheet_directory() . '/inc/academic-public-model.php';
 require_once get_stylesheet_directory() . '/inc/open-graph.php';
 require_once get_stylesheet_directory() . '/template-parts/front-page/hero.php';
 
@@ -378,6 +379,15 @@ function flacso_child_enqueue_template_assets() {
     foreach ( $template_assets as $template_file => $asset ) {
         if ( $active_template !== $template_file ) {
             continue;
+        }
+
+        // Los seminarios unificados usan single-oferta-academica.php, pero
+        // conservan los recursos visuales de la ficha pública de seminario.
+        if ( 'single-oferta-academica' === $asset && is_singular( 'oferta-academica' ) ) {
+            $offer_id = (int) get_queried_object_id();
+            if ( function_exists( 'flacso_theme_is_seminar' ) && flacso_theme_is_seminar( $offer_id ) ) {
+                $asset = 'single-seminario';
+            }
         }
 
         $css_path = 'assets/css/' . $asset . '.css';

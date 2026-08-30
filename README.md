@@ -20,6 +20,16 @@ Extiende al tema padre Kadence con:
 
 El slug del tema es `kadence-child-flacso` y su archivo principal de metadatos es `style.css`.
 
+## Dominio académico
+
+El tema es compatible con el modelo unificado del plugin: los seminarios son
+`OfertaAcademica` y sus ediciones son `InstanciaOferta`. Durante Release A
+también puede leer posts `seminario` todavía no migrados. Todas las plantillas
+consumen el adaptador de sólo lectura `inc/academic-public-model.php`.
+
+El CTA y el destino de preinscripción siempre se delegan al plugin. Ver
+[`docs/academic-model-compatibility.md`](docs/academic-model-compatibility.md).
+
 ## Versionado automático
 
 Cada commit de `main` produce una versión efectiva con el formato:
