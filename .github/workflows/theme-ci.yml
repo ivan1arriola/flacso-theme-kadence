@@ -1,0 +1,22 @@
+name: Theme CI
+
+on:
+  pull_request:
+    paths:
+      - '**.php'
+      - 'bin/check-theme.sh'
+      - '.github/workflows/theme-ci.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate theme
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout pull request
+        uses: actions/checkout@v6
+
+      - name: Validate PHP and academic contracts
+        run: bash bin/check-theme.sh
