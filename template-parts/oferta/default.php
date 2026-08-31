@@ -673,6 +673,7 @@ if ($inscripciones_abiertas) {
 
                     <?php
                     $docentes_grupos = class_exists('Oferta_Data_Schema')
+                        && method_exists('Oferta_Data_Schema', 'get_docentes_grupos')
                         ? Oferta_Data_Schema::get_docentes_grupos($post_id)
                         : [];
 
