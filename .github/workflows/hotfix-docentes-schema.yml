@@ -25,17 +25,20 @@ jobs:
 
           path = Path('template-parts/oferta/default.php')
           text = path.read_text()
-          old = """                    $docentes_grupos = class_exists('Oferta_Data_Schema')
-                        ? Oferta_Data_Schema::get_docentes_grupos($post_id)
-                        : [];
-"""
-          new = """                    $docentes_grupos = class_exists('Oferta_Data_Schema')
-                        && method_exists('Oferta_Data_Schema', 'get_docentes_grupos')
-                        ? Oferta_Data_Schema::get_docentes_grupos($post_id)
-                        : [];
-"""
-          if text.count(old) != 1:
-              raise SystemExit(f'Expected exactly one target block, found {text.count(old)}')
+          old = (
+              "                    $docentes_grupos = class_exists('Oferta_Data_Schema')\n"
+              "                        ? Oferta_Data_Schema::get_docentes_grupos($post_id)\n"
+              "                        : [];\n"
+          )
+          new = (
+              "                    $docentes_grupos = class_exists('Oferta_Data_Schema')\n"
+              "                        && method_exists('Oferta_Data_Schema', 'get_docentes_grupos')\n"
+              "                        ? Oferta_Data_Schema::get_docentes_grupos($post_id)\n"
+              "                        : [];\n"
+          )
+          count = text.count(old)
+          if count != 1:
+              raise SystemExit(f'Expected exactly one target block, found {count}')
           path.write_text(text.replace(old, new, 1))
           PY
 
