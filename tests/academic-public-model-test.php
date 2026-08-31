@@ -12,6 +12,7 @@ $GLOBALS['posts'] = [
 ];
 
 $GLOBALS['types'] = [10 => 'maestria', 20 => 'seminario', 21 => 'seminario', 40 => 'doctorado'];
+$GLOBALS['current_table_price'] = 25000.0;
 $GLOBALS['meta'] = [
     10 => ['_flacso_relaciones_oferta_academica' => [
         ['oferta_destino' => 20, 'tipo_relacion' => 'integra', 'orden' => 0],
@@ -133,6 +134,28 @@ final class FLACSO_Relacion_Oferta_Academica {
     }
 }
 
+final class FLACSO_Offer_Instance_Repository {
+    public static function find(int $id): ?array {
+        if ($id !== 30) {
+            return null;
+        }
+        return [
+            'id' => 30,
+            'priceTableId' => 500,
+            'priceTable' => [
+                'id' => 500,
+                'title' => 'Seminarios 2026',
+                'amounts' => [
+                    'uyu' => $GLOBALS['current_table_price'],
+                    'usd' => 600.0,
+                    'uyuDiscount' => null,
+                    'usdDiscount' => null,
+                ],
+            ],
+        ];
+    }
+}
+
 function flacso_get_preinscription_cta(int $offer_id): array {
     if ($offer_id === 20) {
         return [
@@ -168,7 +191,10 @@ $unified = flacso_theme_get_offer_context(20);
 assert_same(30, $unified['instance_id'], 'resuelve InstanciaOferta relevante');
 assert_same('2026-08-10', $unified['instance']['fecha_inicio'], 'lee fecha desde la clave real de InstanciaOferta');
 assert_same('Virtual', $unified['instance']['modalidad'], 'lee modalidad desde InstanciaOferta');
-assert_same(10000.0, $unified['instance']['valor_uyu'], 'lee precio desde InstanciaOferta');
+assert_same(25000.0, $unified['instance']['valor_uyu'], 'lee precio actual desde TablaPrecio');
+$GLOBALS['current_table_price'] = 30000.0;
+$updated_price = flacso_theme_get_offer_context(20);
+assert_same(30000.0, $updated_price['instance']['valor_uyu'], 'actualizar TablaPrecio se refleja sin copiar valores en la instancia');
 assert_same('Presentación académica', $unified['academic']['presentacion'], 'mantiene identidad académica en OfertaAcademica');
 assert_same(true, $unified['registration']['is_open'], 'delega apertura al resolver del plugin');
 assert_same('gestor_preinscripciones', $unified['registration']['flow'], 'conserva el flujo transitorio');

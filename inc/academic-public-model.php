@@ -328,10 +328,19 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         $instance['es_asincronico'] = (bool) get_post_meta($instance_id, flacso_theme_instance_meta_key('es_asincronico'), true);
         $instance['docentes_ids'] = array_map('absint', flacso_theme_meta_array($instance_id, flacso_theme_instance_meta_key('docentes')));
         $instance['encuentros'] = flacso_theme_meta_array($instance_id, flacso_theme_instance_meta_key('encuentros'));
-        $instance['valor_uyu'] = flacso_theme_nullable_number(get_post_meta($instance_id, flacso_theme_instance_meta_key('valor_uyu'), true));
-        $instance['valor_usd'] = flacso_theme_nullable_number(get_post_meta($instance_id, flacso_theme_instance_meta_key('valor_usd'), true));
-        $instance['valor_uyu_15_descuento'] = flacso_theme_nullable_number(get_post_meta($instance_id, flacso_theme_instance_meta_key('valor_uyu_descuento'), true));
-        $instance['valor_usd_15_descuento'] = flacso_theme_nullable_number(get_post_meta($instance_id, flacso_theme_instance_meta_key('valor_usd_descuento'), true));
+        $canonical_instance = class_exists('FLACSO_Offer_Instance_Repository')
+            ? FLACSO_Offer_Instance_Repository::find($instance_id)
+            : null;
+        $has_canonical_price_table = is_array($canonical_instance['priceTable'] ?? null);
+        $amounts = is_array($canonical_instance['priceTable']['amounts'] ?? null)
+            ? $canonical_instance['priceTable']['amounts']
+            : [];
+        $instance['tabla_precio_id'] = absint($canonical_instance['priceTableId'] ?? 0);
+        $instance['tabla_precio'] = $canonical_instance['priceTable'] ?? null;
+        $instance['valor_uyu'] = $has_canonical_price_table ? ($amounts['uyu'] ?? null) : flacso_theme_nullable_number(get_post_meta($instance_id, flacso_theme_instance_meta_key('valor_uyu'), true));
+        $instance['valor_usd'] = $has_canonical_price_table ? ($amounts['usd'] ?? null) : flacso_theme_nullable_number(get_post_meta($instance_id, flacso_theme_instance_meta_key('valor_usd'), true));
+        $instance['valor_uyu_15_descuento'] = $has_canonical_price_table ? ($amounts['uyuDiscount'] ?? null) : flacso_theme_nullable_number(get_post_meta($instance_id, flacso_theme_instance_meta_key('valor_uyu_descuento'), true));
+        $instance['valor_usd_15_descuento'] = $has_canonical_price_table ? ($amounts['usdDiscount'] ?? null) : flacso_theme_nullable_number(get_post_meta($instance_id, flacso_theme_instance_meta_key('valor_usd_descuento'), true));
     } else {
         $legacy = [
             'fecha_inicio'           => $is_seminar ? '_seminario_periodo_inicio' : 'proximo_inicio',
