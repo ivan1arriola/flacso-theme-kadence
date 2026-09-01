@@ -278,8 +278,20 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "calendario_pdf_url"          => $calendario_pdf,
         "equipos"                     => $data["equipos"] ?? get_post_meta($offer_id, "equipos", true),
         "coordinacion_academica"      => [],
-        "carta_hero_etiqueta"         => (string) ($current_cohort["etiqueta_preinscripcion"] ?? ""),
-        "carta_instancias_presenciales"=> !empty($current_cohort["instancias_presenciales"]),
+        "carta_hero_etiqueta"         => (string) ($current_cohort["etiqueta_preinscripcion"] ?? ($data["carta_hero_etiqueta"] ?? get_post_meta($offer_id, "carta_hero_etiqueta", true))),
+        "carta_instancias_presenciales"=> !empty($current_cohort["instancias_presenciales"]) || !empty($data["carta_instancias_presenciales"]) || (bool) get_post_meta($offer_id, "carta_instancias_presenciales", true),
+        "menciones"                   => (array) ($data["menciones"] ?? (get_post_meta($offer_id, "menciones", true) ?: [])),
+        "orientaciones"               => (array) ($data["orientaciones"] ?? (get_post_meta($offer_id, "orientaciones", true) ?: [])),
+        "titulos_intermedios"         => (array) ($data["titulos_intermedios"] ?? (get_post_meta($offer_id, "titulos_intermedios", true) ?: [])),
+        "reconocido_mec"              => !empty($data["reconocido_mec"]) || (bool) get_post_meta($offer_id, "reconocido_mec", true),
+        "reconocimiento_internacional"=> !empty($data["reconocimiento_internacional"]) || (bool) get_post_meta($offer_id, "reconocimiento_internacional", true),
+        "convenio_iin_oea"            => !empty($data["convenio_iin_oea"]) || (bool) get_post_meta($offer_id, "convenio_iin_oea", true),
+        "mostrar_costos_envio"        => !empty($data["mostrar_costos_envio"]) || (bool) get_post_meta($offer_id, "mostrar_costos_envio", true),
+        "mostrar_expedicion_titulo"   => !empty($data["mostrar_expedicion_titulo"]) || (bool) get_post_meta($offer_id, "mostrar_expedicion_titulo", true),
+        "carta_presentacion_html"     => (string) ($data["carta_presentacion_html"] ?? get_post_meta($offer_id, "carta_presentacion_html", true)),
+        "asistente_academica_docente_id" => absint($data["asistente_academica_docente_id"] ?? get_post_meta($offer_id, "asistente_academica_docente_id", true)),
+        "asistente_academica_rol"     => (string) ($data["asistente_academica_rol"] ?? get_post_meta($offer_id, "asistente_academica_rol", true)),
+        "asistente_academica_correo"  => (string) ($data["asistente_academica_correo"] ?? get_post_meta($offer_id, "asistente_academica_correo", true)),
     ];
 
     $program_id = absint($data["programa_academico_id"] ?? 0);

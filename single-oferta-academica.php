@@ -21,7 +21,19 @@ while (have_posts()) :
         ? flacso_theme_get_offer_context($post_id)
         : [];
 
-    get_template_part('template-parts/oferta/default', null, ['context' => $context]);
+    $is_carta = (bool) get_query_var('es_carta') || (get_query_var('carta') !== false && get_query_var('carta') !== '');
+    if (!$is_carta && isset($_SERVER['REQUEST_URI'])) {
+        $req_path = trim((string) wp_parse_url((string) $_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+        if (str_ends_with($req_path, '/carta') || str_ends_with($req_path, 'carta')) {
+            $is_carta = true;
+        }
+    }
+
+    if ($is_carta) {
+        get_template_part('template-parts/oferta/carta', null, ['context' => $context]);
+    } else {
+        get_template_part('template-parts/oferta/default', null, ['context' => $context]);
+    }
 
 endwhile;
 

@@ -841,33 +841,6 @@ if (!$banner_featured_url) {
                         </section>
                     <?php endif; ?>
 
-                    <!-- ========================================== -->
-                    <!-- SEMINARIOS VINCULADOS -->
-                    <!-- ========================================== -->
-                    <?php
-                    if (function_exists('flacso_theme_get_program_seminars_catalog')) :
-                        $seminarios_all = flacso_theme_get_program_seminars_catalog($post_id);
-                        if (!empty($seminarios_all)) {
-                            $seminarios = [];
-                            foreach ($seminarios_all as $sem_ctx) {
-                                $seminarios[] = [
-                                    'id'           => (int) ($sem_ctx['offer_id'] ?? 0),
-                                    'titulo'       => (string) ($sem_ctx['title'] ?? ''),
-                                    'permalink'    => (string) ($sem_ctx['permalink'] ?? ''),
-                                    'fecha_inicio' => (string) ($sem_ctx['instance']['fecha_inicio'] ?? ''),
-                                ];
-                            }
-                            get_template_part(
-                                'template-parts/oferta/seminarios-vinculados',
-                                null,
-                                [
-                                    'post_id'    => $post_id,
-                                    'seminarios' => $seminarios,
-                                ]
-                            );
-                        }
-                    endif;
-                    ?>
 
                 </article>
             </main>

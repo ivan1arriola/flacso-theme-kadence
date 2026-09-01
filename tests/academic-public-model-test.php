@@ -426,5 +426,12 @@ assert_same("2027", flacso_theme_format_cohort_dates([
     "anio_inicio" => 2027,
 ]), "Formatea año único de inicio cuando la precisión es anio");
 
+// 7. Contexto para Carta de Presentación
+assert_same(true, array_key_exists("reconocido_mec", $offer_context["academic"]), "Contexto incluye reconocido_mec para carta");
+assert_same(true, array_key_exists("carta_hero_etiqueta", $offer_context["academic"]), "Contexto incluye carta_hero_etiqueta");
+assert_same(true, array_key_exists("menciones", $offer_context["academic"]), "Contexto incluye menciones");
+assert_same(true, file_exists(__DIR__ . "/../template-parts/oferta/carta.php"), "Template part de carta existe");
+assert_same(true, file_exists(__DIR__ . "/../assets/css/single-carta.css"), "Estilos de carta existen");
+
 exit($failures > 0 ? 1 : 0);
 
