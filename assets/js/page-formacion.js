@@ -25,7 +25,7 @@
 		const label = el.querySelector('.flacso-oferta-countdown__text');
 		if (!label) return;
 		if (diff > 0) {
-			label.textContent = 'Faltan ' + diff + ' días';
+			label.textContent = diff === 1 ? 'Falta 1 día' : 'Faltan ' + diff + ' días';
 		} else if (diff === 0) {
 			label.textContent = 'Comienza hoy';
 		} else {

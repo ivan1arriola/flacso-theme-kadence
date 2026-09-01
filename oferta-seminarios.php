@@ -176,9 +176,13 @@ if (function_exists('flacso_global_styles')) {
                                                     <i class="bi bi-clock" aria-hidden="true"></i>
                                                     <span>
                                                         <?php
-                                                        echo $item['days_left'] === 0
-                                                            ? __('Comienza hoy', 'flacso-uruguay')
-                                                            : sprintf(__('Faltan %d días', 'flacso-uruguay'), $item['days_left']);
+                                                        if ($item['days_left'] === 0) {
+                                                            echo esc_html(__('Comienza hoy', 'flacso-uruguay'));
+                                                        } elseif ($item['days_left'] === 1) {
+                                                            echo esc_html(__('Falta 1 día', 'flacso-uruguay'));
+                                                        } else {
+                                                            echo esc_html(sprintf(__('Faltan %d días', 'flacso-uruguay'), $item['days_left']));
+                                                        }
                                                         ?>
                                                     </span>
                                                 </li>

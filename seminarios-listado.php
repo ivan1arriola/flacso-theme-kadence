@@ -268,11 +268,19 @@ $seminarios_total = count($seminarios_catalogo);
                     <?php
                     $featured_badge = __('Fecha a confirmar', 'flacso-uruguay');
                     if ($seminario_destacado['is_upcoming']) {
-                        $featured_badge = $seminario_destacado['days_left'] === 0
-                            ? __('Comienza hoy', 'flacso-uruguay')
-                            : sprintf(__('Faltan %d días', 'flacso-uruguay'), $seminario_destacado['days_left']);
+                        if ($seminario_destacado['days_left'] === 0) {
+                            $featured_badge = __('Comienza hoy', 'flacso-uruguay');
+                        } elseif ($seminario_destacado['days_left'] === 1) {
+                            $featured_badge = __('Falta 1 día', 'flacso-uruguay');
+                        } else {
+                            $featured_badge = sprintf(__('Faltan %d días', 'flacso-uruguay'), $seminario_destacado['days_left']);
+                        }
                     } elseif ($seminario_destacado['is_started_recent']) {
-                        $featured_badge = sprintf(__('Inició hace %d días', 'flacso-uruguay'), $seminario_destacado['days_since_start']);
+                        if ($seminario_destacado['days_since_start'] === 1) {
+                            $featured_badge = __('Inició hace 1 día', 'flacso-uruguay');
+                        } else {
+                            $featured_badge = sprintf(__('Inició hace %d días', 'flacso-uruguay'), $seminario_destacado['days_since_start']);
+                        }
                     }
                     ?>
                     <article class="seminario-featured" aria-labelledby="seminario-destacado-titulo">
@@ -412,18 +420,28 @@ $seminarios_total = count($seminarios_catalogo);
                                                                 <i class="bi bi-clock" aria-hidden="true"></i>
                                                                 <span>
                                                                     <?php
-                                                                    echo esc_html(
-                                                                        $seminario_item['days_left'] === 0
-                                                                            ? __('Comienza hoy', 'flacso-uruguay')
-                                                                            : sprintf(__('Faltan %d días', 'flacso-uruguay'), $seminario_item['days_left'])
-                                                                    );
+                                                                    if ($seminario_item['days_left'] === 0) {
+                                                                        echo esc_html(__('Comienza hoy', 'flacso-uruguay'));
+                                                                    } elseif ($seminario_item['days_left'] === 1) {
+                                                                        echo esc_html(__('Falta 1 día', 'flacso-uruguay'));
+                                                                    } else {
+                                                                        echo esc_html(sprintf(__('Faltan %d días', 'flacso-uruguay'), $seminario_item['days_left']));
+                                                                    }
                                                                     ?>
                                                                 </span>
                                                             </li>
                                                         <?php elseif ($seminario_item['is_started_recent']) : ?>
                                                             <li>
                                                                 <i class="bi bi-clock" aria-hidden="true"></i>
-                                                                <span><?php echo esc_html(sprintf(__('Inició hace %d días', 'flacso-uruguay'), $seminario_item['days_since_start'])); ?></span>
+                                                                <span>
+                                                                    <?php
+                                                                    if ($seminario_item['days_since_start'] === 1) {
+                                                                        echo esc_html(__('Inició hace 1 día', 'flacso-uruguay'));
+                                                                    } else {
+                                                                        echo esc_html(sprintf(__('Inició hace %d días', 'flacso-uruguay'), $seminario_item['days_since_start']));
+                                                                    }
+                                                                    ?>
+                                                                </span>
                                                             </li>
                                                         <?php endif; ?>
                                                         <li>
