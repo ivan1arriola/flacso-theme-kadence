@@ -13,15 +13,28 @@
         var search = root.querySelector('[data-seminar-search]');
         var count = root.querySelector('[data-seminar-search-count]');
         var chips = Array.prototype.slice.call(root.querySelectorAll('[data-seminar-month]'));
-        var items = Array.prototype.slice.call(root.querySelectorAll('[data-seminar-item]'));
-        var monthSections = Array.prototype.slice.call(root.querySelectorAll('[data-seminar-month-section]'));
-        var featured = root.querySelector('[data-seminar-featured]');
+        var items = Array.prototype.slice.call(
+            root.querySelectorAll('[data-seminar-item], [data-seminar-card]')
+        );
+        var monthSections = Array.prototype.slice.call(
+            root.querySelectorAll('[data-seminar-month-section], [data-month-group]')
+        );
+        var featured = root.querySelector('[data-seminar-featured], .seminario-featured');
         var empty = root.querySelector('[data-seminarios-filter-empty]');
         var activeMonth = 'all';
 
+        function getMonth(item) {
+            return item.getAttribute('data-month') || item.getAttribute('data-month-group') || '';
+        }
+
+        function getSearchText(item) {
+            return item.getAttribute('data-search') || item.textContent || '';
+        }
+
         function matches(item, term) {
-            var monthMatches = activeMonth === 'all' || item.getAttribute('data-month') === activeMonth;
-            var textMatches = !term || normalize(item.getAttribute('data-search')).indexOf(term) !== -1;
+            var itemMonth = getMonth(item);
+            var monthMatches = activeMonth === 'all' || itemMonth === '' || itemMonth === activeMonth;
+            var textMatches = !term || normalize(getSearchText(item)).indexOf(term) !== -1;
             return monthMatches && textMatches;
         }
 
@@ -39,7 +52,7 @@
 
             monthSections.forEach(function (section) {
                 var hasVisibleItems = Array.prototype.some.call(
-                    section.querySelectorAll('[data-seminar-item]'),
+                    section.querySelectorAll('[data-seminar-item], [data-seminar-card]'),
                     function (item) { return !item.hidden; }
                 );
                 section.hidden = !hasVisibleItems;

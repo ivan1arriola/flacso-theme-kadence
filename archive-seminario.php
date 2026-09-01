@@ -13,14 +13,22 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-$css_path = 'assets/css/seminarios-listado.css';
-$js_path  = 'assets/js/seminarios-listado.js';
+$css_path         = 'assets/css/seminarios-listado.css';
+$current_css_path = 'assets/css/seminarios-listado-current.css';
+$js_path          = 'assets/js/seminarios-listado.js';
 
 wp_enqueue_style(
     'flacso-seminarios-listado',
     get_stylesheet_directory_uri() . '/' . $css_path,
     array( 'flacso-site-chrome' ),
     function_exists( 'flacso_child_asset_version' ) ? flacso_child_asset_version( $css_path ) : wp_get_theme()->get( 'Version' )
+);
+
+wp_enqueue_style(
+    'flacso-seminarios-listado-current',
+    get_stylesheet_directory_uri() . '/' . $current_css_path,
+    array( 'flacso-seminarios-listado' ),
+    function_exists( 'flacso_child_asset_version' ) ? flacso_child_asset_version( $current_css_path ) : wp_get_theme()->get( 'Version' )
 );
 
 wp_enqueue_script(
