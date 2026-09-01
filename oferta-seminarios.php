@@ -10,19 +10,7 @@ if (!defined('ABSPATH')) {
 
 $oferta_id = get_the_ID();
 
-// Resiliencia extrema para obtener el ID de la oferta
-if (get_post_type($oferta_id) !== 'oferta-academica') {
-    $associated_ofertas = get_posts([
-        'post_type' => 'oferta-academica',
-        'meta_key' => '_oferta_page_id',
-        'meta_value' => $oferta_id,
-        'posts_per_page' => 1,
-        'fields' => 'ids',
-    ]);
-    if (!empty($associated_ofertas)) {
-        $oferta_id = $associated_ofertas[0];
-    }
-}
+
 
 $seminarios_raw = function_exists('flacso_theme_get_program_seminars_catalog')
     ? flacso_theme_get_program_seminars_catalog((int) $oferta_id)
@@ -121,12 +109,6 @@ if (function_exists('flacso_global_styles')) {
 
                     <?php
                     $volver_url = get_permalink($oferta_id);
-                    if (class_exists('Oferta_Page_Adapter')) {
-                        $associated_page_id = Oferta_Page_Adapter::get_page_id($oferta_id);
-                        if ($associated_page_id) {
-                            $volver_url = get_permalink($associated_page_id);
-                        }
-                    }
                     ?>
                     <div class="seminarios-hero__actions d-flex flex-wrap gap-3">
                         <a class="seminarios-btn seminarios-btn--primary" href="#listado">

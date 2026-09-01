@@ -9,33 +9,24 @@ El tema hijo contiene únicamente presentación y compatibilidad con Kadence. Lo
 - `assets/js/<plantilla>.js`: comportamiento progresivo de cada plantilla.
 - `functions.php`: registro y carga condicional de recursos.
 
-Los recursos específicos se cargan mediante el nombre real de la plantilla y usan `filemtime()` como versión. No deben agregarse bloques `<style>` a las plantillas ni cargar dependencias después de `get_header()`. `carta-template.php` es la única excepción: su CSS permanece embebido porque el documento se distribuye como carta/HTML autocontenido.
+Los recursos específicos se cargan mediante el nombre real de la plantilla y usan `filemtime()` como versión. No deben agregarse bloques `<style>` a las plantillas ni cargar dependencias después de `get_header()`.
 
 ## Adaptador académico público
 
-`inc/academic-public-model.php` es la única frontera del tema con
-`OfertaAcademica`, `InstanciaOferta` y sus relaciones. La capa:
+`inc/academic-public-model.php` es la única frontera del tema con `FLACSO_Academic_Catalog`, `FLACSO_Academic_Repository` y las entidades académicas. La capa:
 
-- prioriza las clases y funciones públicas del plugin;
-- arma View Models de sólo lectura para las plantillas;
-- encapsula los metadatos legacy necesarios durante Release A;
+- consume directamente las clases y funciones canónicas del plugin v7;
+- arma View Models estables y limpios de sólo lectura para las plantillas;
+- no contiene metadatos, funciones ni clases legacy;
 - nunca calcula la apertura de preinscripciones ni escribe datos académicos.
-
-Los seminarios unificados siguen usando la presentación y los recursos de
-`single-seminario`, aunque WordPress resuelva la URL mediante
-`single-oferta-academica.php`.
 
 ## CTA de preinscripción
 
-El tema no interpreta `flujo_preinscripcion` ni construye destinos. Obtiene
-estado, mensajes y URL mediante `flacso_get_preinscription_cta()` o
-`flacso_get_preinscription_url()` del plugin. Los enlaces usan
-`data-flacso-preinscription-cta="1"`; el tracking GA4/Meta reconoce ese atributo
-y agrega al destino los parámetros de campaña conservados en `sessionStorage`.
+El tema no construye destinos locales ni gestiona preinscripciones en WordPress. Todo CTA apunta al portal externo centralizado (`https://preinscripciones.flacso.edu.uy`), obtenido directamente de `link_preinscripcion`. Los enlaces usan `data-flacso-preinscription-cta="1"`; el tracking GA4/Meta reconoce ese atributo para la analítica.
 
 ## Componentes
 
-Cuando una sección de plantilla vuelva a utilizarse, debe trasladarse a `template-parts/<dominio>/` y recibir sus datos mediante el tercer argumento de `get_template_part()`. El componente escapa sus atributos y texto en el punto de salida.
+Cuando una sección de plantilla vuelva a utilizarse, debe trasladarse a `template-parts/<dominio>/` y recibir sus datos mediante el argumento `context` de `get_template_part()`. El componente escapa sus atributos y texto en el punto de salida.
 
 ## Verificación
 
@@ -45,4 +36,4 @@ Ejecutar:
 ./bin/check-theme.sh
 ```
 
-Si están instalados PHP_CodeSniffer y WordPress Coding Standards, ejecutar también `phpcs` desde la raíz del tema.
+Valida sintaxis PHP, tests contractuales del View Model, enlaces externos y ausencia total de clases o metadatos legacy.

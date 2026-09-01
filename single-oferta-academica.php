@@ -2,9 +2,7 @@
 /**
  * Template principal para la página individual de una Oferta Académica.
  *
- * Despacha de forma transparente hacia la vista especializada de seminarios
- * o la vista general de programas (maestrías, diplomas, doctorados, etc.),
- * garantizando compatibilidad antes y después de la migración académica.
+ * Consume el View Model canónico y despacha a template-parts/oferta/default.
  *
  * @package kadence-child-flacso
  */
@@ -15,10 +13,6 @@ if (!defined('ABSPATH')) {
 
 get_header();
 
-if (class_exists('Oferta_Renderer')) {
-    Oferta_Renderer::enqueue_styles();
-}
-
 while (have_posts()) :
     the_post();
 
@@ -27,11 +21,7 @@ while (have_posts()) :
         ? flacso_theme_get_offer_context($post_id)
         : [];
 
-    if (!empty($context['is_seminar'])) {
-        get_template_part('template-parts/oferta/seminario', null, ['context' => $context]);
-    } else {
-        get_template_part('template-parts/oferta/default', null, ['context' => $context]);
-    }
+    get_template_part('template-parts/oferta/default', null, ['context' => $context]);
 
 endwhile;
 

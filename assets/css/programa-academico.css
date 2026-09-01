@@ -1,0 +1,550 @@
+/* ==========================================================================
+   Programas Académicos (Archive & Single) - FLACSO Uruguay
+   ========================================================================== */
+
+.flacso-programas-archive,
+.flacso-programa-page {
+    --primary: #1d3a72;
+    --primary-dark: #0f172a;
+    --primary-light: #2563eb;
+    --accent: #fed222;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --bg-soft: #f8fafc;
+    --border-soft: #e2e8f0;
+    
+    background-color: var(--bg-soft);
+    min-height: 100vh;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--text-main);
+}
+
+.site-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* ==========================================================================
+   Hero Section (Archive & Single)
+   ========================================================================== */
+
+.programas-hero,
+.programa-hero {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+    padding: 4.5rem 0 5.5rem;
+    color: #fff;
+    clip-path: ellipse(150% 100% at 50% 0%);
+    margin-bottom: -2.5rem;
+}
+
+.programas-hero {
+    text-align: center;
+}
+
+.hero-kicker {
+    display: inline-block;
+    color: var(--accent);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+}
+
+.hero-title {
+    font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+    font-weight: 900;
+    margin: 0 0 1rem;
+    line-height: 1.15;
+    color: #fff;
+}
+
+.hero-desc {
+    font-size: 1.15rem;
+    opacity: 0.9;
+    max-width: 700px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.6;
+}
+
+.programas-stats {
+    display: inline-block;
+    font-size: 0.95rem;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 0.4rem 1.2rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ==========================================================================
+   Archive Grid & Cards
+   ========================================================================== */
+
+.programas-main {
+    padding: 4rem 0 6rem;
+}
+
+.programas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2rem;
+}
+
+.programa-card {
+    height: 100%;
+}
+
+.programa-card__inner {
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid var(--border-soft);
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.programa-card__inner:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+    border-color: var(--primary-light);
+}
+
+.programa-card__image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+    background: var(--primary-dark);
+}
+
+.programa-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.programa-card__inner:hover .programa-card__img {
+    transform: scale(1.05);
+}
+
+.programa-card__body {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.programa-card__meta-counts {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.85rem;
+    flex-wrap: wrap;
+}
+
+.count-pill {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.count-pill--ofertas {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.count-pill--seminarios {
+    background: #fdf4ff;
+    color: #a21caf;
+}
+
+.programa-card__title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin: 0 0 0.75rem;
+    line-height: 1.3;
+}
+
+.programa-card__title a {
+    color: var(--primary-dark);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.programa-card__title a:hover {
+    color: var(--primary-light);
+}
+
+.programa-card__coord {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 0 0 0.75rem;
+    line-height: 1.4;
+}
+
+.programa-card__desc {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0 0 1.25rem;
+    flex-grow: 1;
+}
+
+.programa-card__footer {
+    padding: 0 1.75rem 1.75rem;
+}
+
+.btn-programa {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 0.75rem 1rem;
+    background: var(--bg-soft);
+    color: var(--primary);
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    border: 1px solid var(--border-soft);
+}
+
+.btn-programa:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
+/* ==========================================================================
+   Single Programa Layout
+   ========================================================================== */
+
+.programa-breadcrumb {
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.programa-breadcrumb a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.programa-breadcrumb .sep {
+    margin: 0 0.4rem;
+    opacity: 0.6;
+}
+
+.programa-hero__content {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+}
+
+.programa-hero__contact {
+    margin: 1rem 0 0;
+    font-size: 1.05rem;
+}
+
+.programa-hero__contact a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.programa-hero__image {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.programa-hero__img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    display: block;
+}
+
+.programa-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 2.5rem;
+    padding-top: 4rem;
+    padding-bottom: 6rem;
+}
+
+.programa-section {
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid var(--border-soft);
+    padding: 2.25rem;
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin: 0 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.programa-prose {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #334155;
+}
+
+/* ==========================================================================
+   Academic & Seminar Mini Cards in Single View
+   ========================================================================== */
+
+.academic-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+.academic-card {
+    background: var(--bg-soft);
+    border-radius: 16px;
+    border: 1px solid var(--border-soft);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.academic-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+    border-color: var(--primary-light);
+}
+
+.academic-card__image {
+    height: 140px;
+    position: relative;
+    background: var(--primary-dark);
+    overflow: hidden;
+}
+
+.academic-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.academic-card__fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.4rem;
+}
+
+.academic-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(15, 23, 42, 0.85);
+    color: #fff;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.academic-badge--seminar {
+    background: rgba(162, 28, 175, 0.85);
+}
+
+.academic-card__body {
+    padding: 1.25rem;
+    flex-grow: 1;
+}
+
+.academic-card__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    line-height: 1.35;
+}
+
+.academic-card__title a {
+    color: var(--primary-dark);
+    text-decoration: none;
+}
+
+.academic-card__cohort {
+    font-size: 0.85rem;
+    color: #0284c7;
+    margin: 0;
+}
+
+.academic-card__footer {
+    padding: 0 1.25rem 1.25rem;
+}
+
+.btn-academic {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 0.6rem 0.75rem;
+    background: #fff;
+    color: var(--primary);
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border: 1px solid var(--border-soft);
+    transition: all 0.2s ease;
+}
+
+.academic-card:hover .btn-academic {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
+/* ==========================================================================
+   Sidebar: Coordinación & Contact
+   ========================================================================== */
+
+.programa-sidebar-card {
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid var(--border-soft);
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+}
+
+.sidebar-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.coordinacion-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.coord-item {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.coord-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--primary);
+    flex-shrink: 0;
+}
+
+.coord-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.coord-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.coord-info {
+    flex-grow: 1;
+}
+
+.coord-name {
+    font-size: 0.98rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem;
+    line-height: 1.2;
+}
+
+.coord-name a {
+    color: var(--primary-dark);
+    text-decoration: none;
+}
+
+.coord-name a:hover {
+    color: var(--primary-light);
+}
+
+.coord-role {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.btn-contact-programa {
+    display: inline-block;
+    padding: 0.75rem 1.25rem;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    transition: background 0.2s ease;
+}
+
+.btn-contact-programa:hover {
+    background: var(--primary-light);
+    color: #fff;
+}
+
+/* ==========================================================================
+   Responsive Media Queries
+   ========================================================================== */
+
+@media (max-width: 992px) {
+    .programa-hero__content {
+        grid-template-columns: 1fr;
+    }
+    .programa-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .programas-hero,
+    .programa-hero {
+        padding: 3.5rem 0 4.5rem;
+    }
+    .programas-grid {
+        grid-template-columns: 1fr;
+    }
+}

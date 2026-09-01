@@ -1,539 +1,769 @@
 <?php
 /**
- * Read-only presentation adapter for the academic domain.
+ * Adaptador de presentacion de solo lectura para el modelo academico de FLACSO Uruguay.
  *
- * The plugin owns OfertaAcademica, InstanciaOferta, relations and registration
- * rules. This file only builds stable view models and keeps Release A legacy
- * reads behind one boundary.
+ * El plugin es la unica fuente de verdad para los CPTs ProgramaAcademico,
+ * OfertaAcademica, Cohorte, Seminario, EdicionSeminario y TablaPrecio.
+ * Este archivo construye View Models estables y limpios para las plantillas del tema.
  *
  * @package kadence-child-flacso
  */
 
-if (!defined('ABSPATH')) {
+if (!defined("ABSPATH")) {
     exit;
 }
 
+/**
+ * Obtiene el slug canonico del tipo de oferta academica.
+ */
 function flacso_theme_get_offer_type(int $post_id): string {
     if ($post_id <= 0) {
-        return '';
+        return "";
     }
 
-    if (class_exists('FLACSO_Oferta_Academica')) {
-        return (string) FLACSO_Oferta_Academica::get_tipo($post_id);
+    if (class_exists("FLACSO_Oferta_Academica")) {
+        $tipo = FLACSO_Oferta_Academica::get_tipo($post_id);
+        if ($tipo !== "") {
+            return $tipo;
+        }
     }
 
-    if (get_post_type($post_id) === 'seminario') {
-        return 'seminario';
-    }
-
-    $terms = wp_get_object_terms($post_id, 'tipo-oferta-academica');
+    $terms = wp_get_object_terms($post_id, "tipo-oferta-academica");
     return !is_wp_error($terms) && !empty($terms)
         ? sanitize_key((string) $terms[0]->slug)
-        : '';
+        : "";
 }
 
+/**
+ * Determina si un post corresponde a un Seminario.
+ */
 function flacso_theme_is_seminar(int $post_id): bool {
-    return flacso_theme_get_offer_type($post_id) === 'seminario';
+    return $post_id > 0 && get_post_type($post_id) === "seminario";
 }
 
-function flacso_theme_get_offer_type_label(int $post_id, string $type = ''): string {
-    $type = $type !== '' ? $type : flacso_theme_get_offer_type($post_id);
+/**
+ * Obtiene la etiqueta visible para el tipo de propuesta academica.
+ */
+function flacso_theme_get_offer_type_label(int $post_id, string $type = ""): string {
+    if (flacso_theme_is_seminar($post_id)) {
+        return __("Seminario", "flacso-uruguay");
+    }
+
+    $type = $type !== "" ? $type : flacso_theme_get_offer_type($post_id);
     $labels = [
-        'doctorado'       => __('Doctorado', 'flacso-uruguay'),
-        'maestria'        => __('Maestría', 'flacso-uruguay'),
-        'especializacion' => __('Especialización', 'flacso-uruguay'),
-        'diplomado'       => __('Diplomado', 'flacso-uruguay'),
-        'diploma'         => __('Diploma', 'flacso-uruguay'),
-        'seminario'       => __('Seminario', 'flacso-uruguay'),
+        "doctorado"       => __("Doctorado", "flacso-uruguay"),
+        "maestria"        => __("Maestría", "flacso-uruguay"),
+        "especializacion" => __("Especialización", "flacso-uruguay"),
+        "diplomado"       => __("Diplomado", "flacso-uruguay"),
+        "diploma"         => __("Diploma", "flacso-uruguay"),
+        "seminario"       => __("Seminario", "flacso-uruguay"),
     ];
-    return $labels[$type] ?? __('Oferta Académica', 'flacso-uruguay');
+    return $labels[$type] ?? __("Oferta Académica", "flacso-uruguay");
 }
 
-/** Resolve a plugin-owned instance meta key without copying its schema. */
-function flacso_theme_instance_meta_key(string $field): string {
-    $keys = [
-        'oferta_id'              => ['META_OFERTA_ID', 'oferta_academica_id'],
-        'fecha_inicio'           => ['META_FECHA_INICIO', 'fecha_inicio'],
-        'fecha_fin'              => ['META_FECHA_FIN', 'fecha_fin'],
-        'precision_fecha_inicio' => ['META_PRECISION_FECHA_INICIO', 'precision_fecha_inicio'],
-        'estado'                 => ['META_ESTADO', 'estado'],
-        'modalidad'              => ['META_MODALIDAD', 'modalidad'],
-        'es_asincronico'         => ['META_ES_ASINCRONICO', 'es_asincronico'],
-        'docentes'               => ['META_DOCENTES', 'docentes'],
-        'encuentros'             => ['META_ENCUENTROS', 'encuentros_sincronicos'],
-        'valor_uyu'              => ['META_VALOR_UYU', 'valor_uyu'],
-        'valor_usd'              => ['META_VALOR_USD', 'valor_usd'],
-        'valor_uyu_descuento'    => ['META_VALOR_UYU_DESCUENTO', 'valor_uyu_15_descuento'],
-        'valor_usd_descuento'    => ['META_VALOR_USD_DESCUENTO', 'valor_usd_15_descuento'],
-    ];
-
-    if (!isset($keys[$field])) {
-        return '';
-    }
-
-    [$constant_name, $fallback] = $keys[$field];
-    $constant = 'FLACSO_Instancia_Oferta::' . $constant_name;
-    return class_exists('FLACSO_Instancia_Oferta') && defined($constant)
-        ? (string) constant($constant)
-        : $fallback;
-}
-
-function flacso_theme_get_relevant_instance(int $offer_id): int {
-    if ($offer_id <= 0) {
-        return 0;
-    }
-
-    if (function_exists('flacso_get_preinscription_cta')) {
-        $cta = flacso_get_preinscription_cta($offer_id);
-        if (is_array($cta) && !empty($cta['instance_id'])) {
-            return absint($cta['instance_id']);
-        }
-    }
-
-    if (class_exists('FLACSO_Instancia_Oferta')) {
-        $open = FLACSO_Instancia_Oferta::find_open_for_offer($offer_id);
-        return $open > 0 ? $open : FLACSO_Instancia_Oferta::find_latest_for_offer($offer_id);
-    }
-
-    $ids = get_posts([
-        'post_type'      => 'instancia-oferta',
-        'post_status'    => 'publish',
-        'posts_per_page' => 1,
-        'fields'         => 'ids',
-        'orderby'        => 'modified',
-        'order'          => 'DESC',
-        'meta_query'     => [[
-            'key'   => flacso_theme_instance_meta_key('oferta_id'),
-            'value' => $offer_id,
-        ]],
-    ]);
-    return !empty($ids) ? absint($ids[0]) : 0;
-}
-
-function flacso_theme_get_offer_relations(int $offer_id, string $type = ''): array {
-    if ($offer_id <= 0) {
-        return [];
-    }
-
-    if (class_exists('FLACSO_Relacion_Oferta_Academica')) {
-        $relations = FLACSO_Relacion_Oferta_Academica::get($offer_id, $type);
-        if (metadata_exists('post', $offer_id, FLACSO_Relacion_Oferta_Academica::META_KEY) || !empty($relations)) {
-            return $relations;
-        }
-    }
-
-    $relations = [];
-    $legacy_keys = [
-        'integra'       => '_oferta_seminarios_ids',
-        'compuesto_por' => '_seminario_seminarios_componentes',
-    ];
-    foreach ($legacy_keys as $relation_type => $meta_key) {
-        if ($type !== '' && $type !== $relation_type) {
-            continue;
-        }
-        $ids = get_post_meta($offer_id, $meta_key, true);
-        if (!is_array($ids)) {
-            continue;
-        }
-        $seen = [];
-        foreach ($ids as $order => $destination) {
-            $destination = absint($destination);
-            if ($destination <= 0 || isset($seen[$destination])) {
-                continue;
-            }
-            $seen[$destination] = true;
-            $relations[] = [
-                'oferta_destino' => $destination,
-                'tipo_relacion'  => $relation_type,
-                'orden'          => absint($order),
-            ];
-        }
-    }
-    return $relations;
-}
-
-function flacso_theme_get_integrated_components(int $offer_id): array {
-    $ids = array_map(static function (array $relation): int {
-        return absint($relation['oferta_destino'] ?? 0);
-    }, flacso_theme_get_offer_relations($offer_id, 'compuesto_por'));
-    $ids = array_values(array_filter(array_unique($ids)));
-    if (empty($ids)) {
-        return [];
-    }
-    return get_posts([
-        'post_type'      => ['oferta-academica', 'seminario'],
-        'post_status'    => 'publish',
-        'post__in'       => $ids,
-        'posts_per_page' => -1,
-        'orderby'        => 'post__in',
-    ]);
-}
-
-function flacso_theme_get_integrated_parent(int $offer_id) {
-    if ($offer_id <= 0) {
+/**
+ * Formatea un numero como flotante nulo si esta vacio.
+ *
+ * @param mixed $value
+ * @return float|null
+ */
+function flacso_theme_nullable_number($value) {
+    if ($value === "" || $value === null) {
         return null;
     }
-    $parents = array_merge(
-        get_posts(['post_type' => 'oferta-academica', 'post_status' => 'publish', 'posts_per_page' => -1]),
-        get_posts(['post_type' => 'seminario', 'post_status' => 'publish', 'posts_per_page' => -1])
-    );
-    foreach ($parents as $parent) {
-        if ((int) $parent->ID === $offer_id) {
-            continue;
-        }
-        foreach (flacso_theme_get_offer_relations((int) $parent->ID, 'compuesto_por') as $relation) {
-            if (absint($relation['oferta_destino'] ?? 0) === $offer_id) {
-                return $parent;
-            }
-        }
+    if (is_int($value) || is_float($value)) {
+        return (float) $value;
     }
-    return null;
+    $str = trim((string) $value);
+    if ($str === "") {
+        return null;
+    }
+    if (strpos($str, ".") !== false && strpos($str, ",") !== false) {
+        $str = str_replace(".", "", $str);
+        $str = str_replace(",", ".", $str);
+    } elseif (strpos($str, ".") !== false && substr_count($str, ".") === 1 && strlen(substr($str, strrpos($str, ".") + 1)) === 3) {
+        $str = str_replace(".", "", $str);
+    } elseif (strpos($str, ",") !== false) {
+        $str = str_replace(",", ".", $str);
+    }
+    $cleaned = preg_replace("/[^0-9.-]/", "", $str);
+    return is_numeric($cleaned) ? (float) $cleaned : null;
 }
 
-function flacso_theme_get_related_programs(int $seminar_id): array {
-    $programs = get_posts([
-        'post_type'      => 'oferta-academica',
-        'post_status'    => 'publish',
-        'posts_per_page' => -1,
-    ]);
-    $related = [];
-    foreach ($programs as $program) {
-        if (flacso_theme_is_seminar((int) $program->ID)) {
-            continue;
-        }
-        foreach (flacso_theme_get_offer_relations((int) $program->ID, 'integra') as $relation) {
-            if (absint($relation['oferta_destino'] ?? 0) === $seminar_id) {
-                $related[] = [
-                    'id'    => (int) $program->ID,
-                    'title' => get_the_title($program),
-                    'slug'  => (string) $program->post_name,
-                    'url'   => get_permalink($program),
-                ];
-                break;
-            }
-        }
-    }
-    return $related;
-}
-
-function flacso_theme_get_registration_context(int $offer_id): array {
-    if (function_exists('flacso_get_preinscription_cta')) {
-        $cta = flacso_get_preinscription_cta($offer_id);
-        if (is_array($cta)) {
-            return [
-                'is_open'        => !empty($cta['is_open']),
-                'url'            => (string) ($cta['url'] ?? ''),
-                'instance_id'    => absint($cta['instance_id'] ?? 0),
-                'flow'           => (string) ($cta['flow'] ?? 'legacy_editor'),
-                'open_message'   => (string) ($cta['open_message'] ?? ''),
-                'closed_message' => (string) ($cta['closed_message'] ?? ''),
-            ];
-        }
+/**
+ * Extrae y estructura los datos de una TablaPrecio.
+ */
+function flacso_theme_get_price_table_data(?int $table_id): ?array {
+    if (!$table_id || $table_id <= 0) {
+        return null;
     }
 
-    $legacy_key = get_post_type($offer_id) === 'seminario'
-        ? '_seminario_abierto_publico'
-        : 'inscripciones_abiertas';
-    $is_open = in_array(get_post_meta($offer_id, $legacy_key, true), [true, 1, '1', 'true'], true);
-    $url = function_exists('flacso_get_preinscription_url')
-        ? flacso_get_preinscription_url(0, $offer_id)
-        : '';
+    $table_post = get_post($table_id);
+    if (!$table_post || $table_post->post_type !== "tabla-precio") {
+        return null;
+    }
+
+    $rows = get_post_meta($table_id, "precios_filas", true);
+    $rows = is_array($rows) ? $rows : [];
+    $type = (string) get_post_meta($table_id, "tabla_precios_tipo", true);
+    $note = (string) get_post_meta($table_id, "precios_nota", true);
+    $show_usd = (bool) get_post_meta($table_id, "mostrar_precios_dolares", true);
+
+    $highlighted_row = null;
+    foreach ($rows as $row) {
+        if (!empty($row["destacada"])) {
+            $highlighted_row = $row;
+            break;
+        }
+    }
+    if (!$highlighted_row && !empty($rows)) {
+        $highlighted_row = $rows[0];
+    }
+
+    $val_uyu = $highlighted_row ? flacso_theme_nullable_number($highlighted_row["uyu"] ?? null) : null;
+    $val_usd = $highlighted_row ? flacso_theme_nullable_number($highlighted_row["usd"] ?? null) : null;
+
+    // Buscar si existe una fila secundaria con descuento (ej. Comunidad FLACSO / 15%)
+    $discount_row = null;
+    foreach ($rows as $row) {
+        $concept = strtolower((string) ($row["concepto"] ?? ""));
+        if (strpos($concept, "descuento") !== false || strpos($concept, "comunidad") !== false || strpos($concept, "15%") !== false) {
+            $discount_row = $row;
+            break;
+        }
+    }
+
+    $val_uyu_desc = $discount_row ? flacso_theme_nullable_number($discount_row["uyu"] ?? null) : null;
+    $val_usd_desc = $discount_row ? flacso_theme_nullable_number($discount_row["usd"] ?? null) : null;
+
     return [
-        'is_open'        => $is_open,
-        'url'            => $url,
-        'instance_id'    => 0,
-        'flow'           => 'legacy_editor',
-        'open_message'   => (string) get_post_meta($offer_id, 'inscripciones_mensaje', true),
-        'closed_message' => (string) get_post_meta($offer_id, 'inscripciones_mensaje_cerrado', true),
+        "id"                     => $table_id,
+        "title"                  => (string) $table_post->post_title,
+        "tipo"                   => $type,
+        "filas"                  => $rows,
+        "nota"                   => $note,
+        "mostrar_dolares"        => $show_usd,
+        "valor_uyu"              => $val_uyu,
+        "valor_usd"              => $val_usd,
+        "valor_uyu_15_descuento" => $val_uyu_desc,
+        "valor_usd_15_descuento" => $val_usd_desc,
     ];
 }
 
-function flacso_theme_meta_array(int $post_id, string $key): array {
-    $value = get_post_meta($post_id, $key, true);
-    return is_array($value) ? array_values(array_filter($value)) : [];
-}
-
-function flacso_theme_nullable_number($value) {
-    return $value === '' || $value === null ? null : (float) $value;
-}
-
+/**
+ * Obtiene el View Model unificado de una Oferta Academica.
+ */
 function flacso_theme_get_offer_context(int $offer_id): array {
-    $post = $offer_id > 0 ? get_post($offer_id) : null;
-    if (!$post || !in_array($post->post_type, ['oferta-academica', 'seminario'], true)) {
+    if ($offer_id <= 0) {
         return [];
     }
 
-    $type = flacso_theme_get_offer_type($offer_id);
-    $is_seminar = $type === 'seminario';
-    $instance_id = flacso_theme_get_relevant_instance($offer_id);
-    $registration = flacso_theme_get_registration_context($offer_id);
-    if ($instance_id <= 0 && !empty($registration['instance_id'])) {
-        $instance_id = (int) $registration['instance_id'];
+    $post = get_post($offer_id);
+    if (!$post) {
+        return [];
     }
 
-    $schema = class_exists('Oferta_Data_Schema') ? Oferta_Data_Schema::get_schema($offer_id) : [];
-    $schema = is_array($schema) ? $schema : [];
-    $academic = [
-        'presentacion'            => get_post_meta($offer_id, '_seminario_presentacion_seminario', true) ?: get_post_meta($offer_id, 'presentacion', true),
-        'objetivo_general'        => (string) get_post_meta($offer_id, '_seminario_objetivo_general', true),
-        'objetivos_especificos'   => flacso_theme_meta_array($offer_id, '_seminario_objetivos_especificos'),
-        'unidades_academicas'     => flacso_theme_meta_array($offer_id, '_seminario_unidades_academicas'),
-        'forma_aprobacion'        => (string) get_post_meta($offer_id, '_seminario_forma_aprobacion', true),
-        'carga_horaria'           => get_post_meta($offer_id, '_seminario_carga_horaria', true),
-        'creditos'                => get_post_meta($offer_id, '_seminario_creditos', true),
-        'acredita_maestria'       => (bool) get_post_meta($offer_id, '_seminario_acredita_maestria', true),
-        'acredita_doctorado'      => (bool) get_post_meta($offer_id, '_seminario_acredita_doctorado', true),
-        'descripcion_html'        => $schema['descripcion_html'] ?? '',
-        'modalidad_html'          => $schema['modalidad_html'] ?? '',
-        'duracion_html'           => $schema['duracion_html'] ?? '',
-        'duracion_meses'          => $schema['duracion_meses'] ?? '',
-        'objetivos_html'          => $schema['objetivos_html'] ?? '',
-        'perfil_ingreso_html'     => $schema['perfil_ingreso_html'] ?? '',
-        'requisitos_ingreso_html' => $schema['requisitos_ingreso_html'] ?? '',
-        'certificacion_html'      => $schema['certificacion_html'] ?? '',
-        'aranceles_html'          => $schema['aranceles_html'] ?? '',
-        'faq_html'                => $schema['faq_html'] ?? '',
-        'pdf_malla_url'           => $schema['pdf_malla_url'] ?? '',
-        'pdf_calendario_url'      => $schema['pdf_calendario_url'] ?? '',
-        'pdf_cartamalla_url'      => $schema['pdf_cartamalla_url'] ?? '',
-    ];
+    if ($post->post_type === "seminario") {
+        return flacso_theme_get_seminar_context($offer_id);
+    }
+
+    if ($post->post_type !== "oferta-academica") {
+        return [];
+    }
+
+    $data = class_exists("FLACSO_Academic_Catalog")
+        ? FLACSO_Academic_Catalog::get_offer($offer_id)
+        : (class_exists("FLACSO_Academic_Repository") ? FLACSO_Academic_Repository::to_array("ofertas", $offer_id) : []);
+
+    if (empty($data)) {
+        return [];
+    }
+
+    $type = (string) ($data["tipo"] ?? flacso_theme_get_offer_type($offer_id));
+    $cohorts = $data["cohortes"] ?? [];
+    $current_cohort = $data["cohorte_vigente"] ?? (!empty($cohorts) ? $cohorts[0] : null);
+
+    $table_id = !empty($current_cohort["tabla_precio_id"]) ? absint($current_cohort["tabla_precio_id"]) : 0;
+    $price_table = flacso_theme_get_price_table_data($table_id);
+
+    $raw_anio_inicio = absint($current_cohort["anio_inicio"] ?? 0);
+    $raw_anio_fin = absint($current_cohort["anio_fin"] ?? 0);
+    $raw_fecha_inicio = (string) ($current_cohort["fecha_inicio"] ?? "");
+    $raw_fecha_fin = (string) ($current_cohort["fecha_fin"] ?? "");
+    if ($raw_anio_inicio === 0 && $raw_fecha_inicio !== "") {
+        $raw_anio_inicio = (int) substr($raw_fecha_inicio, 0, 4);
+    }
+    if ($raw_anio_fin === 0 && $raw_fecha_fin !== "") {
+        $raw_anio_fin = (int) substr($raw_fecha_fin, 0, 4);
+    }
 
     $instance = [
-        'id'                     => $instance_id,
-        'label'                  => $is_seminar ? __('Edición', 'flacso-uruguay') : __('Cohorte', 'flacso-uruguay'),
-        'fecha_inicio'           => '',
-        'fecha_fin'              => '',
-        'precision_fecha_inicio' => '',
-        'estado'                 => 'planificada',
-        'modalidad'              => '',
-        'es_asincronico'         => false,
-        'docentes_ids'           => [],
-        'encuentros'             => [],
-        'valor_uyu'              => null,
-        'valor_usd'              => null,
-        'valor_uyu_15_descuento' => null,
-        'valor_usd_15_descuento' => null,
+        "id"                     => absint($current_cohort["id"] ?? 0),
+        "label"                  => (string) ($current_cohort["nombre"] ?? __("Cohorte", "flacso-uruguay")),
+        "numero"                 => absint($current_cohort["numero"] ?? 0),
+        "numero_romano"          => (string) ($current_cohort["numero_romano"] ?? ""),
+        "fecha_inicio"           => $raw_fecha_inicio,
+        "fecha_fin"              => $raw_fecha_fin,
+        "anio_inicio"            => $raw_anio_inicio,
+        "anio_fin"               => $raw_anio_fin,
+        "precision_fecha_inicio" => (string) ($current_cohort["precision_fecha_inicio"] ?? "dia"),
+        "estado"                 => (string) ($current_cohort["estado"] ?? "planificada"),
+        "calendario_academico"   => (string) ($current_cohort["calendario_academico"] ?? ""),
+        "calendario_descripcion" => (string) ($current_cohort["calendario_descripcion"] ?? ""),
+        "tabla_precio_id"        => $table_id,
+        "tabla_precio"           => $price_table,
+        "valor_uyu"              => $price_table["valor_uyu"] ?? null,
+        "valor_usd"              => $price_table["valor_usd"] ?? null,
+        "valor_uyu_15_descuento" => $price_table["valor_uyu_15_descuento"] ?? null,
+        "valor_usd_15_descuento" => $price_table["valor_usd_15_descuento"] ?? null,
+        "modalidad"              => (string) ($current_cohort["modalidad"] ?? ""),
+        "modalidad_descripcion"  => (string) ($current_cohort["modalidad_descripcion"] ?? ""),
+        "docentes_ids"           => [],
+        "encuentros"             => [],
+    ];
+    $instance["fechas_formateadas"] = flacso_theme_format_cohort_dates($instance);
+
+    $instance["has_valor_general"] = $instance["valor_uyu"] !== null || $instance["valor_usd"] !== null;
+    $instance["has_valor_descuento"] = $instance["valor_uyu_15_descuento"] !== null || $instance["valor_usd_15_descuento"] !== null;
+    $instance["has_inversion"] = $instance["has_valor_general"] || $instance["has_valor_descuento"];
+
+    $registration_data = $current_cohort["preinscripcion"] ?? [];
+    $link_preinscripcion = (string) ($current_cohort["link_preinscripcion"] ?? ($registration_data["url"] ?? ""));
+    $is_registration_open = !empty($registration_data["abierta"]) && $link_preinscripcion !== "";
+
+    $registration = [
+        "is_open"        => $is_registration_open,
+        "url"            => $link_preinscripcion,
+        "desde"          => $registration_data["desde"] ?? null,
+        "hasta"          => $registration_data["hasta"] ?? null,
+        "instance_id"    => $instance["id"],
+        "open_message"   => (string) ($current_cohort["mensaje_preinscripcion_abierta"] ?? ""),
+        "closed_message" => (string) ($current_cohort["mensaje_preinscripcion_cerrada"] ?? ""),
     ];
 
-    if ($instance_id > 0) {
-        $instance['label'] = class_exists('FLACSO_Instancia_Oferta')
-            ? FLACSO_Instancia_Oferta::get_nombre_visible($instance_id)
-            : (string) get_the_title($instance_id);
-        foreach (['fecha_inicio', 'fecha_fin', 'precision_fecha_inicio', 'modalidad'] as $field) {
-            $instance[$field] = (string) get_post_meta($instance_id, flacso_theme_instance_meta_key($field), true);
+    $documentos_raw = $data["documentos"] ?? get_post_meta($offer_id, "documentos", true);
+    $documentos = !empty($documentos_raw) && is_string($documentos_raw) ? json_decode($documentos_raw, true) : (is_array($documentos_raw) ? $documentos_raw : []);
+
+    $cartamalla_pdf = !empty($documentos['cartamalla']['link']) ? trim((string) $documentos['cartamalla']['link']) : (string) get_post_meta($offer_id, "cartamalla_pdf_url", true);
+    $malla_pdf = !empty($documentos['malla']['link']) ? trim((string) $documentos['malla']['link']) : (!empty($data['malla_curricular']) ? trim((string) $data['malla_curricular']) : (string) get_post_meta($offer_id, "malla_pdf_url", true));
+    $calendario_pdf = trim((string) $instance["calendario_academico"]);
+
+    $academic = [
+        "presentacion"                => (string) ($data["presentacion"] ?? get_post_meta($offer_id, "presentacion", true)),
+        "descripcion_html"            => (string) ($data["presentacion"] ?? get_post_meta($offer_id, "presentacion", true)),
+        "resumen"                     => (string) ($data["resumen"] ?? get_post_meta($offer_id, "resumen", true)),
+        "modalidad_html"              => (string) $instance["modalidad_descripcion"],
+        "duracion_html"               => (string) ($data["duracion_html"] ?? get_post_meta($offer_id, "duracion_html", true)),
+        "duracion_meses"              => (string) ($data["duracion_meses"] ?? ""),
+        "perfil_ingreso_html"         => (string) ($data["perfil_ingreso_html"] ?? get_post_meta($offer_id, "perfil_ingreso_html", true)),
+        "requisitos_ingreso_html"     => (string) ($data["requisitos_ingreso_html"] ?? get_post_meta($offer_id, "requisitos_ingreso_html", true)),
+        "perfil_egreso_html"          => (string) ($data["perfil_egreso_html"] ?? get_post_meta($offer_id, "perfil_egreso_html", true)),
+        "titulos_certificaciones_html"=> (string) ($data["titulos_certificaciones_html"] ?? get_post_meta($offer_id, "titulos_certificaciones_html", true)),
+        "requisitos_egreso_html"      => (string) ($data["requisitos_egreso_html"] ?? get_post_meta($offer_id, "requisitos_egreso_html", true)),
+        "financiacion_html"           => (string) ($data["financiacion_html"] ?? get_post_meta($offer_id, "financiacion_html", true)),
+        "objetivo_general"            => (string) ($data["objetivo_general"] ?? get_post_meta($offer_id, "objetivo_general", true)),
+        "objetivos_html"              => (string) ($data["objetivos_html"] ?? get_post_meta($offer_id, "objetivos_html", true)),
+        "objetivos_especificos"       => is_array($data["objetivos_especificos"] ?? null) ? $data["objetivos_especificos"] : [],
+        "composicion_academica"       => is_array($data["composicion_academica"] ?? null) ? $data["composicion_academica"] : [],
+        "forma_aprobacion"            => (string) ($data["forma_aprobacion"] ?? ""),
+        "carga_horaria"               => $data["carga_horaria"] ?? "",
+        "carga_horaria_descripcion"   => (string) ($data["carga_horaria_descripcion"] ?? ""),
+        "creditos"                    => $data["creditos"] ?? "",
+        "acreditacion"                => (string) ($data["acreditacion"] ?? ""),
+        "correo"                      => (string) ($data["correo"] ?? get_post_meta($offer_id, "correo", true)),
+        "abreviacion"                 => (string) ($data["abreviacion"] ?? get_post_meta($offer_id, "abreviacion", true)),
+        "documentos"                  => $documentos_raw,
+        "cartamalla_pdf_url"          => $cartamalla_pdf,
+        "malla_pdf_url"               => $malla_pdf,
+        "calendario_pdf_url"          => $calendario_pdf,
+        "equipos"                     => $data["equipos"] ?? get_post_meta($offer_id, "equipos", true),
+        "coordinacion_academica"      => [],
+        "carta_hero_etiqueta"         => (string) ($current_cohort["etiqueta_preinscripcion"] ?? ""),
+        "carta_instancias_presenciales"=> !empty($current_cohort["instancias_presenciales"]),
+    ];
+
+    $program_id = absint($data["programa_academico_id"] ?? 0);
+    $program_coordination = [];
+    if ($program_id > 0) {
+        $coordination_meta = get_post_meta($program_id, "coordinacion", true);
+        if (is_array($coordination_meta)) {
+            $program_coordination = $coordination_meta;
         }
-        $instance['estado'] = class_exists('FLACSO_Instancia_Oferta')
-            ? FLACSO_Instancia_Oferta::get_state($instance_id)
-            : (string) get_post_meta($instance_id, flacso_theme_instance_meta_key('estado'), true);
-        $instance['es_asincronico'] = (bool) get_post_meta($instance_id, flacso_theme_instance_meta_key('es_asincronico'), true);
-        $instance['docentes_ids'] = array_map('absint', flacso_theme_meta_array($instance_id, flacso_theme_instance_meta_key('docentes')));
-        $instance['encuentros'] = flacso_theme_meta_array($instance_id, flacso_theme_instance_meta_key('encuentros'));
-        $canonical_instance = class_exists('FLACSO_Offer_Instance_Repository')
-            ? FLACSO_Offer_Instance_Repository::find($instance_id)
-            : null;
-        $has_canonical_price_table = is_array($canonical_instance['priceTable'] ?? null);
-        $amounts = is_array($canonical_instance['priceTable']['amounts'] ?? null)
-            ? $canonical_instance['priceTable']['amounts']
-            : [];
-        $instance['tabla_precio_id'] = absint($canonical_instance['priceTableId'] ?? 0);
-        $instance['tabla_precio'] = $canonical_instance['priceTable'] ?? null;
-        $instance['valor_uyu'] = $has_canonical_price_table ? ($amounts['uyu'] ?? null) : flacso_theme_nullable_number(get_post_meta($instance_id, flacso_theme_instance_meta_key('valor_uyu'), true));
-        $instance['valor_usd'] = $has_canonical_price_table ? ($amounts['usd'] ?? null) : flacso_theme_nullable_number(get_post_meta($instance_id, flacso_theme_instance_meta_key('valor_usd'), true));
-        $instance['valor_uyu_15_descuento'] = $has_canonical_price_table ? ($amounts['uyuDiscount'] ?? null) : flacso_theme_nullable_number(get_post_meta($instance_id, flacso_theme_instance_meta_key('valor_uyu_descuento'), true));
-        $instance['valor_usd_15_descuento'] = $has_canonical_price_table ? ($amounts['usdDiscount'] ?? null) : flacso_theme_nullable_number(get_post_meta($instance_id, flacso_theme_instance_meta_key('valor_usd_descuento'), true));
-    } else {
-        $legacy = [
-            'fecha_inicio'           => $is_seminar ? '_seminario_periodo_inicio' : 'proximo_inicio',
-            'fecha_fin'              => $is_seminar ? '_seminario_periodo_fin' : 'fecha_fin',
-            'precision_fecha_inicio' => 'proximo_inicio_precision',
-            'modalidad'              => $is_seminar ? '_seminario_modalidad' : 'modalidad',
-        ];
-        foreach ($legacy as $field => $key) {
-            $instance[$field] = (string) get_post_meta($offer_id, $key, true);
-        }
-        $instance['label'] = (string) get_post_meta($offer_id, 'cohorte', true) ?: $instance['label'];
-        $instance['es_asincronico'] = (bool) get_post_meta($offer_id, '_seminario_es_asincronico', true);
-        $instance['docentes_ids'] = array_map('absint', flacso_theme_meta_array($offer_id, '_seminario_docentes'));
-        $instance['encuentros'] = flacso_theme_meta_array($offer_id, '_seminario_encuentros_sincronicos');
-        $instance['valor_uyu'] = flacso_theme_nullable_number(get_post_meta($offer_id, '_seminario_valor_uyu', true));
-        $instance['valor_usd'] = flacso_theme_nullable_number(get_post_meta($offer_id, '_seminario_valor_usd', true));
-        $instance['valor_uyu_15_descuento'] = flacso_theme_nullable_number(get_post_meta($offer_id, '_seminario_valor_uyu_15_descuento', true));
-        $instance['valor_usd_15_descuento'] = flacso_theme_nullable_number(get_post_meta($offer_id, '_seminario_valor_usd_15_descuento', true));
     }
 
-    $components = flacso_theme_get_integrated_components($offer_id);
-    $is_integrated = !empty($components) || (bool) get_post_meta($offer_id, '_seminario_es_integrado', true);
-    $parent = !$is_integrated ? flacso_theme_get_integrated_parent($offer_id) : null;
-
-    if ($is_integrated && !empty($components)) {
-        $starts = $ends = $teachers = $meetings = [];
-        $hours = $credits = 0;
-        foreach ($components as $component) {
-            $child = flacso_theme_get_offer_context((int) $component->ID);
-            if (!empty($child['instance']['fecha_inicio'])) {
-                $starts[] = $child['instance']['fecha_inicio'];
-            }
-            if (!empty($child['instance']['fecha_fin'])) {
-                $ends[] = $child['instance']['fecha_fin'];
-            }
-            $hours += (float) ($child['academic']['carga_horaria'] ?? 0);
-            $credits += (float) ($child['academic']['creditos'] ?? 0);
-            $teachers = array_merge($teachers, $child['instance']['docentes_ids'] ?? []);
-            $meetings = array_merge($meetings, $child['instance']['encuentros'] ?? []);
-        }
-        sort($starts);
-        rsort($ends);
-        $instance['fecha_inicio'] = $instance['fecha_inicio'] ?: ($starts[0] ?? '');
-        $instance['fecha_fin'] = $instance['fecha_fin'] ?: ($ends[0] ?? '');
-        $academic['carga_horaria'] = $academic['carga_horaria'] ?: ($hours ?: '');
-        $academic['creditos'] = $academic['creditos'] ?: ($credits ?: '');
-        $instance['docentes_ids'] = $instance['docentes_ids'] ?: array_values(array_unique(array_map('absint', $teachers)));
-        $instance['encuentros'] = $instance['encuentros'] ?: $meetings;
-    }
-
-    $instance['docentes_posts'] = empty($instance['docentes_ids']) ? [] : get_posts([
-        'post_type'      => 'docente',
-        'post_status'    => 'publish',
-        'post__in'       => $instance['docentes_ids'],
-        'posts_per_page' => -1,
-        'orderby'        => 'post__in',
-    ]);
-    $instance['has_valor_general'] = $instance['valor_uyu'] !== null || $instance['valor_usd'] !== null;
-    $instance['has_valor_descuento'] = $instance['valor_uyu_15_descuento'] !== null || $instance['valor_usd_15_descuento'] !== null;
-    $instance['has_inversion'] = $instance['has_valor_general'] || $instance['has_valor_descuento'];
+    $raw_seminars = is_array($data["seminarios"] ?? null) ? $data["seminarios"] : [];
 
     return [
-        'offer_id'      => $offer_id,
-        'instance_id'   => $instance_id,
-        'type'          => $type,
-        'type_label'    => flacso_theme_get_offer_type_label($offer_id, $type),
-        'is_seminar'    => $is_seminar,
-        'is_integrated' => $is_integrated,
-        'title'         => get_the_title($offer_id),
-        'slug'          => (string) $post->post_name,
-        'permalink'     => get_permalink($offer_id),
-        'thumbnail_id'  => (int) get_post_thumbnail_id($offer_id),
-        'thumbnail_url' => (string) get_the_post_thumbnail_url($offer_id, 'full'),
-        'academic'      => $academic,
-        'instance'      => $instance,
-        'registration'  => $registration,
-        'relations'     => [
-            'is_integrated'         => $is_integrated,
-            'integrated_parent'     => $parent ? [
-                'id'    => (int) $parent->ID,
-                'title' => get_the_title($parent),
-                'url'   => get_permalink($parent),
-            ] : null,
-            'integrated_components' => $components,
-            'related_programs'      => flacso_theme_get_related_programs($offer_id),
+        "offer_id"       => $offer_id,
+        "instance_id"    => $instance["id"],
+        "type"           => $type,
+        "type_label"     => flacso_theme_get_offer_type_label($offer_id, $type),
+        "is_seminar"     => false,
+        "is_integrated"  => false,
+        "title"          => (string) ($data["nombre"] ?? get_the_title($offer_id)),
+        "slug"           => (string) ($data["slug"] ?? $post->post_name),
+        "permalink"      => get_permalink($offer_id),
+        "thumbnail_id"   => (int) get_post_thumbnail_id($offer_id),
+        "thumbnail_url"  => (string) ($data["imagen"] ?? get_the_post_thumbnail_url($offer_id, "full")),
+        "academic"       => $academic,
+        "instance"       => $instance,
+        "registration"   => $registration,
+        "program"        => [
+            "id"           => $program_id,
+            "coordinacion" => $program_coordination,
+        ],
+        "relations"      => [
+            "is_integrated"         => false,
+            "integrated_parent"     => null,
+            "integrated_components" => [],
+            "seminarios"            => $raw_seminars,
+            "related_programs"      => [],
         ],
     ];
 }
 
-function flacso_theme_get_seminar_context(int $post_id): array {
-    return flacso_theme_is_seminar($post_id) ? flacso_theme_get_offer_context($post_id) : [];
-}
-
-function flacso_theme_get_seminars_catalog(array $args = []): array {
-    $status = !empty($args['post_status']) ? $args['post_status'] : 'publish';
-    $posts = get_posts([
-        'post_type'      => 'oferta-academica',
-        'post_status'    => $status,
-        'posts_per_page' => -1,
-        'tax_query'      => [[
-            'taxonomy' => 'tipo-oferta-academica',
-            'field'    => 'slug',
-            'terms'    => ['seminario'],
-        ]],
-    ]);
-    if (post_type_exists('seminario')) {
-        $posts = array_merge($posts, get_posts([
-            'post_type'      => 'seminario',
-            'post_status'    => $status,
-            'posts_per_page' => -1,
-        ]));
+/**
+ * Obtiene el View Model de un Seminario.
+ */
+function flacso_theme_get_seminar_context(int $seminar_id): array {
+    if ($seminar_id <= 0) {
+        return [];
     }
 
-    $catalog = $seen = [];
-    foreach ($posts as $post) {
-        $id = (int) $post->ID;
-        if ($id <= 0 || isset($seen[$id]) || !flacso_theme_is_seminar($id)) {
-            continue;
+    $post = get_post($seminar_id);
+    if (!$post || $post->post_type !== "seminario") {
+        return [];
+    }
+
+    $data = class_exists("FLACSO_Academic_Catalog")
+        ? FLACSO_Academic_Catalog::get_seminar($seminar_id)
+        : (class_exists("FLACSO_Academic_Repository") ? FLACSO_Academic_Repository::to_array("seminarios", $seminar_id) : []);
+
+    if (empty($data)) {
+        return [];
+    }
+
+    $editions = $data["ediciones"] ?? [];
+    $current_edition = $data["edicion_vigente"] ?? (!empty($editions) ? $editions[0] : null);
+
+    $table_id = !empty($current_edition["tabla_precio_id"]) ? absint($current_edition["tabla_precio_id"]) : 0;
+    $price_table = flacso_theme_get_price_table_data($table_id);
+
+    $docentes_ids = !empty($current_edition["docentes"]) && is_array($current_edition["docentes"])
+        ? array_map("absint", $current_edition["docentes"])
+        : array_map("absint", is_array($data["docentes_base"] ?? null) ? $data["docentes_base"] : []);
+
+    $instance = [
+        "id"                     => absint($current_edition["id"] ?? 0),
+        "label"                  => (string) ($current_edition["nombre"] ?? __("Edición", "flacso-uruguay")),
+        "anio"                   => absint($current_edition["anio"] ?? 0),
+        "fecha_inicio"           => (string) ($current_edition["fecha_inicio"] ?? ""),
+        "fecha_fin"              => (string) ($current_edition["fecha_fin"] ?? ""),
+        "precision_fecha_inicio" => "dia",
+        "estado"                 => (string) ($current_edition["estado"] ?? "planificada"),
+        "modalidad"              => (string) ($current_edition["modalidad"] ?? ""),
+        "encuentros"             => is_array($current_edition["encuentros_sincronicos"] ?? null) ? $current_edition["encuentros_sincronicos"] : [],
+        "es_asincronico"         => !empty($current_edition["es_asincronica"]) || empty($current_edition["encuentros_sincronicos"]),
+        "docentes_ids"           => array_values(array_unique(array_filter($docentes_ids))),
+        "tabla_precio_id"        => $table_id,
+        "tabla_precio"           => $price_table,
+        "valor_uyu"              => $price_table["valor_uyu"] ?? null,
+        "valor_usd"              => $price_table["valor_usd"] ?? null,
+        "valor_uyu_15_descuento" => $price_table["valor_uyu_15_descuento"] ?? null,
+        "valor_usd_15_descuento" => $price_table["valor_usd_15_descuento"] ?? null,
+    ];
+
+    $instance["docentes_posts"] = empty($instance["docentes_ids"]) ? [] : get_posts([
+        "post_type"      => "docente",
+        "post_status"    => "publish",
+        "post__in"       => $instance["docentes_ids"],
+        "posts_per_page" => -1,
+        "orderby"        => "post__in",
+    ]);
+
+    $instance["has_valor_general"] = $instance["valor_uyu"] !== null || $instance["valor_usd"] !== null;
+    $instance["has_valor_descuento"] = $instance["valor_uyu_15_descuento"] !== null || $instance["valor_usd_15_descuento"] !== null;
+    $instance["has_inversion"] = $instance["has_valor_general"] || $instance["has_valor_descuento"];
+
+    $registration_data = $current_edition["preinscripcion"] ?? [];
+    $link_preinscripcion = (string) ($current_edition["link_preinscripcion"] ?? ($registration_data["url"] ?? ""));
+    $is_registration_open = !empty($registration_data["abierta"]) && $link_preinscripcion !== "";
+
+    $registration = [
+        "is_open"        => $is_registration_open,
+        "url"            => $link_preinscripcion,
+        "desde"          => $registration_data["desde"] ?? null,
+        "hasta"          => $registration_data["hasta"] ?? null,
+        "instance_id"    => $instance["id"],
+        "open_message"   => (string) ($current_edition["mensaje_preinscripcion_abierta"] ?? ""),
+        "closed_message" => (string) ($current_edition["mensaje_preinscripcion_cerrada"] ?? ""),
+    ];
+
+    $academic = [
+        "presentacion"              => (string) ($data["presentacion"] ?? ""),
+        "objetivo_general"          => (string) ($data["objetivo_general"] ?? ""),
+        "objetivos_especificos"     => is_array($data["objetivos_especificos"] ?? null) ? $data["objetivos_especificos"] : [],
+        "composicion_academica"     => is_array($data["composicion_academica"] ?? null) ? $data["composicion_academica"] : [],
+        "unidades_academicas"       => is_array($data["composicion_academica"] ?? null) ? $data["composicion_academica"] : [],
+        "forma_aprobacion"          => (string) ($data["forma_aprobacion"] ?? ""),
+        "carga_horaria"             => $data["carga_horaria"] ?? "",
+        "carga_horaria_descripcion" => (string) ($data["carga_horaria_descripcion"] ?? ""),
+        "creditos"                  => $data["creditos"] ?? "",
+        "acreditacion"              => (string) ($data["acreditacion"] ?? ""),
+        "acredita_maestria"         => !empty($data["acredita_maestria"]),
+        "acredita_doctorado"        => !empty($data["acredita_doctorado"]),
+        "docentes_base"             => is_array($data["docentes_base"] ?? null) ? array_map("absint", $data["docentes_base"]) : [],
+        "correo"                    => (string) ($data["correo"] ?? ""),
+    ];
+
+    // Componentes del seminario (si es integrado)
+    $raw_components = is_array($data["componentes"] ?? null) ? $data["componentes"] : [];
+    $component_ids = array_values(array_filter(array_map(static function ($item): int {
+        return is_array($item) ? absint($item["seminario_id"] ?? 0) : 0;
+    }, $raw_components)));
+
+    $components_posts = empty($component_ids) ? [] : get_posts([
+        "post_type"      => "seminario",
+        "post_status"    => "publish",
+        "post__in"       => $component_ids,
+        "posts_per_page" => -1,
+        "orderby"        => "post__in",
+    ]);
+
+    $is_integrated = !empty($components_posts);
+
+    // Si es un componente hijo de otro seminario integrado, encontrar al padre
+    $parent = null;
+    if (!$is_integrated) {
+        $parent_candidates = get_posts([
+            "post_type"      => "seminario",
+            "post_status"    => "publish",
+            "posts_per_page" => -1,
+            "post__not_in"   => [$seminar_id],
+        ]);
+        foreach ($parent_candidates as $candidate) {
+            $candidate_components = get_post_meta($candidate->ID, "componentes", true);
+            if (is_array($candidate_components)) {
+                foreach ($candidate_components as $comp) {
+                    if (absint($comp["seminario_id"] ?? 0) === $seminar_id) {
+                        $parent = $candidate;
+                        break 2;
+                    }
+                }
+            }
         }
-        $seen[$id] = true;
-        $context = flacso_theme_get_offer_context($id);
+    }
+
+    // Programas academicos que integran este seminario en su plan
+    $related_programs = [];
+    $offers = get_posts([
+        "post_type"      => "oferta-academica",
+        "post_status"    => "publish",
+        "posts_per_page" => -1,
+    ]);
+    foreach ($offers as $offer) {
+        $offer_seminars = get_post_meta($offer->ID, "seminarios", true);
+        if (is_array($offer_seminars)) {
+            foreach ($offer_seminars as $item) {
+                if (absint($item["seminario_id"] ?? 0) === $seminar_id) {
+                    $related_programs[] = [
+                        "id"    => (int) $offer->ID,
+                        "title" => get_the_title($offer),
+                        "slug"  => (string) $offer->post_name,
+                        "url"   => get_permalink($offer),
+                    ];
+                    break;
+                }
+            }
+        }
+    }
+    $oferta_id = absint($data["oferta_academica_id"] ?? get_post_meta($seminar_id, "oferta_academica_id", true));
+    if ($oferta_id > 0) {
+        $offer_post = get_post($oferta_id);
+        if ($offer_post && $offer_post->post_type === "oferta-academica") {
+            $related_programs[] = [
+                "id"    => (int) $offer_post->ID,
+                "title" => get_the_title($offer_post),
+                "slug"  => (string) $offer_post->post_name,
+                "url"   => get_permalink($offer_post),
+            ];
+        }
+    }
+
+    return [
+        "offer_id"       => $seminar_id,
+        "instance_id"    => $instance["id"],
+        "type"           => "seminario",
+        "type_label"     => __("Seminario", "flacso-uruguay"),
+        "is_seminar"     => true,
+        "is_integrated"  => $is_integrated,
+        "title"          => (string) ($data["nombre"] ?? get_the_title($seminar_id)),
+        "slug"           => (string) ($data["slug"] ?? $post->post_name),
+        "permalink"      => get_permalink($seminar_id),
+        "thumbnail_id"   => (int) get_post_thumbnail_id($seminar_id),
+        "thumbnail_url"  => (string) ($data["imagen"] ?? get_the_post_thumbnail_url($seminar_id, "full")),
+        "academic"       => $academic,
+        "academic"       => array_merge($academic, ["oferta_academica_id" => $oferta_id]),
+        "instance"       => $instance,
+        "registration"   => $registration,
+        "program"        => [
+            "id" => absint($data["programa_academico_id"] ?? 0),
+        ],
+        "relations"      => [
+            "is_integrated"         => $is_integrated,
+            "integrated_parent"     => $parent ? [
+                "id"    => (int) $parent->ID,
+                "title" => get_the_title($parent),
+                "url"   => get_permalink($parent),
+            ] : null,
+            "integrated_components" => $components_posts,
+            "componentes"           => $raw_components,
+            "related_programs"      => $related_programs,
+        ],
+    ];
+}
+
+/**
+ * Catalogo publico de seminarios ordenados por fecha de inicio de su edicion vigente.
+ */
+function flacso_theme_get_seminars_catalog(array $args = []): array {
+    $status = !empty($args["post_status"]) ? $args["post_status"] : "publish";
+    $posts = get_posts([
+        "post_type"      => "seminario",
+        "post_status"    => $status,
+        "posts_per_page" => -1,
+    ]);
+
+    $catalog = [];
+    foreach ($posts as $post) {
+        $context = flacso_theme_get_seminar_context((int) $post->ID);
         if (!empty($context)) {
             $catalog[] = $context;
         }
     }
+
     usort($catalog, static function (array $a, array $b): int {
-        $date_a = (string) ($a['instance']['fecha_inicio'] ?? '');
-        $date_b = (string) ($b['instance']['fecha_inicio'] ?? '');
+        $date_a = (string) ($a["instance"]["fecha_inicio"] ?? "");
+        $date_b = (string) ($b["instance"]["fecha_inicio"] ?? "");
         if ($date_a === $date_b) {
-            return strcasecmp((string) $a['title'], (string) $b['title']);
+            return strcasecmp((string) $a["title"], (string) $b["title"]);
         }
-        if ($date_a === '') {
+        if ($date_a === "") {
             return 1;
         }
-        if ($date_b === '') {
+        if ($date_b === "") {
             return -1;
         }
         return strcmp($date_a, $date_b);
     });
+
     return $catalog;
 }
 
-function flacso_theme_get_program_seminars_catalog(int $program_id): array {
+/**
+ * Catalogo de seminarios vinculados a una Oferta Academica.
+ * Catalogo de seminarios vinculados a una Oferta Academica (desacoplado; ya no se vincula desde la oferta).
+ */
+function flacso_theme_get_program_seminars_catalog(int $offer_id): array {
+    if ($offer_id <= 0) {
+        return [];
+    }
+
+    $raw_seminars = get_post_meta($offer_id, "seminarios", true);
+    if (!is_array($raw_seminars)) {
+        return [];
+    }
+
     $catalog = [];
     $seen = [];
-    foreach (flacso_theme_get_offer_relations($program_id, 'integra') as $relation) {
-        $id = absint($relation['oferta_destino'] ?? 0);
-        $parent = flacso_theme_get_integrated_parent($id);
-        if ($parent) {
-            $id = (int) $parent->ID;
-        }
-        if ($id <= 0 || isset($seen[$id])) {
+    foreach ($raw_seminars as $item) {
+        $seminar_id = is_array($item) ? absint($item["seminario_id"] ?? 0) : absint($item);
+        if ($seminar_id <= 0 || isset($seen[$seminar_id])) {
             continue;
         }
-        $seen[$id] = true;
-        $context = flacso_theme_get_seminar_context($id);
+        $seen[$seminar_id] = true;
+        $context = flacso_theme_get_seminar_context($seminar_id);
         if (!empty($context)) {
             $catalog[] = $context;
         }
     }
+
     return $catalog;
+    return [];
 }
 
+/**
+ * Formatea las fechas o período de una cohorte según su precisión y estado.
+ */
+function flacso_theme_format_cohort_dates(array $instance): string {
+    $precision = (string) ($instance['precision_fecha_inicio'] ?? 'dia');
+    $fecha_inicio = (string) ($instance['fecha_inicio'] ?? '');
+    $fecha_fin = (string) ($instance['fecha_fin'] ?? '');
+    $anio_inicio = absint($instance['anio_inicio'] ?? 0);
+    $anio_fin = absint($instance['anio_fin'] ?? 0);
+
+    $y_start = $anio_inicio > 0 ? $anio_inicio : ($fecha_inicio !== '' ? (int) date('Y', strtotime($fecha_inicio)) : 0);
+    $y_end = $anio_fin > 0 ? $anio_fin : ($fecha_fin !== '' ? (int) date('Y', strtotime($fecha_fin)) : 0);
+
+    if ($precision === 'anio' || ($fecha_inicio === '' && ($y_start > 0 || $y_end > 0))) {
+        if ($y_start > 0 && $y_end > 0 && $y_start !== $y_end) {
+            return $y_start . ' – ' . $y_end;
+        } elseif ($y_start > 0) {
+            return (string) $y_start;
+        } elseif ($y_end > 0) {
+            return (string) $y_end;
+        }
+        return '';
+    }
+
+    if ($precision === 'mes' && $fecha_inicio !== '') {
+        $ts_start = strtotime($fecha_inicio);
+        if ($ts_start) {
+            $mes_start = wp_date('F \d\e Y', $ts_start, wp_timezone());
+            if ($fecha_fin !== '') {
+                $ts_end = strtotime($fecha_fin);
+                if ($ts_end) {
+                    $mes_end = wp_date('F \d\e Y', $ts_end, wp_timezone());
+                    return $mes_start . ' – ' . $mes_end;
+                }
+            }
+            return $mes_start;
+        }
+    }
+
+    if ($fecha_inicio !== '') {
+        $ts_start = strtotime($fecha_inicio);
+        if ($ts_start) {
+            $formatted_start = wp_date('j \d\e F \d\e Y', $ts_start, wp_timezone());
+            if ($fecha_fin !== '') {
+                $ts_end = strtotime($fecha_fin);
+                if ($ts_end) {
+                    $formatted_end = wp_date('j \d\e F \d\e Y', $ts_end, wp_timezone());
+                    return $formatted_start . ' al ' . $formatted_end;
+                }
+            }
+            return $formatted_start;
+        }
+    }
+
+    return '';
+}
+
+/**
+ * Formatea una fecha en formato legible en español.
+ */
 function flacso_theme_format_date_es($date, bool $include_year = true): string {
     $timestamp = is_numeric($date) ? (int) $date : strtotime((string) $date);
     if (!$timestamp) {
         return (string) $date;
     }
-    $format = $include_year ? 'l j \\d\\e F \\d\\e Y' : 'l j \\d\\e F';
+    $format = $include_year ? 'j \d\e F \d\e Y' : 'j \d\e F';
     return wp_date($format, $timestamp, wp_timezone());
 }
 
+/**
+ * Formatea un monto numerico con separadores de miles y decimales.
+ */
 function flacso_theme_format_amount($amount): string {
     $amount = (float) $amount;
-    return number_format($amount, $amount === floor($amount) ? 0 : 2, ',', '.');
+    return number_format($amount, $amount === floor($amount) ? 0 : 2, ",", ".");
 }
 
+/**
+ * Renderiza la tarjeta de un docente.
+ */
 function flacso_theme_render_teacher_card($teacher): void {
     if (!$teacher || empty($teacher->ID)) {
         return;
     }
     $id = (int) $teacher->ID;
-    $name = get_the_title($teacher);
+    $name = function_exists('dp_nombre_completo') ? dp_nombre_completo($id) : get_the_title($teacher);
+    $nombre = trim((string) get_post_meta($id, "nombre", true));
+    $apellido = trim((string) get_post_meta($id, "apellido", true));
+    $prefijo = trim((string) get_post_meta($id, "prefijo_abrev", true));
+    $titulo_acad = trim((string) get_post_meta($id, "titulo_academico", true));
+    $cargo = trim((string) get_post_meta($id, "cargo", true));
+    $prefix_label = $titulo_acad ? $titulo_acad : ($cargo ?: $prefijo);
+
+    if ($prefijo && stripos($name, $prefijo) === false) {
+        $name = $prefijo . ' ' . $name;
+    }
+    if ($prefix_label !== '' && stripos($name, $prefix_label) !== false) {
+        $prefix_label = '';
+    }
+
+    $initials = '';
+    if ($nombre || $apellido) {
+        $initials = mb_substr($nombre, 0, 1) . mb_substr($apellido, 0, 1);
+    } elseif ($name) {
+        $initials = mb_substr($name, 0, 2);
+    }
+    $initials = strtoupper($initials ?: 'FL');
+    $colors = ['#1d3a72', '#0070ba', '#2c5282', '#1a365d', '#0f2942'];
+    $bg_color = $colors[abs(crc32($name ?: (string) $id)) % count($colors)];
     ?>
     <article class="seminario-teacher">
         <div class="seminario-teacher-avatar">
-            <?php echo get_the_post_thumbnail($id, 'medium', ['alt' => $name, 'loading' => 'lazy']); ?>
+            <?php if (has_post_thumbnail($id)) : ?>
+                <?php echo get_the_post_thumbnail($id, "medium", ["alt" => esc_attr($name), "loading" => "lazy"]); ?>
+            <?php else : ?>
+                <div class="seminario-teacher-placeholder" style="background:<?php echo esc_attr($bg_color); ?>;color:#fff;font-weight:800;">
+                    <?php echo esc_html($initials); ?>
+                </div>
+            <?php endif; ?>
         </div>
         <div>
             <h3 class="seminario-teacher-name"><?php echo esc_html($name); ?></h3>
-            <?php $cv = get_post_meta($id, 'cv', true); ?>
-            <?php if ($cv) : ?><div class="seminario-teacher-bio"><?php echo wp_kses_post($cv); ?></div><?php endif; ?>
+            <?php if ($prefix_label) : ?>
+                <p class="seminario-teacher-prefix"><?php echo esc_html($prefix_label); ?></p>
+            <?php endif; ?>
+            <?php $cv = get_post_meta($id, "cv", true); ?>
+            <?php if ($cv) : ?><div class="seminario-teacher-bio"><?php echo wp_kses_post(wpautop($cv)); ?></div><?php endif; ?>
         </div>
     </article>
     <?php
+}
+
+/**
+ * Formatea la duración en meses.
+ */
+function flacso_theme_format_duration_months($months_str): string {
+    $raw_value = trim(str_replace(',', '.', (string) $months_str));
+    if ($raw_value === '' || !is_numeric($raw_value)) {
+        return '';
+    }
+    $value = (float) $raw_value;
+    $integer = (int) floor($value);
+    $fraction = round($value - $integer, 2);
+    if (abs($fraction - 0.5) < 0.001) {
+        if ($integer > 0) {
+            return sprintf('%1$d %2$s y medio', $integer, 1 === $integer ? __('mes', 'flacso-uruguay') : __('meses', 'flacso-uruguay'));
+        }
+        return __('Medio mes', 'flacso-uruguay');
+    }
+    $display_value = abs($value - round($value)) < 0.001 ? (string) ((int) round($value)) : rtrim(rtrim(number_format($value, 2, '.', ''), '0'), '.');
+    return sprintf('%1$s %2$s', $display_value, (abs($value - 1.0) < 0.001) ? __('mes', 'flacso-uruguay') : __('meses', 'flacso-uruguay'));
+}
+
+/**
+ * Normaliza el HTML de duración.
+ */
+function flacso_theme_normalize_duration_html($html, $months_str = ''): string {
+    $html = trim((string) $html);
+    $formatted_months = flacso_theme_format_duration_months($months_str);
+    if ($html === '') {
+        return $formatted_months !== '' ? '<p>' . esc_html($formatted_months) . '</p>' : '';
+    }
+    $text = html_entity_decode(wp_strip_all_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $text = trim((string) preg_replace('/\s+/u', ' ', $text));
+    if ($text === '') {
+        return $formatted_months !== '' ? '<p>' . esc_html($formatted_months) . '</p>' : '';
+    }
+    if (preg_match('/^(\d+(?:[.,]\d+)?)\s*mes(?:es)?$/iu', $text, $matches) || preg_match('/^(\d+(?:[.,]\d+)?)$/u', $text, $matches)) {
+        $formatted_text = flacso_theme_format_duration_months((string) $matches[1]);
+        if ($formatted_text !== '') {
+            return '<p>' . esc_html($formatted_text) . '</p>';
+        }
+    }
+    return $html;
 }

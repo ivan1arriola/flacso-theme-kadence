@@ -22,13 +22,12 @@ El slug del tema es `kadence-child-flacso` y su archivo principal de metadatos e
 
 ## Dominio académico
 
-El tema es compatible con el modelo unificado del plugin: los seminarios son
-`OfertaAcademica` y sus ediciones son `InstanciaOferta`. Durante Release A
-también puede leer posts `seminario` todavía no migrados. Todas las plantillas
-consumen el adaptador de sólo lectura `inc/academic-public-model.php`.
-
-El CTA y el destino de preinscripción siempre se delegan al plugin. Ver
-[`docs/academic-model-compatibility.md`](docs/academic-model-compatibility.md).
+El tema consume el modelo académico canónico del plugin (`FLACSO_Academic_Catalog` y `FLACSO_Academic_Repository`):
+- Las ofertas de posgrado son `OfertaAcademica` (`doctorado`, `maestria`, `especializacion`, `diplomado`, `diploma`) y sus ocurrencias temporales son `Cohorte`.
+- Los seminarios son `Seminario` y sus ocurrencias temporales son `EdicionSeminario`.
+- Los aranceles provienen de `TablaPrecio`.
+- Todas las plantillas consumen el adaptador de sólo lectura `inc/academic-public-model.php`.
+- Todo CTA de preinscripción apunta al portal externo centralizado. Ver [`docs/academic-model-compatibility.md`](docs/academic-model-compatibility.md).
 
 ## Versionado automático
 

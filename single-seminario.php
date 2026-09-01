@@ -1,8 +1,8 @@
 <?php
 /**
- * Template individual para el Custom Post Type 'seminario' (Compatibilidad Legacy).
+ * Template individual para el Custom Post Type Seminario.
  *
- * Reutiliza el View Model y el partial visual unificado 'template-parts/oferta/seminario.php'.
+ * Reutiliza el View Model y el partial visual unificado template-parts/oferta/seminario.php.
  *
  * @package kadence-child-flacso
  */

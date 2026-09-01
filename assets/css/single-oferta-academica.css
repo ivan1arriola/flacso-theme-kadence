@@ -1291,6 +1291,7 @@
     .flacso-oa-docentes-grid--nivel-3 {
         grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
     }
+
 }
 
 @media (max-width: 675.98px) {

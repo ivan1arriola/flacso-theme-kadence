@@ -97,16 +97,6 @@ function flacso_theme_get_open_graph_context() {
         return $context;
     }
 
-    $context = flacso_theme_get_virtual_preinscripcion_og_context();
-    if (!empty($context)) {
-        return $context;
-    }
-
-    $context = flacso_theme_get_virtual_seminario_preinscripcion_og_context();
-    if (!empty($context)) {
-        return $context;
-    }
-
     $context = flacso_theme_get_taxonomy_og_context();
     if (!empty($context)) {
         return $context;
@@ -119,72 +109,6 @@ function flacso_theme_get_open_graph_context() {
 
     $context = [];
     return $context;
-}
-
-function flacso_theme_get_virtual_preinscripcion_og_context() {
-    if (!get_query_var('es_preinscripcion') && !get_query_var('es_carta')) {
-        return [];
-    }
-
-    if (
-        !class_exists('FLACSO_Formulario_Preinscripcion_Final')
-        || !method_exists('FLACSO_Formulario_Preinscripcion_Final', 'get_instance')
-    ) {
-        return [];
-    }
-
-    $plugin = FLACSO_Formulario_Preinscripcion_Final::get_instance();
-    if (!$plugin || !method_exists($plugin, 'get_preinscripcion_template_context')) {
-        return [];
-    }
-
-    $info = $plugin->get_preinscripcion_template_context();
-    if (!is_array($info) || empty($info['titulo_posgrado'])) {
-        return [];
-    }
-
-    $is_carta = (bool) get_query_var('es_carta');
-    $title_prefix = $is_carta ? 'Carta de Presentacion - ' : 'Preinscripcion - ';
-    $description_prefix = $is_carta
-        ? 'Sube tu carta de presentacion para '
-        : 'Completa el formulario de preinscripcion para ';
-    $title = $title_prefix . trim((string) $info['titulo_posgrado']);
-
-    return [
-        'og_type' => 'website',
-        'title' => $title,
-        'description' => $description_prefix . trim((string) $info['titulo_posgrado']),
-        'url' => flacso_theme_get_current_request_url(),
-        'force_render' => true,
-    ] + flacso_theme_build_url_image_data(
-        isset($info['imagen_destacada']) ? (string) $info['imagen_destacada'] : '',
-        $title
-    );
-}
-
-function flacso_theme_get_virtual_seminario_preinscripcion_og_context() {
-    if (!get_query_var('flacso_preinscripcion')) {
-        return [];
-    }
-
-    $seminario_id = isset($_GET['ID']) ? absint(wp_unslash($_GET['ID'])) : get_queried_object_id();
-    if ($seminario_id <= 0 || !function_exists('flacso_theme_is_seminar') || !flacso_theme_is_seminar($seminario_id)) {
-        return [];
-    }
-
-    $title = 'Preinscripcion - ' . get_the_title($seminario_id);
-    $description = get_the_excerpt($seminario_id);
-    if ($description === '') {
-        $description = 'Completa el formulario de preinscripcion para ' . get_the_title($seminario_id);
-    }
-
-    return [
-        'og_type' => 'website',
-        'title' => $title,
-        'description' => $description,
-        'url' => flacso_theme_get_current_request_url(),
-        'force_render' => true,
-    ] + flacso_theme_get_attachment_og_image_data(get_post_thumbnail_id($seminario_id), $title);
 }
 
 function flacso_theme_get_taxonomy_og_context() {
@@ -211,21 +135,9 @@ function flacso_theme_get_taxonomy_og_context() {
     }
 
     $image_data = [];
-    if (class_exists('Oferta_Taxonomies') && method_exists('Oferta_Taxonomies', 'get_term_featured_image_data')) {
-        $raw_image_data = Oferta_Taxonomies::get_term_featured_image_data($term);
-        if (is_array($raw_image_data)) {
-            $image_id = isset($raw_image_data['id']) ? (int) $raw_image_data['id'] : 0;
-            if ($image_id > 0) {
-                $image_data = flacso_theme_get_attachment_og_image_data($image_id, $term->name);
-            } else {
-                $image_data = flacso_theme_build_url_image_data(
-                    (string) ($raw_image_data['large'] ?? $raw_image_data['url'] ?? ''),
-                    trim((string) ($raw_image_data['alt'] ?? '')) ?: $term->name,
-                    isset($raw_image_data['width']) ? (int) $raw_image_data['width'] : 0,
-                    isset($raw_image_data['height']) ? (int) $raw_image_data['height'] : 0
-                );
-            }
-        }
+    $term_image_id = (int) get_term_meta($term->term_id, 'thumbnail_id', true);
+    if ($term_image_id > 0) {
+        $image_data = flacso_theme_get_attachment_og_image_data($term_image_id, $term->name);
     }
 
     return [
@@ -314,6 +226,29 @@ function flacso_theme_build_url_image_data($image_url, $fallback_alt = '', $widt
 }
 
 function flacso_theme_build_post_description($post_id) {
+    $post_type = get_post_type($post_id);
+    if ($post_type === 'oferta-academica' && function_exists('flacso_theme_get_offer_context')) {
+        $context = flacso_theme_get_offer_context($post_id);
+        $resumen = trim((string) ($context['academic']['resumen'] ?? ''));
+        if ($resumen !== '') {
+            return $resumen;
+        }
+        $presentacion = trim((string) ($context['academic']['presentacion'] ?? ''));
+        if ($presentacion !== '') {
+            return wp_trim_words(wp_strip_all_tags($presentacion), 28, '...');
+        }
+    } elseif ($post_type === 'seminario' && function_exists('flacso_theme_get_seminar_context')) {
+        $context = flacso_theme_get_seminar_context($post_id);
+        $resumen = trim((string) ($context['academic']['resumen'] ?? ''));
+        if ($resumen !== '') {
+            return $resumen;
+        }
+        $presentacion = trim((string) ($context['academic']['presentacion'] ?? ''));
+        if ($presentacion !== '') {
+            return wp_trim_words(wp_strip_all_tags($presentacion), 28, '...');
+        }
+    }
+
     $description = trim((string) get_the_excerpt($post_id));
     if ($description !== '') {
         return $description;

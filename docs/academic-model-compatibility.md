@@ -1,42 +1,23 @@
-# Compatibilidad con el modelo académico unificado
+# Modelo Académico en el Tema Kadence Child (FLACSO v7)
 
-El tema consume el dominio académico del plugin mediante
-`inc/academic-public-model.php`. Esa capa es de sólo lectura: no registra tipos,
-no persiste relaciones y no decide si una instancia acepta preinscripciones.
+El tema consume el dominio académico del plugin exclusivamente mediante `inc/academic-public-model.php`. Esta capa es de sólo lectura y genera View Models unificados y estables para todas las plantillas.
 
-## Modelo público
+## Principios de Diseño y Contratos
 
-- Toda propuesta, incluido un seminario, se presenta como `OfertaAcademica`.
-- La cohorte o edición visible se obtiene de una `InstanciaOferta`.
-- La palabra «Edición» se usa para seminarios y «Cohorte» para los demás tipos.
-- El CTA se obtiene de `flacso_get_preinscription_cta()`; el tema no interpreta
-  fechas ni estados para decidir si una preinscripción está abierta.
-- Las relaciones `integra` y `compuesto_por` se leen mediante
-  `FLACSO_Relacion_Oferta_Academica`.
+1. **CPT `programa-academico`**: Agrupación institucional de posgrados. Aporta la coordinación académica (`coordinacion`: `[{docente_id, nombre, rol}]`).
+2. **CPT `oferta-academica`**: Propuestas de formación de posgrado (`doctorado`, `maestria`, `especializacion`, `diplomado`, `diploma`). *Seminario no es un tipo de oferta académica.*
+3. **CPT `cohorte`**: Ocurrencia temporal de una `oferta-academica`. Gestiona las fechas (`fecha_inicio`, `fecha_fin`), la denominación romana (`Cohorte {ROMANO}`), el calendario académico y el enlace a aranceles (`tabla_precio_id`).
+4. **CPT `seminario`**: Propuesta académica de seminario (`/formacion/seminarios/{slug}/`).
+5. **CPT `edicion-seminario`**: Ocurrencia temporal de un `seminario`. Gestiona las fechas, modalidad, encuentros sincrónicos (`encuentros_sincronicos`), docentes y aranceles (`tabla_precio_id`).
+6. **CPT `tabla-precio`**: Fuente de verdad de aranceles y opciones de financiación (`precios_filas`, `mostrar_precios_dolares`, `precios_nota`).
+7. **Preinscripción Externa**: Todos los botones de preinscripción apuntan directamente a la plataforma centralizada `https://preinscripciones.flacso.edu.uy`. No existen formularios locales ni procesadores internos en WordPress.
 
-## Release A
+## Fachada de Lectura en el Tema (`inc/academic-public-model.php`)
 
-Mientras el CPT `seminario` siga registrado, el adaptador combina en lectura:
-
-1. `oferta-academica` con término `seminario`;
-2. posts legacy `seminario` todavía no migrados.
-
-Las plantillas reciben el mismo View Model en ambos casos. El fallback legacy
-está encapsulado en el adaptador y se podrá retirar en Release B sin volver a
-modificar las vistas.
-
-## Superficies cubiertas
-
-- ficha individual de oferta y ficha legacy de seminario;
-- catálogo general de seminarios;
-- seminarios vinculados a una formación;
-- archivo de tipos de oferta;
-- selector del formulario de consultas;
-- formulario local de preinscripción legacy.
-
-Cuando una instancia usa `gestor_preinscripciones`, el formulario local deriva
-al URL resuelto por el plugin. El formulario WordPress queda reservado al flujo
-`legacy_editor` durante la transición.
+- `flacso_theme_get_offer_context(int $offer_id)`: Genera el View Model de una Oferta Académica a partir de `FLACSO_Academic_Catalog::get_offer()`.
+- `flacso_theme_get_seminar_context(int $seminar_id)`: Genera el View Model de un Seminario a partir de `FLACSO_Academic_Catalog::get_seminar()`.
+- `flacso_theme_get_seminars_catalog()`: Retorna el catálogo ordenado de seminarios activos.
+- `flacso_theme_get_program_seminars_catalog(int $offer_id)`: Retorna los seminarios vinculados a una oferta académica.
 
 ## Verificación
 
@@ -44,6 +25,4 @@ al URL resuelto por el plugin. El formulario WordPress queda reservado al flujo
 bash bin/check-theme.sh
 ```
 
-El comando valida sintaxis, ejecuta el test contractual del View Model y evita
-que las plantillas vuelvan a leer directamente claves temporales legacy o
-claves `_flacso_*` que no pertenecen al esquema actual.
+El script valida sintaxis, ejecuta la suite de pruebas automatizadas y audita que no existan llamadas a clases eliminadas ni metadatos legacy.

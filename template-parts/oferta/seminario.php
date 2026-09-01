@@ -2,7 +2,7 @@
 /**
  * Vista individual de un Seminario (simple o integrado).
  *
- * Utilizado tanto para el CPT legacy 'seminario' como para OfertaAcademica con tipo 'seminario'.
+ * Vista individual del Custom Post Type seminario y su edicion vigente.
  * Consume el View Model normalizado provisto en $args['context'].
  *
  * @package kadence-child-flacso
@@ -381,7 +381,7 @@ if (!empty($instance['modalidad'])) {
                 <div class="seminario-component-list">
                     <?php foreach ($componentes_posts as $componente) :
                         $comp_id = (int) $componente->ID;
-                        $comp_context = flacso_theme_get_offer_context($comp_id);
+                        $comp_context = flacso_theme_get_seminar_context($comp_id);
                         $comp_academic = $comp_context['academic'] ?? [];
                         $comp_instance = $comp_context['instance'] ?? [];
                         $comp_docentes_posts = $comp_instance['docentes_posts'] ?? [];

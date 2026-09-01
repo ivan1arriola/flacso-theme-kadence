@@ -18,7 +18,7 @@ $seminario_id = isset( $_GET['ID'] ) ? absint( wp_unslash( $_GET['ID'] ) ) : 0;
 $seminario_seleccionado = null;
 $solo_un_seminario = false;
 
-// Aceptar tanto OfertaAcademica tipo seminario como el CPT legacy durante Release A.
+// Obtener el contexto del seminario seleccionado.
 if ($seminario_id > 0 && function_exists('flacso_theme_get_seminar_context')) {
     $selected_context = flacso_theme_get_seminar_context($seminario_id);
     if (!empty($selected_context) && get_post_status($seminario_id) === 'publish') {
