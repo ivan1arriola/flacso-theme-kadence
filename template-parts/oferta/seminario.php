@@ -169,9 +169,9 @@ if (!empty($instance['modalidad'])) {
                         <a href="#informacion" class="seminario-btn-secondary"><?php esc_html_e('Ver información', 'flacso-uruguay'); ?></a>
                     </div>
                 <?php elseif (!$abierto_publico) : ?>
-                    <div class="seminario-exclusive-note">
+                    <div class="seminario-closed-note">
                         <i class="bi bi-info-circle-fill" aria-hidden="true"></i>
-                        <span><?php esc_html_e('Este seminario es exclusivo de una formación y no admite inscripción individual externa.', 'flacso-uruguay'); ?></span>
+                        <span><?php esc_html_e('Las inscripciones para la edición actual de este seminario se encuentran cerradas.', 'flacso-uruguay'); ?></span>
                     </div>
                 <?php endif; ?>
             </div>

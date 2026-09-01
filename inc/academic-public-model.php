@@ -398,8 +398,15 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
     $instance["has_inversion"] = $instance["has_valor_general"] || $instance["has_valor_descuento"];
 
     $registration_data = $current_edition["preinscripcion"] ?? [];
+    $edition_id = absint($instance["id"] ?? 0);
+    $is_registration_open = isset($registration_data["abierta"])
+        ? !empty($registration_data["abierta"])
+        : ($edition_id > 0 && class_exists('FLACSO_Edicion_Seminario') ? FLACSO_Edicion_Seminario::accepts_registration($edition_id) : true);
+
     $link_preinscripcion = (string) ($current_edition["link_preinscripcion"] ?? ($registration_data["url"] ?? ""));
-    $is_registration_open = !empty($registration_data["abierta"]) && $link_preinscripcion !== "";
+    if ($link_preinscripcion === "") {
+        $link_preinscripcion = "https://preinscripciones.flacso.edu.uy/";
+    }
 
     $registration = [
         "is_open"        => $is_registration_open,
@@ -778,4 +785,15 @@ function flacso_theme_normalize_duration_html($html, $months_str = ''): string {
         }
     }
     return $html;
+}
+
+/**
+ * Obtiene la cantidad de días permitidos para inscripciones post inicio de un seminario.
+ */
+function flacso_theme_get_seminar_closing_days(int $edition_id = 0): int {
+    if ($edition_id > 0 && class_exists('FLACSO_Edicion_Seminario')) {
+        return FLACSO_Edicion_Seminario::get_days_after_start_limit($edition_id);
+    }
+    $val = get_option('flacso_seminarios_dias_cierre_post_inicio', 10);
+    return is_numeric($val) ? (int) $val : 10;
 }

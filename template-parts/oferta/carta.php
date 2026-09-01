@@ -83,7 +83,10 @@ $arr_orientaciones       = array_values(array_filter((array) ($academic['orienta
 $arr_titulos_intermedios = array_values(array_filter((array) ($academic['titulos_intermedios'] ?? [])));
 
 $url_inscripcion        = (string) ($registration['url'] ?? '');
-$inscripciones_abiertas = !empty($registration['is_open']) && $url_inscripcion !== '';
+if ($url_inscripcion === '') {
+    $url_inscripcion = 'https://preinscripciones.flacso.edu.uy/';
+}
+$inscripciones_abiertas = true;
 
 // Fechas y datos clave
 $proximo_inicio = trim((string) ($instance['fechas_formateadas'] ?? ''));
@@ -101,12 +104,23 @@ $duracion = $duracion_meses_val !== '' && function_exists('flacso_theme_format_d
     ? flacso_theme_format_duration_months($duracion_meses_val)
     : (!empty($academic['duracion_html']) ? wp_strip_all_tags($academic['duracion_html']) : __('A definir', 'flacso-uruguay'));
 
-$modalidad = trim((string) ($instance['modalidad_descripcion'] ?? ''));
-if ($modalidad === '') {
-    $modalidad = trim((string) ($instance['modalidad'] ?? ''));
+$raw_modalidad = trim((string) ($instance['modalidad'] ?? ''));
+if ($raw_modalidad === '') {
+    $raw_modalidad = trim((string) ($instance['modalidad_descripcion'] ?? ''));
 }
-if ($modalidad === '') {
-    $modalidad = __('100% virtual', 'flacso-uruguay');
+$modalidad_texto = trim(wp_strip_all_tags($raw_modalidad));
+if ($modalidad_texto === '' || mb_strlen($modalidad_texto) > 50) {
+    if ($mostrar_instancias_presenciales || stripos($modalidad_texto, 'presencial') !== false) {
+        $modalidad = __('Híbrida / Semipresencial', 'flacso-uruguay');
+    } else {
+        $modalidad = __('100% virtual', 'flacso-uruguay');
+    }
+} else {
+    $modalidad = $modalidad_texto;
+}
+
+if (!empty($instance['modalidad_descripcion']) && empty($academic['modalidad_html'])) {
+    $academic['modalidad_html'] = $instance['modalidad_descripcion'];
 }
 
 // CTA global o por defecto
@@ -366,15 +380,6 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
         <?php endif; ?>
 
         <div class="fc-page-container">
-
-            <?php if (!$inscripciones_abiertas && current_user_can('manage_options')) : ?>
-                <div class="fc-message-box fc-message-box-standalone" style="text-align:center; padding: 1.5rem; margin-bottom: 2rem; border-color: #ffeeba; background: #fff3cd; color: #856404; border-radius: 12px; border: 1px solid #ffeeba;">
-                    <p style="margin: 0; font-size: 1rem;">
-                        <i class="bi bi-shield-lock-fill me-1"></i>
-                        <?php esc_html_e('Las inscripciones están cerradas para el público general. Como eres administrador de WordPress, puedes ver el contenido de esta carta.', 'flacso-uruguay'); ?>
-                    </p>
-                </div>
-            <?php endif; ?>
 
             <!-- DATOS CLAVE -->
             <section id="fc-info-clave" class="fc-feature-grid">
