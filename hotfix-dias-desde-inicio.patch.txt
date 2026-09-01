@@ -1,9 +1,0 @@
-En seminarios-listado.php, inmediatamente después de:
-
-    $dias_hasta_inicio = $days_diff($hoy, $inicio_obj);
-
-agregar:
-
-    $dias_desde_inicio = max(0, -$dias_hasta_inicio);
-
-Esto evita el warning Undefined variable $dias_desde_inicio y mantiene el valor esperado para seminarios ya iniciados.
