@@ -249,13 +249,22 @@ if (!empty($instance['modalidad'])) {
                     </article>
                 <?php endif; ?>
 
-                <?php if (!empty($academic['acredita_maestria'])) : ?>
+                <?php if (!empty($academic['acredita_maestria']) || !empty($academic['acredita_doctorado'])) : ?>
                     <article class="seminario-info-card">
                         <div class="seminario-info-card-head">
                             <div class="seminario-info-icon"><i class="bi bi-mortarboard" aria-hidden="true"></i></div>
                             <h3><?php esc_html_e('Acreditación', 'flacso-uruguay'); ?></h3>
                         </div>
-                        <p class="seminario-detail-value"><?php esc_html_e('Acreditable a estudios de Maestría.', 'flacso-uruguay'); ?></p>
+                        <?php
+                        $acreditaciones = [];
+                        if (!empty($academic['acredita_maestria'])) {
+                            $acreditaciones[] = __('Maestría', 'flacso-uruguay');
+                        }
+                        if (!empty($academic['acredita_doctorado'])) {
+                            $acreditaciones[] = __('Doctorado', 'flacso-uruguay');
+                        }
+                        ?>
+                        <p class="seminario-detail-value"><?php printf(esc_html__('Acreditable a estudios de %s.', 'flacso-uruguay'), esc_html(implode(' y ', $acreditaciones))); ?></p>
                     </article>
                 <?php endif; ?>
 

@@ -51,6 +51,7 @@ function flacso_theme_get_offer_type_label(int $post_id, string $type = ""): str
 
     $type = $type !== "" ? $type : flacso_theme_get_offer_type($post_id);
     $labels = [
+        "doctorado"       => __("Doctorado", "flacso-uruguay"),
         "maestria"        => __("Maestría", "flacso-uruguay"),
         "especializacion" => __("Especialización", "flacso-uruguay"),
         "diplomado"       => __("Diplomado", "flacso-uruguay"),
@@ -429,6 +430,7 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
         "creditos"                  => $data["creditos"] ?? "",
         "acreditacion"              => (string) ($data["acreditacion"] ?? ""),
         "acredita_maestria"         => !empty($data["acredita_maestria"]),
+        "acredita_doctorado"        => !empty($data["acredita_doctorado"]),
         "docentes_base"             => is_array($data["docentes_base"] ?? null) ? array_map("absint", $data["docentes_base"]) : [],
         "correo"                    => (string) ($data["correo"] ?? ""),
     ];

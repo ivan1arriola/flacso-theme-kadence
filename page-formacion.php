@@ -3,7 +3,7 @@
  * Template para la página de Oferta Académica (/formacion/).
  *
  * Muestra el catálogo público de propuestas académicas de FLACSO Uruguay
- * (Maestrías, Especializaciones, Diplomados, Diplomas y Seminarios)
+ * (Doctorados, Maestrías, Especializaciones, Diplomados, Diplomas y Seminarios)
  * consumiendo directamente los CPTs canónicos.
  *
  * @package kadence-child-flacso
@@ -35,6 +35,11 @@ $tipos_oferta = [
         'label'       => __('Diplomas', 'flacso-uruguay'),
         'url'         => home_url('/formacion/diplomas/'),
         'description' => __('Formación específica sobre temáticas contemporáneas de relevancia social.', 'flacso-uruguay'),
+    ],
+    'doctorado'       => [
+        'label'       => __('Doctorados', 'flacso-uruguay'),
+        'url'         => home_url('/formacion/doctorados/'),
+        'description' => __('Máximo nivel de formación de posgrado orientado a la investigación original.', 'flacso-uruguay'),
     ],
 ];
 

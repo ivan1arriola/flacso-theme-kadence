@@ -3,7 +3,7 @@
  * Template para el archivo de Taxonomía: Tipo de Oferta Académica.
  *
  * Muestra las ofertas académicas pertenecientes al tipo consultado
- * (Maestrías, Especializaciones, Diplomados, Diplomas)
+ * (Doctorados, Maestrías, Especializaciones, Diplomados, Diplomas)
  * utilizando el View Model canónico.
  *
  * @package kadence-child-flacso
