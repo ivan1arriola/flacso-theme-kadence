@@ -12,14 +12,14 @@ $GLOBALS["posts"] = [
     200 => (object) ["ID" => 200, "post_type" => "edicion", "post_status" => "publish", "post_title" => "Edición 2026", "post_name" => "edicion-2026"],
     21 => (object) ["ID" => 21, "post_type" => "seminario", "post_status" => "publish", "post_title" => "Seminario de Género y Sociedad", "post_name" => "seminario-genero"],
     210 => (object) ["ID" => 210, "post_type" => "edicion", "post_status" => "publish", "post_title" => "Edición 2026 Género", "post_name" => "edicion-2026-genero"],
-    40 => (object) ["ID" => 40, "post_type" => "oferta-academica", "post_status" => "publish", "post_title" => "Doctorado en Ciencias Sociales", "post_name" => "doctorado"],
+    40 => (object) ["ID" => 40, "post_type" => "oferta-academica", "post_status" => "publish", "post_title" => "Diploma en Gestión Educativa", "post_name" => "diploma-gestion"],
     500 => (object) ["ID" => 500, "post_type" => "tabla-precio", "post_status" => "publish", "post_title" => "Aranceles Seminarios 2026", "post_name" => "tabla-seminarios-2026"],
     501 => (object) ["ID" => 501, "post_type" => "tabla-precio", "post_status" => "publish", "post_title" => "Aranceles Maestría 2026", "post_name" => "tabla-maestria-2026"],
     91 => (object) ["ID" => 91, "post_type" => "docente", "post_status" => "publish", "post_title" => "Dra. Ana Pérez", "post_name" => "ana-perez"],
     92 => (object) ["ID" => 92, "post_type" => "docente", "post_status" => "publish", "post_title" => "Dr. Juan Gómez", "post_name" => "juan-gomez"],
 ];
 
-$GLOBALS["types"] = [10 => "maestria", 40 => "doctorado"];
+$GLOBALS["types"] = [10 => "maestria", 40 => "diploma"];
 $GLOBALS["meta"] = [
     10 => [
         "programa_academico_id" => 0,
@@ -170,7 +170,6 @@ final class FLACSO_Oferta_Academica {
     public static function get_tipo(int $id): string { return $GLOBALS["types"][$id] ?? ""; }
     public static function tipos(): array {
         return [
-            "doctorado"       => "Doctorados",
             "maestria"        => "Maestrías",
             "especializacion" => "Especializaciones",
             "diplomado"       => "Diplomados",
@@ -378,7 +377,7 @@ assert_same("", flacso_theme_get_offer_type(20), "Seminario no tiene tipo de ofe
 assert_same(true, flacso_theme_is_seminar(20), "flacso_theme_is_seminar identifica el CPT seminario");
 assert_same("Seminario", flacso_theme_get_offer_type_label(20), "Seminario tiene etiqueta publica correcta");
 assert_same("Maestría", flacso_theme_get_offer_type_label(10), "Maestría tiene etiqueta publica correcta");
-assert_same("Doctorado", flacso_theme_get_offer_type_label(40), "Doctorado tiene etiqueta publica correcta");
+assert_same("Diploma", flacso_theme_get_offer_type_label(40), "Diploma tiene etiqueta publica correcta");
 
 // 2. Contexto de Oferta Académica
 $offer_context = flacso_theme_get_offer_context(10);
