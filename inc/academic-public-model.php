@@ -3,7 +3,7 @@
  * Adaptador de presentacion de solo lectura para el modelo academico de FLACSO Uruguay.
  *
  * El plugin es la unica fuente de verdad para los CPTs ProgramaAcademico,
- * OfertaAcademica, Cohorte, Seminario, EdicionSeminario y TablaPrecio.
+ * OfertaAcademica, Cohorte, Seminario, Edicion y TablaPrecio.
  * Este archivo construye View Models estables y limpios para las plantillas del tema.
  *
  * @package kadence-child-flacso
@@ -401,7 +401,7 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
     $edition_id = absint($instance["id"] ?? 0);
     $is_registration_open = isset($registration_data["abierta"])
         ? !empty($registration_data["abierta"])
-        : ($edition_id > 0 && class_exists('FLACSO_Edicion_Seminario') ? FLACSO_Edicion_Seminario::accepts_registration($edition_id) : true);
+        : ($edition_id > 0 && class_exists('FLACSO_Edicion') ? FLACSO_Edicion::accepts_registration($edition_id) : true);
 
     $link_preinscripcion = (string) ($current_edition["link_preinscripcion"] ?? ($registration_data["url"] ?? ""));
     if ($link_preinscripcion === "") {
@@ -791,8 +791,8 @@ function flacso_theme_normalize_duration_html($html, $months_str = ''): string {
  * Obtiene la cantidad de días permitidos para inscripciones post inicio de un seminario.
  */
 function flacso_theme_get_seminar_closing_days(int $edition_id = 0): int {
-    if ($edition_id > 0 && class_exists('FLACSO_Edicion_Seminario')) {
-        return FLACSO_Edicion_Seminario::get_days_after_start_limit($edition_id);
+    if ($edition_id > 0 && class_exists('FLACSO_Edicion')) {
+        return FLACSO_Edicion::get_days_after_start_limit($edition_id);
     }
     $val = get_option('flacso_seminarios_dias_cierre_post_inicio', 10);
     return is_numeric($val) ? (int) $val : 10;

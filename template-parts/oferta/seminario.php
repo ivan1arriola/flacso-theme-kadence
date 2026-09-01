@@ -37,8 +37,6 @@ $componentes_posts = $relations['integrated_components'] ?? [];
 
 $abierto_publico    = !empty($registration['is_open']);
 $preinscripcion_url = (string) ($registration['url'] ?? '');
-$cta_flow           = (string) ($registration['flow'] ?? 'legacy_editor');
-$cta_instance_id    = (int) ($registration['instance_id'] ?? 0);
 
 $valor_uyu              = $instance['valor_uyu'] ?? null;
 $valor_usd              = $instance['valor_usd'] ?? null;
@@ -159,8 +157,6 @@ if (!empty($instance['modalidad'])) {
                         <a
                             href="<?php echo esc_url($preinscripcion_url); ?>"
                             data-flacso-preinscription-cta="1"
-                            data-flacso-cta-flow="<?php echo esc_attr($cta_flow); ?>"
-                            data-flacso-instance-id="<?php echo esc_attr((string) $cta_instance_id); ?>"
                             class="seminario-btn-primary"
                         >
                             <?php echo esc_html($integrado_padre ? __('Inscribirse al seminario integrado', 'flacso-uruguay') : __('Inscribirse ahora', 'flacso-uruguay')); ?>
@@ -538,8 +534,6 @@ if (!empty($instance['modalidad'])) {
                 <a
                     href="<?php echo esc_url($preinscripcion_url); ?>"
                     data-flacso-preinscription-cta="1"
-                    data-flacso-cta-flow="<?php echo esc_attr($cta_flow); ?>"
-                    data-flacso-instance-id="<?php echo esc_attr((string) $cta_instance_id); ?>"
                     class="seminario-btn-primary"
                 >
                     <?php echo esc_html($integrado_padre ? __('Inscribirse al seminario integrado', 'flacso-uruguay') : __('Inscribirse ahora', 'flacso-uruguay')); ?>
@@ -549,8 +543,8 @@ if (!empty($instance['modalidad'])) {
         <?php elseif (!$abierto_publico) : ?>
             <section class="seminario-final-cta" aria-labelledby="seminario-cta-title">
                 <div>
-                    <h2 id="seminario-cta-title"><?php esc_html_e('Seminario exclusivo', 'flacso-uruguay'); ?></h2>
-                    <p><?php esc_html_e('La cursada está disponible únicamente para quienes integran la formación académica correspondiente.', 'flacso-uruguay'); ?></p>
+                    <h2 id="seminario-cta-title"><?php esc_html_e('Inscripciones cerradas', 'flacso-uruguay'); ?></h2>
+                    <p><?php esc_html_e('Las inscripciones para la edición actual de este seminario se encuentran cerradas.', 'flacso-uruguay'); ?></p>
                 </div>
             </section>
         <?php endif; ?>

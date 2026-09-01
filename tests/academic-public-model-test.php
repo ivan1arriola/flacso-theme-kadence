@@ -9,9 +9,9 @@ $GLOBALS["posts"] = [
     10 => (object) ["ID" => 10, "post_type" => "oferta-academica", "post_status" => "publish", "post_title" => "Maestría en Educación", "post_name" => "maestria-educacion"],
     100 => (object) ["ID" => 100, "post_type" => "cohorte", "post_status" => "publish", "post_title" => "Cohorte V", "post_name" => "cohorte-v"],
     20 => (object) ["ID" => 20, "post_type" => "seminario", "post_status" => "publish", "post_title" => "Seminario de Políticas Públicas", "post_name" => "seminario-politicas"],
-    200 => (object) ["ID" => 200, "post_type" => "edicion-seminario", "post_status" => "publish", "post_title" => "Edición 2026", "post_name" => "edicion-2026"],
+    200 => (object) ["ID" => 200, "post_type" => "edicion", "post_status" => "publish", "post_title" => "Edición 2026", "post_name" => "edicion-2026"],
     21 => (object) ["ID" => 21, "post_type" => "seminario", "post_status" => "publish", "post_title" => "Seminario de Género y Sociedad", "post_name" => "seminario-genero"],
-    210 => (object) ["ID" => 210, "post_type" => "edicion-seminario", "post_status" => "publish", "post_title" => "Edición 2026 Género", "post_name" => "edicion-2026-genero"],
+    210 => (object) ["ID" => 210, "post_type" => "edicion", "post_status" => "publish", "post_title" => "Edición 2026 Género", "post_name" => "edicion-2026-genero"],
     40 => (object) ["ID" => 40, "post_type" => "oferta-academica", "post_status" => "publish", "post_title" => "Doctorado en Ciencias Sociales", "post_name" => "doctorado"],
     500 => (object) ["ID" => 500, "post_type" => "tabla-precio", "post_status" => "publish", "post_title" => "Aranceles Seminarios 2026", "post_name" => "tabla-seminarios-2026"],
     501 => (object) ["ID" => 501, "post_type" => "tabla-precio", "post_status" => "publish", "post_title" => "Aranceles Maestría 2026", "post_name" => "tabla-maestria-2026"],
@@ -118,7 +118,7 @@ function get_permalink($post) { $id = is_object($post) ? $post->ID : $post; retu
 function get_post_thumbnail_id($id) { return 0; }
 function get_the_post_thumbnail_url($id, $size = "post-thumbnail") { return ""; }
 function get_the_post_thumbnail($id, $size = "post-thumbnail", $attr = []) { return ""; }
-function post_type_exists($type) { return in_array($type, ["oferta-academica", "cohorte", "seminario", "edicion-seminario", "tabla-precio", "docente", "programa-academico"], true); }
+function post_type_exists($type) { return in_array($type, ["oferta-academica", "cohorte", "seminario", "edicion", "tabla-precio", "docente", "programa-academico"], true); }
 function wp_get_object_terms($id, $taxonomy) { $type = $GLOBALS["types"][(int) $id] ?? ""; return $type ? [(object) ["slug" => $type]] : []; }
 function is_wp_error($value) { return false; }
 function sanitize_key($value) { return strtolower(preg_replace("/[^a-z0-9_-]/", "", (string) $value)); }

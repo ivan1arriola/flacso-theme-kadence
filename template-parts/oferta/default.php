@@ -56,8 +56,6 @@ $has_main_content = $has_visible_html($filtered_main_content) || $has_visible_ht
 
 $inscripciones_abiertas = !empty($registration['is_open']);
 $preinscripcion_url      = (string) ($registration['url'] ?? '');
-$cta_instance_id        = absint($registration['instance_id'] ?? ($instance['id'] ?? 0));
-$cta_flow               = (string) ($registration['flow'] ?? '');
 $has_preinscription_cta = $inscripciones_abiertas && $preinscripcion_url !== '';
 
 $inscripciones_year = !empty($instance['anio_inicio'])
@@ -474,7 +472,7 @@ if (!$banner_featured_url) {
                                 <?php endif; ?>
 
                                 <div class="flacso-oa-program-hero__actions">
-                                    <a href="<?php echo esc_url($hero_primary_url); ?>"<?php echo $has_preinscription_cta ? ' data-flacso-preinscription-cta="1" data-flacso-cta-flow="' . esc_attr($cta_flow) . '" data-flacso-instance-id="' . esc_attr((string) $cta_instance_id) . '"' : ''; ?> class="flacso-oa-program-hero__button flacso-oa-program-hero__button--primary">
+                                    <a href="<?php echo esc_url($hero_primary_url); ?>"<?php echo $has_preinscription_cta ? ' data-flacso-preinscription-cta="1"' : ''; ?> class="flacso-oa-program-hero__button flacso-oa-program-hero__button--primary">
                                         <?php echo esc_html($hero_primary_label); ?>
                                         <i class="bi bi-arrow-right" aria-hidden="true"></i>
                                     </a>
