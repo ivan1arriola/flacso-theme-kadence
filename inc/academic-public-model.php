@@ -561,19 +561,64 @@ function flacso_theme_get_seminars_catalog(array $args = []): array {
         }
     }
 
-    usort($catalog, static function (array $a, array $b): int {
+    $hoy = function_exists('current_time') ? current_time('Y-m-d') : date('Y-m-d');
+
+    usort($catalog, static function (array $a, array $b) use ($hoy): int {
         $date_a = (string) ($a["instance"]["fecha_inicio"] ?? "");
         $date_b = (string) ($b["instance"]["fecha_inicio"] ?? "");
-        if ($date_a === $date_b) {
-            return strcasecmp((string) $a["title"], (string) $b["title"]);
+        $open_a = !empty($a["registration"]["is_open"]);
+        $open_b = !empty($b["registration"]["is_open"]);
+        $status_a = (string) ($a["instance"]["estado"] ?? "");
+        $status_b = (string) ($b["instance"]["estado"] ?? "");
+
+        // Tiers de prioridad:
+        // Tier 1: Próximos a iniciar (fecha_inicio >= hoy) o con inscripciones abiertas
+        // Tier 2: En curso actualmente
+        // Tier 3: Pasados / Finalizados (fecha_inicio < hoy)
+        // Tier 4: Sin fecha definida
+        $tier_a = 4;
+        if ($date_a !== "") {
+            if ($date_a >= $hoy || $open_a) {
+                $tier_a = 1;
+            } elseif ($status_a === 'en_curso') {
+                $tier_a = 2;
+            } else {
+                $tier_a = 3;
+            }
         }
-        if ($date_a === "") {
-            return 1;
+
+        $tier_b = 4;
+        if ($date_b !== "") {
+            if ($date_b >= $hoy || $open_b) {
+                $tier_b = 1;
+            } elseif ($status_b === 'en_curso') {
+                $tier_b = 2;
+            } else {
+                $tier_b = 3;
+            }
         }
-        if ($date_b === "") {
-            return -1;
+
+        if ($tier_a !== $tier_b) {
+            return $tier_a <=> $tier_b;
         }
-        return strcmp($date_a, $date_b);
+
+        // Dentro del Tier 1 (Próximos a empezar / abiertos): el más próximo a empezar va primero (ASC)
+        if ($tier_a === 1) {
+            if ($date_a !== $date_b) {
+                if ($date_a === "") return 1;
+                if ($date_b === "") return -1;
+                return strcmp($date_a, $date_b);
+            }
+        }
+
+        // Dentro de Tier 2 o 3 (En curso o pasados): los más recientes primero (DESC)
+        if ($tier_a === 2 || $tier_a === 3) {
+            if ($date_a !== $date_b) {
+                return strcmp($date_b, $date_a);
+            }
+        }
+
+        return strcasecmp((string) ($a["title"] ?? ""), (string) ($b["title"] ?? ""));
     });
 
     return $catalog;
