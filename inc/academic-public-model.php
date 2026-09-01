@@ -725,32 +725,32 @@ function flacso_theme_format_cohort_dates(array $instance): string {
     }
 
     if ($precision === 'mes' && $fecha_inicio !== '') {
-        $ts_start = strtotime($fecha_inicio);
-        if ($ts_start) {
-            $mes_start = wp_date('F \d\e Y', $ts_start, wp_timezone());
+        try {
+            $dt_start = new DateTime($fecha_inicio, wp_timezone());
+            $mes_start = wp_date('F \d\e Y', $dt_start->getTimestamp(), wp_timezone());
             if ($fecha_fin !== '') {
-                $ts_end = strtotime($fecha_fin);
-                if ($ts_end) {
-                    $mes_end = wp_date('F \d\e Y', $ts_end, wp_timezone());
-                    return $mes_start . ' – ' . $mes_end;
-                }
+                $dt_end = new DateTime($fecha_fin, wp_timezone());
+                $mes_end = wp_date('F \d\e Y', $dt_end->getTimestamp(), wp_timezone());
+                return $mes_start . ' – ' . $mes_end;
             }
             return $mes_start;
+        } catch (Exception $e) {
+            // fallback silencioso
         }
     }
 
     if ($fecha_inicio !== '') {
-        $ts_start = strtotime($fecha_inicio);
-        if ($ts_start) {
-            $formatted_start = wp_date('j \d\e F \d\e Y', $ts_start, wp_timezone());
+        try {
+            $dt_start = new DateTime($fecha_inicio, wp_timezone());
+            $formatted_start = wp_date('j \d\e F \d\e Y', $dt_start->getTimestamp(), wp_timezone());
             if ($fecha_fin !== '') {
-                $ts_end = strtotime($fecha_fin);
-                if ($ts_end) {
-                    $formatted_end = wp_date('j \d\e F \d\e Y', $ts_end, wp_timezone());
-                    return $formatted_start . ' al ' . $formatted_end;
-                }
+                $dt_end = new DateTime($fecha_fin, wp_timezone());
+                $formatted_end = wp_date('j \d\e F \d\e Y', $dt_end->getTimestamp(), wp_timezone());
+                return $formatted_start . ' al ' . $formatted_end;
             }
             return $formatted_start;
+        } catch (Exception $e) {
+            // fallback silencioso
         }
     }
 
@@ -761,10 +761,22 @@ function flacso_theme_format_cohort_dates(array $instance): string {
  * Formatea una fecha en formato legible en español.
  */
 function flacso_theme_format_date_es($date, bool $include_year = true): string {
-    $timestamp = is_numeric($date) ? (int) $date : strtotime((string) $date);
+    $timestamp = 0;
+    if (is_numeric($date)) {
+        $timestamp = (int) $date;
+    } else {
+        try {
+            $dt = new DateTime((string) $date, wp_timezone());
+            $timestamp = $dt->getTimestamp();
+        } catch (Exception $e) {
+            return (string) $date;
+        }
+    }
+    
     if (!$timestamp) {
         return (string) $date;
     }
+    
     $format = $include_year ? 'j \d\e F \d\e Y' : 'j \d\e F';
     return wp_date($format, $timestamp, wp_timezone());
 }
