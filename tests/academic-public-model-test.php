@@ -12,6 +12,8 @@ $GLOBALS["posts"] = [
     200 => (object) ["ID" => 200, "post_type" => "edicion", "post_status" => "publish", "post_title" => "Edición 2026", "post_name" => "edicion-2026"],
     21 => (object) ["ID" => 21, "post_type" => "seminario", "post_status" => "publish", "post_title" => "Seminario de Género y Sociedad", "post_name" => "seminario-genero"],
     210 => (object) ["ID" => 210, "post_type" => "edicion", "post_status" => "publish", "post_title" => "Edición 2026 Género", "post_name" => "edicion-2026-genero"],
+    22 => (object) ["ID" => 22, "post_type" => "seminario", "post_status" => "publish", "post_title" => "Seminario Integrado", "post_name" => "seminario-integrado"],
+    220 => (object) ["ID" => 220, "post_type" => "edicion", "post_status" => "publish", "post_title" => "Edición 2026 Integrada", "post_name" => "edicion-2026-integrada"],
     40 => (object) ["ID" => 40, "post_type" => "oferta-academica", "post_status" => "publish", "post_title" => "Doctorado en Ciencias Sociales", "post_name" => "doctorado"],
     500 => (object) ["ID" => 500, "post_type" => "tabla-precio", "post_status" => "publish", "post_title" => "Aranceles Seminarios 2026", "post_name" => "tabla-seminarios-2026"],
     501 => (object) ["ID" => 501, "post_type" => "tabla-precio", "post_status" => "publish", "post_title" => "Aranceles Maestría 2026", "post_name" => "tabla-maestria-2026"],
@@ -47,7 +49,6 @@ $GLOBALS["meta"] = [
         "carga_horaria" => 30,
         "creditos" => 4,
         "acredita_maestria" => 1,
-        "docentes_base" => [91],
         "componentes" => [],
     ],
     200 => [
@@ -71,7 +72,6 @@ $GLOBALS["meta"] = [
         "presentacion" => "Presentación del seminario de género",
         "carga_horaria" => 20,
         "creditos" => 3,
-        "docentes_base" => [92],
         "componentes" => [],
     ],
     210 => [
@@ -87,6 +87,29 @@ $GLOBALS["meta"] = [
         "preinscripcion_desde" => "2026-07-01",
         "preinscripcion_hasta" => "2026-09-30",
         "es_asincronica" => 1,
+    ],
+    22 => [
+        "presentacion" => "Presentación integrada",
+        "carga_horaria" => 60,
+        "creditos" => 7,
+        "componentes" => [
+            ["seminario_id" => 20, "orden" => 1],
+            ["seminario_id" => 21, "orden" => 2],
+        ],
+    ],
+    220 => [
+        "seminario_id" => 22,
+        "anio" => 2026,
+        "fecha_inicio" => "",
+        "fecha_fin" => "",
+        "estado" => "planificada",
+        "modalidad" => "Virtual",
+        "docentes" => [],
+        "tabla_precio_id" => 500,
+        "link_preinscripcion" => "https://preinscripciones.flacso.edu.uy/seminarios/22/ediciones/220/",
+        "preinscripcion_desde" => "2026-07-01",
+        "preinscripcion_hasta" => "2026-09-30",
+        "es_asincronica" => 0,
     ],
     500 => [
         "tabla_precios_tipo" => "seminario",
@@ -351,6 +374,63 @@ final class FLACSO_Academic_Catalog {
                 ],
             ];
         }
+        if ($id === 22) {
+            return [
+                "id" => 22,
+                "nombre" => "Seminario Integrado",
+                "slug" => "seminario-integrado",
+                "programa_academico_id" => 0,
+                "presentacion" => "Presentación integrada",
+                "carga_horaria" => 60,
+                "creditos" => 7,
+                "componentes" => [
+                    ["seminario_id" => 20, "orden" => 1],
+                    ["seminario_id" => 21, "orden" => 2],
+                ],
+                "ediciones" => [
+                    [
+                        "id" => 220,
+                        "nombre" => "Edición 2026 Integrada",
+                        "anio" => 2026,
+                        "fecha_inicio" => "",
+                        "fecha_fin" => "",
+                        "estado" => "planificada",
+                        "modalidad" => "Virtual",
+                        "docentes" => [],
+                        "tabla_precio_id" => 500,
+                        "link_preinscripcion" => "https://preinscripciones.flacso.edu.uy/seminarios/22/ediciones/220/",
+                        "preinscripcion_desde" => "2026-07-01",
+                        "preinscripcion_hasta" => "2026-09-30",
+                        "es_asincronica" => false,
+                        "encuentros_sincronicos" => [],
+                        "preinscripcion" => [
+                            "abierta" => true,
+                            "url" => "https://preinscripciones.flacso.edu.uy/seminarios/22/ediciones/220/",
+                        ],
+                    ],
+                ],
+                "edicion_vigente" => [
+                    "id" => 220,
+                    "nombre" => "Edición 2026 Integrada",
+                    "anio" => 2026,
+                    "fecha_inicio" => "",
+                    "fecha_fin" => "",
+                    "estado" => "planificada",
+                    "modalidad" => "Virtual",
+                    "docentes" => [],
+                    "tabla_precio_id" => 500,
+                    "link_preinscripcion" => "https://preinscripciones.flacso.edu.uy/seminarios/22/ediciones/220/",
+                    "preinscripcion_desde" => "2026-07-01",
+                    "preinscripcion_hasta" => "2026-09-30",
+                    "es_asincronica" => false,
+                    "encuentros_sincronicos" => [],
+                    "preinscripcion" => [
+                        "abierta" => true,
+                        "url" => "https://preinscripciones.flacso.edu.uy/seminarios/22/ediciones/220/",
+                    ],
+                ],
+            ];
+        }
         return [];
     }
 }
@@ -401,10 +481,18 @@ assert_same("https://preinscripciones.flacso.edu.uy/seminarios/20/ediciones/200/
 assert_same(2, count($seminar_context["instance"]["docentes_ids"]), "Resuelve docentes de la edición");
 assert_same(1, count($seminar_context["instance"]["encuentros"]), "Resuelve encuentros sincrónicos de la edición");
 
+// 3.b Seminario Integrado (hereda transitivamente docentes y fechas de componentes)
+$integrated_context = flacso_theme_get_seminar_context(22);
+assert_same(true, $integrated_context["is_integrated"], "Identifica seminario integrado");
+assert_same([91, 92], $integrated_context["instance"]["docentes_ids"], "Hereda transitivamente docentes de las ediciones componentes");
+assert_same("2026-09-01", $integrated_context["instance"]["fecha_inicio"], "Hereda transitivamente fecha inicio de componentes");
+assert_same("2026-11-15", $integrated_context["instance"]["fecha_fin"], "Hereda transitivamente fecha fin de componentes");
+assert_same(1, count($integrated_context["instance"]["encuentros"]), "Hereda transitivamente encuentros sincrónicos de componentes");
+
 // 4. Catálogo de Seminarios
 $catalog = flacso_theme_get_seminars_catalog();
 $catalog_ids = array_map(static function ($item) { return $item["offer_id"]; }, $catalog);
-assert_same([20, 21], $catalog_ids, "Catálogo lista todos los seminarios ordenados por fecha de inicio");
+assert_same([20, 22, 21], $catalog_ids, "Catálogo lista todos los seminarios ordenados por fecha de inicio");
 
 // 5. Relaciones de programa
 $program_seminars = flacso_theme_get_program_seminars_catalog(10);

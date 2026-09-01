@@ -338,12 +338,15 @@ function flacso_theme_get_offer_context(int $offer_id): array {
  * Obtiene el View Model de un Seminario.
  */
 function flacso_theme_get_seminar_context(int $seminar_id): array {
-    if ($seminar_id <= 0) {
+    static $resolving = [];
+    if ($seminar_id <= 0 || isset($resolving[$seminar_id])) {
         return [];
     }
+    $resolving[$seminar_id] = true;
 
     $post = get_post($seminar_id);
     if (!$post || $post->post_type !== "seminario") {
+        unset($resolving[$seminar_id]);
         return [];
     }
 
@@ -352,6 +355,7 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
         : (class_exists("FLACSO_Academic_Repository") ? FLACSO_Academic_Repository::to_array("seminarios", $seminar_id) : []);
 
     if (empty($data)) {
+        unset($resolving[$seminar_id]);
         return [];
     }
 
@@ -363,7 +367,7 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
 
     $docentes_ids = !empty($current_edition["docentes"]) && is_array($current_edition["docentes"])
         ? array_map("absint", $current_edition["docentes"])
-        : array_map("absint", is_array($data["docentes_base"] ?? null) ? $data["docentes_base"] : []);
+        : [];
 
     $instance = [
         "id"                     => absint($current_edition["id"] ?? 0),
@@ -384,14 +388,6 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
         "valor_uyu_15_descuento" => $price_table["valor_uyu_15_descuento"] ?? null,
         "valor_usd_15_descuento" => $price_table["valor_usd_15_descuento"] ?? null,
     ];
-
-    $instance["docentes_posts"] = empty($instance["docentes_ids"]) ? [] : get_posts([
-        "post_type"      => "docente",
-        "post_status"    => "publish",
-        "post__in"       => $instance["docentes_ids"],
-        "posts_per_page" => -1,
-        "orderby"        => "post__in",
-    ]);
 
     $instance["has_valor_general"] = $instance["valor_uyu"] !== null || $instance["valor_usd"] !== null;
     $instance["has_valor_descuento"] = $instance["valor_uyu_15_descuento"] !== null || $instance["valor_usd_15_descuento"] !== null;
@@ -431,7 +427,6 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
         "acreditacion"              => (string) ($data["acreditacion"] ?? ""),
         "acredita_maestria"         => !empty($data["acredita_maestria"]),
         "acredita_doctorado"        => !empty($data["acredita_doctorado"]),
-        "docentes_base"             => is_array($data["docentes_base"] ?? null) ? array_map("absint", $data["docentes_base"]) : [],
         "correo"                    => (string) ($data["correo"] ?? ""),
     ];
 
@@ -449,7 +444,54 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
         "orderby"        => "post__in",
     ]);
 
-    $is_integrated = !empty($components_posts);
+    $is_integrated = !empty($components_posts) || !empty($component_ids);
+
+    // En caso de Seminario Integrado, la edición y los docentes se resuelven transitivamente de sus componentes
+    if ($is_integrated && !empty($component_ids)) {
+        $transitive_docentes_ids = [];
+        $transitive_encuentros = [];
+        $min_start = '';
+        $max_end = '';
+
+        foreach ($component_ids as $comp_id) {
+            $comp_context = flacso_theme_get_seminar_context($comp_id);
+            if (!empty($comp_context['instance'])) {
+                if (!empty($comp_context['instance']['docentes_ids'])) {
+                    $transitive_docentes_ids = array_merge($transitive_docentes_ids, $comp_context['instance']['docentes_ids']);
+                }
+                if (!empty($comp_context['instance']['encuentros'])) {
+                    $transitive_encuentros = array_merge($transitive_encuentros, $comp_context['instance']['encuentros']);
+                }
+                $c_start = (string) ($comp_context['instance']['fecha_inicio'] ?? '');
+                $c_end = (string) ($comp_context['instance']['fecha_fin'] ?? '');
+                if ($c_start !== '' && ($min_start === '' || $c_start < $min_start)) {
+                    $min_start = $c_start;
+                }
+                if ($c_end !== '' && ($max_end === '' || $c_end > $max_end)) {
+                    $max_end = $c_end;
+                }
+            }
+        }
+
+        $instance['docentes_ids'] = array_values(array_unique(array_filter(array_merge($instance['docentes_ids'], $transitive_docentes_ids))));
+        if (empty($instance['encuentros'])) {
+            $instance['encuentros'] = $transitive_encuentros;
+        }
+        if (empty($instance['fecha_inicio']) && $min_start !== '') {
+            $instance['fecha_inicio'] = $min_start;
+        }
+        if (empty($instance['fecha_fin']) && $max_end !== '') {
+            $instance['fecha_fin'] = $max_end;
+        }
+    }
+
+    $instance["docentes_posts"] = empty($instance["docentes_ids"]) ? [] : get_posts([
+        "post_type"      => "docente",
+        "post_status"    => "publish",
+        "post__in"       => $instance["docentes_ids"],
+        "posts_per_page" => -1,
+        "orderby"        => "post__in",
+    ]);
 
     // Si es un componente hijo de otro seminario integrado, encontrar al padre
     $parent = null;
@@ -509,7 +551,7 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
         }
     }
 
-    return [
+    $result = [
         "offer_id"       => $seminar_id,
         "instance_id"    => $instance["id"],
         "type"           => "seminario",
@@ -521,7 +563,6 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
         "permalink"      => get_permalink($seminar_id),
         "thumbnail_id"   => (int) get_post_thumbnail_id($seminar_id),
         "thumbnail_url"  => (string) ($data["imagen"] ?? get_the_post_thumbnail_url($seminar_id, "full")),
-        "academic"       => $academic,
         "academic"       => array_merge($academic, ["oferta_academica_id" => $oferta_id]),
         "instance"       => $instance,
         "registration"   => $registration,
@@ -540,6 +581,9 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
             "related_programs"      => $related_programs,
         ],
     ];
+
+    unset($resolving[$seminar_id]);
+    return $result;
 }
 
 /**
