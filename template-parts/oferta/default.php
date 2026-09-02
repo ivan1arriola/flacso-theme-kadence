@@ -115,6 +115,10 @@ if ($modalidad_resumen === '') {
 }
 if ($modalidad_resumen === '') {
     $modalidad_resumen = __('A definir', 'flacso-uruguay');
+} else {
+    $modalidad_resumen = function_exists('flacso_theme_format_modality')
+        ? flacso_theme_format_modality($modalidad_resumen)
+        : mb_strtoupper(mb_substr($modalidad_resumen, 0, 1, 'UTF-8'), 'UTF-8') . mb_substr($modalidad_resumen, 1, null, 'UTF-8');
 }
 $hero_quick_items[] = [
     'icon'  => 'bi-camera-video',
@@ -146,7 +150,10 @@ if (!empty($registration['hasta'])) {
     $cohorte_periodo_inscripcion = sprintf(__('Postulaciones hasta el %s', 'flacso-uruguay'), $fecha_hasta_fmt);
 }
 
-$cohorte_modalidad_titulo = !empty($instance['modalidad']) ? (string) $instance['modalidad'] : $modalidad_resumen;
+$cohorte_modalidad_raw    = !empty($instance['modalidad']) ? (string) $instance['modalidad'] : $modalidad_resumen;
+$cohorte_modalidad_titulo = function_exists('flacso_theme_format_modality')
+    ? flacso_theme_format_modality($cohorte_modalidad_raw)
+    : mb_strtoupper(mb_substr($cohorte_modalidad_raw, 0, 1, 'UTF-8'), 'UTF-8') . mb_substr($cohorte_modalidad_raw, 1, null, 'UTF-8');
 $cohorte_modalidad_desc   = !empty($instance['modalidad_descripcion']) ? (string) $instance['modalidad_descripcion'] : '';
 
 $calendario_pdf_url = !empty($academic['calendario_pdf_url']) ? trim((string) $academic['calendario_pdf_url']) : '';

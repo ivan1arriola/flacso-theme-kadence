@@ -216,7 +216,7 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "valor_usd"              => $price_table["valor_usd"] ?? null,
         "valor_uyu_15_descuento" => $price_table["valor_uyu_15_descuento"] ?? null,
         "valor_usd_15_descuento" => $price_table["valor_usd_15_descuento"] ?? null,
-        "modalidad"              => (string) ($current_cohort["modalidad"] ?? ""),
+        "modalidad"              => flacso_theme_format_modality($current_cohort["modalidad"] ?? ""),
         "modalidad_descripcion"  => (string) ($current_cohort["modalidad_descripcion"] ?? ""),
         "docentes_ids"           => [],
         "encuentros"             => [],
@@ -377,7 +377,7 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
         "fecha_fin"              => (string) ($current_edition["fecha_fin"] ?? ""),
         "precision_fecha_inicio" => "dia",
         "estado"                 => (string) ($current_edition["estado"] ?? "planificada"),
-        "modalidad"              => (string) ($current_edition["modalidad"] ?? ""),
+        "modalidad"              => flacso_theme_format_modality($current_edition["modalidad"] ?? ""),
         "encuentros"             => is_array($current_edition["encuentros_sincronicos"] ?? null) ? $current_edition["encuentros_sincronicos"] : [],
         "es_asincronico"         => !empty($current_edition["es_asincronica"]) || empty($current_edition["encuentros_sincronicos"]),
         "docentes_ids"           => array_values(array_unique(array_filter($docentes_ids))),
@@ -897,4 +897,15 @@ function flacso_theme_get_seminar_closing_days(int $edition_id = 0): int {
     }
     $val = get_option('flacso_seminarios_dias_cierre_post_inicio', 10);
     return is_numeric($val) ? (int) $val : 10;
+}
+
+/**
+ * Normaliza y capitaliza la modalidad académica (ej: 'virtual' -> 'Virtual').
+ */
+function flacso_theme_format_modality($modality): string {
+    $modality = trim((string) $modality);
+    if ($modality === '') {
+        return '';
+    }
+    return mb_strtoupper(mb_substr($modality, 0, 1, 'UTF-8'), 'UTF-8') . mb_substr($modality, 1, null, 'UTF-8');
 }
