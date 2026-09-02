@@ -163,16 +163,6 @@ if ($malla_doc_url && function_exists('flacso_get_pdf_proxy_url')) {
     $proxied = flacso_get_pdf_proxy_url($malla_doc_url, 'Malla Curricular');
     if ($proxied) $malla_doc_url = $proxied;
 }
-
-$tabla_precio    = $instance['tabla_precio'] ?? null;
-$has_inversion   = !empty($instance['has_inversion']);
-$valor_uyu       = $instance['valor_uyu'] ?? null;
-$valor_usd       = $instance['valor_usd'] ?? null;
-$mostrar_usd     = !empty($tabla_precio['mostrar_dolares']);
-$valor_uyu_desc  = $instance['valor_uyu_15_descuento'] ?? null;
-$filas_precio    = is_array($tabla_precio['filas'] ?? null) ? $tabla_precio['filas'] : [];
-$nota_precio     = trim((string) ($tabla_precio['nota'] ?? ''));
-
 $render_info_card = static function ($card_title, $body, $extra_class = '', array $attrs = []) use ($has_visible_html) {
     if (!$has_visible_html($body)) {
         return;
@@ -533,11 +523,8 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         <?php echo esc_html($hero_primary_label); ?>
                                         <i class="bi bi-arrow-right" aria-hidden="true"></i>
                                     </a>
-                                    <a href="#flacso-oa-convocatoria" class="flacso-oa-program-hero__button flacso-oa-program-hero__button--secondary">
-                                        <?php esc_html_e('Ver cohorte y cursada', 'flacso-uruguay'); ?>
-                                    </a>
-                                    <a href="#flacso-oa-programa" class="flacso-oa-program-hero__button flacso-oa-program-hero__button--outline">
-                                        <?php esc_html_e('Programa académico', 'flacso-uruguay'); ?>
+                                    <a href="#flacso-oa-contenido" class="flacso-oa-program-hero__button flacso-oa-program-hero__button--secondary">
+                                        <?php esc_html_e('Ver propuesta académica', 'flacso-uruguay'); ?>
                                     </a>
                                 </div>
                             </div>
@@ -549,211 +536,79 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                     <!-- ========================================== -->
                     <section id="flacso-oa-contenido" class="flacso-oa-main-section">
                         <div class="flacso-oa-container">
-
-                            <!-- ========================================== -->
-                            <!-- BLOQUE 1: CONVOCATORIA Y COHORTE VIGENTE   -->
-                            <!-- ========================================== -->
-                            <section class="flacso-oa-cohort-panel" id="flacso-oa-convocatoria" aria-labelledby="flacso-oa-cohort-heading">
-                                <header class="flacso-oa-cohort-panel__header">
-                                    <div class="flacso-oa-cohort-panel__header-main">
-                                        <span class="flacso-oa-cohort-panel__kicker">
-                                            <i class="bi bi-clock-history me-1" aria-hidden="true"></i>
-                                            <?php esc_html_e('Convocatoria vigente', 'flacso-uruguay'); ?>
-                                        </span>
-                                        <h2 id="flacso-oa-cohort-heading" class="flacso-oa-cohort-panel__title">
-                                            <?php echo esc_html($cohorte_nombre_completo); ?>
-                                        </h2>
-                                    </div>
-                                    <div class="flacso-oa-cohort-panel__status">
-                                        <?php if ($inscripciones_abiertas) : ?>
-                                            <span class="flacso-badge flacso-badge--open">
-                                                <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
-                                                <?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?>
-                                            </span>
-                                            <?php if ($cohorte_periodo_inscripcion !== '') : ?>
-                                                <span class="flacso-oa-cohort-panel__deadline">
-                                                    <?php echo esc_html($cohorte_periodo_inscripcion); ?>
-                                                </span>
-                                            <?php endif; ?>
-                                        <?php else : ?>
-                                            <span class="flacso-badge flacso-badge--soon">
-                                                <i class="bi bi-hourglass-split" aria-hidden="true"></i>
-                                                <?php esc_html_e('Próxima apertura', 'flacso-uruguay'); ?>
-                                            </span>
-                                        <?php endif; ?>
-                                    </div>
-                                </header>
-
-                                <div class="flacso-oa-cohort-grid">
-                                    <!-- 1. Inicio y Plazos -->
-                                    <div class="flacso-oa-cohort-card">
-                                        <div class="flacso-oa-cohort-card__header">
-                                            <i class="bi bi-calendar3 flacso-oa-cohort-card__icon" aria-hidden="true"></i>
-                                            <h3><?php esc_html_e('Inicio de Cursada', 'flacso-uruguay'); ?></h3>
-                                        </div>
-                                        <div class="flacso-oa-cohort-card__body">
-                                            <p class="flacso-oa-cohort-card__highlight">
-                                                <?php echo esc_html($cohorte_inicio_fecha); ?>
-                                            </p>
-                                            <?php if (!empty($registration['open_message'])) : ?>
-                                                <p class="flacso-oa-cohort-card__subtext">
-                                                    <?php echo esc_html($registration['open_message']); ?>
-                                                </p>
-                                            <?php elseif (!$inscripciones_abiertas && !empty($registration['closed_message'])) : ?>
-                                                <p class="flacso-oa-cohort-card__subtext">
-                                                    <?php echo esc_html($registration['closed_message']); ?>
-                                                </p>
-                                            <?php else : ?>
-                                                <p class="flacso-oa-cohort-card__subtext">
-                                                    <?php esc_html_e('Las clases inician en las fechas indicadas según el calendario de la edición.', 'flacso-uruguay'); ?>
-                                                </p>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-
-                                    <!-- 2. Modalidad de la cohorte -->
-                                    <div class="flacso-oa-cohort-card">
-                                        <div class="flacso-oa-cohort-card__header">
-                                            <i class="bi bi-camera-video flacso-oa-cohort-card__icon" aria-hidden="true"></i>
-                                            <h3><?php esc_html_e('Modalidad de la Edición', 'flacso-uruguay'); ?></h3>
-                                        </div>
-                                        <div class="flacso-oa-cohort-card__body">
-                                            <p class="flacso-oa-cohort-card__highlight">
-                                                <?php echo esc_html($cohorte_modalidad_titulo); ?>
-                                            </p>
-                                            <?php if ($cohorte_modalidad_desc !== '') : ?>
-                                                <div class="flacso-oa-cohort-card__subtext">
-                                                    <?php echo wp_kses_post(wpautop($cohorte_modalidad_desc)); ?>
-                                                </div>
-                                            <?php else : ?>
-                                                <p class="flacso-oa-cohort-card__subtext">
-                                                    <?php esc_html_e('Cursada a través del campus virtual de FLACSO Uruguay.', 'flacso-uruguay'); ?>
-                                                </p>
-                                            <?php endif; ?>
-                                            <?php if ($mostrar_instancias_presenciales) : ?>
-                                                <p class="flacso-oa-cohort-card__notice">
-                                                    <i class="bi bi-geo-alt-fill" aria-hidden="true"></i> <?php esc_html_e('Incluye instancias presenciales', 'flacso-uruguay'); ?>
-                                                </p>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-
-                                    <!-- 3. Calendario Académico de la cohorte -->
-                                    <div class="flacso-oa-cohort-card">
-                                        <div class="flacso-oa-cohort-card__header">
-                                            <i class="bi bi-calendar-week flacso-oa-cohort-card__icon" aria-hidden="true"></i>
-                                            <h3><?php esc_html_e('Calendario Académico', 'flacso-uruguay'); ?></h3>
-                                        </div>
-                                        <div class="flacso-oa-cohort-card__body">
-                                            <?php if ($calendario_doc_url !== '') : ?>
-                                                <p class="flacso-oa-cohort-card__subtext" style="margin-bottom: 0.85rem;">
-                                                    <?php esc_html_e('Consultá el cronograma oficial de materias, recesos y entregas de esta cohorte.', 'flacso-uruguay'); ?>
-                                                </p>
-                                                <a href="<?php echo esc_url($calendario_doc_url); ?>" target="_blank" rel="noopener noreferrer" class="flacso-oa-link-btn flacso-meta-doc-link flacso-meta-doc-link--calendario" data-flacso-meta-doc-section="CalendarioAcademicoSectionView" data-flacso-meta-doc-layout="single_calendario">
-                                                    <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i> <?php esc_html_e('Ver Calendario (PDF)', 'flacso-uruguay'); ?>
-                                                </a>
-                                            <?php else : ?>
-                                                <p class="flacso-oa-empty-field">
-                                                    <i class="bi bi-info-circle" aria-hidden="true"></i>
-                                                    <?php esc_html_e('Calendario de cursada en proceso de confirmación para esta edición.', 'flacso-uruguay'); ?>
-                                                </p>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-
-                                    <!-- 4. Inversión y Aranceles de la cohorte -->
-                                    <div class="flacso-oa-cohort-card flacso-oa-cohort-card--pricing">
-                                        <div class="flacso-oa-cohort-card__header">
-                                            <i class="bi bi-tag flacso-oa-cohort-card__icon" aria-hidden="true"></i>
-                                            <h3><?php esc_html_e('Inversión y Aranceles', 'flacso-uruguay'); ?></h3>
-                                        </div>
-                                        <div class="flacso-oa-cohort-card__body">
-                                            <?php if ($has_inversion && $valor_uyu !== null && function_exists('flacso_theme_format_amount')) : ?>
-                                                <div class="flacso-oa-pricing-values">
-                                                    <div class="flacso-oa-pricing-main">
-                                                        <span class="flacso-oa-pricing-label"><?php esc_html_e('Arancel general:', 'flacso-uruguay'); ?></span>
-                                                        <span class="flacso-oa-pricing-val">$ <?php echo esc_html(flacso_theme_format_amount($valor_uyu)); ?> <small>UYU</small></span>
-                                                        <?php if ($mostrar_usd && $valor_usd !== null) : ?>
-                                                            <span class="flacso-oa-pricing-val-usd">/ US$ <?php echo esc_html(flacso_theme_format_amount($valor_usd)); ?></span>
-                                                        <?php endif; ?>
-                                                    </div>
-
-                                                    <?php if ($valor_uyu_desc !== null) : ?>
-                                                        <div class="flacso-oa-pricing-discount">
-                                                            <span class="flacso-oa-pricing-discount__badge">
-                                                                <i class="bi bi-percent" aria-hidden="true"></i> <?php esc_html_e('Comunidad FLACSO (15% OFF):', 'flacso-uruguay'); ?>
-                                                            </span>
-                                                            <span class="flacso-oa-pricing-discount__val">$ <?php echo esc_html(flacso_theme_format_amount($valor_uyu_desc)); ?> <small>UYU</small></span>
-                                                        </div>
-                                                    <?php endif; ?>
-                                                </div>
-
-                                                <?php if (!empty($filas_precio) && count($filas_precio) > 1) : ?>
-                                                    <div class="flacso-oa-pricing-installments">
-                                                        <span class="flacso-oa-pricing-installments__label"><?php esc_html_e('Planes de pago disponibles:', 'flacso-uruguay'); ?></span>
-                                                        <ul class="flacso-oa-pricing-installments__list">
-                                                            <?php foreach (array_slice($filas_precio, 0, 3) as $fila) : ?>
-                                                                <?php if (!empty($fila['concepto'])) : ?>
-                                                                    <li>
-                                                                        <strong><?php echo esc_html($fila['concepto']); ?>:</strong>
-                                                                        <?php if (!empty($fila['uyu'])) : ?>
-                                                                            $ <?php echo esc_html(flacso_theme_format_amount($fila['uyu'])); ?> UYU
-                                                                        <?php endif; ?>
-                                                                    </li>
-                                                                <?php endif; ?>
-                                                            <?php endforeach; ?>
-                                                        </ul>
-                                                    </div>
-                                                <?php endif; ?>
-
-                                                <?php if ($nota_precio !== '') : ?>
-                                                    <p class="flacso-oa-pricing-note"><?php echo esc_html($nota_precio); ?></p>
-                                                <?php endif; ?>
-
-                                            <?php else : ?>
-                                                <p class="flacso-oa-empty-field">
-                                                    <i class="bi bi-info-circle" aria-hidden="true"></i>
-                                                    <?php esc_html_e('Aranceles y opciones de financiación para esta cohorte en proceso de confirmación. Consultá facilidades de pago en cuotas y becas.', 'flacso-uruguay'); ?>
-                                                </p>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Barra de acción de la cohorte -->
-                                <div class="flacso-oa-cohort-panel__cta">
-                                    <?php if ($has_preinscription_cta) : ?>
-                                        <a href="<?php echo esc_url($preinscripcion_url); ?>" data-flacso-preinscription-cta="1" class="flacso-oa-cohort-btn flacso-oa-cohort-btn--primary">
-                                            <i class="bi bi-pencil-square me-2" aria-hidden="true"></i>
-                                            <?php printf(esc_html__('Preinscribirme a la %s', 'flacso-uruguay'), esc_html($cohorte_nombre_completo)); ?>
-                                            <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
-                                        </a>
-                                        <a href="#flacso-oa-consulta" class="flacso-oa-cohort-btn flacso-oa-cohort-btn--outline">
-                                            <i class="bi bi-question-circle me-1" aria-hidden="true"></i>
-                                            <?php esc_html_e('Consultar por financiación o becas', 'flacso-uruguay'); ?>
-                                        </a>
-                                    <?php else : ?>
-                                        <a href="#flacso-oa-consulta" class="flacso-oa-cohort-btn flacso-oa-cohort-btn--primary">
-                                            <i class="bi bi-bell me-2" aria-hidden="true"></i>
-                                            <?php esc_html_e('Solicitar información sobre la próxima apertura', 'flacso-uruguay'); ?>
-                                            <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
-                                        </a>
-                                    <?php endif; ?>
-                                </div>
-                            </section>
-
-                            <!-- ========================================== -->
-                            <!-- BLOQUE 2: PROPUESTA Y ESTRUCTURA ACADÉMICA -->
-                            <!-- ========================================== -->
-                            <div class="flacso-oa-section-intro" id="flacso-oa-programa">
-                                <span class="flacso-oa-section-intro__kicker"><?php echo esc_html($tipo_oferta); ?></span>
-                                <h2 class="flacso-oa-section-intro__title"><?php esc_html_e('Propuesta y Estructura Académica', 'flacso-uruguay'); ?></h2>
-                                <p class="flacso-oa-section-intro__desc"><?php esc_html_e('Fundamentación, plan de estudios, perfiles formativos y titulación del programa.', 'flacso-uruguay'); ?></p>
-                            </div>
-
                             <div class="flacso-oa-main-grid">
 
                                 <div class="flacso-oa-main-content">
+
+                                    <?php if ($cohorte_nombre !== '' || $cohorte_inicio_fecha !== '') : ?>
+                                        <!-- Callout Convocatoria Vigente (Compacto y Elegante) -->
+                                        <div class="flacso-oa-cohort-callout" id="flacso-oa-convocatoria">
+                                            <div class="flacso-oa-cohort-callout__top">
+                                                <div class="flacso-oa-cohort-callout__header">
+                                                    <i class="bi bi-clock-history" aria-hidden="true"></i>
+                                                    <span><?php esc_html_e('Convocatoria vigente:', 'flacso-uruguay'); ?></span>
+                                                    <strong><?php echo esc_html($cohorte_nombre_completo); ?></strong>
+                                                </div>
+                                                <div class="flacso-oa-cohort-callout__status">
+                                                    <?php if ($inscripciones_abiertas) : ?>
+                                                        <span class="flacso-badge flacso-badge--open">
+                                                            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                                            <?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?>
+                                                        </span>
+                                                        <?php if ($cohorte_periodo_inscripcion !== '') : ?>
+                                                            <span class="flacso-oa-cohort-callout__deadline">
+                                                                <?php echo esc_html($cohorte_periodo_inscripcion); ?>
+                                                            </span>
+                                                        <?php endif; ?>
+                                                    <?php else : ?>
+                                                        <span class="flacso-badge flacso-badge--soon">
+                                                            <i class="bi bi-hourglass-split" aria-hidden="true"></i>
+                                                            <?php esc_html_e('Próxima apertura', 'flacso-uruguay'); ?>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+
+                                            <div class="flacso-oa-cohort-callout__items">
+                                                <div class="flacso-oa-cohort-callout__item">
+                                                    <i class="bi bi-calendar3" aria-hidden="true"></i>
+                                                    <div>
+                                                        <small><?php esc_html_e('Inicio:', 'flacso-uruguay'); ?></small>
+                                                        <strong><?php echo esc_html($cohorte_inicio_fecha); ?></strong>
+                                                    </div>
+                                                </div>
+
+                                                <div class="flacso-oa-cohort-callout__item">
+                                                    <i class="bi bi-laptop" aria-hidden="true"></i>
+                                                    <div>
+                                                        <small><?php esc_html_e('Modalidad:', 'flacso-uruguay'); ?></small>
+                                                        <strong><?php echo esc_html($cohorte_modalidad_titulo); ?></strong>
+                                                    </div>
+                                                </div>
+
+                                                <?php if ($calendario_doc_url !== '') : ?>
+                                                    <div class="flacso-oa-cohort-callout__item">
+                                                        <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
+                                                        <div>
+                                                            <small><?php esc_html_e('Calendario:', 'flacso-uruguay'); ?></small>
+                                                            <a href="<?php echo esc_url($calendario_doc_url); ?>" target="_blank" rel="noopener noreferrer" class="flacso-meta-doc-link--calendario" data-flacso-meta-doc-section="CalendarioAcademicoSectionView">
+                                                                <?php esc_html_e('Descargar PDF', 'flacso-uruguay'); ?>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                <?php endif; ?>
+
+                                                <?php if ($mostrar_instancias_presenciales) : ?>
+                                                    <div class="flacso-oa-cohort-callout__item">
+                                                        <i class="bi bi-geo-alt-fill" style="color: #b45309;" aria-hidden="true"></i>
+                                                        <div>
+                                                            <span style="color: #92400e; font-weight: 600; font-size: 0.85rem;"><?php esc_html_e('Con instancias presenciales', 'flacso-uruguay'); ?></span>
+                                                        </div>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
 
                                     <?php if ($has_main_content) : ?>
                                         <div class="flacso-oa-content-grid">
