@@ -823,15 +823,14 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                             </div>
                                         </div>
 
-                                        <?php if ($inscripciones_abiertas && function_exists('flacso_consultas_render_preinscripcion_button')) : ?>
-                                            <div class="flacso-oa-preinsc-wrapper" style="margin-top: 0.75rem; padding: 0 clamp(20px, 3vw, 30px);">
-                                                <?php echo flacso_consultas_render_preinscripcion_button(); ?>
-                                            </div>
-                                        <?php elseif ($inscripciones_abiertas && $preinscripcion_url !== '') : ?>
-                                            <div class="flacso-oa-preinsc-wrapper" style="margin-top: 0.75rem; padding: 0 clamp(20px, 3vw, 30px);">
-                                                <a href="<?php echo esc_url($preinscripcion_url); ?>" data-flacso-preinscription-cta="1" class="btn btn-primary w-100 py-3 fw-bold" style="border-radius: 12px; font-size: 1.05rem;">
-                                                    <i class="bi bi-pencil-square me-2" aria-hidden="true"></i> <?php esc_html_e('Preinscripción online', 'flacso-uruguay'); ?>
-                                                </a>
+                                        <?php if ($has_preinscription_cta) : ?>
+                                            <div class="flacso-oa-preinsc-wrapper" style="margin-top: 0.75rem;">
+                                                <div class="d-grid gap-2">
+                                                    <a href="<?php echo esc_url($preinscripcion_url); ?>" data-flacso-preinscription-cta="1" class="btn btn-primary btn-lg rounded-pill py-3 fw-bold flacso-oa-preinsc-btn" aria-label="<?php echo esc_attr(sprintf(__('Ir a Preinscripción %s', 'flacso-uruguay'), $inscripciones_year)); ?>" onclick="if(typeof window.flacsoMetaTrack === 'function'){ window.flacsoMetaTrack('InitiateCheckout', { content_name: <?php echo wp_json_encode($title); ?>, content_category: 'oferta_academica' }); }">
+                                                        <i class="bi bi-stars me-2" aria-hidden="true"></i>
+                                                        <?php printf(esc_html__('Preinscripción %s', 'flacso-uruguay'), esc_html($inscripciones_year)); ?>
+                                                    </a>
+                                                </div>
                                             </div>
                                         <?php endif; ?>
 
