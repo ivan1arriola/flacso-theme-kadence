@@ -174,6 +174,29 @@
     color: var(--flacso-blue);
 }
 
+.flacso-oa-program-hero__status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.flacso-oa-program-hero__status-badge--open {
+    background: var(--flacso-yellow);
+    color: var(--flacso-blue-dark);
+}
+
+.flacso-oa-program-hero__status-badge--soon {
+    background: #e2e8f0;
+    color: #475569;
+}
+
 .flacso-oa-program-hero__title {
     max-width: 850px;
     margin: 0;
@@ -328,6 +351,19 @@
 .flacso-oa-program-hero__button--secondary:focus-visible {
     border-color: var(--flacso-blue);
     background: #f7f9fc;
+    color: var(--flacso-blue-dark) !important;
+}
+
+.flacso-oa-program-hero__button--outline {
+    border: 1px solid rgba(22, 57, 112, 0.32);
+    background: transparent;
+    color: var(--flacso-blue) !important;
+}
+
+.flacso-oa-program-hero__button--outline:hover,
+.flacso-oa-program-hero__button--outline:focus-visible {
+    border-color: var(--flacso-blue);
+    background: rgba(22, 57, 112, 0.07);
     color: var(--flacso-blue-dark) !important;
 }
 
@@ -545,6 +581,380 @@
     padding-top: clamp(8px, 1.5vw, 18px);
 }
 
+/* ==========================================================================
+   PANEL DE CONVOCATORIA Y COHORTE VIGENTE
+   ========================================================================== */
+.flacso-oa-cohort-panel {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid rgba(22, 57, 112, 0.15);
+    border-radius: var(--flacso-radius-md);
+    box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08);
+    padding: clamp(24px, 4vw, 38px);
+    margin-bottom: clamp(36px, 5vw, 56px);
+}
+
+.flacso-oa-cohort-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    border-radius: var(--flacso-radius-md) var(--flacso-radius-md) 0 0;
+    background: linear-gradient(90deg, var(--flacso-blue) 0%, var(--flacso-yellow) 100%);
+}
+
+.flacso-oa-cohort-panel__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: clamp(16px, 2.5vw, 22px);
+    margin-bottom: clamp(20px, 3vw, 26px);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.flacso-oa-cohort-panel__kicker {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--flacso-blue-soft);
+    margin-bottom: 4px;
+}
+
+.flacso-oa-cohort-panel__title {
+    font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+    font-weight: 850;
+    color: var(--flacso-blue-dark);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.flacso-oa-cohort-panel__status {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+@media (min-width: 640px) {
+    .flacso-oa-cohort-panel__status {
+        align-items: flex-end;
+    }
+}
+
+.flacso-oa-cohort-panel .flacso-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+}
+
+.flacso-oa-cohort-panel .flacso-badge--open {
+    background: var(--flacso-yellow);
+    color: var(--flacso-blue-dark);
+}
+
+.flacso-oa-cohort-panel .flacso-badge--soon {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.flacso-oa-cohort-panel__deadline {
+    font-size: 0.82rem;
+    font-weight: 650;
+    color: #059669;
+}
+
+/* Grid de las 4 tarjetas de cohorte */
+.flacso-oa-cohort-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(16px, 2vw, 22px);
+}
+
+@media (min-width: 600px) {
+    .flacso-oa-cohort-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1100px) {
+    .flacso-oa-cohort-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+.flacso-oa-cohort-card {
+    display: flex;
+    flex-direction: column;
+    background: #f8fafc;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 16px;
+    padding: clamp(18px, 2vw, 22px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.flacso-oa-cohort-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    border-color: rgba(22, 57, 112, 0.22);
+}
+
+.flacso-oa-cohort-card__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.flacso-oa-cohort-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: rgba(22, 57, 112, 0.10);
+    color: var(--flacso-blue);
+    font-size: 1.05rem;
+    flex-shrink: 0;
+}
+
+.flacso-oa-cohort-card__header h3 {
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--flacso-muted);
+    margin: 0;
+    line-height: 1.25;
+}
+
+.flacso-oa-cohort-card__body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    font-size: 0.92rem;
+    color: var(--flacso-text);
+}
+
+.flacso-oa-cohort-card__highlight {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--flacso-blue-dark);
+    margin: 0 0 6px 0;
+    line-height: 1.3;
+}
+
+.flacso-oa-cohort-card__subtext {
+    font-size: 0.86rem;
+    color: var(--flacso-muted);
+    margin: 0;
+    line-height: 1.45;
+}
+
+.flacso-oa-cohort-card__subtext p {
+    margin: 0 0 6px 0;
+}
+
+.flacso-oa-cohort-card__notice {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(252, 209, 22, 0.2);
+    color: var(--flacso-blue-dark);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+/* Pricing Card Específico */
+.flacso-oa-pricing-values {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.flacso-oa-pricing-main {
+    display: flex;
+    flex-direction: column;
+}
+
+.flacso-oa-pricing-label {
+    font-size: 0.74rem;
+    font-weight: 750;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--flacso-muted);
+}
+
+.flacso-oa-pricing-val {
+    font-size: 1.25rem;
+    font-weight: 850;
+    color: var(--flacso-blue);
+    line-height: 1.2;
+}
+
+.flacso-oa-pricing-val small {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--flacso-muted);
+}
+
+.flacso-oa-pricing-val-usd {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #475569;
+}
+
+.flacso-oa-pricing-discount {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.22);
+}
+
+.flacso-oa-pricing-discount__badge {
+    font-size: 0.74rem;
+    font-weight: 750;
+    color: #047857;
+}
+
+.flacso-oa-pricing-discount__val {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #065f46;
+}
+
+.flacso-oa-pricing-discount__val small {
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.flacso-oa-pricing-installments {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px dashed rgba(15, 23, 42, 0.12);
+}
+
+.flacso-oa-pricing-installments__label {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--flacso-muted);
+}
+
+.flacso-oa-pricing-installments__list {
+    margin: 4px 0 0 0;
+    padding-left: 14px;
+    font-size: 0.8rem;
+    color: #334155;
+    line-height: 1.35;
+}
+
+.flacso-oa-pricing-note {
+    font-size: 0.76rem;
+    color: var(--flacso-muted);
+    margin: 8px 0 0 0;
+    font-style: italic;
+}
+
+/* Barra de acción de la cohorte */
+.flacso-oa-cohort-panel__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: clamp(20px, 3vw, 26px);
+    padding-top: clamp(16px, 2.5vw, 22px);
+    border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.flacso-oa-cohort-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 750;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    line-height: 1.3;
+}
+
+.flacso-oa-cohort-btn--primary {
+    background: var(--flacso-blue);
+    color: #ffffff !important;
+    border: 1px solid transparent;
+}
+
+.flacso-oa-cohort-btn--primary:hover {
+    background: var(--flacso-yellow);
+    color: var(--flacso-blue-dark) !important;
+}
+
+.flacso-oa-cohort-btn--outline {
+    background: transparent;
+    color: var(--flacso-blue) !important;
+    border: 1px solid rgba(22, 57, 112, 0.3);
+}
+
+.flacso-oa-cohort-btn--outline:hover {
+    background: rgba(22, 57, 112, 0.06);
+    color: var(--flacso-blue-dark) !important;
+    border-color: var(--flacso-blue);
+}
+
+/* ==========================================================================
+   ENCABEZADO DE SECCIÓN DE PROPUESTA ACADÉMICA
+   ========================================================================== */
+.flacso-oa-section-intro {
+    margin-bottom: clamp(20px, 3vw, 30px);
+}
+
+.flacso-oa-section-intro__kicker {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--flacso-yellow-dark);
+    margin-bottom: 4px;
+}
+
+.flacso-oa-section-intro__title {
+    font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+    font-weight: 850;
+    color: var(--flacso-blue-dark);
+    margin: 0 0 6px 0;
+    line-height: 1.2;
+}
+
+.flacso-oa-section-intro__desc {
+    font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+    color: var(--flacso-muted);
+    margin: 0;
+    line-height: 1.5;
+}
+
 .flacso-oa-main-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -669,6 +1079,16 @@
     background: #ffffff;
     box-shadow: var(--flacso-shadow-sm);
     overflow: hidden;
+}
+
+.flacso-oa-info-card--wide {
+    grid-column: 1 / -1;
+}
+
+@media (min-width: 768px) {
+    .flacso-oa-info-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 .flacso-oa-info-card__header {
