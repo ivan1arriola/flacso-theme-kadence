@@ -2601,11 +2601,6 @@
     line-height: 1.25;
 }
 
-.flacso-oferta-responsive .fact:nth-child(3) .fact__value,
-.flacso-oferta-responsive .cohort__row:nth-child(2) .cohort__value {
-    text-transform: capitalize;
-}
-
 /* Cuerpo principal */
 .flacso-oferta-responsive .main {
     padding: 64px 0 90px;
