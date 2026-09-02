@@ -56,7 +56,7 @@
 }
 
 .flacso-oa-article {
-    overflow: hidden;
+    overflow: visible;
 }
 
 .flacso-oa-single-hero {
@@ -976,6 +976,204 @@
 
 .flacso-oa-form-panel__footer {
     padding: 0 clamp(20px, 3vw, 30px) clamp(22px, 3vw, 30px);
+}
+
+/* ==========================================================================
+   TARJETAS ADICIONALES DEL ASIDE (DEBAJO DEL FORMULARIO)
+   ========================================================================== */
+.flacso-oa-aside-card {
+    margin-top: 1rem;
+    background: #ffffff;
+    border: 1px solid rgba(22, 57, 112, 0.12);
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+    overflow: hidden;
+}
+
+.flacso-oa-aside-card__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 11px 16px;
+    background: #f8fafc;
+    border-bottom: 1px solid rgba(22, 57, 112, 0.08);
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--flacso-blue-dark);
+}
+
+.flacso-oa-aside-card__title i {
+    color: var(--flacso-blue);
+    font-size: 1rem;
+}
+
+.flacso-oa-aside-card__body {
+    padding: 14px 16px;
+}
+
+/* Documentos en el Aside */
+.flacso-oa-aside-docs {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.flacso-oa-aside-doc-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #f8fafc;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    color: var(--flacso-blue-dark);
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+}
+
+.flacso-oa-aside-doc-btn:hover {
+    background: #f1f5f9;
+    border-color: var(--flacso-blue);
+    transform: translateX(2px);
+}
+
+.flacso-oa-aside-doc-btn i.bi-file-earmark-pdf {
+    font-size: 1.4rem;
+    color: #dc2626;
+    flex-shrink: 0;
+}
+
+.flacso-oa-aside-doc-btn i.bi-calendar-event {
+    font-size: 1.4rem;
+    color: var(--flacso-blue);
+    flex-shrink: 0;
+}
+
+.flacso-oa-aside-doc-btn i.bi-download {
+    font-size: 0.9rem;
+    color: var(--flacso-muted);
+}
+
+.flacso-oa-aside-doc-btn__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+}
+
+.flacso-oa-aside-doc-btn__text strong {
+    font-size: 0.88rem;
+    font-weight: 750;
+    color: var(--flacso-blue-dark);
+}
+
+.flacso-oa-aside-doc-btn__text small {
+    font-size: 0.74rem;
+    color: var(--flacso-muted);
+}
+
+/* Contacto y Asistencia en el Aside */
+.flacso-oa-aside-person {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.flacso-oa-aside-person__avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.flacso-oa-aside-person__avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #64748b;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.flacso-oa-aside-person__info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+}
+
+.flacso-oa-aside-person__info strong {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--flacso-blue-dark);
+}
+
+.flacso-oa-aside-person__info small {
+    font-size: 0.78rem;
+    color: var(--flacso-muted);
+}
+
+.flacso-oa-aside-contact__text {
+    font-size: 0.84rem;
+    color: var(--flacso-muted);
+    margin: 0 0 10px 0;
+    line-height: 1.4;
+}
+
+.flacso-oa-aside-contact__email {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(22, 57, 112, 0.06);
+    color: var(--flacso-blue);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none !important;
+    word-break: break-all;
+    transition: background 0.2s ease;
+}
+
+.flacso-oa-aside-contact__email:hover {
+    background: rgba(22, 57, 112, 0.12);
+    color: var(--flacso-blue-dark);
+}
+
+/* Badges de Reconocimiento en el Aside */
+.flacso-oa-aside-badges {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.flacso-oa-aside-badges li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    color: #334155;
+}
+
+.flacso-oa-aside-badges li i {
+    font-size: 0.95rem;
+    margin-top: 2px;
+    flex-shrink: 0;
 }
 
 .flacso-oferta-responsive .flacso-oa-form-panel__body form,
