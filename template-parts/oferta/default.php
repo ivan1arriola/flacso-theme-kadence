@@ -826,14 +826,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         <?php if ($has_preinscription_cta) : ?>
                                             <div class="flacso-oa-preinsc-wrapper" style="margin-top: 0.75rem;">
                                                 <div class="d-grid gap-2">
-                                                    <a href="<?php echo esc_url($preinscripcion_url); ?>" data-flacso-preinscription-cta="1" class="btn btn-primary btn-lg rounded-pill py-3 fw-bold flacso-oa-preinsc-btn" aria-label="<?php echo esc_attr(sprintf(__('Ir a Preinscripción %s', 'flacso-uruguay'), $inscripciones_year)); ?>" onclick="if(typeof window.flacsoMetaTrack === 'function'){ window.flacsoMetaTrack('InitiateCheckout', { content_name: <?php echo wp_json_encode($title); ?>, content_category: 'oferta_academica' }); }">
-                                                        <i class="bi bi-stars me-2" aria-hidden="true"></i>
-                                                        <?php printf(esc_html__('Preinscripción %s', 'flacso-uruguay'), esc_html($inscripciones_year)); ?>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        <?php endif; ?>
-
                                         <!-- WIDGET 1: DOCUMENTOS DESCARGABLES (MALLA / CALENDARIO) -->
                                         <?php if ($has_aside_docs) : ?>
                                             <div class="flacso-oa-aside-card">
