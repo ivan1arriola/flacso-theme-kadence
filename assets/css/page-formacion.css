@@ -257,3 +257,64 @@
 .flacso-formacion-card:hover .flacso-formacion-card__action {
     color: #0b5ed7;
 }
+
+/* Subgrupos de abiertas y próximas aperturas dentro del catálogo */
+.flacso-formacion-subgroup {
+    margin-bottom: 2.25rem;
+}
+
+.flacso-formacion-subgroup--closed {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px dashed var(--global-palette7, #e2e8f0);
+}
+
+.flacso-formacion-subgroup__header {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1.25rem;
+}
+
+.flacso-formacion-subgroup__title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--global-palette1, #1d3a72);
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+}
+
+.flacso-formacion-subgroup__title--open i {
+    color: #16a34a;
+}
+
+.flacso-formacion-subgroup__title--soon i {
+    color: #64748b;
+}
+
+.flacso-formacion-subgroup__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    padding: 0 0.45rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.flacso-formacion-subgroup__count--open {
+    background: #dcfce7;
+    color: #15803d;
+    border: 1px solid rgba(22, 163, 74, 0.25);
+}
+
+.flacso-formacion-subgroup__count--soon {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid rgba(100, 116, 139, 0.25);
+}
+

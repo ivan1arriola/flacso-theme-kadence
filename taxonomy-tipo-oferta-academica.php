@@ -70,19 +70,96 @@ if ($ofertas_query->have_posts()) {
 }
 wp_reset_postdata();
 
-usort($offers_list, static function (array $a, array $b): int {
-    $a_open = !empty($a['is_open']) ? 0 : 1;
-    $b_open = !empty($b['is_open']) ? 0 : 1;
-    if ($a_open !== $b_open) {
-        return $a_open <=> $b_open;
+$offers_open = [];
+$offers_closed = [];
+foreach ($offers_list as $item) {
+    if (!empty($item['is_open'])) {
+        $offers_open[] = $item;
+    } else {
+        $offers_closed[] = $item;
     }
+}
+
+$sort_offers = static function (array $a, array $b): int {
     $a_sort = (int) ($a['sort_timestamp'] ?? PHP_INT_MAX);
     $b_sort = (int) ($b['sort_timestamp'] ?? PHP_INT_MAX);
     if ($a_sort === $b_sort) {
         return strcasecmp((string) ($a['title'] ?? ''), (string) ($b['title'] ?? ''));
     }
     return $a_sort <=> $b_sort;
-});
+};
+
+usort($offers_open, $sort_offers);
+usort($offers_closed, $sort_offers);
+
+$render_offer_card = static function (array $item): void {
+    $card_cta = !empty($item['is_open'])
+        ? __('Ver información e inscribirme', 'flacso-uruguay')
+        : __('Ver información del programa', 'flacso-uruguay');
+    ?>
+    <article class="grid-item-wrap">
+        <a
+            href="<?php echo esc_url((string) $item['permalink']); ?>"
+            class="flacso-premium-card flacso-premium-card--link h-100 w-100"
+            aria-label="<?php echo esc_attr(sprintf(__('Ver información de %s', 'flacso-uruguay'), (string) $item['title'])); ?>"
+            data-flacso-offer-click="1"
+            data-offer-title="<?php echo esc_attr((string) $item['title']); ?>"
+            data-offer-status="<?php echo !empty($item['is_open']) ? 'inscripciones_abiertas' : 'proxima_apertura'; ?>"
+        >
+            <div class="flacso-premium-card__image-wrap">
+                <?php if (!empty($item['thumbnail_url'])) : ?>
+                    <img src="<?php echo esc_url((string) $item['thumbnail_url']); ?>" class="flacso-premium-card__img" alt="<?php echo esc_attr((string) $item['title']); ?>">
+                <?php else : ?>
+                    <div class="flacso-premium-card__img-placeholder">
+                        <i class="bi bi-mortarboard" style="font-size: 3rem;"></i>
+                    </div>
+                <?php endif; ?>
+
+                <div class="flacso-premium-card__badges">
+                    <?php if (!empty($item['is_open'])) : ?>
+                        <span class="flacso-badge flacso-badge--open"><?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?></span>
+                    <?php else : ?>
+                        <span class="flacso-badge flacso-badge--soon"><?php esc_html_e('Próxima apertura', 'flacso-uruguay'); ?></span>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="flacso-premium-card__body">
+                <div class="flacso-premium-card__meta">
+                    <?php if (!empty($item['duracion'])) : ?>
+                        <span class="flacso-meta-item">
+                            <i class="bi bi-clock" aria-hidden="true"></i>
+                            <?php echo esc_html((string) $item['duracion']); ?>
+                        </span>
+                    <?php endif; ?>
+
+                    <?php if (!empty($item['start_label'])) : ?>
+                        <span class="flacso-meta-item flacso-meta-item--start">
+                            <i class="bi bi-calendar3" aria-hidden="true"></i>
+                            <time datetime="<?php echo esc_attr((string) $item['start_iso']); ?>"><?php echo esc_html((string) $item['start_label']); ?></time>
+                        </span>
+                    <?php endif; ?>
+                </div>
+
+                <h3 class="flacso-premium-card__title">
+                    <?php echo esc_html((string) $item['title']); ?>
+                </h3>
+
+                <div class="flacso-premium-card__excerpt">
+                    <?php echo esc_html((string) $item['excerpt']); ?>
+                </div>
+
+                <div class="flacso-premium-card__footer">
+                    <span class="flacso-premium-card__cta <?php echo !empty($item['is_open']) ? 'flacso-premium-card__cta--open' : ''; ?>">
+                        <?php echo esc_html($card_cta); ?>
+                        <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </span>
+                </div>
+            </div>
+        </a>
+    </article>
+    <?php
+};
 
 get_header();
 ?>
@@ -109,85 +186,55 @@ get_header();
         </header>
 
         <div id="flacso-listado-ofertas"></div>
-        <?php if (!empty($offers_list)) : ?>
-            <section class="flacso-ofertas-listado" aria-labelledby="flacso-ofertas-titulo">
-                <div class="flacso-ofertas-toolbar">
-                    <h2 id="flacso-ofertas-titulo" class="flacso-ofertas-toolbar__title">
-                        <?php esc_html_e('Propuestas disponibles', 'flacso-uruguay'); ?>
-                    </h2>
-                </div>
+        <?php if (!empty($offers_open) || !empty($offers_closed)) : ?>
 
-                <div class="flacso-ofertas-grid">
-                    <?php foreach ($offers_list as $item) : ?>
-                        <article class="grid-item-wrap">
-                            <a
-                                href="<?php echo esc_url((string) $item['permalink']); ?>"
-                                class="flacso-premium-card flacso-premium-card--link h-100 w-100"
-                                aria-label="<?php echo esc_attr(sprintf(__('Ver información de %s', 'flacso-uruguay'), (string) $item['title'])); ?>"
-                                data-flacso-offer-click="1"
-                                data-offer-title="<?php echo esc_attr((string) $item['title']); ?>"
-                                data-offer-status="<?php echo !empty($item['is_open']) ? 'inscripciones_abiertas' : 'proxima_apertura'; ?>"
-                            >
-                                <div class="flacso-premium-card__image-wrap">
-                                    <?php if (!empty($item['thumbnail_url'])) : ?>
-                                        <img src="<?php echo esc_url((string) $item['thumbnail_url']); ?>" class="flacso-premium-card__img" alt="<?php echo esc_attr((string) $item['title']); ?>">
-                                    <?php else : ?>
-                                        <div class="flacso-premium-card__img-placeholder">
-                                            <i class="bi bi-mortarboard" style="font-size: 3rem;"></i>
-                                        </div>
-                                    <?php endif; ?>
+            <?php if (!empty($offers_open)) : ?>
+                <section class="flacso-ofertas-listado flacso-ofertas-listado--open" aria-labelledby="flacso-ofertas-abiertas-titulo">
+                    <div class="flacso-ofertas-toolbar flacso-ofertas-toolbar--open">
+                        <div class="flacso-ofertas-toolbar__header">
+                            <h2 id="flacso-ofertas-abiertas-titulo" class="flacso-ofertas-toolbar__title">
+                                <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
+                                <?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?>
+                            </h2>
+                            <span class="flacso-ofertas-toolbar__count flacso-ofertas-toolbar__count--open">
+                                <?php echo count($offers_open); ?> <?php echo count($offers_open) === 1 ? esc_html__('propuesta disponible', 'flacso-uruguay') : esc_html__('propuestas disponibles', 'flacso-uruguay'); ?>
+                            </span>
+                        </div>
+                    </div>
 
-                                    <div class="flacso-premium-card__badges">
-                                        <?php if (!empty($item['is_open'])) : ?>
-                                            <span class="flacso-badge flacso-badge--open"><?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?></span>
-                                        <?php else : ?>
-                                            <span class="flacso-badge flacso-badge--soon"><?php esc_html_e('Próxima apertura', 'flacso-uruguay'); ?></span>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
+                    <div class="flacso-ofertas-grid">
+                        <?php foreach ($offers_open as $item) : ?>
+                            <?php $render_offer_card($item); ?>
+                        <?php endforeach; ?>
+                    </div>
+                </section>
+            <?php endif; ?>
 
-                                <div class="flacso-premium-card__body">
-                                    <div class="flacso-premium-card__meta">
-                                        <?php if (!empty($item['duracion'])) : ?>
-                                            <span class="flacso-meta-item">
-                                                <i class="bi bi-clock" aria-hidden="true"></i>
-                                                <?php echo esc_html((string) $item['duracion']); ?>
-                                            </span>
-                                        <?php endif; ?>
+            <?php if (!empty($offers_closed)) : ?>
+                <section class="flacso-ofertas-listado flacso-ofertas-listado--soon" aria-labelledby="flacso-ofertas-proximas-titulo">
+                    <div class="flacso-ofertas-toolbar flacso-ofertas-toolbar--soon">
+                        <div class="flacso-ofertas-toolbar__header">
+                            <h2 id="flacso-ofertas-proximas-titulo" class="flacso-ofertas-toolbar__title">
+                                <i class="bi bi-clock-history text-secondary" aria-hidden="true"></i>
+                                <?php esc_html_e('Próxima apertura', 'flacso-uruguay'); ?>
+                            </h2>
+                            <span class="flacso-ofertas-toolbar__count flacso-ofertas-toolbar__count--soon">
+                                <?php echo count($offers_closed); ?> <?php echo count($offers_closed) === 1 ? esc_html__('propuesta', 'flacso-uruguay') : esc_html__('propuestas', 'flacso-uruguay'); ?>
+                            </span>
+                        </div>
+                        <p class="flacso-ofertas-toolbar__note">
+                            <?php esc_html_e('Programas sin inscripciones activas en este momento. Podés consultar el plan de estudios y registrar tu consulta.', 'flacso-uruguay'); ?>
+                        </p>
+                    </div>
 
-                                        <?php if (!empty($item['start_label'])) : ?>
-                                            <span class="flacso-meta-item flacso-meta-item--start">
-                                                <i class="bi bi-calendar3" aria-hidden="true"></i>
-                                                <time datetime="<?php echo esc_attr((string) $item['start_iso']); ?>"><?php echo esc_html((string) $item['start_label']); ?></time>
-                                            </span>
-                                        <?php endif; ?>
-                                    </div>
+                    <div class="flacso-ofertas-grid">
+                        <?php foreach ($offers_closed as $item) : ?>
+                            <?php $render_offer_card($item); ?>
+                        <?php endforeach; ?>
+                    </div>
+                </section>
+            <?php endif; ?>
 
-                                    <h3 class="flacso-premium-card__title">
-                                        <?php echo esc_html((string) $item['title']); ?>
-                                    </h3>
-
-                                    <div class="flacso-premium-card__excerpt">
-                                        <?php echo esc_html((string) $item['excerpt']); ?>
-                                    </div>
-
-                                    <div class="flacso-premium-card__footer">
-                                        <?php
-                                        $card_cta = !empty($item['is_open'])
-                                            ? __('Ver información e inscribirme', 'flacso-uruguay')
-                                            : __('Ver información del programa', 'flacso-uruguay');
-                                        ?>
-                                        <span class="flacso-premium-card__cta <?php echo !empty($item['is_open']) ? 'flacso-premium-card__cta--open' : ''; ?>">
-                                            <?php echo esc_html($card_cta); ?>
-                                            <i class="bi bi-arrow-right" aria-hidden="true"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </a>
-                        </article>
-                    <?php endforeach; ?>
-                </div>
-            </section>
         <?php else : ?>
             <div class="col-12 text-center py-5">
                 <i class="bi bi-info-circle text-muted mb-3 d-block mx-auto" style="font-size: 3rem;"></i>

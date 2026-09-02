@@ -99,10 +99,83 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
         </div>
     </section>
 
+    <?php
+    $render_formacion_card = static function (array $item): void {
+        $is_open = !empty($item['registration']['is_open']);
+        $fecha_inicio = (string) ($item['instance']['fecha_inicio'] ?? '');
+        $carga_horaria = (string) ($item['academic']['carga_horaria'] ?? '');
+        $fechas_card = !empty($item['instance']['fechas_formateadas']) ? $item['instance']['fechas_formateadas'] : ($fecha_inicio !== '' ? flacso_theme_format_date_es($fecha_inicio, false) : '');
+        ?>
+        <a href="<?php echo esc_url($item['permalink']); ?>" class="flacso-formacion-card">
+            <div class="flacso-formacion-card__media">
+                <?php if (!empty($item['thumbnail_url'])) : ?>
+                    <img src="<?php echo esc_url($item['thumbnail_url']); ?>" alt="<?php echo esc_attr($item['title']); ?>" loading="lazy">
+                <?php endif; ?>
+                <span class="flacso-formacion-card__badge"><?php echo esc_html($item['type_label']); ?></span>
+            </div>
+            <div class="flacso-formacion-card__body">
+                <h3 class="flacso-formacion-card__title"><?php echo esc_html($item['title']); ?></h3>
+                <?php if (!empty($item['academic']['presentacion'])) : ?>
+                    <p class="flacso-formacion-card__excerpt">
+                        <?php echo esc_html(wp_trim_words(wp_strip_all_tags($item['academic']['presentacion']), 22)); ?>
+                    </p>
+                <?php endif; ?>
+
+                <div class="flacso-formacion-card__meta">
+                    <?php if ($fechas_card !== '') : ?>
+                        <span class="flacso-formacion-card__meta-item">
+                            <i class="bi bi-calendar3" aria-hidden="true"></i>
+                            <?php echo esc_html($fechas_card); ?>
+                        </span>
+                    <?php endif; ?>
+                    <?php if ($carga_horaria !== '') : ?>
+                        <span class="flacso-formacion-card__meta-item">
+                            <i class="bi bi-clock" aria-hidden="true"></i>
+                            <?php echo esc_html($carga_horaria); ?> hs.
+                        </span>
+                    <?php endif; ?>
+                </div>
+
+                <div class="flacso-formacion-card__footer">
+                    <span class="flacso-formacion-card__status<?php echo $is_open ? ' is-open' : ''; ?>">
+                        <?php echo esc_html($is_open ? __('Inscripciones abiertas', 'flacso-uruguay') : __('Próxima apertura', 'flacso-uruguay')); ?>
+                    </span>
+                    <span class="flacso-formacion-card__action">
+                        <?php esc_html_e('Conocer más', 'flacso-uruguay'); ?> →
+                    </span>
+                </div>
+            </div>
+        </a>
+        <?php
+    };
+    ?>
+
     <div class="flacso-formacion-catalog">
 
         <?php foreach ($tipos_oferta as $slug => $info) : ?>
-            <?php if (!empty($ofertas_por_tipo[$slug])) : ?>
+            <?php if (!empty($ofertas_por_tipo[$slug])) :
+                $group_open = [];
+                $group_closed = [];
+                foreach ($ofertas_por_tipo[$slug] as $item) {
+                    if (!empty($item['registration']['is_open'])) {
+                        $group_open[] = $item;
+                    } else {
+                        $group_closed[] = $item;
+                    }
+                }
+                $sort_formacion = static function (array $a, array $b): int {
+                    $a_date = (string) ($a['instance']['fecha_inicio'] ?? '');
+                    $b_date = (string) ($b['instance']['fecha_inicio'] ?? '');
+                    $a_ts = $a_date !== '' ? strtotime($a_date) : PHP_INT_MAX;
+                    $b_ts = $b_date !== '' ? strtotime($b_date) : PHP_INT_MAX;
+                    if ($a_ts === $b_ts) {
+                        return strcasecmp((string) ($a['title'] ?? ''), (string) ($b['title'] ?? ''));
+                    }
+                    return $a_ts <=> $b_ts;
+                };
+                usort($group_open, $sort_formacion);
+                usort($group_closed, $sort_formacion);
+            ?>
                 <section id="<?php echo esc_attr($slug); ?>" class="flacso-formacion-group" aria-labelledby="heading-<?php echo esc_attr($slug); ?>">
                     <header class="flacso-formacion-group__header">
                         <h2 id="heading-<?php echo esc_attr($slug); ?>" class="flacso-formacion-group__title"><?php echo esc_html($info['label']); ?></h2>
@@ -111,56 +184,47 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
                         </a>
                     </header>
 
-                    <div class="flacso-formacion-grid">
-                        <?php foreach ($ofertas_por_tipo[$slug] as $item) :
-                            $is_open = !empty($item['registration']['is_open']);
-                            $fecha_inicio = (string) ($item['instance']['fecha_inicio'] ?? '');
-                            $carga_horaria = (string) ($item['academic']['carga_horaria'] ?? '');
-                        ?>
-                            <a href="<?php echo esc_url($item['permalink']); ?>" class="flacso-formacion-card">
-                                <div class="flacso-formacion-card__media">
-                                    <?php if (!empty($item['thumbnail_url'])) : ?>
-                                        <img src="<?php echo esc_url($item['thumbnail_url']); ?>" alt="<?php echo esc_attr($item['title']); ?>" loading="lazy">
-                                    <?php endif; ?>
-                                    <span class="flacso-formacion-card__badge"><?php echo esc_html($item['type_label']); ?></span>
-                                </div>
-                                <div class="flacso-formacion-card__body">
-                                    <h3 class="flacso-formacion-card__title"><?php echo esc_html($item['title']); ?></h3>
-                                    <?php if (!empty($item['academic']['presentacion'])) : ?>
-                                        <p class="flacso-formacion-card__excerpt">
-                                            <?php echo esc_html(wp_trim_words(wp_strip_all_tags($item['academic']['presentacion']), 22)); ?>
-                                        </p>
-                                    <?php endif; ?>
+                    <?php if (!empty($group_open) && !empty($group_closed)) : ?>
+                        <div class="flacso-formacion-subgroup">
+                            <div class="flacso-formacion-subgroup__header">
+                                <h3 class="flacso-formacion-subgroup__title flacso-formacion-subgroup__title--open">
+                                    <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
+                                    <?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?>
+                                </h3>
+                                <span class="flacso-formacion-subgroup__count flacso-formacion-subgroup__count--open">
+                                    <?php echo count($group_open); ?>
+                                </span>
+                            </div>
+                            <div class="flacso-formacion-grid">
+                                <?php foreach ($group_open as $item) : ?>
+                                    <?php $render_formacion_card($item); ?>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
 
-                                    <div class="flacso-formacion-card__meta">
-                                        <?php
-                                        $fechas_card = !empty($item['instance']['fechas_formateadas']) ? $item['instance']['fechas_formateadas'] : ($fecha_inicio !== '' ? flacso_theme_format_date_es($fecha_inicio, false) : '');
-                                        if ($fechas_card !== '') : ?>
-                                            <span class="flacso-formacion-card__meta-item">
-                                                <i class="bi bi-calendar3" aria-hidden="true"></i>
-                                                <?php echo esc_html($fechas_card); ?>
-                                            </span>
-                                        <?php endif; ?>
-                                        <?php if ($carga_horaria !== '') : ?>
-                                            <span class="flacso-formacion-card__meta-item">
-                                                <i class="bi bi-clock" aria-hidden="true"></i>
-                                                <?php echo esc_html($carga_horaria); ?> hs.
-                                            </span>
-                                        <?php endif; ?>
-                                    </div>
-
-                                    <div class="flacso-formacion-card__footer">
-                                        <span class="flacso-formacion-card__status<?php echo $is_open ? ' is-open' : ''; ?>">
-                                            <?php echo esc_html($is_open ? __('Inscripciones abiertas', 'flacso-uruguay') : __('Próxima apertura', 'flacso-uruguay')); ?>
-                                        </span>
-                                        <span class="flacso-formacion-card__action">
-                                            <?php esc_html_e('Conocer más', 'flacso-uruguay'); ?> →
-                                        </span>
-                                    </div>
-                                </div>
-                            </a>
-                        <?php endforeach; ?>
-                    </div>
+                        <div class="flacso-formacion-subgroup flacso-formacion-subgroup--closed">
+                            <div class="flacso-formacion-subgroup__header">
+                                <h3 class="flacso-formacion-subgroup__title flacso-formacion-subgroup__title--soon">
+                                    <i class="bi bi-clock-history text-secondary" aria-hidden="true"></i>
+                                    <?php esc_html_e('Próxima apertura', 'flacso-uruguay'); ?>
+                                </h3>
+                                <span class="flacso-formacion-subgroup__count flacso-formacion-subgroup__count--soon">
+                                    <?php echo count($group_closed); ?>
+                                </span>
+                            </div>
+                            <div class="flacso-formacion-grid">
+                                <?php foreach ($group_closed as $item) : ?>
+                                    <?php $render_formacion_card($item); ?>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php else : ?>
+                        <div class="flacso-formacion-grid">
+                            <?php foreach (array_merge($group_open, $group_closed) as $item) : ?>
+                                <?php $render_formacion_card($item); ?>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                 </section>
             <?php endif; ?>
         <?php endforeach; ?>

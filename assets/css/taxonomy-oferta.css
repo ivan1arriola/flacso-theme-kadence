@@ -442,13 +442,16 @@
     margin-top: 0;
 }
 
+.flacso-ofertas-listado + .flacso-ofertas-listado {
+    margin-top: 3.5rem;
+}
+
 .flacso-ofertas-toolbar {
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1rem;
-    margin: 0 0 1.4rem;
-    padding: 1rem 1.15rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0 0 1.5rem;
+    padding: 1.15rem 1.35rem;
     border: 1px solid rgba(5, 25, 56, 0.08);
     border-left: 5px solid var(--flacso-yellow);
     border-radius: 14px;
@@ -456,12 +459,62 @@
     box-shadow: 0 8px 22px rgba(5, 25, 56, 0.05);
 }
 
+.flacso-ofertas-toolbar--open {
+    border-left-color: #16a34a;
+}
+
+.flacso-ofertas-toolbar--soon {
+    border-left-color: #64748b;
+    background: #f8fafc;
+}
+
+.flacso-ofertas-toolbar__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
 .flacso-ofertas-toolbar__title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     margin: 0;
     color: var(--flacso-blue-dark);
-    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    font-size: clamp(1.2rem, 2.2vw, 1.5rem);
     font-weight: 900;
     line-height: 1.2;
+}
+
+.flacso-ofertas-toolbar__count {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.825rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.flacso-ofertas-toolbar__count--open {
+    background: #dcfce7;
+    color: #15803d;
+    border: 1px solid rgba(22, 163, 74, 0.25);
+}
+
+.flacso-ofertas-toolbar__count--soon {
+    background: #e2e8f0;
+    color: #475569;
+    border: 1px solid rgba(100, 116, 139, 0.25);
+}
+
+.flacso-ofertas-toolbar__note {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.925rem;
+    line-height: 1.45;
 }
 
 .flacso-meta-item--start {
@@ -473,11 +526,13 @@
 
 @media (max-width: 767px) {
     .flacso-ofertas-toolbar {
-        align-items: flex-start;
-        flex-direction: column;
         margin-bottom: 1rem;
-        padding: 0.9rem;
+        padding: 0.95rem 1rem;
         border-radius: 12px;
     }
 
+    .flacso-ofertas-listado + .flacso-ofertas-listado {
+        margin-top: 2.5rem;
     }
+}
+
