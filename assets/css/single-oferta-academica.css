@@ -110,6 +110,35 @@
     object-position: center;
 }
 
+.flacso-oa-program-hero__placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    min-height: 280px;
+    padding: 2rem;
+    text-align: center;
+    background: linear-gradient(145deg, #173b70, #0d2d5c);
+    user-select: none;
+}
+
+.flacso-oa-program-hero__placeholder i {
+    font-size: clamp(3.5rem, 6vw, 4.8rem);
+    color: var(--flacso-yellow);
+    margin-bottom: 0.85rem;
+    line-height: 1;
+}
+
+.flacso-oa-program-hero__placeholder span {
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+
 .flacso-oa-program-hero__content {
     min-width: 0;
 }

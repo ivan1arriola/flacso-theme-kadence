@@ -108,7 +108,10 @@ $render_offer_card = static function (array $item): void {
         >
             <div class="flacso-premium-card__image-wrap">
                 <?php if (!empty($item['thumbnail_url'])) : ?>
-                    <img src="<?php echo esc_url((string) $item['thumbnail_url']); ?>" class="flacso-premium-card__img" alt="<?php echo esc_attr((string) $item['title']); ?>">
+                    <img src="<?php echo esc_url((string) $item['thumbnail_url']); ?>" class="flacso-premium-card__img" alt="<?php echo esc_attr((string) $item['title']); ?>" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                    <div class="flacso-premium-card__img-placeholder" style="display:none;">
+                        <i class="bi bi-mortarboard" style="font-size: 3rem;"></i>
+                    </div>
                 <?php else : ?>
                     <div class="flacso-premium-card__img-placeholder">
                         <i class="bi bi-mortarboard" style="font-size: 3rem;"></i>

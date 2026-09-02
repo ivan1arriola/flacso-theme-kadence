@@ -109,7 +109,14 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
         <a href="<?php echo esc_url($item['permalink']); ?>" class="flacso-formacion-card">
             <div class="flacso-formacion-card__media">
                 <?php if (!empty($item['thumbnail_url'])) : ?>
-                    <img src="<?php echo esc_url($item['thumbnail_url']); ?>" alt="<?php echo esc_attr($item['title']); ?>" loading="lazy">
+                    <img src="<?php echo esc_url($item['thumbnail_url']); ?>" alt="<?php echo esc_attr($item['title']); ?>" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                    <div class="flacso-formacion-card__placeholder" style="display:none;">
+                        <i class="bi bi-mortarboard" aria-hidden="true"></i>
+                    </div>
+                <?php else : ?>
+                    <div class="flacso-formacion-card__placeholder">
+                        <i class="bi bi-mortarboard" aria-hidden="true"></i>
+                    </div>
                 <?php endif; ?>
                 <span class="flacso-formacion-card__badge"><?php echo esc_html($item['type_label']); ?></span>
             </div>
@@ -247,7 +254,14 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
                         <a href="<?php echo esc_url($sem['permalink']); ?>" class="flacso-formacion-card">
                             <div class="flacso-formacion-card__media">
                                 <?php if (!empty($sem['thumbnail_url'])) : ?>
-                                    <img src="<?php echo esc_url($sem['thumbnail_url']); ?>" alt="<?php echo esc_attr($sem['title']); ?>" loading="lazy">
+                                    <img src="<?php echo esc_url($sem['thumbnail_url']); ?>" alt="<?php echo esc_attr($sem['title']); ?>" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                                    <div class="flacso-formacion-card__placeholder" style="display:none;">
+                                        <i class="bi bi-mortarboard" aria-hidden="true"></i>
+                                    </div>
+                                <?php else : ?>
+                                    <div class="flacso-formacion-card__placeholder">
+                                        <i class="bi bi-mortarboard" aria-hidden="true"></i>
+                                    </div>
                                 <?php endif; ?>
                                 <span class="flacso-formacion-card__badge"><?php esc_html_e('Seminario', 'flacso-uruguay'); ?></span>
                             </div>

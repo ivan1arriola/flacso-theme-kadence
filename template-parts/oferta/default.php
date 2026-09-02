@@ -100,7 +100,7 @@ $hero_quick_items[] = [
 $duracion_text = $duracion_meses_val !== '' && function_exists('flacso_theme_format_duration_months')
     ? flacso_theme_format_duration_months($duracion_meses_val)
     : '';
-if ($duracion_text === '') {
+if ($duracion_text === '' || $duracion_text === '0 meses' || (is_numeric($duracion_meses_val) && (int) $duracion_meses_val <= 0)) {
     $duracion_text = __('A definir', 'flacso-uruguay');
 }
 $hero_quick_items[] = [
@@ -403,21 +403,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
     echo '</div>';
 };
 
-$banner_featured_url = $thumbnail_url;
-if (!$banner_featured_url) {
-    $svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="788" viewBox="0 0 1400 788">'
-        . '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
-        . '<stop offset="0" stop-color="#1d3a72"/><stop offset="1" stop-color="#0f1f3e"/>'
-        . '</linearGradient></defs>'
-        . '<rect width="1400" height="788" fill="url(#g)"/>'
-        . '<circle cx="1080" cy="240" r="210" fill="rgba(254,210,34,0.18)"/>'
-        . '<circle cx="1160" cy="320" r="150" fill="rgba(254,210,34,0.12)"/>'
-        . '<rect x="90" y="560" width="1220" height="140" rx="16" fill="rgba(0,0,0,0.18)"/>'
-        . '<text x="110" y="615" font-family="Inter, Arial" font-size="44" fill="rgba(255,255,255,0.92)">FLACSO Uruguay</text>'
-        . '</svg>';
-    $banner_featured_url = 'data:image/svg+xml;base64,' . base64_encode($svg);
-}
-
 ?>
 
 <div id="inner-wrap" class="wrap kt-clear flacso-oferta-responsive">
@@ -430,11 +415,24 @@ if (!$banner_featured_url) {
                         <section class="flacso-oa-program-hero" aria-labelledby="flacso-oa-program-title">
                             <div class="flacso-oa-program-hero__media-wrap">
                                 <div class="flacso-oa-program-hero__media">
-                                    <img
-                                        src="<?php echo esc_url($banner_featured_url); ?>"
-                                        alt="<?php echo esc_attr($title); ?>"
-                                        loading="eager"
-                                        fetchpriority="high">
+                                    <?php if (!empty($thumbnail_url)) : ?>
+                                        <img
+                                            src="<?php echo esc_url($thumbnail_url); ?>"
+                                            alt="<?php echo esc_attr($title); ?>"
+                                            loading="eager"
+                                            fetchpriority="high"
+                                            onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';"
+                                        >
+                                        <div class="flacso-oa-program-hero__placeholder" style="display:none;">
+                                            <i class="bi bi-mortarboard" aria-hidden="true"></i>
+                                            <span><?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?></span>
+                                        </div>
+                                    <?php else : ?>
+                                        <div class="flacso-oa-program-hero__placeholder">
+                                            <i class="bi bi-mortarboard" aria-hidden="true"></i>
+                                            <span><?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?></span>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
@@ -586,7 +584,7 @@ if (!$banner_featured_url) {
                                         __('Duración', 'flacso-uruguay'),
                                         $academic['duracion_html']
                                     );
-                                } elseif (!empty($academic['duracion_meses'])) {
+                                } elseif (!empty($academic['duracion_meses']) && (int) $academic['duracion_meses'] > 0) {
                                     $render_info_card(
                                         __('Duración', 'flacso-uruguay'),
                                         sprintf(__('%s meses', 'flacso-uruguay'), $academic['duracion_meses'])

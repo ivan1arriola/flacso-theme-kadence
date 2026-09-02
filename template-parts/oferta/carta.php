@@ -348,7 +348,11 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
 
                     <?php if ($thumbnail_url !== '') : ?>
                         <div class="fc-cover-card">
-                            <img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php echo esc_attr($titulo); ?>" loading="eager" fetchpriority="high">
+                            <img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php echo esc_attr($titulo); ?>" loading="eager" fetchpriority="high" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                            <div class="fc-cover-card fc-cover-placeholder" style="display:none;">
+                                <i class="bi bi-mortarboard-fill" aria-hidden="true"></i>
+                                <span><?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?></span>
+                            </div>
                         </div>
                     <?php else : ?>
                         <div class="fc-cover-card fc-cover-placeholder">
