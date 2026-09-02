@@ -715,9 +715,9 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                             </div>
                                         </details>
 
-                                        <!-- 3. PLAN DE ESTUDIOS -->
+                                        <!-- 3. MALLA CURRICULAR -->
                                         <details>
-                                            <summary><?php esc_html_e('Plan de estudios', 'flacso-uruguay'); ?></summary>
+                                            <summary><?php esc_html_e('Malla Curricular', 'flacso-uruguay'); ?></summary>
                                             <div class="detail-body">
                                                 <?php if (!empty($academic['forma_aprobacion'])) : ?>
                                                     <p><?php echo esc_html($academic['forma_aprobacion']); ?></p>
@@ -730,6 +730,8 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                         <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
                                                         <?php esc_html_e('Descargar Malla Curricular (PDF)', 'flacso-uruguay'); ?>
                                                     </a>
+                                                <?php elseif (empty($academic['forma_aprobacion'])) : ?>
+                                                    <p class="flacso-oa-empty-field"><i class="bi bi-info-circle" aria-hidden="true"></i> <?php esc_html_e('Documentación de malla curricular no disponible para descarga por el momento.', 'flacso-uruguay'); ?></p>
                                                 <?php endif; ?>
                                             </div>
                                         </details>
