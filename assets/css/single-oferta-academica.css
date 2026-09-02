@@ -676,6 +676,58 @@
     line-height: 1.7;
 }
 
+.flacso-oa-empty-field {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: #64748b;
+    font-style: italic;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.flacso-oa-empty-field i {
+    color: #94a3b8;
+    font-size: 1.15rem;
+    flex-shrink: 0;
+}
+
+.flacso-oa-info-card--empty {
+    border-color: rgba(15, 23, 42, 0.08);
+    background: #fafbfc;
+}
+
+.flacso-oa-info-card--empty .flacso-oa-info-card__header {
+    background: #f8fafc;
+}
+
+.flacso-oa-info-card--empty .flacso-oa-info-card__header::before {
+    background: #94a3b8;
+}
+
+.flacso-oa-info-card--empty .flacso-oa-info-card__header h3 {
+    color: #475569;
+}
+
+.flacso-oa-content-card--empty {
+    border: 1px dashed rgba(15, 23, 42, 0.15);
+    background: #f8fafc;
+    border-radius: var(--flacso-radius-md);
+    padding: clamp(20px, 3vw, 30px);
+}
+
+.flacso-oa-team-section--empty {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.flacso-oa-team-empty {
+    padding: 1.5rem;
+    border: 1px dashed rgba(15, 23, 42, 0.15);
+    border-radius: var(--flacso-radius-md);
+    background: #f8fafc;
+}
+
 .flacso-oa-aside {
     min-width: 0;
     scroll-margin-top: 24px;
