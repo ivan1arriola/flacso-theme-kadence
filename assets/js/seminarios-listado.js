@@ -21,7 +21,10 @@
         );
         var featured = root.querySelector('[data-seminar-featured], .seminario-featured');
         var empty = root.querySelector('[data-seminarios-filter-empty]');
+        var catalogTitle = root.querySelector('#seminarios-catalogo-titulo');
+        var catalogLead = root.querySelector('.seminarios-catalog__lead');
         var activeMonth = 'all';
+        var featuredItem = null;
 
         function getMonth(item) {
             return item.getAttribute('data-month') || item.getAttribute('data-month-group') || '';
@@ -38,12 +41,51 @@
             return monthMatches && textMatches;
         }
 
+        if (featured) {
+            var featuredLink = featured.querySelector('a[href]');
+            var featuredHref = featuredLink ? featuredLink.href : '';
+
+            if (featuredHref) {
+                featuredItem = items.find(function (item) {
+                    var itemLink = item.querySelector('a[href]');
+                    return itemLink && itemLink.href === featuredHref;
+                }) || null;
+            }
+
+            if (featuredItem) {
+                featuredItem.classList.add('is-featured-duplicate');
+
+                if (catalogTitle) {
+                    catalogTitle.textContent = 'Más propuestas';
+                }
+
+                if (catalogLead) {
+                    catalogLead.textContent = 'Explorá el resto del cronograma de seminarios con inscripción abierta.';
+                }
+            }
+        }
+
         function update() {
             var term = normalize(search ? search.value : '');
+            var featuredVisible = false;
             var visibleItems = 0;
+
+            if (featured) {
+                featuredVisible = featuredItem
+                    ? matches(featuredItem, term)
+                    : matches(featured, term);
+                featured.hidden = !featuredVisible;
+            }
 
             items.forEach(function (item) {
                 var visible = matches(item, term);
+
+                // El seminario destacado ya está visible en una tarjeta principal.
+                // Se evita repetirlo inmediatamente en el catálogo inferior.
+                if (featuredVisible && item === featuredItem) {
+                    visible = false;
+                }
+
                 item.hidden = !visible;
                 if (visible) {
                     visibleItems += 1;
@@ -51,25 +93,33 @@
             });
 
             monthSections.forEach(function (section) {
-                var hasVisibleItems = Array.prototype.some.call(
-                    section.querySelectorAll('[data-seminar-item], [data-seminar-card]'),
-                    function (item) { return !item.hidden; }
+                var sectionItems = Array.prototype.slice.call(
+                    section.querySelectorAll('[data-seminar-item], [data-seminar-card]')
                 );
-                section.hidden = !hasVisibleItems;
+                var sectionVisibleItems = sectionItems.filter(function (item) {
+                    return !item.hidden;
+                });
+                var sectionCount = section.querySelector('.seminarios-group__count');
+
+                section.hidden = sectionVisibleItems.length === 0;
+
+                if (sectionCount) {
+                    sectionCount.textContent = sectionVisibleItems.length === 1
+                        ? '1 seminario'
+                        : sectionVisibleItems.length + ' seminarios';
+                }
             });
 
-            if (featured) {
-                featured.hidden = !matches(featured, term);
-            }
+            var visibleTotal = visibleItems + (featuredVisible ? 1 : 0);
 
             if (empty) {
-                empty.hidden = visibleItems !== 0;
+                empty.hidden = visibleTotal !== 0;
             }
 
             if (count) {
-                count.textContent = visibleItems === 1
+                count.textContent = visibleTotal === 1
                     ? '1 seminario'
-                    : visibleItems + ' seminarios';
+                    : visibleTotal + ' seminarios';
             }
         }
 
