@@ -24,6 +24,19 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
     <?php
     /**
+     * La capa móvil se encola aquí, antes de wp_head(), para que se imprima
+     * después de los estilos base del tema y pueda corregirlos sin !important.
+     */
+    $flacso_mobile_ux_path = 'assets/css/mobile-ux.css';
+    $flacso_mobile_ux_file = get_stylesheet_directory() . '/' . $flacso_mobile_ux_path;
+    wp_enqueue_style(
+        'flacso-mobile-ux',
+        get_stylesheet_directory_uri() . '/' . $flacso_mobile_ux_path,
+        array( 'flacso-site-chrome' ),
+        is_readable( $flacso_mobile_ux_file ) ? (string) filemtime( $flacso_mobile_ux_file ) : wp_get_theme()->get( 'Version' )
+    );
+
+    /**
      * Hook para insertar CSS y JS
      * wp_head() cargará Bootstrap, jQuery UI y los estilos del child theme
      */
