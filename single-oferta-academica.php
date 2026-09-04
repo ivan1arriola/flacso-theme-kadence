@@ -11,6 +11,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+require_once get_stylesheet_directory() . '/inc/academic-team-context.php';
+
 get_header();
 
 while (have_posts()) :
@@ -20,6 +22,10 @@ while (have_posts()) :
     $context = function_exists('flacso_theme_get_offer_context')
         ? flacso_theme_get_offer_context($post_id)
         : [];
+
+    if (function_exists('flacso_theme_apply_scoped_teams')) {
+        $context = flacso_theme_apply_scoped_teams($context, $post_id);
+    }
 
     $is_carta = (bool) get_query_var('es_carta') || (get_query_var('carta') !== false && get_query_var('carta') !== '');
     if (!$is_carta && isset($_SERVER['REQUEST_URI'])) {
