@@ -1,0 +1,238 @@
+/*
+ * FLACSO Uruguay — capa de experiencia móvil del tema.
+ * Mantiene el diseño de escritorio intacto y resuelve interacción táctil,
+ * desbordes y densidad visual en teléfonos.
+ */
+
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+@media (max-width: 782px) {
+    body:not(.wp-admin) {
+        overflow-x: clip;
+    }
+
+    .flacso-chrome-container {
+        width: min(var(--flacso-chrome-width, 1180px), calc(100% - 24px));
+    }
+
+    /* Una sola línea de accesos evita que la franja superior ocupe media pantalla. */
+    .flacso-topbar__inner {
+        justify-content: flex-start;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x proximity;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .flacso-topbar__inner::-webkit-scrollbar {
+        display: none;
+    }
+
+    .flacso-topbar__links,
+    .flacso-topbar__menu {
+        width: max-content;
+        min-width: 100%;
+    }
+
+    .flacso-topbar__menu {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        gap: 0.2rem 0.55rem;
+        text-align: left;
+    }
+
+    .flacso-topbar__menu li {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+    }
+
+    .flacso-topbar__menu a {
+        display: inline-flex;
+        min-height: 40px;
+        align-items: center;
+        padding-inline: 0.45rem;
+    }
+
+    .flacso-navbar__inner {
+        min-height: 68px;
+        gap: 0.5rem;
+    }
+
+    .flacso-navbar__brand .custom-logo {
+        max-width: 124px;
+        height: 46px;
+    }
+
+    .flacso-navbar__actions {
+        gap: 0.35rem;
+    }
+
+    .flacso-navbar__icon-button,
+    .flacso-navbar__menu-button,
+    .flacso-navbar__submenu-toggle {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .flacso-navbar__navigation {
+        overscroll-behavior: contain;
+        padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
+    }
+
+    .flacso-navbar__menu > li > a,
+    .flacso-navbar__menu .sub-menu a {
+        min-height: 48px;
+    }
+
+    /* En teléfonos el buscador gana una fila propia para el botón. */
+    .flacso-header-search__form {
+        grid-template-columns: 24px minmax(0, 1fr);
+        gap: 0.55rem 0.7rem;
+        padding: 0.75rem 0 1rem;
+    }
+
+    .flacso-header-search__form input {
+        min-width: 0;
+        min-height: 46px;
+        font-size: 16px;
+    }
+
+    .flacso-header-search__form button {
+        grid-column: 1 / -1;
+        width: 100%;
+        min-height: 46px;
+    }
+
+    /* Contenido editorial: nada debe forzar un ancho mayor al viewport. */
+    .site-main,
+    .entry-content,
+    .entry-content > * {
+        min-width: 0;
+    }
+
+    .entry-content :where(img, picture, video, iframe, svg) {
+        max-width: 100%;
+    }
+
+    .entry-content :where(img, video) {
+        height: auto;
+    }
+
+    .entry-content iframe {
+        width: 100%;
+    }
+
+    .entry-content :where(p, li, h1, h2, h3, h4, h5, h6, a) {
+        overflow-wrap: anywhere;
+    }
+
+    .entry-content table {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .entry-content :where(pre, .wp-block-code) {
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* 16px evita el zoom automático de Safari/iOS al enfocar campos. */
+    body:not(.wp-admin) form :where(
+        input:not([type="checkbox"]):not([type="radio"]),
+        textarea,
+        select
+    ) {
+        max-width: 100%;
+        min-height: 44px;
+        font-size: 16px;
+    }
+
+    body:not(.wp-admin) :where(
+        button,
+        input[type="button"],
+        input[type="submit"],
+        .button,
+        .wp-element-button
+    ) {
+        min-height: 44px;
+    }
+
+    .flacso-footer__grid {
+        padding-top: 2.6rem;
+        padding-bottom: 2.2rem;
+    }
+
+    .flacso-footer__menu a,
+    .flacso-footer__contact a {
+        display: inline-flex;
+        min-height: 40px;
+        align-items: center;
+    }
+
+    .flacso-footer__bottom nav {
+        flex-wrap: wrap;
+        gap: 0.45rem 1rem;
+    }
+
+    :target {
+        scroll-margin-top: 96px;
+    }
+}
+
+@media (max-width: 480px) {
+    .flacso-chrome-container {
+        width: calc(100% - 20px);
+    }
+
+    .flacso-topbar {
+        font-size: 0.74rem;
+    }
+
+    .flacso-topbar__inner {
+        padding-block: 0.2rem;
+    }
+
+    .flacso-navbar__brand .custom-logo {
+        max-width: 116px;
+        height: 44px;
+    }
+
+    .entry-content .wp-block-buttons,
+    .entry-content .wp-block-button {
+        width: 100%;
+    }
+
+    .entry-content .wp-block-button__link {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .flacso-footer__bottom nav {
+        display: grid;
+        gap: 0.25rem;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .flacso-navbar__cta:hover,
+    .entry-content .card:hover,
+    .entry-content .button:hover,
+    .entry-content .wp-element-button:hover {
+        transform: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto !important;
+    }
+}
