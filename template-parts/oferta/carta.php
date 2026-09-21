@@ -627,7 +627,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                     <?php if ($mostrar_expedicion) : ?>
                         <div class="fc-info-row">
                             <div class="fc-info-icon"><i class="bi bi-award" aria-hidden="true"></i></div>
-                            <div><?php esc_html_e('El título se expide en el exterior y tiene un costo asociado de USD 150, que incluye el envío y el trámite de Apostilla de La Haya.', 'flacso-uruguay'); ?></div>
+                            <div><?php esc_html_e('El título se expide en el exterior y tiene un costo asociado de USD 150, que incluye el trámite de Apostilla de La Haya. El costo de envio dependerá del pais de destino.', 'flacso-uruguay'); ?></div>
                         </div>
                     <?php endif; ?>
 
