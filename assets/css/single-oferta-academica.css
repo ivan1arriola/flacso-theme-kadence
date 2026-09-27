@@ -2878,6 +2878,13 @@
     padding: 24px;
 }
 
+.flacso-inquiry-cohort-context {
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e3a8a;
+}
+
 .flacso-oferta-responsive .contact__body form,
 .flacso-oferta-responsive .contact__body .flacso-consultas-formulario,
 .flacso-oferta-responsive .contact__body .flacso-consultas-formulario-wrapper {

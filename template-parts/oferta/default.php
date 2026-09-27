@@ -823,7 +823,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         <?php
                                         $inquiry_cohort = $context['inquiry_cohort'] ?? [];
                                         if (!empty($inquiry_cohort['has_cohort'])) : ?>
-                                            <div class="flacso-inquiry-cohort-context" style="margin-bottom: 12px; font-size: 14px; font-weight: 600; color: #1e3a8a;">
+                                            <div class="flacso-inquiry-cohort-context">
                                                 <span><?php echo esc_html($inquiry_cohort['label']); ?></span>
                                             </div>
                                         <?php endif; ?>
