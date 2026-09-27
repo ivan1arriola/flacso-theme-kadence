@@ -292,6 +292,10 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "asistente_academica_docente_id" => absint($data["asistente_academica_docente_id"] ?? get_post_meta($offer_id, "asistente_academica_docente_id", true)),
         "asistente_academica_rol"     => (string) ($data["asistente_academica_rol"] ?? get_post_meta($offer_id, "asistente_academica_rol", true)),
         "asistente_academica_correo"  => (string) ($data["asistente_academica_correo"] ?? get_post_meta($offer_id, "asistente_academica_correo", true)),
+        "colores_presentacion"        => (array) ($data["colores_presentacion"] ?? (get_post_meta($offer_id, "colores_presentacion", true) ?: [])),
+        "color_principal"             => !empty($data["colores_presentacion"]["principal"])
+            ? strtolower((string) $data["colores_presentacion"]["principal"])
+            : (string) (get_post_meta($offer_id, "colores_presentacion", true)["principal"] ?? ""),
     ];
 
     $program_id = absint($data["programa_academico_id"] ?? 0);
@@ -306,18 +310,19 @@ function flacso_theme_get_offer_context(int $offer_id): array {
     $raw_seminars = is_array($data["seminarios"] ?? null) ? $data["seminarios"] : [];
 
     return [
-        "offer_id"       => $offer_id,
-        "instance_id"    => $instance["id"],
-        "type"           => $type,
-        "type_label"     => flacso_theme_get_offer_type_label($offer_id, $type),
-        "is_seminar"     => false,
-        "is_integrated"  => false,
-        "title"          => (string) ($data["nombre"] ?? get_the_title($offer_id)),
-        "slug"           => (string) ($data["slug"] ?? $post->post_name),
-        "permalink"      => get_permalink($offer_id),
-        "thumbnail_id"   => (int) get_post_thumbnail_id($offer_id),
-        "thumbnail_url"  => (string) ($data["imagen"] ?? get_the_post_thumbnail_url($offer_id, "full")),
-        "academic"       => $academic,
+        "offer_id"        => $offer_id,
+        "instance_id"     => $instance["id"],
+        "type"            => $type,
+        "type_label"      => flacso_theme_get_offer_type_label($offer_id, $type),
+        "is_seminar"      => false,
+        "is_integrated"   => false,
+        "title"           => (string) ($data["nombre"] ?? get_the_title($offer_id)),
+        "slug"            => (string) ($data["slug"] ?? $post->post_name),
+        "permalink"       => get_permalink($offer_id),
+        "thumbnail_id"    => (int) get_post_thumbnail_id($offer_id),
+        "thumbnail_url"   => (string) ($data["imagen"] ?? get_the_post_thumbnail_url($offer_id, "full")),
+        "color_principal" => $academic["color_principal"],
+        "academic"        => $academic,
         "instance"       => $instance,
         "registration"   => $registration,
         "program"        => [

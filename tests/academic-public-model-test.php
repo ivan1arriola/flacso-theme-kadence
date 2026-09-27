@@ -28,6 +28,7 @@ $GLOBALS["meta"] = [
         "presentacion" => "Presentación de la maestría",
         "carga_horaria" => 480,
         "creditos" => 60,
+        "colores_presentacion" => ["principal" => "#0057a8", "secundarios" => []],
         "seminarios" => [
             ["seminario_id" => 20, "orden" => 1, "caracter" => "obligatorio", "creditos_reconocidos" => 4],
         ],
@@ -518,6 +519,9 @@ assert_same("2027", flacso_theme_format_cohort_dates([
 assert_same(true, array_key_exists("reconocido_mec", $offer_context["academic"]), "Contexto incluye reconocido_mec para carta");
 assert_same(true, array_key_exists("carta_hero_etiqueta", $offer_context["academic"]), "Contexto incluye carta_hero_etiqueta");
 assert_same(true, array_key_exists("menciones", $offer_context["academic"]), "Contexto incluye menciones");
+assert_same(true, array_key_exists("colores_presentacion", $offer_context["academic"]), "Contexto incluye colores_presentacion");
+assert_same("#0057a8", $offer_context["color_principal"], "Contexto expone color_principal en la raíz");
+assert_same("#0057a8", $offer_context["academic"]["color_principal"], "Contexto expone color_principal en academic");
 assert_same(true, file_exists(__DIR__ . "/../template-parts/oferta/carta.php"), "Template part de carta existe");
 assert_same(true, file_exists(__DIR__ . "/../assets/css/single-carta.css"), "Estilos de carta existen");
 
