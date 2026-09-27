@@ -309,6 +309,23 @@ function flacso_theme_get_offer_context(int $offer_id): array {
 
     $raw_seminars = is_array($data["seminarios"] ?? null) ? $data["seminarios"] : [];
 
+    $inquiry_cohort_data = $data['cohorte_consulta'] ?? null;
+    $has_inquiry_cohort  = !empty($inquiry_cohort_data);
+    $inquiry_is_open     = $has_inquiry_cohort && !empty($inquiry_cohort_data['preinscripcion']['abierta']);
+    $inquiry_name        = $has_inquiry_cohort ? (string) ($inquiry_cohort_data['nombre'] ?? '') : '';
+
+    $inquiry_cohort = [
+        'has_cohort' => $has_inquiry_cohort,
+        'name'       => $inquiry_name,
+        'number'     => $has_inquiry_cohort ? absint($inquiry_cohort_data['numero'] ?? 0) : null,
+        'is_open'    => $inquiry_is_open,
+        'label'      => $has_inquiry_cohort
+            ? ($inquiry_is_open
+                ? sprintf(__('Inscripciones abiertas — %s', 'flacso-uruguay'), $inquiry_name)
+                : sprintf(__('Próxima cohorte — %s', 'flacso-uruguay'), $inquiry_name))
+            : '',
+    ];
+
     return [
         "offer_id"        => $offer_id,
         "instance_id"     => $instance["id"],
@@ -323,13 +340,14 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "thumbnail_url"   => (string) ($data["imagen"] ?? get_the_post_thumbnail_url($offer_id, "full")),
         "color_principal" => $academic["color_principal"],
         "academic"        => $academic,
-        "instance"       => $instance,
-        "registration"   => $registration,
-        "program"        => [
+        "instance"        => $instance,
+        "registration"    => $registration,
+        "inquiry_cohort"  => $inquiry_cohort,
+        "program"         => [
             "id"           => $program_id,
             "coordinacion" => $program_coordination,
         ],
-        "relations"      => [
+        "relations"       => [
             "is_integrated"         => false,
             "integrated_parent"     => null,
             "integrated_components" => [],

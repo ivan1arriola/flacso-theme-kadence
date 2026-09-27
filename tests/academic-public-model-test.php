@@ -15,13 +15,14 @@ $GLOBALS["posts"] = [
     22 => (object) ["ID" => 22, "post_type" => "seminario", "post_status" => "publish", "post_title" => "Seminario Integrado", "post_name" => "seminario-integrado"],
     220 => (object) ["ID" => 220, "post_type" => "edicion", "post_status" => "publish", "post_title" => "Edición 2026 Integrada", "post_name" => "edicion-2026-integrada"],
     40 => (object) ["ID" => 40, "post_type" => "oferta-academica", "post_status" => "publish", "post_title" => "Doctorado en Ciencias Sociales", "post_name" => "doctorado"],
+    41 => (object) ["ID" => 41, "post_type" => "oferta-academica", "post_status" => "publish", "post_title" => "Diploma Sin Cohorte", "post_name" => "diploma-sin-cohorte"],
     500 => (object) ["ID" => 500, "post_type" => "tabla-precio", "post_status" => "publish", "post_title" => "Aranceles Seminarios 2026", "post_name" => "tabla-seminarios-2026"],
     501 => (object) ["ID" => 501, "post_type" => "tabla-precio", "post_status" => "publish", "post_title" => "Aranceles Maestría 2026", "post_name" => "tabla-maestria-2026"],
     91 => (object) ["ID" => 91, "post_type" => "docente", "post_status" => "publish", "post_title" => "Dra. Ana Pérez", "post_name" => "ana-perez"],
     92 => (object) ["ID" => 92, "post_type" => "docente", "post_status" => "publish", "post_title" => "Dr. Juan Gómez", "post_name" => "juan-gomez"],
 ];
 
-$GLOBALS["types"] = [10 => "maestria", 40 => "doctorado"];
+$GLOBALS["types"] = [10 => "maestria", 40 => "doctorado", 41 => "diploma"];
 $GLOBALS["meta"] = [
     10 => [
         "programa_academico_id" => 0,
@@ -205,6 +206,45 @@ final class FLACSO_Oferta_Academica {
 
 final class FLACSO_Academic_Catalog {
     public static function get_offer(int $id): array {
+        if ($id === 40) {
+            return [
+                "id" => 40,
+                "nombre" => "Doctorado en Ciencias Sociales",
+                "slug" => "doctorado",
+                "tipo" => "doctorado",
+                "programa_academico_id" => 0,
+                "presentacion" => "Presentación del doctorado",
+                "carga_horaria" => 600,
+                "creditos" => 80,
+                "seminarios" => [],
+                "cohortes" => [],
+                "cohorte_vigente" => null,
+                "cohorte_consulta" => [
+                    "id" => 400,
+                    "nombre" => "Cohorte 2027",
+                    "numero" => 1,
+                    "numero_romano" => "I",
+                    "preinscripcion" => [
+                        "abierta" => false,
+                        "url" => "",
+                    ],
+                ],
+            ];
+        }
+        if ($id === 41) {
+            return [
+                "id" => 41,
+                "nombre" => "Diploma Sin Cohorte",
+                "slug" => "diploma-sin-cohorte",
+                "tipo" => "diploma",
+                "programa_academico_id" => 0,
+                "presentacion" => "",
+                "seminarios" => [],
+                "cohortes" => [],
+                "cohorte_vigente" => null,
+                "cohorte_consulta" => null,
+            ];
+        }
         if ($id !== 10) return [];
         return [
             "id" => 10,
@@ -239,6 +279,24 @@ final class FLACSO_Academic_Catalog {
                 ],
             ],
             "cohorte_vigente" => [
+                "id" => 100,
+                "nombre" => "Cohorte V",
+                "numero" => 5,
+                "numero_romano" => "V",
+                "fecha_inicio" => "2026-08-15",
+                "fecha_fin" => "2028-07-31",
+                "precision_fecha_inicio" => "dia",
+                "estado" => "planificada",
+                "tabla_precio_id" => 501,
+                "link_preinscripcion" => "https://preinscripciones.flacso.edu.uy/ofertas/10/cohortes/100/",
+                "preinscripcion_desde" => "2026-03-01",
+                "preinscripcion_hasta" => "2026-08-01",
+                "preinscripcion" => [
+                    "abierta" => true,
+                    "url" => "https://preinscripciones.flacso.edu.uy/ofertas/10/cohortes/100/",
+                ],
+            ],
+            "cohorte_consulta" => [
                 "id" => 100,
                 "nombre" => "Cohorte V",
                 "numero" => 5,
@@ -470,6 +528,30 @@ assert_same("2026-08-15", $offer_context["instance"]["fecha_inicio"], "Lee fecha
 assert_same("https://preinscripciones.flacso.edu.uy/ofertas/10/cohortes/100/", $offer_context["registration"]["url"], "URL de preinscripción apunta al portal externo");
 assert_same(true, $offer_context["registration"]["is_open"], "Preinscripción abierta");
 assert_same(180000.0, $offer_context["instance"]["valor_uyu"], "Lee arancel UYU desde TablaPrecio");
+
+// 2.b Cohorte de Consulta (Inquiry Cohort View Model)
+assert_same(true, isset($offer_context["inquiry_cohort"]), "Contexto incluye inquiry_cohort");
+assert_same(true, $offer_context["inquiry_cohort"]["has_cohort"], "inquiry_cohort has_cohort es true para cohorte abierta");
+assert_same("Cohorte V", $offer_context["inquiry_cohort"]["name"], "inquiry_cohort name es Cohorte V");
+assert_same(5, $offer_context["inquiry_cohort"]["number"], "inquiry_cohort number es 5");
+assert_same(true, $offer_context["inquiry_cohort"]["is_open"], "inquiry_cohort is_open es true");
+assert_same("Inscripciones abiertas — Cohorte V", $offer_context["inquiry_cohort"]["label"], "inquiry_cohort label para cohorte abierta");
+
+$offer_40_context = flacso_theme_get_offer_context(40);
+assert_same(true, isset($offer_40_context["inquiry_cohort"]), "Contexto oferta 40 incluye inquiry_cohort");
+assert_same(true, $offer_40_context["inquiry_cohort"]["has_cohort"], "inquiry_cohort has_cohort con cohorte cerrada es true");
+assert_same("Cohorte 2027", $offer_40_context["inquiry_cohort"]["name"], "inquiry_cohort name es Cohorte 2027");
+assert_same(1, $offer_40_context["inquiry_cohort"]["number"], "inquiry_cohort number es 1");
+assert_same(false, $offer_40_context["inquiry_cohort"]["is_open"], "inquiry_cohort is_open con cohorte cerrada es false");
+assert_same("Próxima cohorte — Cohorte 2027", $offer_40_context["inquiry_cohort"]["label"], "inquiry_cohort label para cohorte cerrada");
+
+$offer_41_context = flacso_theme_get_offer_context(41);
+assert_same(true, isset($offer_41_context["inquiry_cohort"]), "Contexto oferta 41 incluye inquiry_cohort");
+assert_same(false, $offer_41_context["inquiry_cohort"]["has_cohort"], "inquiry_cohort has_cohort sin cohorte es false");
+assert_same("", $offer_41_context["inquiry_cohort"]["name"], "inquiry_cohort name sin cohorte es vacío");
+assert_same(null, $offer_41_context["inquiry_cohort"]["number"], "inquiry_cohort number sin cohorte es null");
+assert_same(false, $offer_41_context["inquiry_cohort"]["is_open"], "inquiry_cohort is_open sin cohorte es false");
+assert_same("", $offer_41_context["inquiry_cohort"]["label"], "inquiry_cohort label sin cohorte es vacío");
 
 // 3. Contexto de Seminario
 $seminar_context = flacso_theme_get_seminar_context(20);
