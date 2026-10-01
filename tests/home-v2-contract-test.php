@@ -6,6 +6,26 @@ $functions = file_get_contents($root . '/functions.php');
 $template = file_get_contents($root . '/inc/home-v2.php');
 $css = file_get_contents($root . '/assets/css/home-v2.css');
 $js = file_get_contents($root . '/assets/js/home-v2.js');
+
+if (!defined('ABSPATH')) { define('ABSPATH', __DIR__); }
+function flacso_section_novedades_get_sticky_posts($limit) { return []; }
+function flacso_section_novedades_get_posts($limit, $category, $page) { return ['posts' => [(object) ['ID' => 101]]]; }
+function wp_strip_all_tags($value) { return strip_tags((string) $value); }
+function get_the_title($post_id) { return 'Noticia de prueba'; }
+function has_excerpt($post_id) { return true; }
+function get_the_excerpt($post_id) { return 'Resumen de prueba'; }
+function get_post_thumbnail_id($post_id) { return 0; }
+function get_permalink($post_id) { return 'https://example.test/noticia'; }
+function get_the_date($format, $post_id) { return $format === 'c' ? '2026-10-01T00:00:00-03:00' : '01/10/2026'; }
+function esc_attr($value) { return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); }
+function esc_html($value) { return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); }
+function esc_url($value) { return (string) $value; }
+function home_url($path = '') { return 'https://example.test' . $path; }
+require_once $root . '/inc/home-v2.php';
+$rendered_news = flacso_home_v2_render_featured_news();
+
+home_v2_assert(strpos($rendered_news, '>Actualidad<') === false, 'la portada renderizada no debe mostrar el supratítulo Actualidad');
+home_v2_assert(strpos($rendered_news, '>Novedades</h2>') !== false, 'Novedades debe conservarse como encabezado principal');
 home_v2_assert(strpos($front, 'FLACSO_Home_Campaign::is_enabled') !== false, 'la plantilla respeta el rollback flag');
 home_v2_assert(strpos($functions, 'assets/css/home-v2.css') !== false, 'el tema carga assets v2');
 home_v2_assert(strpos($template, "home_url('/formacion/')") !== false, 'conserva la ruta de formación');

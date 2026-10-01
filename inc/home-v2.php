@@ -74,7 +74,6 @@ function flacso_home_v2_render_featured_news(): string {
     ob_start(); ?>
     <section class="flacso-home-v2__featured-news" aria-labelledby="flacso-home-v2-news-title">
         <div class="flacso-home-v2__section-heading">
-            <p class="flacso-home-v2__eyebrow">Actualidad</p>
             <h2 id="flacso-home-v2-news-title">Novedades</h2>
         </div>
         <?php if ($featured) : ?>
