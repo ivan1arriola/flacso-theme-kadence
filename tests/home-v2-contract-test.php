@@ -21,14 +21,27 @@ function esc_attr($value) { return htmlspecialchars((string) $value, ENT_QUOTES,
 function esc_html($value) { return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); }
 function esc_url($value) { return (string) $value; }
 function home_url($path = '') { return 'https://example.test' . $path; }
+function flacso_section_quienes_somos_render() { return '<h2>Institucional</h2>'; }
+function flacso_section_oferta_educativa_render() { return '<h2>Oferta educativa</h2>'; }
+function flacso_section_contacto_render() { return '<h2>Contacto</h2>'; }
+class Flacso_Main_Page_Settings {
+    public static function get_homepage_section_order() { return ['novedades', 'quienes', 'posgrados', 'contacto']; }
+    public static function is_section_visible($key) { return true; }
+}
 require_once $root . '/inc/home-v2.php';
 $rendered_news = flacso_home_v2_render_featured_news();
+$rendered_sections = flacso_home_v2_render_sections();
 
 home_v2_assert(strpos($rendered_news, '>Actualidad<') === false, 'la portada renderizada no debe mostrar el supratítulo Actualidad');
 home_v2_assert(strpos($rendered_news, '>Novedades</h2>') !== false, 'Novedades debe conservarse como encabezado principal');
 home_v2_assert(strpos($rendered_news, '<h3>Destacadas</h3>') !== false, 'el carrusel debe identificarse como Destacadas');
 home_v2_assert(preg_match('/news-card--featured.*?news-badge[^>]*>Destacada<.*?<p>Resumen de prueba<\/p>/s', $rendered_news) === 1, 'cada noticia destacada debe mostrar su sello y resumen');
 home_v2_assert(preg_match('/news-card--latest.*?<\/article>/s', $rendered_news, $latest_card) === 1 && strpos($latest_card[0], '<p>') === false, 'las últimas noticias deben ser compactas y no mostrar resumen');
+$news_position = strpos($rendered_sections, 'data-section-key="novedades"');
+$offer_position = strpos($rendered_sections, 'data-section-key="posgrados"');
+$institutional_position = strpos($rendered_sections, 'data-section-key="quienes"');
+$contact_position = strpos($rendered_sections, 'data-section-key="contacto"');
+home_v2_assert($news_position < $offer_position && $offer_position < $institutional_position && $institutional_position < $contact_position, 'la portada debe ordenar Novedades, Oferta educativa, Institucional y Contacto');
 home_v2_assert(strpos($front, 'FLACSO_Home_Campaign::is_enabled') !== false, 'la plantilla respeta el rollback flag');
 home_v2_assert(strpos($functions, 'assets/css/home-v2.css') !== false, 'el tema carga assets v2');
 home_v2_assert(strpos($template, "home_url('/formacion/')") !== false, 'conserva la ruta de formación');
@@ -66,6 +79,7 @@ function home_v2_news_layout(string $css, string $news, int $width, int $height)
         . 'featuredAspect:getComputedStyle(featuredImage).aspectRatio,latestAspect:getComputedStyle(latestImage).aspectRatio,'
         . 'featuredWidth:Math.round(featured.getBoundingClientRect().width),trackWidth:Math.round(track.getBoundingClientRect().width),'
         . 'latestWidth:Math.round(latest.getBoundingClientRect().width),latestImageWidth:Math.round(latestImage.getBoundingClientRect().width),'
+        . 'latestTitleSize:parseFloat(getComputedStyle(latest.querySelector("h4")).fontSize),'
         . 'overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth});</script></body></html>';
     $temporary = tempnam(sys_get_temp_dir(), 'flacso-home-v2-news-');
     $path = $temporary === false ? false : $temporary . '.html';
@@ -91,7 +105,8 @@ home_v2_assert($news_mobile['overflow'] === false, 'las novedades no deben desbo
 
 $news_desktop = home_v2_news_layout($css, $rendered_news, 1440, 1000);
 home_v2_assert($news_desktop['latestColumns'] === 2, 'las últimas noticias deben usar dos columnas en escritorio');
-home_v2_assert($news_desktop['featuredWidth'] > $news_desktop['trackWidth'] * .45, 'las destacadas deben ser tarjetas grandes, dos por vista en escritorio');
+home_v2_assert($news_desktop['featuredWidth'] > $news_desktop['trackWidth'] * .36 && $news_desktop['featuredWidth'] < $news_desktop['trackWidth'] * .43, 'las destacadas deben conservar jerarquía sin ocupar media pantalla cada una');
+home_v2_assert($news_desktop['latestImageWidth'] >= 124 && $news_desktop['latestTitleSize'] >= 16.5, 'las últimas noticias deben conservar una lectura editorial visible');
 home_v2_assert($news_desktop['overflow'] === false, 'las novedades no deben desbordar en escritorio');
 
 function home_v2_quienes_layout(string $css, int $width, int $height): array {
@@ -112,7 +127,9 @@ function home_v2_quienes_layout(string $css, int $width, int $height): array {
         . 'cardDisplay:getComputedStyle(card).display,columns:getComputedStyle(card).gridTemplateColumns,'
         . 'brandBackground:getComputedStyle(brand).backgroundColor,textAlign:getComputedStyle(text).textAlign,'
         . 'logoFilter:getComputedStyle(logo).filter,'
-        . 'cardHeight:Math.round(card.getBoundingClientRect().height),brandWidth:Math.round(brand.getBoundingClientRect().width),'
+        . 'cardHeight:Math.round(card.getBoundingClientRect().height),cardWidth:Math.round(card.getBoundingClientRect().width),'
+        . 'sectionWidth:Math.round(document.querySelector(".flacso-home-v2__section").getBoundingClientRect().width),'
+        . 'copyFont:parseFloat(getComputedStyle(text).fontSize),brandWidth:Math.round(brand.getBoundingClientRect().width),'
         . 'copyWidth:Math.round(copy.getBoundingClientRect().width)});</script></body></html>';
     $temporary = tempnam(sys_get_temp_dir(), 'flacso-home-v2-quienes-');
     $path = $temporary === false ? false : $temporary . '.html';
@@ -139,7 +156,9 @@ home_v2_assert($quienes_mobile['textAlign'] === 'left', 'el texto institucional 
 home_v2_assert($quienes_mobile['cardHeight'] < 700, 'la tarjeta institucional móvil no debe generar espacio muerto');
 
 $quienes_desktop = home_v2_quienes_layout($css, 1440, 1000);
-home_v2_assert($quienes_desktop['brandWidth'] < $quienes_desktop['copyWidth'], 'en escritorio el contenido debe tener mayor jerarquía que la marca');
+home_v2_assert($quienes_desktop['cardWidth'] <= 1100 && $quienes_desktop['cardWidth'] < $quienes_desktop['sectionWidth'], 'la tarjeta institucional debe ser más contenida que el resto de la retícula');
+home_v2_assert($quienes_desktop['brandWidth'] < $quienes_desktop['copyWidth'] * .42, 'el contenido institucional debe tener mayor jerarquía que el panel de marca');
+home_v2_assert($quienes_desktop['copyFont'] >= 17, 'el texto institucional debe conservar una lectura cómoda');
 
 function home_v2_closing_sections_layout(string $css, int $width, int $height): array {
     $chrome = trim((string) shell_exec('command -v google-chrome || command -v chromium || true'));
@@ -164,14 +183,16 @@ function home_v2_closing_sections_layout(string $css, int $width, int $height): 
         . '<pre id="result"></pre><script>const offer=document.querySelector(".flacso-oferta-mosaico__grid");'
         . 'const featured=document.querySelector(".flacso-oferta-mosaico__card--featured");const regular=document.querySelectorAll(".flacso-oferta-mosaico__card")[1];'
         . 'const contact=document.querySelector(".flacso-contacto-card");const cta=document.querySelector(".flacso-contacto-cta");'
-        . 'const offerStyle=getComputedStyle(offer);const contactStyle=getComputedStyle(contact);document.querySelector("#result").textContent=JSON.stringify({'
+        . 'const offerHeader=document.querySelector(".flacso-oferta-mosaico__header");const offerStyle=getComputedStyle(offer);const contactStyle=getComputedStyle(contact);document.querySelector("#result").textContent=JSON.stringify({'
         . 'offerDisplay:offerStyle.display,offerColumnCount:offerStyle.gridTemplateColumns.split(" ").length,gridWidth:Math.round(offer.getBoundingClientRect().width),'
         . 'featuredWidth:Math.round(featured.getBoundingClientRect().width),featuredHeight:Math.round(featured.getBoundingClientRect().height),'
         . 'featuredAspect:getComputedStyle(featured).aspectRatio,'
         . 'regularWidth:Math.round(regular.getBoundingClientRect().width),regularHeight:Math.round(regular.getBoundingClientRect().height),'
         . 'contactDisplay:contactStyle.display,contactColumnCount:contactStyle.gridTemplateColumns.split(" ").length,'
-        . 'contactBackground:contactStyle.backgroundColor,ctaWidth:Math.round(cta.getBoundingClientRect().width),'
-        . 'contactWidth:Math.round(contact.getBoundingClientRect().width),overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth});</script></body></html>';
+        . 'offerHeaderGap:parseFloat(getComputedStyle(offerHeader).columnGap),contactBackground:contactStyle.backgroundColor,'
+        . 'ctaWidth:Math.round(cta.getBoundingClientRect().width),ctaHeight:Math.round(cta.getBoundingClientRect().height),'
+        . 'contactHeight:Math.round(contact.getBoundingClientRect().height),contactWidth:Math.round(contact.getBoundingClientRect().width),'
+        . 'overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth});</script></body></html>';
     $temporary = tempnam(sys_get_temp_dir(), 'flacso-home-v2-closing-');
     $path = $temporary === false ? false : $temporary . '.html';
     home_v2_assert($path !== false && rename($temporary, $path) && file_put_contents($path, $html) !== false, 'se crea el escenario visual de oferta y contacto');
@@ -202,6 +223,8 @@ home_v2_assert($closing_tablet['overflow'] === false, 'oferta y contacto no debe
 $closing_desktop = home_v2_closing_sections_layout($css, 1440, 1000);
 home_v2_assert($closing_desktop['offerColumnCount'] === 3, 'la oferta debe usar tres columnas en escritorio');
 home_v2_assert($closing_desktop['featuredHeight'] > $closing_desktop['regularHeight'] * 1.8, 'la propuesta principal debe ocupar dos filas en escritorio');
+home_v2_assert($closing_desktop['offerHeaderGap'] <= 28, 'el título y la introducción de oferta deben leerse como una sola cabecera');
 home_v2_assert($closing_desktop['contactColumnCount'] === 3 && $closing_desktop['ctaWidth'] < $closing_desktop['contactWidth'], 'contacto debe conservar una llamada a la acción compacta en escritorio');
+home_v2_assert($closing_desktop['contactHeight'] >= 140 && $closing_desktop['ctaHeight'] >= 54, 'contacto debe cerrar la portada con mayor presencia');
 home_v2_assert($closing_desktop['overflow'] === false, 'oferta y contacto no deben desbordar en escritorio');
 echo "OK home v2 contract\n";

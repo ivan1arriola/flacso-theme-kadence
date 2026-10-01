@@ -48,6 +48,12 @@ function flacso_home_v2_render_sections(): string {
             $order = array_values(array_unique(array_merge($configured, $order)));
         }
     }
+    $priority = ['posgrados', 'quienes'];
+    $order = array_values(array_filter($order, static fn($key) => !in_array($key, $priority, true)));
+    $news_index = array_search('novedades', $order, true);
+    if ($news_index !== false) {
+        array_splice($order, $news_index + 1, 0, $priority);
+    }
     ob_start();
     foreach ($order as $key) {
         if (!isset($renderers[$key]) || !function_exists($renderers[$key])) { continue; }
