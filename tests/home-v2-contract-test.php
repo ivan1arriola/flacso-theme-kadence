@@ -18,6 +18,7 @@ home_v2_assert(strpos($template, 'flacso_section_novedades_get_posts(6') !== fal
 home_v2_assert(strpos($template, 'flacso-home-v2__latest-news') !== false, 'las noticias no fijadas deben tener un listado propio');
 home_v2_assert(strpos($functions, 'assets/js/home-v2.js') !== false, 'el tema debe cargar el controlador del carrusel');
 home_v2_assert(strpos($js, "document.readyState === 'loading'") !== false, 'el carrusel debe inicializar aunque el script cargue después del DOM');
+home_v2_assert(strpos($js, 'track.scrollTo') !== false, 'los controles deben mover el carrusel a una posición absoluta');
 home_v2_assert(strpos($css, '.flacso-home-v2 svg') !== false, 'los iconos quedan dimensionados dentro de la portada v2');
 home_v2_assert(strpos($css, '@media (min-width: 761px)') !== false, 'las mejoras de escritorio deben aplicarse desde un breakpoint ascendente');
 home_v2_assert(strpos($css, '.flacso-home-v2__latest-grid { display: grid; grid-template-columns: 1fr;') !== false, 'las noticias no fijadas deben comenzar en una columna móvil');

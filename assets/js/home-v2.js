@@ -27,11 +27,16 @@
             if (status) status.textContent = (index + 1) + ' / ' + cards.length;
         }
 
+        function move(delta) {
+            var target = Math.max(0, Math.min(cards.length - 1, currentIndex() + delta));
+            track.scrollTo({ left: target * cardStep(), behavior: 'smooth' });
+        }
+
         previous.addEventListener('click', function () {
-            track.scrollBy({ left: -cardStep(), behavior: 'smooth' });
+            move(-1);
         });
         next.addEventListener('click', function () {
-            track.scrollBy({ left: cardStep(), behavior: 'smooth' });
+            move(1);
         });
         track.addEventListener('scroll', function () {
             window.requestAnimationFrame(update);
