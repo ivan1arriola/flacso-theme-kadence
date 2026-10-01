@@ -62,8 +62,7 @@ do_action( 'kadence_before_content' );
 				'instagram'  => 'flacso_section_instagram_render',
 				'posgrados'  => 'flacso_section_oferta_educativa_render',
 				'mailing'    => 'flacso_section_mailing_render',
-				'congreso'   => 'flacso_section_congreso_render',
-				'contacto'   => 'flacso_section_contacto_render',
+                'contacto'   => 'flacso_section_contacto_render',
 			];
 
 			$order = array_keys( $renderers );
