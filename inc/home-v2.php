@@ -26,6 +26,37 @@ function flacso_home_v2_render(): string {
             <a href="<?php echo esc_url(home_url('/formacion/seminarios/')); ?>"><strong>Seminarios</strong><span>Actualización y formación intensiva.</span></a>
             <a href="<?php echo esc_url(home_url('/contactos/')); ?>"><strong>Consultas</strong><span>Estamos para orientarte.</span></a>
         </section>
+        <?php echo flacso_home_v2_render_sections(); ?>
     </main>
     <?php return (string) ob_get_clean();
+}
+
+function flacso_home_v2_render_sections(): string {
+    $renderers = [
+        'eventos' => 'flacso_section_eventos_render',
+        'seminarios' => 'flacso_section_seminarios_proximos_render',
+        'novedades' => 'flacso_section_novedades_render',
+        'quienes' => 'flacso_section_quienes_somos_render',
+        'instagram' => 'flacso_section_instagram_render',
+        'posgrados' => 'flacso_section_oferta_educativa_render',
+        'mailing' => 'flacso_section_mailing_render',
+        'congreso' => 'flacso_section_congreso_render',
+        'contacto' => 'flacso_section_contacto_render',
+    ];
+    $order = array_keys($renderers);
+    if (class_exists('Flacso_Main_Page_Settings')) {
+        $configured = Flacso_Main_Page_Settings::get_homepage_section_order();
+        if (is_array($configured) && $configured) {
+            $order = array_values(array_unique(array_merge($configured, $order)));
+        }
+    }
+    ob_start();
+    foreach ($order as $key) {
+        if (!isset($renderers[$key]) || !function_exists($renderers[$key])) { continue; }
+        if (class_exists('Flacso_Main_Page_Settings') && !Flacso_Main_Page_Settings::is_section_visible($key)) { continue; }
+        $content = call_user_func($renderers[$key]);
+        if (!$content) { continue; }
+        ?><article class="flacso-home-v2__section flacso-home-v2__section--<?php echo esc_attr($key); ?>" data-section-key="<?php echo esc_attr($key); ?>"><?php echo $content; ?></article><?php
+    }
+    return (string) ob_get_clean();
 }

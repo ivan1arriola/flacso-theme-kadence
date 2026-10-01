@@ -12,4 +12,6 @@
 .flacso-home-v2__links a { border: 1px solid #d8e1ea; border-radius: 18px; display: grid; gap: 8px; padding: 24px; text-decoration: none; }
 .flacso-home-v2__links strong { color: #17365d; font-size: 1.25rem; }
 .flacso-home-v2__links span { color: #536579; }
+.flacso-home-v2__section { width: min(100% - 40px, 1180px); margin: 0 auto; }
+.flacso-home-v2__section > * { margin-left: 0; margin-right: 0; }
 @media (max-width: 720px) { .flacso-home-v2__hero { min-height: 600px; } .flacso-home-v2__inner { padding: 58px 0; } .flacso-home-v2__links { grid-template-columns: 1fr; } }
