@@ -2,6 +2,8 @@
     'use strict';
 
     function initCarousel(track) {
+        if (track.dataset.homeNewsReady === '1') return;
+        track.dataset.homeNewsReady = '1';
         var shell = track.closest('.flacso-home-v2__carousel-shell');
         var cards = Array.prototype.slice.call(track.children);
         var previous = shell ? shell.querySelector('[data-home-news-prev]') : null;
@@ -38,7 +40,13 @@
         update();
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
+    function initAll() {
         document.querySelectorAll('[data-home-news-carousel]').forEach(initCarousel);
-    });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAll);
+    } else {
+        initAll();
+    }
 }());

@@ -5,6 +5,7 @@ $front = file_get_contents($root . '/front-page.php');
 $functions = file_get_contents($root . '/functions.php');
 $template = file_get_contents($root . '/inc/home-v2.php');
 $css = file_get_contents($root . '/assets/css/home-v2.css');
+$js = file_get_contents($root . '/assets/js/home-v2.js');
 home_v2_assert(strpos($front, 'FLACSO_Home_Campaign::is_enabled') !== false, 'la plantilla respeta el rollback flag');
 home_v2_assert(strpos($functions, 'assets/css/home-v2.css') !== false, 'el tema carga assets v2');
 home_v2_assert(strpos($template, "home_url('/formacion/')") !== false, 'conserva la ruta de formación');
@@ -16,6 +17,7 @@ home_v2_assert(strpos($template, 'data-home-news-carousel') !== false, 'las noti
 home_v2_assert(strpos($template, 'flacso_section_novedades_get_posts(6') !== false, 'la portada debe cargar seis noticias no fijadas');
 home_v2_assert(strpos($template, 'flacso-home-v2__latest-news') !== false, 'las noticias no fijadas deben tener un listado propio');
 home_v2_assert(strpos($functions, 'assets/js/home-v2.js') !== false, 'el tema debe cargar el controlador del carrusel');
+home_v2_assert(strpos($js, "document.readyState === 'loading'") !== false, 'el carrusel debe inicializar aunque el script cargue después del DOM');
 home_v2_assert(strpos($css, '.flacso-home-v2 svg') !== false, 'los iconos quedan dimensionados dentro de la portada v2');
 home_v2_assert(strpos($css, '@media (min-width: 761px)') !== false, 'las mejoras de escritorio deben aplicarse desde un breakpoint ascendente');
 home_v2_assert(strpos($css, '.flacso-home-v2__latest-grid { display: grid; grid-template-columns: 1fr;') !== false, 'las noticias no fijadas deben comenzar en una columna móvil');
