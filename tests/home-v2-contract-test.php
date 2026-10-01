@@ -73,4 +73,68 @@ home_v2_assert($quienes_mobile['cardHeight'] < 700, 'la tarjeta institucional m�
 
 $quienes_desktop = home_v2_quienes_layout($css, 1440, 1000);
 home_v2_assert($quienes_desktop['brandWidth'] < $quienes_desktop['copyWidth'], 'en escritorio el contenido debe tener mayor jerarquía que la marca');
+
+function home_v2_closing_sections_layout(string $css, int $width, int $height): array {
+    $chrome = trim((string) shell_exec('command -v google-chrome || command -v chromium || true'));
+    home_v2_assert($chrome !== '', 'la prueba visual requiere Chrome o Chromium');
+    $cards = '';
+    foreach (['Maestrías', 'Especializaciones', 'Diplomas', 'Diplomados', 'Seminarios'] as $index => $title) {
+        $modifier = $index === 0 ? ' flacso-oferta-mosaico__card--featured' : '';
+        $cards .= '<a class="flacso-oferta-mosaico__card' . $modifier . '" href="#"><div class="flacso-oferta-mosaico__media"></div>'
+            . '<div class="flacso-oferta-mosaico__content"><h3>' . $title . '</h3><div class="flacso-oferta-mosaico__description">Propuesta académica de FLACSO Uruguay.</div>'
+            . '<span class="flacso-oferta-mosaico__link">Conocer la propuesta →</span></div></a>';
+    }
+    $legacy_mobile_css = '.flacso-oferta-mosaico__card,.flacso-oferta-mosaico__card--featured{min-height:200px;aspect-ratio:16/9}';
+    $html = '<!doctype html><html><head><meta charset="utf-8"><style>' . $css . '</style><style>' . $legacy_mobile_css . '</style></head><body>'
+        . '<main class="flacso-home-v2"><article class="flacso-home-v2__section flacso-home-v2__section--posgrados"><section class="flacso-oferta-mosaico">'
+        . '<div class="flacso-content-shell"><header class="flacso-oferta-mosaico__header"><h2>Nuestra oferta educativa</h2>'
+        . '<div class="flacso-oferta-mosaico__intro">Formaciones en distintos niveles y áreas de las ciencias sociales.</div></header>'
+        . '<div class="flacso-oferta-mosaico__grid">' . $cards . '</div></div></section></article>'
+        . '<article class="flacso-home-v2__section flacso-home-v2__section--contacto"><section class="flacso-contacto flacso-contacto-section">'
+        . '<div class="flacso-content-shell flacso-contacto-content"><div class="flacso-contacto-card"><span class="flacso-contacto-icon"><svg></svg></span>'
+        . '<div class="flacso-contacto-copy"><h2 class="flacso-contacto-heading">Contactanos</h2><p class="flacso-contacto-subtitle">Con gusto responderemos todas tus consultas.</p></div>'
+        . '<a class="flacso-btn flacso-contacto-cta" href="#">Solicite información</a></div></div></section></article></main>'
+        . '<pre id="result"></pre><script>const offer=document.querySelector(".flacso-oferta-mosaico__grid");'
+        . 'const featured=document.querySelector(".flacso-oferta-mosaico__card--featured");const regular=document.querySelectorAll(".flacso-oferta-mosaico__card")[1];'
+        . 'const contact=document.querySelector(".flacso-contacto-card");const cta=document.querySelector(".flacso-contacto-cta");'
+        . 'const offerStyle=getComputedStyle(offer);const contactStyle=getComputedStyle(contact);document.querySelector("#result").textContent=JSON.stringify({'
+        . 'offerDisplay:offerStyle.display,offerColumnCount:offerStyle.gridTemplateColumns.split(" ").length,gridWidth:Math.round(offer.getBoundingClientRect().width),'
+        . 'featuredWidth:Math.round(featured.getBoundingClientRect().width),featuredHeight:Math.round(featured.getBoundingClientRect().height),'
+        . 'featuredAspect:getComputedStyle(featured).aspectRatio,'
+        . 'regularWidth:Math.round(regular.getBoundingClientRect().width),regularHeight:Math.round(regular.getBoundingClientRect().height),'
+        . 'contactDisplay:contactStyle.display,contactColumnCount:contactStyle.gridTemplateColumns.split(" ").length,'
+        . 'contactBackground:contactStyle.backgroundColor,ctaWidth:Math.round(cta.getBoundingClientRect().width),'
+        . 'contactWidth:Math.round(contact.getBoundingClientRect().width),overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth});</script></body></html>';
+    $temporary = tempnam(sys_get_temp_dir(), 'flacso-home-v2-closing-');
+    $path = $temporary === false ? false : $temporary . '.html';
+    home_v2_assert($path !== false && rename($temporary, $path) && file_put_contents($path, $html) !== false, 'se crea el escenario visual de oferta y contacto');
+    $command = escapeshellarg($chrome) . ' --headless=new --disable-gpu --no-sandbox --hide-scrollbars'
+        . ' --window-size=' . $width . ',' . $height . ' --dump-dom ' . escapeshellarg('file://' . $path) . ' 2>/dev/null';
+    $dump = (string) shell_exec($command);
+    unlink($path);
+    home_v2_assert(preg_match('/<pre id="result">(.*?)<\/pre>/s', $dump, $match) === 1, 'Chrome devuelve las medidas de oferta y contacto');
+    $layout = json_decode(html_entity_decode($match[1], ENT_QUOTES | ENT_HTML5), true);
+    home_v2_assert(is_array($layout), 'las medidas de oferta y contacto son válidas');
+    return $layout;
+}
+
+$closing_mobile = home_v2_closing_sections_layout($css, 390, 844);
+home_v2_assert($closing_mobile['offerDisplay'] === 'grid' && $closing_mobile['offerColumnCount'] === 1, 'la oferta debe comenzar en una columna móvil');
+home_v2_assert($closing_mobile['contactDisplay'] === 'grid' && $closing_mobile['contactColumnCount'] === 1, 'contacto debe apilar su contenido en móvil');
+home_v2_assert($closing_mobile['contactBackground'] === 'rgb(23, 54, 93)', 'contacto debe cerrar la portada con alto contraste');
+home_v2_assert($closing_mobile['featuredAspect'] === 'auto', 'la portada nueva debe neutralizar la proporción móvil heredada');
+home_v2_assert($closing_mobile['featuredWidth'] <= $closing_mobile['gridWidth'], 'las tarjetas de oferta no deben exceder la columna móvil');
+home_v2_assert($closing_mobile['overflow'] === false, 'oferta y contacto no deben desbordar en móvil');
+
+$closing_tablet = home_v2_closing_sections_layout($css, 768, 1000);
+home_v2_assert($closing_tablet['offerColumnCount'] === 2, 'la oferta debe usar dos columnas en tablet');
+home_v2_assert($closing_tablet['featuredWidth'] > $closing_tablet['regularWidth'] * 1.8, 'la propuesta principal debe ocupar el ancho de la retícula tablet: ' . json_encode($closing_tablet));
+home_v2_assert($closing_tablet['contactColumnCount'] === 3, 'contacto debe usar una fila en tablet');
+home_v2_assert($closing_tablet['overflow'] === false, 'oferta y contacto no deben desbordar en tablet');
+
+$closing_desktop = home_v2_closing_sections_layout($css, 1440, 1000);
+home_v2_assert($closing_desktop['offerColumnCount'] === 3, 'la oferta debe usar tres columnas en escritorio');
+home_v2_assert($closing_desktop['featuredHeight'] > $closing_desktop['regularHeight'] * 1.8, 'la propuesta principal debe ocupar dos filas en escritorio');
+home_v2_assert($closing_desktop['contactColumnCount'] === 3 && $closing_desktop['ctaWidth'] < $closing_desktop['contactWidth'], 'contacto debe conservar una llamada a la acción compacta en escritorio');
+home_v2_assert($closing_desktop['overflow'] === false, 'oferta y contacto no deben desbordar en escritorio');
 echo "OK home v2 contract\n";
