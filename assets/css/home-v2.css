@@ -1,0 +1,15 @@
+.flacso-home-v2 { color: var(--global-palette3, #17365d); }
+.flacso-home-v2__hero { background: linear-gradient(110deg, #17365d, #255b8d); background-image: linear-gradient(110deg, rgba(23,54,93,.96), rgba(37,91,141,.78)), var(--flacso-home-v2-image); background-position: center; background-size: cover; color: #fff; min-height: 520px; display: grid; align-items: center; }
+.flacso-home-v2__inner, .flacso-home-v2__links { max-width: 1180px; width: min(100% - 40px, 1180px); margin: 0 auto; }
+.flacso-home-v2__inner { padding: 80px 0; }
+.flacso-home-v2__kicker { font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.flacso-home-v2 h1 { max-width: 760px; color: inherit; font-size: clamp(2.5rem, 6vw, 5.4rem); line-height: .98; margin: 18px 0; }
+.flacso-home-v2__description { max-width: 650px; font-size: clamp(1.1rem, 2vw, 1.45rem); }
+.flacso-home-v2__actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+.flacso-home-v2__cta { background: #fcd116; border-radius: 999px; color: #17365d; display: inline-block; font-weight: 700; padding: 15px 24px; text-decoration: none; }
+.flacso-home-v2__cta--secondary { background: transparent; border: 1px solid rgba(255,255,255,.8); color: #fff; }
+.flacso-home-v2__links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; padding: 42px 0 70px; }
+.flacso-home-v2__links a { border: 1px solid #d8e1ea; border-radius: 18px; display: grid; gap: 8px; padding: 24px; text-decoration: none; }
+.flacso-home-v2__links strong { color: #17365d; font-size: 1.25rem; }
+.flacso-home-v2__links span { color: #536579; }
+@media (max-width: 720px) { .flacso-home-v2__hero { min-height: 600px; } .flacso-home-v2__inner { padding: 58px 0; } .flacso-home-v2__links { grid-template-columns: 1fr; } }

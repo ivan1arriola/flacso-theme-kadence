@@ -9,6 +9,7 @@ done < <(find "$theme_dir" -type f -name '*.php' -print0)
 
 php "$theme_dir/tests/academic-public-model-test.php"
 php "$theme_dir/tests/faq-page-test.php"
+php "$theme_dir/tests/home-v2-contract-test.php"
 
 if grep -rn -P 'target="_blank"(?![^>]*\brel=)' --include='*.php' "$theme_dir"; then
     echo 'Hay enlaces target="_blank" sin rel="noopener noreferrer".' >&2

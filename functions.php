@@ -5,6 +5,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 require_once get_stylesheet_directory() . '/inc/academic-public-model.php';
 require_once get_stylesheet_directory() . '/inc/open-graph.php';
 require_once get_stylesheet_directory() . '/template-parts/front-page/hero.php';
+require_once get_stylesheet_directory() . '/inc/home-v2.php';
 
 /**
  * ===========================================================
@@ -82,6 +83,12 @@ add_action( 'wp_enqueue_scripts', 'flacso_child_enqueue_site_chrome', 45 );
 
 function flacso_child_enqueue_front_page_assets() {
     if ( ! is_front_page() ) {
+        return;
+    }
+
+    if ( class_exists( 'FLACSO_Home_Campaign' ) && FLACSO_Home_Campaign::is_enabled() ) {
+        $path = 'assets/css/home-v2.css';
+        wp_enqueue_style( 'flacso-home-v2', get_stylesheet_directory_uri() . '/' . $path, array( 'flacso-site-chrome' ), flacso_child_asset_version( $path ) );
         return;
     }
 

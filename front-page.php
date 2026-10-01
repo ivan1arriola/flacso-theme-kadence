@@ -37,7 +37,9 @@ get_header();
 do_action( 'kadence_before_content' );
 ?>
 
-	<?php if ( function_exists( 'flacso_homepage_builder_render' ) ) : ?>
+	<?php if ( class_exists( 'FLACSO_Home_Campaign' ) && FLACSO_Home_Campaign::is_enabled() && function_exists( 'flacso_home_v2_render' ) ) : ?>
+		<?php echo flacso_home_v2_render(); ?>
+	<?php elseif ( function_exists( 'flacso_homepage_builder_render' ) ) : ?>
 		<?php echo flacso_homepage_builder_render(); ?>
 	<?php else : ?>
 	<main id="main" class="site-main flacso-home-layout" role="main">
