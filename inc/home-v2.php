@@ -79,7 +79,7 @@ function flacso_home_v2_render_featured_news(): string {
         <?php if ($featured) : ?>
             <div class="flacso-home-v2__carousel-shell">
                 <div class="flacso-home-v2__carousel-heading">
-                    <h3>Noticias fijadas</h3>
+                    <h3>Destacadas</h3>
                     <div class="flacso-home-v2__carousel-controls">
                         <button type="button" data-home-news-prev aria-label="Noticia fijada anterior">←</button>
                         <span data-home-news-status aria-live="polite">1 / <?php echo esc_html(count($featured)); ?></span>
@@ -117,9 +117,10 @@ function flacso_home_v2_render_news_card($post, string $variant): string {
             <?php if ($image_id) : echo wp_get_attachment_image($image_id, 'medium_large', false, ['alt' => esc_attr($title), 'loading' => 'lazy']); else : ?><span aria-hidden="true"></span><?php endif; ?>
         </a>
         <div class="flacso-home-v2__news-body">
+            <?php if ($variant === 'featured') : ?><span class="flacso-home-v2__news-badge">Destacada</span><?php endif; ?>
             <time datetime="<?php echo esc_attr(get_the_date('c', $post_id)); ?>"><?php echo esc_html(get_the_date('d/m/Y', $post_id)); ?></time>
             <h4><a href="<?php echo esc_url(get_permalink($post_id)); ?>"><?php echo esc_html($title); ?></a></h4>
-            <p><?php echo esc_html(wp_strip_all_tags((string) $excerpt)); ?></p>
+            <?php if ($variant === 'featured') : ?><p><?php echo esc_html(wp_strip_all_tags((string) $excerpt)); ?></p><?php endif; ?>
             <a class="flacso-home-v2__news-link" href="<?php echo esc_url(get_permalink($post_id)); ?>">Leer noticia <span aria-hidden="true">→</span></a>
         </div>
     </article>
