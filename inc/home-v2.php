@@ -37,7 +37,6 @@ function flacso_home_v2_render_sections(): string {
         'seminarios' => 'flacso_section_seminarios_proximos_render',
         'novedades' => 'flacso_section_novedades_render',
         'quienes' => 'flacso_section_quienes_somos_render',
-        'instagram' => 'flacso_section_instagram_render',
         'posgrados' => 'flacso_section_oferta_educativa_render',
         'mailing' => 'flacso_section_mailing_render',
         'contacto' => 'flacso_section_contacto_render',
@@ -63,40 +62,67 @@ function flacso_home_v2_render_sections(): string {
 }
 
 function flacso_home_v2_render_featured_news(): string {
-    if (!function_exists('flacso_section_novedades_get_sticky_posts')) {
+    if (!function_exists('flacso_section_novedades_get_sticky_posts') || !function_exists('flacso_section_novedades_get_posts')) {
         return '';
     }
-    $posts = flacso_section_novedades_get_sticky_posts(5);
-    if (!$posts) {
+    $featured = flacso_section_novedades_get_sticky_posts(6);
+    $latest_data = flacso_section_novedades_get_posts(6, 'novedades', 1);
+    $latest = is_array($latest_data['posts'] ?? null) ? $latest_data['posts'] : [];
+    if (!$featured && !$latest) {
         return '';
     }
     ob_start(); ?>
     <section class="flacso-home-v2__featured-news" aria-labelledby="flacso-home-v2-news-title">
         <div class="flacso-home-v2__section-heading">
             <p class="flacso-home-v2__eyebrow">Actualidad</p>
-            <h2 id="flacso-home-v2-news-title">Noticias destacadas</h2>
+            <h2 id="flacso-home-v2-news-title">Novedades</h2>
         </div>
-        <div class="flacso-home-v2__news-grid">
-            <?php foreach ($posts as $index => $post) :
-                $post_id = (int) $post->ID;
-                $title = wp_strip_all_tags(get_the_title($post_id));
-                $excerpt = has_excerpt($post_id) ? get_the_excerpt($post_id) : wp_trim_words(wp_strip_all_tags((string) get_post_field('post_content', $post_id)), 22, '…');
-                $image_id = get_post_thumbnail_id($post_id);
-                ?>
-                <article class="flacso-home-v2__news-card <?php echo $index === 0 ? 'flacso-home-v2__news-card--lead' : ''; ?>">
-                    <a class="flacso-home-v2__news-image" href="<?php echo esc_url(get_permalink($post_id)); ?>">
-                        <?php if ($image_id) : echo wp_get_attachment_image($image_id, $index === 0 ? 'large' : 'medium_large', false, ['alt' => esc_attr($title), 'loading' => $index === 0 ? 'eager' : 'lazy']); else : ?><span aria-hidden="true"></span><?php endif; ?>
-                    </a>
-                    <div class="flacso-home-v2__news-body">
-                        <time datetime="<?php echo esc_attr(get_the_date('c', $post_id)); ?>"><?php echo esc_html(get_the_date('d/m/Y', $post_id)); ?></time>
-                        <h3><a href="<?php echo esc_url(get_permalink($post_id)); ?>"><?php echo esc_html($title); ?></a></h3>
-                        <p><?php echo esc_html(wp_strip_all_tags((string) $excerpt)); ?></p>
-                        <a class="flacso-home-v2__news-link" href="<?php echo esc_url(get_permalink($post_id)); ?>">Leer noticia <span aria-hidden="true">→</span></a>
+        <?php if ($featured) : ?>
+            <div class="flacso-home-v2__carousel-shell">
+                <div class="flacso-home-v2__carousel-heading">
+                    <h3>Noticias fijadas</h3>
+                    <div class="flacso-home-v2__carousel-controls">
+                        <button type="button" data-home-news-prev aria-label="Noticia fijada anterior">←</button>
+                        <span data-home-news-status aria-live="polite">1 / <?php echo esc_html(count($featured)); ?></span>
+                        <button type="button" data-home-news-next aria-label="Siguiente noticia fijada">→</button>
                     </div>
-                </article>
-            <?php endforeach; ?>
-        </div>
+                </div>
+                <div class="flacso-home-v2__featured-track" data-home-news-carousel tabindex="0" aria-label="Noticias fijadas">
+                    <?php foreach ($featured as $post) : echo flacso_home_v2_render_news_card($post, 'featured'); endforeach; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+        <?php if ($latest) : ?>
+            <div class="flacso-home-v2__latest-news">
+                <h3>Últimas noticias</h3>
+                <div class="flacso-home-v2__latest-grid">
+                    <?php foreach ($latest as $post) : echo flacso_home_v2_render_news_card($post, 'latest'); endforeach; ?>
+                </div>
+            </div>
+        <?php endif; ?>
         <a class="flacso-home-v2__all-news" href="<?php echo esc_url(home_url('/categoria/novedades/')); ?>">Ver todas las novedades</a>
     </section>
+    <?php return (string) ob_get_clean();
+}
+
+function flacso_home_v2_render_news_card($post, string $variant): string {
+    $post_id = (int) $post->ID;
+    $title = wp_strip_all_tags(get_the_title($post_id));
+    $excerpt = has_excerpt($post_id)
+        ? get_the_excerpt($post_id)
+        : wp_trim_words(wp_strip_all_tags((string) get_post_field('post_content', $post_id)), 20, '…');
+    $image_id = get_post_thumbnail_id($post_id);
+    ob_start(); ?>
+    <article class="flacso-home-v2__news-card flacso-home-v2__news-card--<?php echo esc_attr($variant); ?>">
+        <a class="flacso-home-v2__news-image" href="<?php echo esc_url(get_permalink($post_id)); ?>">
+            <?php if ($image_id) : echo wp_get_attachment_image($image_id, 'medium_large', false, ['alt' => esc_attr($title), 'loading' => 'lazy']); else : ?><span aria-hidden="true"></span><?php endif; ?>
+        </a>
+        <div class="flacso-home-v2__news-body">
+            <time datetime="<?php echo esc_attr(get_the_date('c', $post_id)); ?>"><?php echo esc_html(get_the_date('d/m/Y', $post_id)); ?></time>
+            <h4><a href="<?php echo esc_url(get_permalink($post_id)); ?>"><?php echo esc_html($title); ?></a></h4>
+            <p><?php echo esc_html(wp_strip_all_tags((string) $excerpt)); ?></p>
+            <a class="flacso-home-v2__news-link" href="<?php echo esc_url(get_permalink($post_id)); ?>">Leer noticia <span aria-hidden="true">→</span></a>
+        </div>
+    </article>
     <?php return (string) ob_get_clean();
 }
