@@ -594,6 +594,10 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
 
                         <?php if ($fc_has_academic_details) : ?>
                             <div class="fc-academic-details" aria-label="<?php esc_attr_e('Detalles académicos', 'flacso-uruguay'); ?>">
+                                <div class="fc-academic-details__heading">
+                                    <span class="fc-academic-details__icon"><i class="bi bi-book" aria-hidden="true"></i></span>
+                                    <h2><?php esc_html_e('Contenidos y estructura académica', 'flacso-uruguay'); ?></h2>
+                                </div>
                                 <?php foreach ($fc_academic_details as $fc_detail_key => $fc_detail_label) :
                                     if (empty($academic[$fc_detail_key])) {
                                         continue;
@@ -622,6 +626,8 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                     </article>
                 <?php endif; ?>
             </section>
+
+            <div class="fc-resource-grid">
 
             <!-- DOCUMENTOS: MALLA Y CALENDARIO -->
             <?php if ($cartamalla_url || $malla_url || $calendario_url) :
@@ -784,6 +790,8 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                     </a>
                 </div>
             <?php endif; ?>
+
+            </div><!-- /.fc-resource-grid -->
 
             <!-- INFORMACIÓN IMPORTANTE -->
             <section class="fc-section fc-info-important">
