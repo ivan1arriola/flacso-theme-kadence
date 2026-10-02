@@ -236,17 +236,8 @@ $seminarios_total = count($seminarios_catalogo);
                         <h1 id="seminarios-page-title" class="seminarios-hero__title"><?php esc_html_e('Seminarios', 'flacso-uruguay'); ?></h1>
                         <div class="seminarios-hero__editorial">
                             <p><strong class="seminarios-hero__editorial-highlight">Los seminarios de posgrado de FLACSO Uruguay son propuestas de formación de corta duración, diseñadas para la actualización teórica y profesional en distintos campos de las ciencias sociales.</strong> Tienen una duración aproximada de entre tres y cinco semanas y se vinculan con los diferentes programas académicos de la institución.</p>
-
-                            <details class="seminarios-hero__details">
-                                <summary>
-                                    <span><?php esc_html_e('Más sobre los seminarios', 'flacso-uruguay'); ?></span>
-                                    <i class="bi bi-plus-lg" aria-hidden="true"></i>
-                                </summary>
-                                <div class="seminarios-hero__details-body">
-                                    <p>Se ofrecen en modalidad virtual o híbrida, lo que permite la participación de personas residentes en Montevideo, en el interior del país o en el exterior. La cursada combina actividades que pueden realizarse con flexibilidad horaria y encuentros sincrónicos o presenciales previamente establecidos (según el seminario).</p>
-                                    <p>Los seminarios pueden ser acreditables a estudios de maestría o doctorado, de acuerdo con las características de cada propuesta y los criterios del programa correspondiente. En la información de cada seminario podrás consultar sus objetivos, contenidos, modalidad de cursada, duración, equipo docente, cantidad de créditos, requisitos e inscripción.</p>
-                                </div>
-                            </details>
+                            <p>Se ofrecen en modalidad virtual o híbrida, lo que permite la participación de personas residentes en Montevideo, en el interior del país o en el exterior. La cursada combina actividades que pueden realizarse con flexibilidad horaria y encuentros sincrónicos o presenciales previamente establecidos (según el seminario).</p>
+                            <p>Los seminarios pueden ser acreditables a estudios de maestría o doctorado, de acuerdo con las características de cada propuesta y los criterios del programa correspondiente. En la información de cada seminario podrás consultar sus objetivos, contenidos, modalidad de cursada, duración, equipo docente, cantidad de créditos, requisitos e inscripción.</p>
                         </div>
 
                         <div class="seminarios-hero__facts" aria-label="<?php esc_attr_e('Características principales', 'flacso-uruguay'); ?>">
@@ -395,12 +386,16 @@ $seminarios_total = count($seminarios_catalogo);
 
                     <?php if (!empty($seminarios_agrupados)) : ?>
                         <div class="seminarios-groups" data-seminarios-groups>
+                            <?php $seminarios_group_index = 0; ?>
                             <?php foreach ($seminarios_agrupados as $month_key => $grupo) : ?>
-                                <section class="seminarios-group" data-month-group="<?php echo esc_attr($month_key); ?>" aria-labelledby="grupo-<?php echo esc_attr($month_key); ?>">
-                                    <header class="seminarios-group__header">
-                                        <h3 id="grupo-<?php echo esc_attr($month_key); ?>" class="seminarios-group__title"><?php echo esc_html($grupo['month_label']); ?></h3>
-                                        <span class="seminarios-group__count"><?php printf(esc_html__('%d seminarios', 'flacso-uruguay'), count($grupo['items'])); ?></span>
-                                    </header>
+                                <details class="seminarios-group" data-month-group="<?php echo esc_attr($month_key); ?>"<?php echo $seminarios_group_index === 0 ? ' open' : ''; ?>>
+                                    <summary class="seminarios-group__header">
+                                        <span id="grupo-<?php echo esc_attr($month_key); ?>" class="seminarios-group__title"><?php echo esc_html($grupo['month_label']); ?></span>
+                                        <span class="seminarios-group__header-meta">
+                                            <span class="seminarios-group__count"><?php printf(esc_html__('%d seminarios', 'flacso-uruguay'), count($grupo['items'])); ?></span>
+                                            <i class="bi bi-chevron-down seminarios-group__toggle" aria-hidden="true"></i>
+                                        </span>
+                                    </summary>
 
                                     <div class="seminarios-grid">
                                         <?php foreach ($grupo['items'] as $seminario_item) : ?>
@@ -505,7 +500,8 @@ $seminarios_total = count($seminarios_catalogo);
                                             </article>
                                         <?php endforeach; ?>
                                     </div>
-                                </section>
+                                </details>
+                                <?php $seminarios_group_index++; ?>
                             <?php endforeach; ?>
                         </div>
                         <div class="seminarios-empty" role="status" data-seminarios-filter-empty hidden>
@@ -529,45 +525,6 @@ $seminarios_total = count($seminarios_catalogo);
                 </div>
             </div>
         </section>
-
-<?php
-$ofertas_con_seminarios_disponibles = [];
-foreach ($seminarios_catalogo as $item) {
-    if (isset($seminarios_por_posgrado[$item['id']])) {
-        foreach ($seminarios_por_posgrado[$item['id']] as $oferta_id) {
-            $ofertas_con_seminarios_disponibles[$oferta_id] = true;
-        }
-    }
-}
-$ofertas_con_seminarios_disponibles = array_keys($ofertas_con_seminarios_disponibles);
-?>
-
-<?php if (!empty($ofertas_con_seminarios_disponibles)) : ?>
-    <section class="seminarios-ofertas-vinculadas" aria-labelledby="seminarios-ofertas-titulo">
-        <div class="site-container">
-            <div class="seminarios-ofertas__panel">
-                <header class="seminarios-ofertas__header">
-                    <h2 id="seminarios-ofertas-titulo" class="seminarios-ofertas__title"><?php esc_html_e('Seminarios por Programa', 'flacso-uruguay'); ?></h2>
-                    <p class="seminarios-ofertas__subtitle"><?php esc_html_e('Explora los seminarios específicos asociados a nuestras Maestrías y Diplomas:', 'flacso-uruguay'); ?></p>
-                </header>
-
-                <div class="seminarios-ofertas__grid">
-                    <?php
-                    foreach ($ofertas_con_seminarios_disponibles as $oferta_id) :
-                        $permalink = get_permalink($oferta_id);
-                        $link_seminarios = trailingslashit($permalink) . 'seminarios/';
-                        $titulo = get_the_title($oferta_id);
-                        $display_title = $titulo;
-                    ?>
-                        <a href="<?php echo esc_url($link_seminarios); ?>" class="seminarios-btn seminarios-btn--outline">
-                            <?php echo esc_html($display_title); ?>
-                        </a>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        </div>
-    </section>
-<?php endif; ?>
 
         <section class="seminarios-contacto" aria-labelledby="seminarios-contacto-titulo">
             <div class="site-container">
