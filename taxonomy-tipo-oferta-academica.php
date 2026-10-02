@@ -53,11 +53,33 @@ if ($ofertas_query->have_posts()) {
             $fecha_inicio = (string) ($ctx['instance']['fecha_inicio'] ?? '');
             $carga_horaria = (string) ($ctx['academic']['carga_horaria'] ?? '');
 
+            $image_id = (int) get_post_thumbnail_id($post_id);
+            $thumbnail_url = '';
+            if ($image_id > 0) {
+                $cropped = wp_get_attachment_image_url($image_id, 'flacso-oferta-4x5');
+                if ($cropped) {
+                    $thumbnail_url = (string) $cropped;
+                }
+            }
+            if ($thumbnail_url === '') {
+                $thumbnail_url = (string) ($ctx['thumbnail_url'] ?? '');
+            }
+
+            $raw_color = '';
+            if (!empty($ctx['academic']['color_principal']) && is_string($ctx['academic']['color_principal'])) {
+                $raw_color = trim($ctx['academic']['color_principal']);
+            } elseif (!empty($ctx['academic']['colores_presentacion']['principal']) && is_string($ctx['academic']['colores_presentacion']['principal'])) {
+                $raw_color = trim($ctx['academic']['colores_presentacion']['principal']);
+            }
+            $brand_color = preg_match('/^#[0-9a-fA-F]{6}$/', $raw_color) ? strtolower($raw_color) : '#0a3470';
+
             $offers_list[] = [
                 'id'             => $post_id,
                 'title'          => $ctx['title'],
                 'permalink'      => $ctx['permalink'],
-                'thumbnail_url'  => $ctx['thumbnail_url'],
+                'image_id'       => $image_id,
+                'thumbnail_url'  => $thumbnail_url,
+                'brand_color'    => $brand_color,
                 'is_open'        => $is_open,
                 'duracion'       => $carga_horaria !== '' ? $carga_horaria . ' hs.' : '',
                 'excerpt'        => wp_trim_words(wp_strip_all_tags($ctx['academic']['presentacion'] ?: get_the_excerpt($post_id)), 18, '...'),
@@ -101,6 +123,7 @@ $render_offer_card = static function (array $item): void {
         <a
             href="<?php echo esc_url((string) $item['permalink']); ?>"
             class="flacso-premium-card flacso-premium-card--link h-100 w-100"
+            style="--offer-accent: <?php echo esc_attr((string) ($item['brand_color'] ?? '#0a3470')); ?>;"
             aria-label="<?php echo esc_attr(sprintf(__('Ver información de %s', 'flacso-uruguay'), (string) $item['title'])); ?>"
             data-flacso-offer-click="1"
             data-offer-title="<?php echo esc_attr((string) $item['title']); ?>"
@@ -108,7 +131,26 @@ $render_offer_card = static function (array $item): void {
         >
             <div class="flacso-premium-card__image-wrap">
                 <?php if (!empty($item['thumbnail_url'])) : ?>
-                    <img src="<?php echo esc_url((string) $item['thumbnail_url']); ?>" class="flacso-premium-card__img" alt="<?php echo esc_attr((string) $item['title']); ?>" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                    <?php
+                    if (!empty($item['image_id'])) {
+                        echo wp_get_attachment_image(
+                            (int) $item['image_id'],
+                            'flacso-oferta-4x5',
+                            false,
+                            [
+                                'class'    => 'flacso-premium-card__img',
+                                'alt'      => (string) $item['title'],
+                                'loading'  => 'lazy',
+                                'decoding' => 'async',
+                                'sizes'    => '(max-width: 767px) 118px, (max-width: 1200px) 33vw, 340px',
+                            ]
+                        );
+                    } else {
+                        ?>
+                        <img src="<?php echo esc_url((string) $item['thumbnail_url']); ?>" class="flacso-premium-card__img" alt="<?php echo esc_attr((string) $item['title']); ?>" loading="lazy" decoding="async" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                        <?php
+                    }
+                    ?>
                     <div class="flacso-premium-card__img-placeholder" style="display:none;">
                         <i class="bi bi-mortarboard" style="font-size: 3rem;"></i>
                     </div>
@@ -180,6 +222,7 @@ get_header();
                     <span><?php echo esc_html($taxonomy_name); ?></span>
                 </nav>
 
+                <span class="flacso-taxonomy-hero__kicker"><?php esc_html_e('Oferta académica', 'flacso-uruguay'); ?></span>
                 <h1 class="flacso-taxonomy-hero__title"><?php echo esc_html($taxonomy_name); ?></h1>
 
                 <p class="flacso-taxonomy-hero__description">
