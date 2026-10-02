@@ -5640,3 +5640,62 @@
         border-radius: 12px !important;
     }
 }
+
+
+/* ==========================================================================
+   INLINE EXPAND DOCENTES 2026
+   La bio se amplía dentro de la tarjeta; no navega a una página de perfil.
+   ========================================================================== */
+
+.flacso-oferta-responsive .flacso-oa-person-card__expand {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    width: fit-content;
+    margin-top: auto;
+    padding: 12px 0 0;
+    border: 0;
+    background: transparent;
+    color: var(--oa-brand-deep);
+    font: inherit;
+    font-size: .8rem;
+    font-weight: 850;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: none;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card__expand:hover,
+.flacso-oferta-responsive .flacso-oa-person-card__expand:focus {
+    background: transparent;
+    color: var(--oa-brand);
+    transform: none;
+    box-shadow: none;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card__expand i {
+    font-size: .9em;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1.is-expanded .flacso-oa-person-card__cv,
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-2.is-expanded .flacso-oa-person-card__cv {
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1.is-expanded .flacso-oa-person-card__cv::after,
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-2.is-expanded .flacso-oa-person-card__cv::after {
+    display: none !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1.is-expanded,
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-2.is-expanded {
+    align-self: start;
+}
+
+@media (max-width: 600px) {
+    .flacso-oferta-responsive .flacso-oa-person-card__expand {
+        padding-top: 9px;
+        font-size: .72rem;
+    }
+}
