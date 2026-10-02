@@ -201,11 +201,13 @@ function flacso_child_enqueue_featured_images() {
         return;
     }
 
+    $featured_images_path = 'assets/js/featured-images.js';
+
     wp_enqueue_script(
         'flacso-child-featured-images',
-        trailingslashit( get_stylesheet_directory_uri() ) . 'assets/js/featured-images.js',
+        trailingslashit( get_stylesheet_directory_uri() ) . $featured_images_path,
         array(),
-        wp_get_theme()->get( 'Version' ),
+        flacso_child_asset_version( $featured_images_path ),
         true
     );
 }
