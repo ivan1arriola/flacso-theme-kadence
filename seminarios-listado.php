@@ -225,24 +225,47 @@ $seminarios_total = count($seminarios_catalogo);
 <div class="content-area flacso-seminarios-page">
     <main id="main" class="site-main">
         <header class="seminarios-hero" role="banner">
-            <?php if (!empty($hero_image_url)) : ?>
-                <img
-                    class="seminarios-hero__bg"
-                    src="<?php echo esc_url($hero_image_url); ?>"
-                    alt=""
-                    loading="eager"
-                    decoding="async"
-                    aria-hidden="true"
-                >
-            <?php endif; ?>
-
             <div class="site-container seminarios-hero__inner">
-                <div class="seminarios-hero__content">
-                    <h1 id="seminarios-page-title" class="seminarios-hero__title"><?php esc_html_e('Seminarios', 'flacso-uruguay'); ?></h1>
-                    <p class="seminarios-hero__subtitle">
-                        <?php esc_html_e('Encontrá actividades de corta duración, con fechas y modalidades específicas.', 'flacso-uruguay'); ?>
-                    </p>
+                <div class="seminarios-hero__poster">
+                    <div class="seminarios-hero__content">
+                        <div class="seminarios-hero__dots" aria-hidden="true">
+                            <span></span><span></span><span></span>
+                        </div>
 
+                        <p class="seminarios-hero__kicker"><?php esc_html_e('Seminarios de posgrado', 'flacso-uruguay'); ?></p>
+                        <h1 id="seminarios-page-title" class="seminarios-hero__title"><?php esc_html_e('Formación breve para actualizar conocimientos y profundizar áreas específicas', 'flacso-uruguay'); ?></h1>
+
+                        <div class="seminarios-hero__editorial">
+                            <p>Los seminarios de posgrado de FLACSO Uruguay son propuestas de formación de corta duración, diseñadas para la actualización teórica y profesional en distintos campos de las ciencias sociales.</p>
+                            <p>Se ofrecen en modalidad virtual o híbrida y pueden ser acreditables a estudios de maestría o doctorado, de acuerdo con las características de cada propuesta y los criterios del programa correspondiente.</p>
+                        </div>
+
+                        <div class="seminarios-hero__facts" aria-label="<?php esc_attr_e('Características principales', 'flacso-uruguay'); ?>">
+                            <span><strong>3–5</strong> <?php esc_html_e('semanas', 'flacso-uruguay'); ?></span>
+                            <span><?php esc_html_e('Virtual o híbrida', 'flacso-uruguay'); ?></span>
+                            <span><?php esc_html_e('Posibilidad de acreditación', 'flacso-uruguay'); ?></span>
+                        </div>
+
+                        <p class="seminarios-hero__contact">
+                            <?php esc_html_e('Consultas:', 'flacso-uruguay'); ?>
+                            <a href="mailto:inscripciones@flacso.edu.uy">inscripciones@flacso.edu.uy</a>
+                        </p>
+                    </div>
+
+                    <?php if (!empty($hero_image_url)) : ?>
+                        <div class="seminarios-hero__visual" aria-hidden="true">
+                            <img
+                                class="seminarios-hero__image"
+                                src="<?php echo esc_url($hero_image_url); ?>"
+                                alt=""
+                                loading="eager"
+                                decoding="async"
+                            >
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="seminarios-hero__tools">
                     <div class="seminarios-hero__search">
                         <i class="bi bi-search" aria-hidden="true"></i>
                         <label class="screen-reader-text" for="seminarios-catalog-search"><?php esc_html_e('Buscar seminarios', 'flacso-uruguay'); ?></label>
@@ -261,34 +284,6 @@ $seminarios_total = count($seminarios_catalogo);
                 </div>
             </div>
         </header>
-
-        <section class="seminarios-intro" aria-labelledby="seminarios-intro-title">
-            <div class="site-container seminarios-intro__grid">
-                <div class="seminarios-intro__heading">
-                    <span class="seminarios-intro__eyebrow"><?php esc_html_e('Seminarios de posgrado', 'flacso-uruguay'); ?></span>
-                    <h2 id="seminarios-intro-title"><?php esc_html_e('Formación breve para actualizar conocimientos y profundizar áreas específicas', 'flacso-uruguay'); ?></h2>
-
-                    <div class="seminarios-intro__facts" aria-label="<?php esc_attr_e('Características principales', 'flacso-uruguay'); ?>">
-                        <span><strong>3–5</strong> <?php esc_html_e('semanas', 'flacso-uruguay'); ?></span>
-                        <span><?php esc_html_e('Virtual o híbrida', 'flacso-uruguay'); ?></span>
-                        <span><?php esc_html_e('Posibilidad de acreditación', 'flacso-uruguay'); ?></span>
-                    </div>
-                </div>
-
-                <div class="seminarios-intro__copy">
-                    <p>Los seminarios de posgrado de FLACSO Uruguay son propuestas de formación de corta duración, diseñadas para la actualización teórica y profesional en distintos campos de las ciencias sociales. Tienen una duración aproximada de entre tres y cinco semanas y se vinculan con los diferentes programas académicos de la institución.</p>
-
-                    <p>Se ofrecen en modalidad virtual o híbrida, lo que permite la participación de personas residentes en Montevideo, en el interior del país o en el exterior. La cursada combina actividades que pueden realizarse con flexibilidad horaria y encuentros sincrónicos o presenciales previamente establecidos, según el seminario.</p>
-
-                    <p>Los seminarios pueden ser acreditables a estudios de maestría o doctorado, de acuerdo con las características de cada propuesta y los criterios del programa correspondiente. En la información de cada seminario podrás consultar sus objetivos, contenidos, modalidad de cursada, duración, equipo docente, créditos, requisitos e inscripción.</p>
-
-                    <p class="seminarios-intro__contact">
-                        <?php esc_html_e('Por dudas o consultas:', 'flacso-uruguay'); ?>
-                        <a href="mailto:inscripciones@flacso.edu.uy">inscripciones@flacso.edu.uy</a>
-                    </p>
-                </div>
-            </div>
-        </section>
 
         <section id="seminarios-destacados" class="seminarios-main" aria-labelledby="seminarios-destacados-titulo">
             <div class="site-container">
