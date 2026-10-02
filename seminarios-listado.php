@@ -19,6 +19,13 @@ if (function_exists('flacso_global_styles')) {
 }
 
 $hero_image_url = 'https://flacso.edu.uy/wp-content/uploads/2026/02/seminarios-artwork.png';
+$hero_image_id = attachment_url_to_postid($hero_image_url);
+if ($hero_image_id) {
+    $hero_cropped_url = wp_get_attachment_image_url($hero_image_id, 'flacso-seminario-4x5');
+    if ($hero_cropped_url) {
+        $hero_image_url = $hero_cropped_url;
+    }
+}
 $hoy = new DateTimeImmutable('today', wp_timezone());
 
 $posgrado_filtro = isset($_GET['posgrado']) ? absint(wp_unslash($_GET['posgrado'])) : 0;
@@ -153,7 +160,17 @@ foreach ($catalog_raw as $item_context) {
     $month_label = $format_month($inicio_obj);
     $fecha_larga = $format_date_long($inicio_obj);
 
-    $image_url = (string) ($item_context['thumbnail_url'] ?? '');
+    $image_id = (int) get_post_thumbnail_id($seminario_id);
+    $image_url = '';
+    if ($image_id > 0) {
+        $cropped_image_url = wp_get_attachment_image_url($image_id, 'flacso-seminario-4x5');
+        if ($cropped_image_url) {
+            $image_url = (string) $cropped_image_url;
+        }
+    }
+    if ($image_url === '') {
+        $image_url = (string) ($item_context['thumbnail_url'] ?? '');
+    }
     $permalink = (string) ($item_context['permalink'] ?? get_permalink($seminario_id));
 
     $desc_raw = (string) ($item_context['academic']['presentacion'] ?? '');
@@ -182,6 +199,7 @@ foreach ($catalog_raw as $item_context) {
         'credits'          => $creditos,
         'carga_horaria'    => $carga_horaria,
         'docentes_label'   => $get_docentes_label($docentes_meta),
+        'image_id'         => $image_id,
         'image_url'        => $image_url,
         'permalink'        => $permalink,
         'timestamp'        => $inicio_obj->getTimestamp(),
@@ -309,12 +327,32 @@ $seminarios_total = count($seminarios_catalogo);
                     <article class="seminario-featured" aria-labelledby="seminario-destacado-titulo">
                         <a class="seminario-featured__media-link" href="<?php echo esc_url($seminario_destacado['permalink']); ?>">
                             <?php if (!empty($seminario_destacado['image_url'])) : ?>
-                                <img
-                                    src="<?php echo esc_url($seminario_destacado['image_url']); ?>"
-                                    alt="<?php echo esc_attr($seminario_destacado['title']); ?>"
-                                    class="seminario-featured__image"
-                                    loading="eager"
-                                >
+                                <?php
+                                if (!empty($seminario_destacado['image_id'])) {
+                                    echo wp_get_attachment_image(
+                                        (int) $seminario_destacado['image_id'],
+                                        'flacso-seminario-4x5',
+                                        false,
+                                        [
+                                            'alt'      => $seminario_destacado['title'],
+                                            'class'    => 'seminario-featured__image',
+                                            'loading'  => 'eager',
+                                            'decoding' => 'async',
+                                            'sizes'    => '(max-width: 767px) 112px, (max-width: 980px) 448px, 360px',
+                                        ]
+                                    );
+                                } else {
+                                    ?>
+                                    <img
+                                        src="<?php echo esc_url($seminario_destacado['image_url']); ?>"
+                                        alt="<?php echo esc_attr($seminario_destacado['title']); ?>"
+                                        class="seminario-featured__image"
+                                        loading="eager"
+                                        decoding="async"
+                                    >
+                                    <?php
+                                }
+                                ?>
                             <?php else : ?>
                                 <div class="seminario-featured__fallback seminario-featured__fallback--<?php echo esc_attr($seminario_destacado['fallback']); ?>" aria-hidden="true">
                                     <span>FLACSO</span>
@@ -407,12 +445,32 @@ $seminarios_total = count($seminarios_catalogo);
                                             >
                                                 <a class="seminario-card__media-link" href="<?php echo esc_url($seminario_item['permalink']); ?>">
                                                     <?php if (!empty($seminario_item['image_url'])) : ?>
-                                                        <img
-                                                            src="<?php echo esc_url($seminario_item['image_url']); ?>"
-                                                            alt="<?php echo esc_attr($seminario_item['title']); ?>"
-                                                            class="seminario-card__image"
-                                                            loading="lazy"
-                                                        >
+                                                        <?php
+                                                        if (!empty($seminario_item['image_id'])) {
+                                                            echo wp_get_attachment_image(
+                                                                (int) $seminario_item['image_id'],
+                                                                'flacso-seminario-4x5',
+                                                                false,
+                                                                [
+                                                                    'alt'      => $seminario_item['title'],
+                                                                    'class'    => 'seminario-card__image',
+                                                                    'loading'  => 'lazy',
+                                                                    'decoding' => 'async',
+                                                                    'sizes'    => '(max-width: 767px) 104px, (max-width: 1180px) 30vw, 320px',
+                                                                ]
+                                                            );
+                                                        } else {
+                                                            ?>
+                                                            <img
+                                                                src="<?php echo esc_url($seminario_item['image_url']); ?>"
+                                                                alt="<?php echo esc_attr($seminario_item['title']); ?>"
+                                                                class="seminario-card__image"
+                                                                loading="lazy"
+                                                                decoding="async"
+                                                            >
+                                                            <?php
+                                                        }
+                                                        ?>
                                                     <?php else : ?>
                                                         <div class="seminario-card__fallback seminario-card__fallback--<?php echo esc_attr($seminario_item['fallback']); ?>" aria-hidden="true">
                                                             <span>FLACSO</span>
