@@ -6235,3 +6235,273 @@
         padding-top: 8px !important;
     }
 }
+
+
+/* ==========================================================================
+   EQUIPO ACADEMICO PROPORCIONES 2026
+   Corrige la escala excesiva del bloque editorial en desktop sin perder
+   jerarquía. Mantiene una versión más compacta y legible en mobile.
+   ========================================================================== */
+
+.flacso-oferta-responsive .flacso-oa-team-section {
+    padding: 50px 0 64px !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-section-header {
+    margin-bottom: 28px !important;
+    padding-bottom: 12px !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-section-header::after {
+    width: 54px !important;
+    height: 4px !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-section-header h2 {
+    max-width: 680px !important;
+    margin: 0 !important;
+    font-size: clamp(2.35rem, 3.6vw, 3.35rem) !important;
+    line-height: .98 !important;
+    letter-spacing: -.045em !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-team-subgroups {
+    gap: 34px !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-team-subgroup__title {
+    margin-bottom: 14px !important;
+    font-size: .86rem !important;
+    letter-spacing: .05em !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-team-subgroup__title::before {
+    width: 28px !important;
+    height: 3px !important;
+}
+
+/* Coordinación / referentes */
+.flacso-oferta-responsive .flacso-oa-docentes-grid--nivel-1 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 18px !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 {
+    grid-template-columns: 112px minmax(0, 1fr) !important;
+    gap: 17px !important;
+    min-height: 0 !important;
+    padding: 16px !important;
+    border-radius: 18px !important;
+    box-shadow: 0 10px 28px rgba(8,43,96,.065) !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1::after {
+    right: -24px !important;
+    top: -24px !important;
+    width: 84px !important;
+    height: 84px !important;
+    opacity: .72 !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__media {
+    width: 112px !important;
+    min-width: 112px !important;
+    max-width: 112px !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap {
+    width: 112px !important;
+    min-width: 112px !important;
+    max-width: 112px !important;
+    height: 140px !important;
+    min-height: 140px !important;
+    max-height: 140px !important;
+    border-radius: 14px !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap > *,
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar,
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap img,
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 img {
+    border-radius: 14px !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__content {
+    padding-top: 1px !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__role-pill {
+    margin-bottom: 7px !important;
+    padding: 5px 8px !important;
+    font-size: .66rem !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__name {
+    max-width: none !important;
+    font-size: clamp(1.25rem, 1.75vw, 1.6rem) !important;
+    line-height: 1.05 !important;
+    letter-spacing: -.03em !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__academic {
+    margin-top: 5px !important;
+    font-size: .83rem !important;
+    line-height: 1.35 !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__cv {
+    max-height: 6.6em !important;
+    margin-top: 10px !important;
+    font-size: .84rem !important;
+    line-height: 1.48 !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card__expand {
+    padding-top: 9px !important;
+    font-size: .76rem !important;
+}
+
+/* Nivel 2 */
+.flacso-oferta-responsive .flacso-oa-docentes-grid--nivel-2 {
+    gap: 14px !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-2 {
+    border-radius: 15px !important;
+    box-shadow: 0 8px 20px rgba(8,43,96,.05) !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-2 .flacso-oa-person-card__header {
+    padding: 13px 13px 8px !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-2 .flacso-oa-person-card__content {
+    padding: 0 13px 13px !important;
+}
+
+/* Directorio docente */
+.flacso-oferta-responsive .flacso-oa-docentes-grid--nivel-3 {
+    gap: 10px !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-3 {
+    min-height: 82px !important;
+    padding: 11px 12px !important;
+    border-radius: 13px !important;
+    box-shadow: 0 5px 14px rgba(8,43,96,.045) !important;
+}
+
+@media (max-width: 1100px) {
+    .flacso-oferta-responsive .flacso-oa-section-header h2 {
+        font-size: clamp(2.2rem, 4.5vw, 3rem) !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-docentes-grid--nivel-1 {
+        grid-template-columns: 1fr 1fr !important;
+    }
+}
+
+@media (max-width: 860px) {
+    .flacso-oferta-responsive .flacso-oa-team-section {
+        padding: 42px 0 52px !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-docentes-grid--nivel-1,
+    .flacso-oferta-responsive .flacso-oa-docentes-grid--nivel-2 {
+        grid-template-columns: 1fr !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 {
+        grid-template-columns: 96px minmax(0, 1fr) !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__media {
+        width: 96px !important;
+        min-width: 96px !important;
+        max-width: 96px !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap {
+        width: 96px !important;
+        min-width: 96px !important;
+        max-width: 96px !important;
+        height: 120px !important;
+        min-height: 120px !important;
+        max-height: 120px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .flacso-oferta-responsive .flacso-oa-team-section {
+        padding: 34px 0 40px !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-section-header {
+        margin-bottom: 20px !important;
+        padding-bottom: 9px !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-section-header h2 {
+        font-size: clamp(1.8rem, 9vw, 2.25rem) !important;
+        line-height: 1 !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-team-subgroups {
+        gap: 26px !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-team-subgroup__title {
+        margin-bottom: 10px !important;
+        font-size: .78rem !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 {
+        grid-template-columns: 76px minmax(0, 1fr) !important;
+        gap: 11px !important;
+        padding: 11px !important;
+        border-radius: 14px !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__media {
+        width: 76px !important;
+        min-width: 76px !important;
+        max-width: 76px !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap {
+        width: 76px !important;
+        min-width: 76px !important;
+        max-width: 76px !important;
+        height: 95px !important;
+        min-height: 95px !important;
+        max-height: 95px !important;
+        border-radius: 10px !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap > *,
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar,
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap img,
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 img {
+        border-radius: 10px !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__name {
+        font-size: 1.02rem !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__academic {
+        font-size: .74rem !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__cv {
+        max-height: 5.8em !important;
+        margin-top: 7px !important;
+        font-size: .78rem !important;
+        line-height: 1.42 !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card__expand {
+        padding-top: 7px !important;
+        font-size: .72rem !important;
+    }
+}
