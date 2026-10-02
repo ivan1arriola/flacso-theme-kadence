@@ -3779,3 +3779,113 @@
         border-width: 2px;
     }
 }
+
+
+/* AJUSTE DE CONTRASTE Y PROGRAMA SIN ENCABEZADO 2026 */
+.flacso-oferta-responsive .flacso-oa-program-hero,
+.flacso-oferta-responsive .flacso-oa-program-hero__content {
+    color: #ffffff;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__title,
+.flacso-oferta-responsive .flacso-oa-program-hero__title:visited,
+.flacso-oferta-responsive .flacso-oa-program-hero__title:hover {
+    color: #ffffff !important;
+    text-shadow: 0 2px 18px rgba(2, 18, 43, 0.18);
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__excerpt {
+    color: #e4eef9 !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__notice {
+    color: #ffffff !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__button--primary,
+.flacso-oferta-responsive .flacso-oa-program-hero__button--primary:visited {
+    background: #f7c928 !important;
+    border-color: #f7c928 !important;
+    color: #102a4f !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__button--primary:hover,
+.flacso-oferta-responsive .flacso-oa-program-hero__button--primary:focus {
+    background: #ffda48 !important;
+    border-color: #ffda48 !important;
+    color: #102a4f !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__button--secondary,
+.flacso-oferta-responsive .flacso-oa-program-hero__button--secondary:visited {
+    background: rgba(255, 255, 255, 0.10) !important;
+    border-color: rgba(255, 255, 255, 0.42) !important;
+    color: #ffffff !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__button--secondary:hover,
+.flacso-oferta-responsive .flacso-oa-program-hero__button--secondary:focus {
+    background: rgba(255, 255, 255, 0.18) !important;
+    border-color: rgba(255, 255, 255, 0.62) !important;
+    color: #ffffff !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__status-badge,
+.flacso-oferta-responsive .flacso-oa-program-hero__custom-badge {
+    color: #ffffff !important;
+}
+
+.flacso-oferta-responsive .section--programa {
+    padding-top: 0;
+}
+
+.flacso-oferta-responsive .section--programa > .lead:first-child,
+.flacso-oferta-responsive .section--programa > .prose:first-child {
+    margin-top: 0;
+}
+
+.flacso-oferta-responsive .main {
+    color: #26384d;
+}
+
+.flacso-oferta-responsive .prose,
+.flacso-oferta-responsive .lead,
+.flacso-oferta-responsive .detail-body,
+.flacso-oferta-responsive .cohort__note {
+    color: #405268;
+}
+
+.flacso-oferta-responsive .details summary,
+.flacso-oferta-responsive .cohort__title,
+.flacso-oferta-responsive .cohort__value {
+    color: #102a4f;
+}
+
+.flacso-oferta-responsive .contact {
+    background: #fff9df;
+    border-color: #efc21e;
+}
+
+.flacso-oferta-responsive .contact__head {
+    background: #123a6d;
+    border-bottom-color: #efc21e;
+}
+
+.flacso-oferta-responsive .contact__head h3,
+.flacso-oferta-responsive .contact__head p {
+    color: #ffffff !important;
+}
+
+.flacso-oferta-responsive .contact__body {
+    color: #26384d;
+}
+
+.flacso-oferta-responsive .contact__links a {
+    color: #123a6d;
+}
+
+@media (max-width: 760px) {
+    .flacso-oferta-responsive .flacso-oa-program-hero__title {
+        text-shadow: 0 1px 12px rgba(2, 18, 43, 0.20);
+    }
+}
