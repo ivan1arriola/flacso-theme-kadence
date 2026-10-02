@@ -6180,3 +6180,58 @@
         font-size: 18px !important;
     }
 }
+
+
+/* ==========================================================================
+   FORM HEADER POLISH 2026
+   Da más aire al encabezado sin aumentar demasiado la altura del formulario.
+   ========================================================================== */
+
+.flacso-oferta-responsive .contact__head {
+    padding-top: 24px !important;
+    padding-bottom: 12px !important;
+}
+
+.flacso-oferta-responsive .contact__head h3 {
+    margin: 0 !important;
+    color: #082b60 !important;
+    font-size: clamp(1.35rem, 2vw, 1.7rem) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -.025em;
+}
+
+.flacso-oferta-responsive .contact__head p {
+    max-width: 28rem;
+    margin: 10px 0 0 !important;
+    color: #41536b !important;
+    font-size: .9rem !important;
+    line-height: 1.5 !important;
+}
+
+.flacso-oferta-responsive .contact__body {
+    padding-top: 10px !important;
+}
+
+.flacso-oferta-responsive .flacso-inquiry-cohort-context {
+    margin-bottom: 10px;
+}
+
+@media (max-width: 760px) {
+    .flacso-oferta-responsive .contact__head {
+        padding: 18px 16px 9px !important;
+    }
+
+    .flacso-oferta-responsive .contact__head h3 {
+        font-size: 1.28rem !important;
+    }
+
+    .flacso-oferta-responsive .contact__head p {
+        margin-top: 7px !important;
+        font-size: .82rem !important;
+        line-height: 1.42 !important;
+    }
+
+    .flacso-oferta-responsive .contact__body {
+        padding-top: 8px !important;
+    }
+}
