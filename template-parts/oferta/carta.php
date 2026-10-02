@@ -29,6 +29,13 @@ wp_enqueue_style(
     flacso_child_asset_version('assets/css/single-carta.css')
 );
 
+wp_enqueue_style(
+    'flacso-single-carta-editorial',
+    get_stylesheet_directory_uri() . '/assets/css/single-carta-editorial.css',
+    ['flacso-single-carta'],
+    flacso_child_asset_version('assets/css/single-carta-editorial.css')
+);
+
 if (!wp_style_is('bootstrap-icons', 'enqueued')) {
     wp_enqueue_style(
         'bootstrap-icons',
@@ -514,11 +521,16 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                             </article>
                         <?php endif; ?>
 
-                        <?php if (!empty($academic['objetivos_html'])) : ?>
+                        <?php
+                        $fc_objectives_html = !empty($academic['objetivos_html'])
+                            ? (string) $academic['objetivos_html']
+                            : (string) ($academic['objetivo_general'] ?? '');
+                        ?>
+                        <?php if (trim(wp_strip_all_tags($fc_objectives_html)) !== '') : ?>
                             <article class="fc-content-panel fc-content-panel--objective" aria-labelledby="fc-panel-objetivos">
-                                <h2 id="fc-panel-objetivos"><?php esc_html_e('Objetivos del Programa', 'flacso-uruguay'); ?></h2>
+                                <h2 id="fc-panel-objetivos"><?php esc_html_e('Objetivo general', 'flacso-uruguay'); ?></h2>
                                 <div class="fc-content-panel-body">
-                                    <?php echo wp_kses_post($academic['objetivos_html']); ?>
+                                    <?php echo wpautop(wp_kses_post($fc_objectives_html)); ?>
                                 </div>
                             </article>
                         <?php endif; ?>
@@ -544,12 +556,13 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
 
                         <?php if ($fc_has_academic_details) : ?>
                             <div class="fc-academic-details" aria-label="<?php esc_attr_e('Detalles académicos', 'flacso-uruguay'); ?>">
+                                <?php $fc_detail_index = 0; ?>
                                 <?php foreach ($fc_academic_details as $fc_detail_key => $fc_detail_label) :
                                     if (empty($academic[$fc_detail_key])) {
                                         continue;
                                     }
                                 ?>
-                                    <details class="fc-academic-detail">
+                                    <details class="fc-academic-detail"<?php echo $fc_detail_index === 0 ? ' open' : ''; ?>>
                                         <summary>
                                             <span><?php echo esc_html($fc_detail_label); ?></span>
                                             <i class="bi bi-plus-lg" aria-hidden="true"></i>
@@ -558,6 +571,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                                             <?php echo wp_kses_post($academic[$fc_detail_key]); ?>
                                         </div>
                                     </details>
+                                    <?php $fc_detail_index++; ?>
                                 <?php endforeach; ?>
                             </div>
                         <?php endif; ?>
