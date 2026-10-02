@@ -5515,3 +5515,128 @@
         font-size: .66rem;
     }
 }
+
+
+/* ==========================================================================
+   FIX RETRATOS EQUIPO 2026
+   Asegura proporciones estables para fotos reales y evita columnas recortadas.
+   ========================================================================== */
+
+/* Coordinación / referentes */
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 {
+    grid-template-columns: 148px minmax(0, 1fr) !important;
+    align-items: start !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__media {
+    display: block !important;
+    width: 148px !important;
+    min-width: 148px !important;
+    max-width: 148px !important;
+    height: auto !important;
+    align-self: start !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap {
+    display: block !important;
+    width: 148px !important;
+    min-width: 148px !important;
+    max-width: 148px !important;
+    height: 184px !important;
+    min-height: 184px !important;
+    max-height: 184px !important;
+    aspect-ratio: 4 / 5;
+    overflow: hidden !important;
+    border-radius: 18px !important;
+    background: #edf2f7;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap > *,
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar,
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap img,
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 img {
+    display: block !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: none !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    object-fit: cover !important;
+    object-position: 50% 18% !important;
+    border-radius: 18px !important;
+    margin: 0 !important;
+}
+
+/* Fotos circulares del resto del equipo */
+.flacso-oferta-responsive .flacso-oa-person-card__avatar-circle {
+    display: block !important;
+    overflow: hidden !important;
+    flex-shrink: 0 !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card__avatar-circle > *,
+.flacso-oferta-responsive .flacso-oa-person-card__avatar-round,
+.flacso-oferta-responsive .flacso-oa-person-card__avatar-circle img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: cover !important;
+    object-position: 50% 18% !important;
+    margin: 0 !important;
+    border-radius: 50% !important;
+}
+
+@media (max-width: 860px) {
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 {
+        grid-template-columns: 112px minmax(0, 1fr) !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__media {
+        width: 112px !important;
+        min-width: 112px !important;
+        max-width: 112px !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap {
+        width: 112px !important;
+        min-width: 112px !important;
+        max-width: 112px !important;
+        height: 140px !important;
+        min-height: 140px !important;
+        max-height: 140px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 {
+        grid-template-columns: 84px minmax(0, 1fr) !important;
+        gap: 12px !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__media {
+        width: 84px !important;
+        min-width: 84px !important;
+        max-width: 84px !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap {
+        width: 84px !important;
+        min-width: 84px !important;
+        max-width: 84px !important;
+        height: 105px !important;
+        min-height: 105px !important;
+        max-height: 105px !important;
+        border-radius: 12px !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap > *,
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar,
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap img,
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 img {
+        border-radius: 12px !important;
+    }
+}
