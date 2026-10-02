@@ -31,6 +31,62 @@ $registration  = $context['registration'] ?? [];
 $program       = $context['program'] ?? [];
 $thumbnail_url = (string) ($context['thumbnail_url'] ?? '');
 
+// Color principal de la oferta académica.
+// Se usa sólo como identidad visual de esta página; el contenido sigue viniendo
+// del mismo modelo público.
+$raw_offer_color = '';
+if (!empty($academic['color_principal']) && is_string($academic['color_principal'])) {
+    $raw_offer_color = trim($academic['color_principal']);
+} elseif (!empty($academic['colores_presentacion']['principal']) && is_string($academic['colores_presentacion']['principal'])) {
+    $raw_offer_color = trim($academic['colores_presentacion']['principal']);
+} elseif (!empty($context['color_principal']) && is_string($context['color_principal'])) {
+    $raw_offer_color = trim($context['color_principal']);
+}
+
+$offer_color = preg_match('/^#[0-9a-fA-F]{6}$/', $raw_offer_color)
+    ? strtolower($raw_offer_color)
+    : '#0a3470';
+
+$offer_r = hexdec(substr($offer_color, 1, 2));
+$offer_g = hexdec(substr($offer_color, 3, 2));
+$offer_b = hexdec(substr($offer_color, 5, 2));
+
+$offer_dark = sprintf(
+    '#%02x%02x%02x',
+    max(0, min(255, (int) round($offer_r * 0.68))),
+    max(0, min(255, (int) round($offer_g * 0.68))),
+    max(0, min(255, (int) round($offer_b * 0.68)))
+);
+
+$offer_deep = sprintf(
+    '#%02x%02x%02x',
+    max(0, min(255, (int) round($offer_r * 0.42))),
+    max(0, min(255, (int) round($offer_g * 0.42))),
+    max(0, min(255, (int) round($offer_b * 0.42)))
+);
+
+$offer_light = sprintf(
+    '#%02x%02x%02x',
+    max(0, min(255, (int) round($offer_r + (255 - $offer_r) * 0.82))),
+    max(0, min(255, (int) round($offer_g + (255 - $offer_g) * 0.82))),
+    max(0, min(255, (int) round($offer_b + (255 - $offer_b) * 0.82)))
+);
+
+$offer_luminance = (0.299 * $offer_r + 0.587 * $offer_g + 0.114 * $offer_b) / 255;
+$offer_contrast = $offer_luminance > 0.64 ? '#082b60' : '#ffffff';
+
+$offer_style_vars = sprintf(
+    '--oa-brand:%s;--oa-brand-rgb:%d,%d,%d;--oa-brand-dark:%s;--oa-brand-deep:%s;--oa-brand-light:%s;--oa-brand-contrast:%s;',
+    esc_attr($offer_color),
+    $offer_r,
+    $offer_g,
+    $offer_b,
+    esc_attr($offer_dark),
+    esc_attr($offer_deep),
+    esc_attr($offer_light),
+    esc_attr($offer_contrast)
+);
+
 $raw_content           = get_post_field('post_content', $post_id);
 $filtered_main_content = trim((string) apply_filters('the_content', $raw_content));
 $descripcion_html      = !empty($academic['descripcion_html']) ? $academic['descripcion_html'] : (!empty($academic['presentacion']) ? $academic['presentacion'] : '');
@@ -478,7 +534,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
 
 ?>
 
-<div id="inner-wrap" class="wrap kt-clear flacso-oferta-responsive">
+<div id="inner-wrap" class="wrap kt-clear flacso-oferta-responsive" style="<?php echo esc_attr($offer_style_vars); ?>">
     <div id="primary" class="content-area">
         <div class="content-container">
             <main id="main" class="site-main">
