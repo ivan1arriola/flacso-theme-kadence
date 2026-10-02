@@ -2082,3 +2082,108 @@
         width: fit-content;
     }
 }
+
+
+/* ==========================================================================
+   IMAGENES SEMINARIOS 4X5 ESTRICTO 2026
+   Toda creatividad usa una caja 4:5. Las fuentes con otra proporción se
+   recortan mediante object-fit: cover; nunca se estiran ni usan contain.
+   ========================================================================== */
+
+.flacso-seminarios-page .seminarios-hero__visual,
+.flacso-seminarios-page .seminario-featured__media-link,
+.flacso-seminarios-page .seminario-card__media-link {
+    position: relative;
+    overflow: hidden !important;
+    aspect-ratio: 4 / 5 !important;
+    background: #e8edf4;
+}
+
+.flacso-seminarios-page .seminarios-hero__image,
+.flacso-seminarios-page .seminario-featured__image,
+.flacso-seminarios-page .seminario-card__image,
+.flacso-seminarios-page .seminarios-hero__visual > img,
+.flacso-seminarios-page .seminario-featured__media-link > img,
+.flacso-seminarios-page .seminario-card__media-link > img {
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+}
+
+.flacso-seminarios-page .seminario-featured__fallback,
+.flacso-seminarios-page .seminario-card__fallback {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Anula alturas heredadas que rompían la relación en la versión mobile. */
+@media (max-width: 767px) {
+    .flacso-seminarios-page .seminarios-hero__visual {
+        width: min(66vw, 250px) !important;
+        height: auto !important;
+        aspect-ratio: 4 / 5 !important;
+    }
+
+    .flacso-seminarios-page .seminario-featured {
+        grid-template-columns: 112px minmax(0, 1fr) !important;
+        align-items: start !important;
+    }
+
+    .flacso-seminarios-page .seminario-featured__media-link {
+        width: 112px !important;
+        min-width: 112px !important;
+        max-width: 112px !important;
+        height: auto !important;
+        min-height: 0 !important;
+        aspect-ratio: 4 / 5 !important;
+        align-self: start !important;
+    }
+
+    .flacso-seminarios-page .seminario-card {
+        grid-template-columns: 104px minmax(0, 1fr) !important;
+        align-items: start !important;
+    }
+
+    .flacso-seminarios-page .seminario-card__media-link {
+        width: 104px !important;
+        min-width: 104px !important;
+        max-width: 104px !important;
+        height: auto !important;
+        min-height: 0 !important;
+        aspect-ratio: 4 / 5 !important;
+        align-self: start !important;
+    }
+}
+
+@media (max-width: 380px) {
+    .flacso-seminarios-page .seminario-featured {
+        grid-template-columns: 96px minmax(0, 1fr) !important;
+    }
+
+    .flacso-seminarios-page .seminario-featured__media-link {
+        width: 96px !important;
+        min-width: 96px !important;
+        max-width: 96px !important;
+    }
+
+    .flacso-seminarios-page .seminario-card {
+        grid-template-columns: 92px minmax(0, 1fr) !important;
+    }
+
+    .flacso-seminarios-page .seminario-card__media-link {
+        width: 92px !important;
+        min-width: 92px !important;
+        max-width: 92px !important;
+    }
+}
