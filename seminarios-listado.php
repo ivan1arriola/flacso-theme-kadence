@@ -288,6 +288,8 @@ $seminarios_total = count($seminarios_catalogo);
                         <i class="bi bi-search" aria-hidden="true"></i>
                         <label class="screen-reader-text" for="seminarios-catalog-search"><?php esc_html_e('Buscar seminarios', 'flacso-uruguay'); ?></label>
                         <input id="seminarios-catalog-search" type="search" placeholder="<?php esc_attr_e('Buscar por seminario, modalidad o palabra clave', 'flacso-uruguay'); ?>" autocomplete="off" data-seminar-search>
+                    </div>
+                    <div class="seminarios-hero__search-meta">
                         <span class="seminarios-hero__search-count" data-seminar-search-count aria-live="polite"></span>
                     </div>
 
@@ -378,15 +380,15 @@ $seminarios_total = count($seminarios_catalogo);
                             </p>
 
                             <ul class="seminario-featured__meta" role="list">
-                                <li>
+                                <li class="seminario-meta--date">
                                     <i class="bi bi-calendar3" aria-hidden="true"></i>
                                     <span><?php echo esc_html($seminario_destacado['date_long']); ?></span>
                                 </li>
-                                <li>
+                                <li class="seminario-meta--modality">
                                     <i class="bi bi-laptop" aria-hidden="true"></i>
                                     <span><?php echo esc_html($seminario_destacado['modality']); ?></span>
                                 </li>
-                                <li>
+                                <li class="seminario-meta--teachers">
                                     <i class="bi bi-people" aria-hidden="true"></i>
                                     <span><?php echo esc_html($seminario_destacado['docentes_label']); ?></span>
                                 </li>
@@ -496,12 +498,12 @@ $seminarios_total = count($seminarios_catalogo);
                                                     <p class="seminario-card__description"><?php echo esc_html($seminario_item['description']); ?></p>
 
                                                     <ul class="seminario-card__meta" role="list">
-                                                        <li>
+                                                        <li class="seminario-meta--date">
                                                             <i class="bi bi-calendar3" aria-hidden="true"></i>
                                                             <span><?php echo esc_html($seminario_item['date_long']); ?></span>
                                                         </li>
                                                         <?php if ($seminario_item['is_upcoming']) : ?>
-                                                            <li>
+                                                            <li class="seminario-meta--urgency">
                                                                 <i class="bi bi-clock" aria-hidden="true"></i>
                                                                 <span>
                                                                     <?php
@@ -529,11 +531,11 @@ $seminarios_total = count($seminarios_catalogo);
                                                                 </span>
                                                             </li>
                                                         <?php endif; ?>
-                                                        <li>
+                                                        <li class="seminario-meta--modality">
                                                             <i class="bi bi-laptop" aria-hidden="true"></i>
                                                             <span><?php echo esc_html($seminario_item['modality']); ?></span>
                                                         </li>
-                                                        <li>
+                                                        <li class="seminario-meta--teachers">
                                                             <i class="bi bi-people" aria-hidden="true"></i>
                                                             <span><?php echo esc_html($seminario_item['docentes_label']); ?></span>
                                                         </li>
