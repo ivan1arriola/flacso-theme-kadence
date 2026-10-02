@@ -232,12 +232,13 @@ $seminarios_total = count($seminarios_catalogo);
                             <span></span><span></span><span></span>
                         </div>
 
-                        <p class="seminarios-hero__kicker"><?php esc_html_e('Seminarios de posgrado', 'flacso-uruguay'); ?></p>
-                        <h1 id="seminarios-page-title" class="seminarios-hero__title"><?php esc_html_e('Formación breve para actualizar conocimientos y profundizar áreas específicas', 'flacso-uruguay'); ?></h1>
+                        <p class="seminarios-hero__kicker"><?php esc_html_e('Formación de posgrado', 'flacso-uruguay'); ?></p>
+                        <h1 id="seminarios-page-title" class="seminarios-hero__title"><?php esc_html_e('Seminarios', 'flacso-uruguay'); ?></h1>
+                        <p class="seminarios-hero__headline"><?php esc_html_e('Formación breve para actualizar conocimientos y profundizar áreas específicas.', 'flacso-uruguay'); ?></p>
 
                         <div class="seminarios-hero__editorial">
-                            <p>Los seminarios de posgrado de FLACSO Uruguay son propuestas de formación de corta duración, diseñadas para la actualización teórica y profesional en distintos campos de las ciencias sociales.</p>
-                            <p>Se ofrecen en modalidad virtual o híbrida y pueden ser acreditables a estudios de maestría o doctorado, de acuerdo con las características de cada propuesta y los criterios del programa correspondiente.</p>
+                            <p>Propuestas de corta duración vinculadas con los distintos programas académicos de FLACSO Uruguay. La cursada puede ser virtual o híbrida y combina actividades con flexibilidad horaria con encuentros sincrónicos o presenciales, según cada seminario.</p>
+                            <p>Algunas propuestas pueden ser acreditables a estudios de maestría o doctorado, de acuerdo con sus características y con los criterios del programa correspondiente.</p>
                         </div>
 
                         <div class="seminarios-hero__facts" aria-label="<?php esc_attr_e('Características principales', 'flacso-uruguay'); ?>">
