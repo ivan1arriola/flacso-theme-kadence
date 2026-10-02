@@ -879,3 +879,45 @@
         padding: .7rem;
     }
 }
+
+
+/* ==========================================================================
+   FIX WRAPPER LEGACY 4X5 OFERTAS 2026
+   Compatibilidad por si una versión cacheada del normalizador general todavía
+   envuelve la imagen. Aquí nunca se muestran bandas desenfocadas ni contain.
+   ========================================================================== */
+
+.flacso-taxonomy-oferta .flacso-premium-card__image-wrap .flacso-featured-image-45 {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: 4 / 5 !important;
+    overflow: hidden !important;
+    background: #e8edf4 !important;
+}
+
+.flacso-taxonomy-oferta .flacso-premium-card__image-wrap .flacso-featured-image-45::before,
+.flacso-taxonomy-oferta .flacso-premium-card__image-wrap .flacso-featured-image-45::after {
+    display: none !important;
+    content: none !important;
+}
+
+.flacso-taxonomy-oferta .flacso-premium-card__image-wrap .flacso-featured-image-45 > img {
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    margin: 0 !important;
+}
+
+.flacso-taxonomy-oferta .flacso-premium-card__badges {
+    z-index: 4;
+}
