@@ -4622,3 +4622,487 @@
         border-radius: 14px !important;
     }
 }
+
+
+/* ==========================================================================
+   MOBILE COMPACT + BRAND AS ACCENT 2026
+   El color de la oferta pasa a ser un acento, no una superficie dominante.
+   ========================================================================== */
+
+/* Base: preservar azul institucional en superficies grandes. */
+.flacso-oferta-responsive .flacso-oa-program-hero__content {
+    background:
+        linear-gradient(150deg, #123f7d, #082b60);
+    box-shadow:
+        inset 7px 0 0 var(--oa-brand),
+        0 24px 52px rgba(8, 43, 96, .18);
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__content::before {
+    background: var(--oa-brand);
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__title,
+.flacso-oferta-responsive .flacso-oa-program-hero__excerpt,
+.flacso-oferta-responsive .flacso-oa-program-hero__status-badge,
+.flacso-oferta-responsive .flacso-oa-program-hero__custom-badge {
+    color: #fff !important;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__kicker {
+    background: var(--oa-brand);
+    color: var(--oa-brand-contrast);
+}
+
+.flacso-oferta-responsive .fact:first-child::before,
+.flacso-oferta-responsive .cohort::before,
+.flacso-oferta-responsive .flacso-oa-team-subgroup__title::before,
+.flacso-oferta-responsive .flacso-oa-person-card::before {
+    background: var(--oa-brand);
+}
+
+.flacso-oferta-responsive .fact__value,
+.flacso-oferta-responsive .section > h2,
+.flacso-oferta-responsive .flacso-oa-section-header h2,
+.flacso-oferta-responsive .cohort__title,
+.flacso-oferta-responsive .cohort__value,
+.flacso-oferta-responsive .details summary,
+.flacso-oferta-responsive .flacso-oa-team-subgroup__title,
+.flacso-oferta-responsive .flacso-oa-person-card__name {
+    color: var(--campaign-navy);
+}
+
+.flacso-oferta-responsive .kicker {
+    color: var(--oa-brand);
+}
+
+.flacso-oferta-responsive .details summary::after {
+    background: var(--oa-brand);
+}
+
+/* El formulario sigue destacando, pero sin una gran mancha del color de la oferta. */
+.flacso-oferta-responsive .contact {
+    border: 1px solid #e2e8ef;
+    border-top: 6px solid var(--oa-brand);
+    background: #fff;
+    box-shadow: 0 18px 42px rgba(8,43,96,.10);
+}
+
+.flacso-oferta-responsive .contact__head {
+    padding: 24px 26px 18px;
+    background: #fff;
+    border: 0;
+}
+
+.flacso-oferta-responsive .contact__head::after {
+    display: none;
+}
+
+.flacso-oferta-responsive .contact__head h3 {
+    color: var(--campaign-navy) !important;
+}
+
+.flacso-oferta-responsive .contact__head p {
+    color: #65758a !important;
+}
+
+.flacso-oferta-responsive .contact__body {
+    background: #fff;
+}
+
+.flacso-oferta-responsive .contact__body button,
+.flacso-oferta-responsive .contact__body .button,
+.flacso-oferta-responsive .contact__body input[type="submit"] {
+    background: var(--oa-brand) !important;
+    color: var(--oa-brand-contrast) !important;
+    box-shadow: 0 8px 20px rgba(var(--oa-brand-rgb), .18);
+}
+
+.flacso-oferta-responsive .contact__body button:hover,
+.flacso-oferta-responsive .contact__body .button:hover,
+.flacso-oferta-responsive .contact__body input[type="submit"]:hover {
+    background: var(--oa-brand-dark) !important;
+    color: #fff !important;
+}
+
+/* Reducir policromía secundaria: la marca de la oferta es el único acento variable. */
+.flacso-oferta-responsive .fact:nth-child(2)::before,
+.flacso-oferta-responsive .fact:nth-child(3)::before,
+.flacso-oferta-responsive .fact:nth-child(4)::before,
+.flacso-oferta-responsive .details details:nth-child(3n+2) summary::after,
+.flacso-oferta-responsive .details details:nth-child(3n+3) summary::after,
+.flacso-oferta-responsive .flacso-oa-docente-item:nth-child(3n+2) .flacso-oa-person-card::before,
+.flacso-oferta-responsive .flacso-oa-docente-item:nth-child(3n+3) .flacso-oa-person-card::before {
+    background: #dbe4ee;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__content::after {
+    background: #fff;
+    opacity: .9;
+}
+
+/* --------------------------------------------------------------------------
+   Tablet y móvil
+   -------------------------------------------------------------------------- */
+@media (max-width: 760px) {
+    .flacso-oferta-responsive .flacso-oa-container {
+        width: min(100% - 24px, 1180px);
+    }
+
+    .flacso-oferta-responsive .flacso-oa-single-hero {
+        padding: 14px 0 42px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero {
+        width: min(100% - 20px, 1180px);
+        gap: 0;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__media {
+        min-height: 0;
+        aspect-ratio: 16 / 10;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 14px 30px rgba(8,43,96,.12);
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__content {
+        margin: 0;
+        padding: 24px 20px 22px;
+        border-radius: 0 0 20px 20px;
+        box-shadow:
+            inset 5px 0 0 var(--oa-brand),
+            0 14px 30px rgba(8,43,96,.12);
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__content::before,
+    .flacso-oferta-responsive .flacso-oa-program-hero__content::after {
+        top: -9px;
+        width: 16px;
+        height: 16px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__content::before {
+        right: 42px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__content::after {
+        right: 21px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__badges {
+        gap: 6px;
+        margin-bottom: 12px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__kicker,
+    .flacso-oferta-responsive .flacso-oa-program-hero__status-badge,
+    .flacso-oferta-responsive .flacso-oa-program-hero__custom-badge {
+        padding: 5px 8px;
+        font-size: .62rem;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__title {
+        max-width: none;
+        font-size: clamp(2rem, 9.7vw, 2.8rem);
+        line-height: .98;
+        letter-spacing: -.045em;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__excerpt {
+        margin-top: 12px;
+        font-size: .94rem;
+        line-height: 1.48;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-top: 18px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__button {
+        min-height: 44px;
+        padding: 0 15px;
+        font-size: .84rem;
+    }
+
+    .flacso-oferta-responsive .facts-wrap {
+        margin-top: -22px;
+    }
+
+    .flacso-oferta-responsive .facts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+        padding: 6px;
+        border-radius: 16px;
+        box-shadow: 0 12px 28px rgba(8,43,96,.09);
+    }
+
+    .flacso-oferta-responsive .fact {
+        min-height: 78px;
+        padding: 15px 14px 12px;
+        border-radius: 11px;
+    }
+
+    .flacso-oferta-responsive .fact::before {
+        height: 4px;
+    }
+
+    .flacso-oferta-responsive .fact__label {
+        font-size: .6rem;
+        line-height: 1.2;
+    }
+
+    .flacso-oferta-responsive .fact__value {
+        margin-top: 5px;
+        font-size: .82rem;
+        line-height: 1.28;
+    }
+
+    .flacso-oferta-responsive .main {
+        padding: 42px 0 54px;
+    }
+
+    .flacso-oferta-responsive .layout {
+        gap: 28px;
+    }
+
+    .flacso-oferta-responsive .section {
+        margin-bottom: 38px;
+    }
+
+    .flacso-oferta-responsive .section > h2 {
+        margin-bottom: 18px;
+        font-size: 1.8rem;
+    }
+
+    .flacso-oferta-responsive .kicker {
+        margin-bottom: 6px;
+        font-size: .62rem;
+    }
+
+    .flacso-oferta-responsive .cohort {
+        padding: 20px 16px;
+        border-radius: 18px;
+    }
+
+    .flacso-oferta-responsive .cohort__top {
+        margin-bottom: 14px;
+    }
+
+    .flacso-oferta-responsive .cohort__title {
+        font-size: 1.15rem;
+    }
+
+    .flacso-oferta-responsive .cohort__details {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .flacso-oferta-responsive .cohort__row,
+    .flacso-oferta-responsive .cohort__row:nth-child(even) {
+        padding: 12px 8px 12px 0;
+        border-left: 0;
+    }
+
+    .flacso-oferta-responsive .lead,
+    .flacso-oferta-responsive .prose {
+        font-size: .94rem;
+        line-height: 1.65;
+    }
+
+    .flacso-oferta-responsive .details {
+        gap: 8px;
+        margin-top: 22px;
+    }
+
+    .flacso-oferta-responsive .details summary {
+        min-height: 52px;
+        padding: 14px 14px;
+        font-size: .9rem;
+    }
+
+    .flacso-oferta-responsive .details summary::after {
+        width: 25px;
+        height: 25px;
+        font-size: 16px;
+    }
+
+    .flacso-oferta-responsive .detail-body {
+        padding: 0 14px 18px;
+        font-size: .9rem;
+    }
+
+    .flacso-oferta-responsive .contact {
+        border-top-width: 5px;
+        border-radius: 18px;
+    }
+
+    .flacso-oferta-responsive .contact__head {
+        padding: 18px 16px 10px;
+    }
+
+    .flacso-oferta-responsive .contact__head h3 {
+        font-size: 1.08rem;
+    }
+
+    .flacso-oferta-responsive .contact__head p {
+        margin-top: 4px;
+        font-size: .78rem;
+        line-height: 1.35;
+    }
+
+    .flacso-oferta-responsive .contact__body {
+        padding: 12px 16px 16px;
+    }
+
+    .flacso-oferta-responsive .contact__body input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
+    .flacso-oferta-responsive .contact__body textarea,
+    .flacso-oferta-responsive .contact__body select {
+        min-height: 42px;
+        border: 1px solid #e0e6ed !important;
+        border-radius: 10px !important;
+        font-size: 16px;
+    }
+
+    .flacso-oferta-responsive .contact__body button,
+    .flacso-oferta-responsive .contact__body .button,
+    .flacso-oferta-responsive .contact__body input[type="submit"] {
+        min-height: 44px;
+    }
+
+    .flacso-oferta-responsive .contact__links {
+        gap: 6px;
+        margin-top: 14px;
+        padding-top: 12px;
+        font-size: .8rem;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-team-section {
+        padding: 48px 0 54px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-section-header {
+        margin-bottom: 28px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-section-header h2 {
+        font-size: clamp(2rem, 10vw, 2.7rem);
+    }
+
+    .flacso-oferta-responsive .flacso-oa-team-subgroups {
+        gap: 34px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-team-subgroup__title {
+        margin-bottom: 14px;
+        font-size: .96rem;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-team-subgroup__title::before {
+        width: 30px;
+        height: 4px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-docentes-grid,
+    .flacso-oferta-responsive .flacso-oa-docentes-grid--nivel-1 {
+        gap: 12px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card {
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(8,43,96,.06);
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 {
+        grid-template-columns: 72px minmax(0, 1fr);
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__media,
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap,
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar,
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 img {
+        width: 72px !important;
+        height: 72px !important;
+        min-width: 72px;
+        min-height: 72px;
+        border-radius: 12px !important;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card__header {
+        padding: 13px 13px 8px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card__content {
+        padding: 12px 13px 14px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card__avatar-circle,
+    .flacso-oferta-responsive .flacso-oa-person-card__avatar-round,
+    .flacso-oferta-responsive .flacso-oa-person-card__avatar-circle img {
+        width: 44px !important;
+        height: 44px !important;
+        flex-basis: 44px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card__name {
+        font-size: .9rem;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card__academic {
+        font-size: .72rem;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card__cv {
+        max-height: 9em !important;
+        overflow: hidden !important;
+        position: relative;
+        font-size: .79rem;
+        line-height: 1.48;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card__cv::after {
+        content: "";
+        position: absolute;
+        inset: auto 0 0;
+        height: 2em;
+        background: linear-gradient(transparent, #fff);
+    }
+}
+
+@media (max-width: 420px) {
+    .flacso-oferta-responsive .flacso-oa-container {
+        width: min(100% - 18px, 1180px);
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero {
+        width: min(100% - 14px, 1180px);
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__content {
+        padding: 21px 17px 19px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__title {
+        font-size: clamp(1.85rem, 9.2vw, 2.35rem);
+    }
+
+    .flacso-oferta-responsive .facts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .flacso-oferta-responsive .fact {
+        min-height: 72px;
+        padding: 14px 11px 10px;
+    }
+
+    .flacso-oferta-responsive .cohort__details {
+        grid-template-columns: 1fr;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-section-header h2 {
+        font-size: 1.9rem;
+    }
+}
