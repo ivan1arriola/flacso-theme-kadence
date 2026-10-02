@@ -299,6 +299,16 @@ foreach ($bloques_html as $meta_key => $lbl) {
 
 $child_content = trim((string) ($academic['carta_presentacion_html'] ?? ''));
 
+$fc_hero_summary = '';
+if (!empty($academic['descripcion_html'])) {
+    $fc_hero_summary = wp_trim_words(wp_strip_all_tags((string) $academic['descripcion_html']), 24, '…');
+}
+
+$fc_audience_summary = '';
+if (!empty($academic['perfil_ingreso_html'])) {
+    $fc_audience_summary = wp_trim_words(wp_strip_all_tags((string) $academic['perfil_ingreso_html']), 40, '…');
+}
+
 // Documentos adjuntos (malla y calendario)
 $cartamalla_url = !empty($academic['cartamalla_pdf_url']) ? $academic['cartamalla_pdf_url'] : '';
 $malla_url      = !empty($academic['malla_pdf_url']) ? $academic['malla_pdf_url'] : '';
@@ -336,6 +346,10 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                     <?php endif; ?>
 
                     <h1 id="fc-carta-title"><?php echo esc_html($titulo); ?></h1>
+
+                    <?php if ($fc_hero_summary !== '') : ?>
+                        <p class="fc-hero-summary"><?php echo esc_html($fc_hero_summary); ?></p>
+                    <?php endif; ?>
 
                     <div class="fc-hero-meta">
                         <?php if (!empty($tipo_oferta)) : ?>
@@ -501,10 +515,34 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                 <?php if ($hay_bloques_detallados) : ?>
                     <div class="fc-academic-layout">
                         <?php if (!empty($academic['descripcion_html'])) : ?>
-                            <article class="fc-content-panel fc-content-panel--primary" aria-labelledby="fc-panel-descripcion">
-                                <h2 id="fc-panel-descripcion"><?php esc_html_e('Información General', 'flacso-uruguay'); ?></h2>
-                                <div class="fc-content-panel-body">
-                                    <?php echo wp_kses_post($academic['descripcion_html']); ?>
+                            <article class="fc-content-panel fc-content-panel--primary fc-editorial-intro" aria-labelledby="fc-panel-descripcion">
+                                <div class="fc-general-grid">
+                                    <div class="fc-general-copy">
+                                        <span class="fc-editorial-dots" aria-hidden="true"><i></i><i></i></span>
+                                        <h2 id="fc-panel-descripcion"><?php esc_html_e('Información general', 'flacso-uruguay'); ?></h2>
+                                        <div class="fc-content-panel-body">
+                                            <?php echo wp_kses_post($academic['descripcion_html']); ?>
+                                        </div>
+                                    </div>
+
+                                    <?php if ($thumbnail_url !== '' || $fc_audience_summary !== '') : ?>
+                                        <aside class="fc-audience-panel">
+                                            <?php if ($thumbnail_url !== '') : ?>
+                                                <div class="fc-audience-panel__image">
+                                                    <img src="<?php echo esc_url($thumbnail_url); ?>" alt="" loading="lazy" decoding="async">
+                                                </div>
+                                            <?php endif; ?>
+                                            <?php if ($fc_audience_summary !== '') : ?>
+                                                <div class="fc-audience-panel__copy">
+                                                    <span class="fc-audience-panel__icon"><i class="bi bi-people-fill" aria-hidden="true"></i></span>
+                                                    <div>
+                                                        <h3><?php esc_html_e('¿A quiénes está dirigido?', 'flacso-uruguay'); ?></h3>
+                                                        <p><?php echo esc_html($fc_audience_summary); ?></p>
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
+                                        </aside>
+                                    <?php endif; ?>
                                 </div>
                             </article>
                         <?php endif; ?>
@@ -589,8 +627,8 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
             <?php if ($cartamalla_url || $malla_url || $calendario_url) :
                 $fc_cards_count = $cartamalla_url ? 1 : (($malla_url ? 1 : 0) + ($calendario_url ? 1 : 0));
             ?>
-                <section class="fc-section">
-                    <h2 class="fc-section-title"><?php esc_html_e('Calendario y Malla Curricular', 'flacso-uruguay'); ?></h2>
+                <section class="fc-section fc-documents-section">
+                    <h2 class="fc-section-title"><?php esc_html_e('Calendario y malla curricular', 'flacso-uruguay'); ?></h2>
                     <div class="fc-more-grid" style="--fc-grid-cols: <?php echo esc_attr((string) $fc_cards_count); ?>;">
                         <?php if ($cartamalla_url) : ?>
                             <article class="fc-more-card">
@@ -853,19 +891,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                 </div>
             </section>
 
-            <!-- ASISTENTE ACADÉMICA -->
-            <?php
-            $prep_posgrado = $determinante_oferta($titulo);
-            $enlace_correo = '<a href="mailto:' . esc_attr($asistente_correo) . '">' . esc_html($asistente_correo) . '</a>';
-            $presentacion_asistente = sprintf(
-                __('Mi nombre es %1$s y soy %2$s %3$s %4$s. Si tienes dudas o consultas puedes contactarme al correo electrónico %5$s.', 'flacso-uruguay'),
-                esc_html($asistente_nombre_completo),
-                esc_html($asistente_rol),
-                esc_html($prep_posgrado),
-                esc_html($titulo),
-                $enlace_correo
-            );
-            ?>
+            <!-- CONTACTO ACADÉMICO -->
             <section class="fc-assistant-card">
                 <div class="fc-assistant-photo">
                     <?php if ($asistente_foto_url) : ?>
@@ -878,16 +904,36 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                 </div>
 
                 <div class="fc-assistant-copy">
-                    <span class="fc-assistant-label"><?php echo esc_html($asistente_rol); ?></span>
+                    <span class="fc-assistant-label"><?php esc_html_e('Contacto académico', 'flacso-uruguay'); ?></span>
                     <h2><?php echo esc_html($asistente_nombre_completo); ?></h2>
-                    <p><?php echo wp_kses_post($presentacion_asistente); ?></p>
+                    <p><?php echo esc_html($asistente_rol); ?></p>
                 </div>
+
+                <div class="fc-assistant-meta">
+                    <?php if ($asistente_correo !== '') : ?>
+                        <a href="mailto:<?php echo esc_attr($asistente_correo); ?>">
+                            <i class="bi bi-envelope" aria-hidden="true"></i>
+                            <span><?php echo esc_html($asistente_correo); ?></span>
+                        </a>
+                    <?php endif; ?>
+                    <a href="tel:+59824817459">
+                        <i class="bi bi-telephone" aria-hidden="true"></i>
+                        <span>+598 2481 7459</span>
+                    </a>
+                </div>
+
+                <?php if ($asistente_correo !== '') : ?>
+                    <a class="fc-assistant-action" href="mailto:<?php echo esc_attr($asistente_correo); ?>">
+                        <?php esc_html_e('Realizar una consulta', 'flacso-uruguay'); ?>
+                        <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </a>
+                <?php endif; ?>
             </section>
 
             <!-- FINAL CTA -->
             <section class="fc-final-cta">
                 <div>
-                    <span><?php printf(esc_html__('Preinscripciones %s', 'flacso-uruguay'), esc_html($anio)); ?></span>
+                    <span><?php esc_html_e('Formación que transforma', 'flacso-uruguay'); ?></span>
                     <h2><?php echo esc_html($carta_cta_titulo); ?></h2>
                     <p><strong><?php esc_html_e('Formación 100% a distancia', 'flacso-uruguay'); ?></strong></p>
                 </div>
