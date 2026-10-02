@@ -912,7 +912,13 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                             </div>
                                         <?php endif; ?>
 
-                                        <div class="contact__links">
+                                    </div>
+                                </div>
+
+                                <div class="contact-support">
+                                    <div class="contact-support__section">
+                                        <span class="contact-support__eyebrow"><?php esc_html_e('Información útil', 'flacso-uruguay'); ?></span>
+                                        <nav class="contact-support__links" aria-label="<?php esc_attr_e('Enlaces de la oferta académica', 'flacso-uruguay'); ?>">
                                             <a href="#programa"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Ver propuesta académica', 'flacso-uruguay'); ?></a>
                                             <a href="#cohorte"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Información de la cohorte', 'flacso-uruguay'); ?></a>
                                             <a href="#titulacion"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Requisitos de titulación', 'flacso-uruguay'); ?></a>
@@ -921,28 +927,36 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                     <i class="bi bi-file-earmark-pdf text-danger"></i> <?php esc_html_e('Malla Curricular (PDF)', 'flacso-uruguay'); ?>
                                                 </a>
                                             <?php endif; ?>
-                                        </div>
+                                        </nav>
+                                    </div>
 
-                                        <?php if ($asistente_nombre !== '') : ?>
-                                            <div class="flacso-oa-aside-person" style="margin-top: 1.25rem; display: flex; align-items: center; gap: 12px; padding-top: 16px; border-top: 1px solid var(--borde);">
-                                                <?php if ($asistente_avatar !== '') : ?>
-                                                    <img src="<?php echo esc_url($asistente_avatar); ?>" alt="" class="flacso-oa-aside-person__avatar" style="width: 46px; height: 46px; border-radius: 50%; object-fit: cover;" />
-                                                <?php else : ?>
-                                                    <span class="flacso-oa-aside-person__avatar-placeholder" style="width: 46px; height: 46px; border-radius: 50%; background: #e2e8f0; display: grid; place-items: center; color: var(--azul);"><i class="bi bi-person-fill"></i></span>
-                                                <?php endif; ?>
-                                                <div class="flacso-oa-aside-person__info">
-                                                    <strong style="display: block; font-size: 0.95rem; color: var(--texto);"><?php echo esc_html($asistente_nombre); ?></strong>
-                                                    <small style="color: var(--muted);"><?php echo esc_html($asistente_rol); ?></small>
+                                    <?php if ($asistente_nombre !== '' || $asistente_correo !== '') : ?>
+                                        <div class="contact-support__section contact-support__person">
+                                            <span class="contact-support__eyebrow"><?php esc_html_e('Contacto académico', 'flacso-uruguay'); ?></span>
+
+                                            <?php if ($asistente_nombre !== '') : ?>
+                                                <div class="flacso-oa-aside-person">
+                                                    <?php if ($asistente_avatar !== '') : ?>
+                                                        <img src="<?php echo esc_url($asistente_avatar); ?>" alt="" class="flacso-oa-aside-person__avatar" />
+                                                    <?php else : ?>
+                                                        <span class="flacso-oa-aside-person__avatar-placeholder"><i class="bi bi-person-fill"></i></span>
+                                                    <?php endif; ?>
+                                                    <div class="flacso-oa-aside-person__info">
+                                                        <strong><?php echo esc_html($asistente_nombre); ?></strong>
+                                                        <small><?php echo esc_html($asistente_rol); ?></small>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        <?php endif; ?>
+                                            <?php endif; ?>
 
-                                        <?php if ($asistente_correo !== '') : ?>
-                                            <a href="mailto:<?php echo esc_attr($asistente_correo); ?>" class="flacso-oa-aside-contact__email" style="margin-top: 0.75rem; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.88rem; color: var(--azul); font-weight: 700; text-decoration: none;">
-                                                <i class="bi bi-envelope-fill"></i>
-                                                <span><?php echo esc_html($asistente_correo); ?></span>
-                                            </a>
-                                        <?php endif; ?>
+                                            <?php if ($asistente_correo !== '') : ?>
+                                                <a href="mailto:<?php echo esc_attr($asistente_correo); ?>" class="flacso-oa-aside-contact__email">
+                                                    <i class="bi bi-envelope-fill"></i>
+                                                    <span><?php echo esc_html($asistente_correo); ?></span>
+                                                </a>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
                                     </div>
                                 </div>
                             </aside>
