@@ -665,7 +665,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                 <!-- SECCIÓN: PROPUESTA ACADÉMICA (CON ACORDEONES SEMÁNTICOS <details>) -->
                                 <section class="section" id="programa">
                                     <div class="kicker"><?php esc_html_e('Propuesta académica', 'flacso-uruguay'); ?></div>
-                                    <h2><?php echo esc_html($title); ?></h2>
+                                    <h2><?php esc_html_e('Plan de estudios y descripción', 'flacso-uruguay'); ?></h2>
 
                                     <?php if ($has_main_content) : ?>
                                         <div class="prose lead">
