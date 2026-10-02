@@ -432,6 +432,8 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
 
     $cv_raw = (string) get_post_meta($docente_id, 'cv', true);
     $has_cv = trim(wp_strip_all_tags($cv_raw)) !== '';
+    $docente_url = get_permalink($docente_id);
+    $has_docente_url = is_string($docente_url) && $docente_url !== '';
 
     $avatar_size = [
         '1' => 260,
@@ -509,6 +511,13 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
             echo '<div class="flacso-oa-person-card__cv">' . wp_kses_post(wpautop($cv_raw)) . '</div>';
         }
 
+        if ($has_docente_url) {
+            echo '<a class="flacso-oa-person-card__profile-link" href="' . esc_url($docente_url) . '">';
+            echo esc_html__('Ver perfil', 'flacso-uruguay');
+            echo '<i class="bi bi-arrow-up-right" aria-hidden="true"></i>';
+            echo '</a>';
+        }
+
         echo '</div>';
     } else {
         echo '<div class="flacso-oa-person-card__header">';
@@ -530,6 +539,18 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
         if ($nivel === '2' && $has_cv) {
             echo '<div class="flacso-oa-person-card__content">';
             echo '<div class="flacso-oa-person-card__cv">' . wp_kses_post(wpautop($cv_raw)) . '</div>';
+            if ($has_docente_url) {
+                echo '<a class="flacso-oa-person-card__profile-link" href="' . esc_url($docente_url) . '">';
+                echo esc_html__('Ver perfil', 'flacso-uruguay');
+                echo '<i class="bi bi-arrow-up-right" aria-hidden="true"></i>';
+                echo '</a>';
+            }
+            echo '</div>';
+        } elseif ($nivel === '3' && $has_docente_url) {
+            echo '<div class="flacso-oa-person-card__quick-link">';
+            echo '<a class="flacso-oa-person-card__profile-link" href="' . esc_url($docente_url) . '" aria-label="' . esc_attr(sprintf(__('Ver perfil de %s', 'flacso-uruguay'), $doc_titulo)) . '">';
+            echo '<i class="bi bi-arrow-up-right" aria-hidden="true"></i>';
+            echo '</a>';
             echo '</div>';
         }
     }
