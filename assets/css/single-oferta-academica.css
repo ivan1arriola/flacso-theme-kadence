@@ -5903,3 +5903,193 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+/* ==========================================================================
+   FORMULARIO AMARILLO + SOPORTE LIMPIO 2026
+   El formulario usa siempre #fdd223. Información útil y contacto académico
+   quedan visualmente separados y con controles compactos.
+   ========================================================================== */
+
+.flacso-oferta-responsive .contact {
+    border: 1px solid rgba(8,43,96,.10) !important;
+    border-top: 0 !important;
+    background: #fdd223 !important;
+    box-shadow: 0 16px 34px rgba(8,43,96,.10) !important;
+}
+
+.flacso-oferta-responsive .contact__head,
+.flacso-oferta-responsive .contact__body {
+    background: #fdd223 !important;
+}
+
+.flacso-oferta-responsive .contact__head {
+    padding-bottom: 10px !important;
+}
+
+.flacso-oferta-responsive .contact__head h3,
+.flacso-oferta-responsive .contact__head p {
+    color: #082b60 !important;
+}
+
+.flacso-oferta-responsive .contact__body input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
+.flacso-oferta-responsive .contact__body textarea,
+.flacso-oferta-responsive .contact__body select {
+    background: #fff !important;
+    border-color: rgba(8,43,96,.12) !important;
+    box-shadow: none !important;
+}
+
+.flacso-oferta-responsive .contact__body button,
+.flacso-oferta-responsive .contact__body .button,
+.flacso-oferta-responsive .contact__body input[type="submit"] {
+    background: #21873b !important;
+    color: #fff !important;
+}
+
+.flacso-oferta-responsive .contact__body button:hover,
+.flacso-oferta-responsive .contact__body .button:hover,
+.flacso-oferta-responsive .contact__body input[type="submit"]:hover {
+    background: #176b2d !important;
+}
+
+/* Tarjeta secundaria */
+.flacso-oferta-responsive .contact-support {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.flacso-oferta-responsive .contact-support__section {
+    padding: 0;
+}
+
+.flacso-oferta-responsive .contact-support__section + .contact-support__section {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(8,43,96,.10);
+}
+
+.flacso-oferta-responsive .contact-support__eyebrow {
+    margin-bottom: 8px;
+    color: #53657c;
+    font-size: .72rem;
+    font-weight: 850;
+    letter-spacing: .045em;
+    text-transform: none;
+}
+
+/* Información útil: enlaces como filas, no texto corrido. */
+.flacso-oferta-responsive .contact-support__links {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+}
+
+.flacso-oferta-responsive .contact-support__links a {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    align-items: center;
+    gap: 7px;
+    min-height: 38px;
+    padding: 8px 10px;
+    border: 1px solid rgba(8,43,96,.08);
+    border-radius: 10px;
+    background: #fff;
+    color: #0a3470;
+    font-size: .78rem;
+    font-weight: 760;
+    line-height: 1.25;
+    text-decoration: none !important;
+    box-shadow: 0 4px 12px rgba(8,43,96,.035);
+}
+
+.flacso-oferta-responsive .contact-support__links a:hover {
+    border-color: rgba(8,43,96,.16);
+    background: #f8fafc;
+    color: #082b60;
+}
+
+.flacso-oferta-responsive .contact-support__links i {
+    width: 20px;
+    text-align: center;
+    color: var(--oa-brand);
+}
+
+/* Contacto académico separado */
+.flacso-oferta-responsive .contact-support__person {
+    padding: 12px !important;
+    border: 1px solid rgba(8,43,96,.08) !important;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 6px 16px rgba(8,43,96,.04);
+}
+
+.flacso-oferta-responsive .flacso-oa-aside-person {
+    gap: 10px;
+}
+
+.flacso-oferta-responsive .flacso-oa-aside-person__avatar,
+.flacso-oferta-responsive .flacso-oa-aside-person__avatar-placeholder {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+}
+
+.flacso-oferta-responsive .flacso-oa-aside-person__info strong {
+    font-size: .84rem;
+}
+
+.flacso-oferta-responsive .flacso-oa-aside-person__info small {
+    font-size: .7rem;
+}
+
+.flacso-oferta-responsive .flacso-oa-aside-contact__email {
+    width: 100%;
+    margin-top: 10px;
+    padding: 9px 10px;
+    border-radius: 9px;
+    background: #eef3f8;
+    color: #0a3470;
+    font-size: .75rem;
+    justify-content: flex-start;
+}
+
+@media (max-width: 760px) {
+    .flacso-oferta-responsive .contact {
+        border-radius: 16px !important;
+    }
+
+    .flacso-oferta-responsive .contact__head {
+        padding: 15px 14px 8px !important;
+    }
+
+    .flacso-oferta-responsive .contact__body {
+        padding: 10px 14px 14px !important;
+    }
+
+    .flacso-oferta-responsive .contact-support {
+        padding: 0;
+    }
+
+    .flacso-oferta-responsive .contact-support__section + .contact-support__section {
+        margin-top: 12px;
+        padding-top: 12px;
+    }
+
+    .flacso-oferta-responsive .contact-support__links {
+        grid-template-columns: 1fr;
+    }
+
+    .flacso-oferta-responsive .contact-support__links a {
+        min-height: 36px;
+        padding: 7px 9px;
+        font-size: .75rem;
+    }
+
+    .flacso-oferta-responsive .contact-support__person {
+        padding: 10px !important;
+    }
+}
