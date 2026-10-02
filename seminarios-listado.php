@@ -237,8 +237,9 @@ $seminarios_total = count($seminarios_catalogo);
                         <p class="seminarios-hero__headline"><?php esc_html_e('Formación breve para actualizar conocimientos y profundizar áreas específicas.', 'flacso-uruguay'); ?></p>
 
                         <div class="seminarios-hero__editorial">
-                            <p>Propuestas de corta duración vinculadas con los distintos programas académicos de FLACSO Uruguay. La cursada puede ser virtual o híbrida y combina actividades con flexibilidad horaria con encuentros sincrónicos o presenciales, según cada seminario.</p>
-                            <p>Algunas propuestas pueden ser acreditables a estudios de maestría o doctorado, de acuerdo con sus características y con los criterios del programa correspondiente.</p>
+                            <p>Los seminarios de posgrado de FLACSO Uruguay son propuestas de formación de corta duración, diseñadas para la actualización teórica y profesional en distintos campos de las ciencias sociales. Tienen una duración aproximada de entre tres y cinco semanas y se vinculan con los diferentes programas académicos de la institución.</p>
+                            <p>Se ofrecen en modalidad virtual o híbrida, lo que permite la participación de personas residentes en Montevideo, en el interior del país o en el exterior. La cursada combina actividades que pueden realizarse con flexibilidad horaria y encuentros sincrónicos o presenciales previamente establecidos (según el seminario).</p>
+                            <p>Los seminarios pueden ser acreditables a estudios de maestría o doctorado, de acuerdo con las características de cada propuesta y los criterios del programa correspondiente. En la información de cada seminario podrás consultar sus objetivos, contenidos, modalidad de cursada, duración, equipo docente, cantidad de créditos, requisitos e inscripción.</p>
                         </div>
 
                         <div class="seminarios-hero__facts" aria-label="<?php esc_attr_e('Características principales', 'flacso-uruguay'); ?>">
@@ -248,7 +249,7 @@ $seminarios_total = count($seminarios_catalogo);
                         </div>
 
                         <p class="seminarios-hero__contact">
-                            <?php esc_html_e('Consultas:', 'flacso-uruguay'); ?>
+                            <?php esc_html_e('Por dudas o consultas:', 'flacso-uruguay'); ?>
                             <a href="mailto:inscripciones@flacso.edu.uy">inscripciones@flacso.edu.uy</a>
                         </p>
                     </div>
