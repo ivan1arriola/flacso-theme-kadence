@@ -236,8 +236,17 @@ $seminarios_total = count($seminarios_catalogo);
                         <h1 id="seminarios-page-title" class="seminarios-hero__title"><?php esc_html_e('Seminarios', 'flacso-uruguay'); ?></h1>
                         <div class="seminarios-hero__editorial">
                             <p><strong class="seminarios-hero__editorial-highlight">Los seminarios de posgrado de FLACSO Uruguay son propuestas de formación de corta duración, diseñadas para la actualización teórica y profesional en distintos campos de las ciencias sociales.</strong> Tienen una duración aproximada de entre tres y cinco semanas y se vinculan con los diferentes programas académicos de la institución.</p>
-                            <p>Se ofrecen en modalidad virtual o híbrida, lo que permite la participación de personas residentes en Montevideo, en el interior del país o en el exterior. La cursada combina actividades que pueden realizarse con flexibilidad horaria y encuentros sincrónicos o presenciales previamente establecidos (según el seminario).</p>
-                            <p>Los seminarios pueden ser acreditables a estudios de maestría o doctorado, de acuerdo con las características de cada propuesta y los criterios del programa correspondiente. En la información de cada seminario podrás consultar sus objetivos, contenidos, modalidad de cursada, duración, equipo docente, cantidad de créditos, requisitos e inscripción.</p>
+
+                            <details class="seminarios-hero__details">
+                                <summary>
+                                    <span><?php esc_html_e('Más sobre los seminarios', 'flacso-uruguay'); ?></span>
+                                    <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                                </summary>
+                                <div class="seminarios-hero__details-body">
+                                    <p>Se ofrecen en modalidad virtual o híbrida, lo que permite la participación de personas residentes en Montevideo, en el interior del país o en el exterior. La cursada combina actividades que pueden realizarse con flexibilidad horaria y encuentros sincrónicos o presenciales previamente establecidos (según el seminario).</p>
+                                    <p>Los seminarios pueden ser acreditables a estudios de maestría o doctorado, de acuerdo con las características de cada propuesta y los criterios del programa correspondiente. En la información de cada seminario podrás consultar sus objetivos, contenidos, modalidad de cursada, duración, equipo docente, cantidad de créditos, requisitos e inscripción.</p>
+                                </div>
+                            </details>
                         </div>
 
                         <div class="seminarios-hero__facts" aria-label="<?php esc_attr_e('Características principales', 'flacso-uruguay'); ?>">
