@@ -556,13 +556,12 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
 
                         <?php if ($fc_has_academic_details) : ?>
                             <div class="fc-academic-details" aria-label="<?php esc_attr_e('Detalles académicos', 'flacso-uruguay'); ?>">
-                                <?php $fc_detail_index = 0; ?>
                                 <?php foreach ($fc_academic_details as $fc_detail_key => $fc_detail_label) :
                                     if (empty($academic[$fc_detail_key])) {
                                         continue;
                                     }
                                 ?>
-                                    <details class="fc-academic-detail"<?php echo $fc_detail_index === 0 ? ' open' : ''; ?>>
+                                    <details class="fc-academic-detail">
                                         <summary>
                                             <span><?php echo esc_html($fc_detail_label); ?></span>
                                             <i class="bi bi-plus-lg" aria-hidden="true"></i>
@@ -571,7 +570,6 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                                             <?php echo wp_kses_post($academic[$fc_detail_key]); ?>
                                         </div>
                                     </details>
-                                    <?php $fc_detail_index++; ?>
                                 <?php endforeach; ?>
                             </div>
                         <?php endif; ?>
@@ -920,6 +918,24 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
         </div>
     </main>
 </div>
+
+<script>
+(function () {
+    const groups = Array.from(document.querySelectorAll('.fc-academic-detail'));
+
+    groups.forEach((detail) => {
+        detail.addEventListener('toggle', () => {
+            if (!detail.open) return;
+
+            groups.forEach((other) => {
+                if (other !== detail && other.open) {
+                    other.open = false;
+                }
+            });
+        });
+    });
+}());
+</script>
 
 <script>
 (function () {
