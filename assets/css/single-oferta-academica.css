@@ -3704,3 +3704,78 @@
         gap: 7px;
     }
 }
+
+
+/* FORMULARIO DESTACADO 2026 */
+.flacso-oferta-responsive .contact {
+    overflow: hidden;
+    border: 2px solid var(--oa-yellow);
+    border-radius: var(--oa-radius-lg);
+    background: linear-gradient(180deg, #fff7cf 0%, #fffdf4 100%);
+    box-shadow: 0 22px 48px rgba(16, 42, 79, 0.16);
+}
+
+.flacso-oferta-responsive .contact__head {
+    padding: 26px;
+    background: linear-gradient(145deg, #113566, #174a84);
+    border-bottom: 4px solid var(--oa-yellow);
+}
+
+.flacso-oferta-responsive .contact__head h3 {
+    color: #fff;
+}
+
+.flacso-oferta-responsive .contact__head p {
+    color: #dbe7fa;
+}
+
+.flacso-oferta-responsive .contact__body {
+    padding: 24px 26px 28px;
+    background: transparent;
+}
+
+.flacso-oferta-responsive .contact__body input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
+.flacso-oferta-responsive .contact__body textarea,
+.flacso-oferta-responsive .contact__body select {
+    background: #fff !important;
+    border: 1px solid #d3deea !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(16, 42, 79, 0.04) !important;
+}
+
+.flacso-oferta-responsive .contact__body input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]):focus,
+.flacso-oferta-responsive .contact__body textarea:focus,
+.flacso-oferta-responsive .contact__body select:focus {
+    border-color: var(--oa-blue) !important;
+    box-shadow: 0 0 0 3px rgba(22, 74, 135, 0.14) !important;
+    outline: 0 !important;
+}
+
+.flacso-oferta-responsive .contact__body button,
+.flacso-oferta-responsive .contact__body .button,
+.flacso-oferta-responsive .contact__body input[type="submit"] {
+    min-height: 48px;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: #14803c !important;
+    color: #fff !important;
+    font-weight: 850;
+    box-shadow: 0 10px 22px rgba(20, 128, 60, 0.22);
+}
+
+.flacso-oferta-responsive .contact__body button:hover,
+.flacso-oferta-responsive .contact__body .button:hover,
+.flacso-oferta-responsive .contact__body input[type="submit"]:hover {
+    background: #0f6b31 !important;
+    color: #fff !important;
+}
+
+.flacso-oferta-responsive .contact__links {
+    border-top-color: rgba(17, 53, 102, 0.14);
+}
+
+@media (max-width: 1020px) {
+    .flacso-oferta-responsive .contact {
+        border-width: 2px;
+    }
+}
