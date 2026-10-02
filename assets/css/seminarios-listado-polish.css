@@ -1067,3 +1067,23 @@
         aspect-ratio: 4 / 5 !important;
     }
 }
+
+
+/* DESTACADO TEXTO ORIGINAL SEMINARIOS 2026 */
+.flacso-seminarios-page .seminarios-hero__editorial-highlight {
+    display: block;
+    margin-bottom: .65rem;
+    color: #fff;
+    font-size: clamp(1.18rem, 2vw, 1.55rem);
+    font-weight: 850;
+    line-height: 1.18;
+    letter-spacing: -.02em;
+}
+
+@media (max-width: 767px) {
+    .flacso-seminarios-page .seminarios-hero__editorial-highlight {
+        margin-bottom: .5rem;
+        font-size: 1rem;
+        line-height: 1.25;
+    }
+}
