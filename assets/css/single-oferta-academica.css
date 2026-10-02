@@ -6093,3 +6093,90 @@
         padding: 10px !important;
     }
 }
+
+
+/* ==========================================================================
+   ACORDEONES ESTADO COHERENTE 2026
+   <details open>  => círculo azul sólido + menos
+   <details closed> => círculo azul claro + más
+   ========================================================================== */
+
+.flacso-oferta-responsive .details details > summary {
+    position: relative;
+    padding-right: 58px !important;
+}
+
+/* El pseudo-elemento existente pasa a ser el único control visual */
+.flacso-oferta-responsive .details details > summary::after {
+    content: "+" !important;
+    display: grid !important;
+    place-items: center !important;
+    position: absolute !important;
+    top: 50% !important;
+    right: 14px !important;
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0 !important;
+    transform: translateY(-50%) !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    background: #dfe8f3 !important;
+    color: #0a3470 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    opacity: 1 !important;
+    box-shadow: none !important;
+    transition:
+        background-color .18s ease,
+        color .18s ease,
+        transform .18s ease !important;
+}
+
+/* Abierto */
+.flacso-oferta-responsive .details details[open] > summary::after {
+    content: "−" !important;
+    background: #0a3470 !important;
+    color: #ffffff !important;
+    transform: translateY(-50%) !important;
+}
+
+/* Hover/focus: cambia sutilmente, sin inventar un tercer estado */
+.flacso-oferta-responsive .details details:not([open]) > summary:hover::after,
+.flacso-oferta-responsive .details details:not([open]) > summary:focus-visible::after {
+    background: #cfdaea !important;
+}
+
+.flacso-oferta-responsive .details details[open] > summary:hover::after,
+.flacso-oferta-responsive .details details[open] > summary:focus-visible::after {
+    background: #082b60 !important;
+}
+
+/* Evitar que reglas anteriores por nth-child pinten cada acordeón distinto */
+.flacso-oferta-responsive .details details:nth-child(3n+1) > summary::after,
+.flacso-oferta-responsive .details details:nth-child(3n+2) > summary::after,
+.flacso-oferta-responsive .details details:nth-child(3n+3) > summary::after {
+    background: #dfe8f3 !important;
+    color: #0a3470 !important;
+}
+
+.flacso-oferta-responsive .details details:nth-child(3n+1)[open] > summary::after,
+.flacso-oferta-responsive .details details:nth-child(3n+2)[open] > summary::after,
+.flacso-oferta-responsive .details details:nth-child(3n+3)[open] > summary::after {
+    background: #0a3470 !important;
+    color: #ffffff !important;
+}
+
+@media (max-width: 760px) {
+    .flacso-oferta-responsive .details details > summary {
+        padding-right: 50px !important;
+    }
+
+    .flacso-oferta-responsive .details details > summary::after {
+        right: 12px !important;
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 18px !important;
+    }
+}
