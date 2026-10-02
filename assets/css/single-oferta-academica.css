@@ -3016,3 +3016,691 @@
         width: 100%;
     }
 }
+
+
+/* ==========================================================================
+   REDISEÑO EDITORIAL 2026
+   Presentación de oferta académica: jerarquía, lectura y conversión.
+   Sólo tema: no modifica el modelo de datos del plugin.
+   ========================================================================== */
+
+.flacso-oferta-responsive {
+    --oa-ink: #102a4f;
+    --oa-ink-2: #173e72;
+    --oa-blue: #164a87;
+    --oa-blue-soft: #eaf2fb;
+    --oa-yellow: #f7c928;
+    --oa-paper: #ffffff;
+    --oa-canvas: #f3f6fa;
+    --oa-line: #dfe7f0;
+    --oa-muted: #64748b;
+    --oa-radius-xl: 30px;
+    --oa-radius-lg: 22px;
+    --oa-radius-md: 16px;
+    --oa-shadow-lg: 0 28px 70px rgba(16, 42, 79, 0.14);
+    --oa-shadow-md: 0 14px 34px rgba(16, 42, 79, 0.09);
+    background: var(--oa-canvas);
+}
+
+.flacso-oferta-responsive .flacso-oa-article {
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible;
+}
+
+.flacso-oferta-responsive .flacso-oa-container {
+    width: min(1180px, calc(100% - 40px));
+    margin-inline: auto;
+}
+
+/* Hero: deja de sentirse como una tarjeta y pasa a ser la portada del programa. */
+.flacso-oferta-responsive .flacso-oa-single-hero {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 34px 0 76px;
+    background:
+        radial-gradient(circle at 80% 18%, rgba(247, 201, 40, 0.18), transparent 27rem),
+        linear-gradient(135deg, #0d2b55 0%, #16447d 58%, #1b5796 100%);
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero {
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 54px 0 28px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+    grid-template-areas: "content media";
+    gap: 70px;
+    align-items: center;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__content {
+    grid-area: content;
+    min-width: 0;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__media-wrap {
+    grid-area: media;
+    width: 100%;
+    max-width: 390px;
+    justify-self: end;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__media {
+    aspect-ratio: 4 / 5;
+    border-radius: 26px;
+    overflow: hidden;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.18);
+    box-shadow: 0 30px 70px rgba(2, 18, 43, .28);
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__placeholder {
+    min-height: 100%;
+    color: #fff;
+    background: linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__kicker,
+.flacso-oferta-responsive .flacso-oa-program-hero__status-badge,
+.flacso-oferta-responsive .flacso-oa-program-hero__custom-badge {
+    margin: 0;
+    padding: 7px 11px;
+    border-radius: 999px;
+    font-size: .74rem;
+    line-height: 1;
+    font-weight: 850;
+    letter-spacing: .045em;
+    text-transform: uppercase;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__kicker {
+    background: var(--oa-yellow);
+    color: #11284a;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__status-badge,
+.flacso-oferta-responsive .flacso-oa-program-hero__custom-badge {
+    color: #fff;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__title {
+    max-width: 820px;
+    margin: 0;
+    color: #fff;
+    font-size: clamp(2.7rem, 5.3vw, 5.25rem);
+    line-height: .99;
+    letter-spacing: -.052em;
+    text-wrap: balance;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__excerpt {
+    max-width: 720px;
+    margin-top: 22px;
+    color: #dce8f8;
+    font-size: clamp(1.03rem, 1.7vw, 1.24rem);
+    line-height: 1.58;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__notice {
+    display: inline-flex;
+    margin: 20px 0 0;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,.18);
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__button {
+    min-height: 52px;
+    padding: 0 22px;
+    border-radius: 999px;
+    font-weight: 850;
+    box-shadow: none;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__button--primary {
+    background: var(--oa-yellow);
+    color: #11284a;
+    border-color: var(--oa-yellow);
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__button--primary:hover {
+    background: #ffd84f;
+    color: #11284a;
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__button--secondary {
+    background: rgba(255,255,255,.07);
+    color: #fff;
+    border-color: rgba(255,255,255,.34);
+}
+
+.flacso-oferta-responsive .flacso-oa-program-hero__button--secondary:hover {
+    background: rgba(255,255,255,.14);
+    color: #fff;
+}
+
+/* Franja de datos: superpuesta sobre el hero para unir portada y contenido. */
+.flacso-oferta-responsive .facts-wrap {
+    margin-top: -42px;
+    margin-bottom: 0;
+    position: relative;
+    z-index: 4;
+}
+
+.flacso-oferta-responsive .facts {
+    border: 0;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: var(--oa-shadow-lg);
+}
+
+.flacso-oferta-responsive .fact {
+    min-height: 112px;
+    padding: 25px 27px;
+    border-right: 1px solid var(--oa-line);
+}
+
+.flacso-oferta-responsive .fact__label {
+    color: #75849a;
+    font-size: .7rem;
+    letter-spacing: .09em;
+}
+
+.flacso-oferta-responsive .fact__value {
+    margin-top: 8px;
+    color: var(--oa-ink);
+    font-size: 1rem;
+    line-height: 1.35;
+}
+
+/* Cuerpo: lectura editorial y sidebar útil sin competir con el contenido. */
+.flacso-oferta-responsive .main {
+    padding: 72px 0 96px;
+    background: var(--oa-canvas);
+}
+
+.flacso-oferta-responsive .layout {
+    grid-template-columns: minmax(0, 1fr) 350px;
+    gap: 56px;
+}
+
+.flacso-oferta-responsive .section {
+    margin-bottom: 72px;
+    padding: 0;
+    border: 0;
+}
+
+.flacso-oferta-responsive .kicker {
+    margin-bottom: 10px;
+    color: #4473a8;
+    font-size: .72rem;
+    letter-spacing: .12em;
+}
+
+.flacso-oferta-responsive .section > h2 {
+    max-width: 820px;
+    margin: 0 0 28px;
+    color: var(--oa-ink);
+    font-size: clamp(2rem, 3.4vw, 3.2rem);
+    line-height: 1.08;
+    letter-spacing: -.035em;
+    text-wrap: balance;
+}
+
+.flacso-oferta-responsive .lead,
+.flacso-oferta-responsive .prose {
+    max-width: 820px;
+    color: #3f5065;
+    font-size: 1.08rem;
+    line-height: 1.78;
+}
+
+.flacso-oferta-responsive .lead p:first-child {
+    font-size: 1.16rem;
+    color: #2c4059;
+}
+
+/* Convocatoria: información operativa en una pieza más limpia. */
+.flacso-oferta-responsive .cohort {
+    position: relative;
+    overflow: hidden;
+    padding: 30px;
+    border: 1px solid #d9e4ef;
+    border-left: 0;
+    border-radius: var(--oa-radius-lg);
+    background: #fff;
+    box-shadow: var(--oa-shadow-md);
+}
+
+.flacso-oferta-responsive .cohort::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 6px;
+    background: linear-gradient(180deg, var(--oa-blue), #4b83bc);
+}
+
+.flacso-oferta-responsive .cohort__title {
+    color: var(--oa-ink);
+}
+
+.flacso-oferta-responsive .cohort__details {
+    border-top-color: var(--oa-line);
+}
+
+.flacso-oferta-responsive .cohort__row {
+    border-bottom-color: var(--oa-line);
+}
+
+.flacso-oferta-responsive .badge-open {
+    background: #e8f7ec;
+    color: #176536;
+}
+
+.flacso-oferta-responsive .badge-open--soon {
+    background: #fff6cc;
+    color: #815a00;
+}
+
+/* Objetivo y acordeones: tarjetas discretas, no una lista plana. */
+.flacso-oferta-responsive .objectives {
+    margin-top: 34px;
+    padding: 28px 30px;
+    border: 0;
+    border-radius: var(--oa-radius-lg);
+    background: linear-gradient(135deg, #eaf2fb, #f5f9fd);
+    box-shadow: inset 4px 0 0 #4a7fb6;
+}
+
+.flacso-oferta-responsive .details {
+    display: grid;
+    gap: 12px;
+    margin-top: 30px;
+    border-top: 0;
+}
+
+.flacso-oferta-responsive .details details {
+    overflow: hidden;
+    border: 1px solid var(--oa-line);
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0 8px 22px rgba(16, 42, 79, .04);
+}
+
+.flacso-oferta-responsive .details summary {
+    padding: 19px 20px;
+}
+
+.flacso-oferta-responsive .details summary::after {
+    background: #eef3f8;
+}
+
+.flacso-oferta-responsive .details details[open] {
+    border-color: #bfd0e3;
+    box-shadow: 0 12px 28px rgba(16, 42, 79, .08);
+}
+
+.flacso-oferta-responsive .detail-body {
+    padding: 0 22px 24px;
+}
+
+/* Sidebar: compacto y reconocible como acción secundaria. */
+.flacso-oferta-responsive .sidebar {
+    top: calc(var(--wp-admin--admin-bar--height, 0px) + 28px);
+}
+
+.flacso-oferta-responsive .contact {
+    border: 0;
+    border-radius: var(--oa-radius-lg);
+    box-shadow: var(--oa-shadow-md);
+}
+
+.flacso-oferta-responsive .contact__head {
+    padding: 26px;
+    background: linear-gradient(145deg, #113566, #174a84);
+}
+
+.flacso-oferta-responsive .contact__body {
+    padding: 24px 26px 26px;
+}
+
+.flacso-oferta-responsive .contact__links {
+    gap: 10px;
+}
+
+.flacso-oferta-responsive .contact__links a {
+    padding: 7px 0;
+}
+
+/* Equipo académico: menos altura, más identidad y lectura rápida. */
+.flacso-oferta-responsive .flacso-oa-team-section {
+    padding: 84px 0 96px;
+    background:
+        radial-gradient(circle at 8% 0%, rgba(247,201,40,.12), transparent 22rem),
+        #fff;
+    border-top: 1px solid var(--oa-line);
+}
+
+.flacso-oferta-responsive .flacso-oa-section-header {
+    margin-bottom: 44px;
+    text-align: left;
+}
+
+.flacso-oferta-responsive .flacso-oa-section-header h2 {
+    margin: 0;
+    color: var(--oa-ink);
+    font-size: clamp(2.1rem, 4vw, 3.45rem);
+    letter-spacing: -.04em;
+}
+
+.flacso-oferta-responsive .flacso-oa-team-subgroups {
+    display: grid;
+    gap: 52px;
+}
+
+.flacso-oferta-responsive .flacso-oa-team-subgroup__title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 22px;
+    color: var(--oa-ink);
+    font-size: 1.12rem;
+    font-weight: 850;
+}
+
+.flacso-oferta-responsive .flacso-oa-team-subgroup__title::before {
+    content: "";
+    width: 34px;
+    height: 4px;
+    border-radius: 99px;
+    background: var(--oa-yellow);
+}
+
+.flacso-oferta-responsive .flacso-oa-docentes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.flacso-oferta-responsive .flacso-oa-docentes-grid--nivel-1 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card {
+    height: 100%;
+    min-height: 0;
+    border: 1px solid var(--oa-line);
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(16,42,79,.055);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card:hover {
+    transform: translateY(-3px);
+    border-color: #c6d6e7;
+    box-shadow: 0 18px 34px rgba(16,42,79,.10);
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 {
+    display: grid;
+    grid-template-columns: 116px minmax(0, 1fr);
+    overflow: hidden;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__media,
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap {
+    width: 116px;
+    height: 100%;
+    min-height: 190px;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar,
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card__content {
+    padding: 20px;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card__header {
+    padding: 18px 18px 12px;
+    align-items: center;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card__avatar-circle {
+    width: 54px;
+    height: 54px;
+    flex: 0 0 54px;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card__avatar-round {
+    width: 54px !important;
+    height: 54px !important;
+    object-fit: cover;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card__role-pill {
+    display: inline-flex;
+    max-width: 100%;
+    margin-bottom: 7px;
+    padding: 5px 8px;
+    border-radius: 999px;
+    background: #fff4b9;
+    color: #6b5300;
+    font-size: .66rem;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card__name {
+    color: var(--oa-ink);
+    font-size: 1rem;
+    line-height: 1.24;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card__academic {
+    margin-top: 5px;
+    color: #6b7c90;
+    font-size: .8rem;
+    line-height: 1.35;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card__cv {
+    margin-top: 12px;
+    color: #4c5d70;
+    font-size: .86rem;
+    line-height: 1.55;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-2 .flacso-oa-person-card__cv {
+    max-height: 9.5em;
+    overflow: hidden;
+    position: relative;
+}
+
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-2 .flacso-oa-person-card__cv::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 2.2em;
+    background: linear-gradient(transparent, #fff);
+}
+
+/* Cierre de página. */
+.flacso-oferta-responsive .final-cta {
+    border: 0;
+    border-radius: var(--oa-radius-lg);
+    box-shadow: var(--oa-shadow-md);
+}
+
+@media (max-width: 1020px) {
+    .flacso-oferta-responsive .flacso-oa-program-hero {
+        grid-template-columns: minmax(0, 1.15fr) minmax(260px, .85fr);
+        gap: 42px;
+    }
+
+    .flacso-oferta-responsive .layout {
+        grid-template-columns: 1fr;
+        gap: 38px;
+    }
+
+    .flacso-oferta-responsive .sidebar {
+        position: static;
+        order: -1;
+    }
+
+    .flacso-oferta-responsive .contact {
+        max-width: none;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-docentes-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .flacso-oferta-responsive .flacso-oa-container {
+        width: min(100% - 28px, 1180px);
+    }
+
+    .flacso-oferta-responsive .flacso-oa-single-hero {
+        padding: 18px 0 58px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero {
+        width: min(100% - 28px, 1180px);
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "media"
+            "content";
+        gap: 26px;
+        padding: 18px 0 10px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__media-wrap {
+        width: 100%;
+        max-width: none;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__media {
+        aspect-ratio: 16 / 9;
+        border-radius: 20px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__title {
+        font-size: clamp(2.15rem, 11.5vw, 3.4rem);
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__actions {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .flacso-oferta-responsive .facts-wrap {
+        margin-top: -30px;
+    }
+
+    .flacso-oferta-responsive .facts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .flacso-oferta-responsive .fact {
+        min-height: 96px;
+        padding: 20px;
+    }
+
+    .flacso-oferta-responsive .fact:nth-child(2) {
+        border-right: 0;
+    }
+
+    .flacso-oferta-responsive .fact:nth-child(-n+2) {
+        border-bottom: 1px solid var(--oa-line);
+    }
+
+    .flacso-oferta-responsive .main {
+        padding: 54px 0 68px;
+    }
+
+    .flacso-oferta-responsive .section {
+        margin-bottom: 54px;
+    }
+
+    .flacso-oferta-responsive .cohort {
+        padding: 24px 20px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-team-section {
+        padding: 58px 0 68px;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-docentes-grid,
+    .flacso-oferta-responsive .flacso-oa-docentes-grid--nivel-1 {
+        grid-template-columns: 1fr;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 {
+        grid-template-columns: 92px minmax(0, 1fr);
+    }
+
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__media,
+    .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__avatar-wrap {
+        width: 92px;
+        min-height: 160px;
+    }
+}
+
+@media (max-width: 480px) {
+    .flacso-oferta-responsive .facts {
+        grid-template-columns: 1fr;
+    }
+
+    .flacso-oferta-responsive .fact,
+    .flacso-oferta-responsive .fact:nth-child(2) {
+        border-right: 0;
+        border-bottom: 1px solid var(--oa-line);
+    }
+
+    .flacso-oferta-responsive .fact:last-child {
+        border-bottom: 0;
+    }
+
+    .flacso-oferta-responsive .flacso-oa-program-hero__badges {
+        gap: 7px;
+    }
+}
