@@ -518,7 +518,7 @@ $seminarios_total = count($seminarios_catalogo);
                                                                 </span>
                                                             </li>
                                                         <?php elseif ($seminario_item['is_started_recent']) : ?>
-                                                            <li>
+                                                            <li class="seminario-meta--urgency">
                                                                 <i class="bi bi-clock" aria-hidden="true"></i>
                                                                 <span>
                                                                     <?php
