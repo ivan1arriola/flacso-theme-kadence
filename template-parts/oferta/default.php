@@ -32,20 +32,26 @@ $program       = $context['program'] ?? [];
 $thumbnail_url = (string) ($context['thumbnail_url'] ?? '');
 
 // Color principal de la oferta académica.
-// Se usa sólo como identidad visual de esta página; el contenido sigue viniendo
-// del mismo modelo público.
-$raw_offer_color = '';
-if (!empty($academic['color_principal']) && is_string($academic['color_principal'])) {
-    $raw_offer_color = trim($academic['color_principal']);
-} elseif (!empty($academic['colores_presentacion']['principal']) && is_string($academic['colores_presentacion']['principal'])) {
-    $raw_offer_color = trim($academic['colores_presentacion']['principal']);
-} elseif (!empty($context['color_principal']) && is_string($context['color_principal'])) {
-    $raw_offer_color = trim($context['color_principal']);
-}
+// Si no hay un color válido configurado, se usa el azul institucional FLACSO.
+$offer_color_fallback = '#0a3470';
+$offer_color_candidates = [
+    $academic['color_principal'] ?? '',
+    $academic['colores_presentacion']['principal'] ?? '',
+    $context['color_principal'] ?? '',
+];
 
-$offer_color = preg_match('/^#[0-9a-fA-F]{6}$/', $raw_offer_color)
-    ? strtolower($raw_offer_color)
-    : '#0a3470';
+$offer_color = $offer_color_fallback;
+foreach ($offer_color_candidates as $candidate) {
+    if (!is_string($candidate)) {
+        continue;
+    }
+
+    $candidate = trim($candidate);
+    if (preg_match('/^#[0-9a-fA-F]{6}$/', $candidate)) {
+        $offer_color = strtolower($candidate);
+        break;
+    }
+}
 
 $offer_r = hexdec(substr($offer_color, 1, 2));
 $offer_g = hexdec(substr($offer_color, 3, 2));
