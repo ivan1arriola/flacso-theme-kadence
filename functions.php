@@ -61,6 +61,15 @@ function flacso_child_register_navigation_locations() {
 }
 add_action( 'after_setup_theme', 'flacso_child_register_navigation_locations', 20 );
 
+/**
+ * Miniatura editorial 4:5 para seminarios.
+ * WordPress recorta desde el centro al generar la miniatura.
+ */
+function flacso_child_register_seminar_image_sizes() {
+    add_image_size( 'flacso-seminario-4x5', 800, 1000, true );
+}
+add_action( 'after_setup_theme', 'flacso_child_register_seminar_image_sizes', 25 );
+
 function flacso_child_enqueue_site_chrome() {
     $css_path = 'assets/css/site-chrome.css';
     $js_path  = 'assets/js/site-chrome.js';
