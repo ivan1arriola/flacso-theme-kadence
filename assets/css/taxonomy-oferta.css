@@ -536,3 +536,346 @@
     }
 }
 
+
+
+/* ==========================================================================
+   REDISENO TIPO OFERTA 2026
+   Toma patrones de la nueva identidad editorial: papel claro, azul institucional,
+   acentos pequeños por oferta y tarjetas con imagen 4:5 real.
+   ========================================================================== */
+
+.flacso-taxonomy-oferta {
+    background:
+        radial-gradient(circle at 92% 8%, rgba(39,185,200,.05), transparent 18rem),
+        radial-gradient(circle at 8% 92%, rgba(122,43,189,.04), transparent 16rem),
+        #f6f8fb;
+}
+
+.flacso-taxonomy-container {
+    width: min(100% - 2rem, 1180px);
+}
+
+/* Hero más editorial y alineado con las fichas nuevas */
+.flacso-taxonomy-hero {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    padding: clamp(2.2rem, 4.5vw, 4rem);
+    border-radius: 28px;
+    background:
+        radial-gradient(circle at 90% 10%, rgba(255,209,47,.12), transparent 16rem),
+        linear-gradient(145deg, #123f7d, #082b60);
+    box-shadow: 0 24px 56px rgba(8,43,96,.14);
+}
+
+.flacso-taxonomy-hero::after {
+    content: "";
+    position: absolute;
+    top: -26px;
+    right: 34px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #0f78d3;
+    box-shadow: 30px 0 0 #7a2bbd, 60px 0 0 #1eb98f;
+}
+
+.flacso-taxonomy-hero__kicker {
+    display: inline-flex;
+    margin-bottom: .85rem;
+    padding: .42rem .7rem;
+    border-radius: 999px;
+    background: #ffd12f;
+    color: #082b60;
+    font-size: .7rem;
+    font-weight: 900;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.flacso-taxonomy-hero__title {
+    font-size: clamp(2.5rem, 5vw, 4.6rem);
+    line-height: .96;
+    letter-spacing: -.05em;
+}
+
+.flacso-taxonomy-hero__description {
+    max-width: 760px;
+    margin-top: 1rem;
+    font-size: 1.02rem;
+    line-height: 1.55;
+}
+
+/* Toolbars como piezas editoriales discretas */
+.flacso-ofertas-toolbar {
+    border: 1px solid rgba(8,43,96,.08);
+    border-left: 0;
+    border-radius: 18px;
+    box-shadow: 0 10px 26px rgba(8,43,96,.05);
+}
+
+.flacso-ofertas-toolbar--open {
+    box-shadow: inset 5px 0 0 #16a34a, 0 10px 26px rgba(8,43,96,.05);
+}
+
+.flacso-ofertas-toolbar--soon {
+    box-shadow: inset 5px 0 0 #8b98aa, 0 10px 26px rgba(8,43,96,.04);
+}
+
+/* Cards */
+.flacso-ofertas-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 1.4rem;
+}
+
+.flacso-premium-card {
+    --offer-accent: #0a3470;
+    border: 0;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 12px 28px rgba(8,43,96,.07);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.flacso-premium-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: 3;
+    width: 5px;
+    background: var(--offer-accent);
+    pointer-events: none;
+}
+
+.flacso-premium-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 36px rgba(8,43,96,.11);
+}
+
+/* Proporción 4:5 estricta: si la fuente no es 4:5, se recorta. */
+.flacso-premium-card__image-wrap {
+    position: relative;
+    width: 100%;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 4 / 5 !important;
+    overflow: hidden;
+    background: #e8edf4;
+}
+
+.flacso-premium-card__img,
+.flacso-premium-card__image-wrap > img {
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    object-fit: cover !important;
+    object-position: center !important;
+}
+
+.flacso-premium-card__img-placeholder {
+    position: absolute;
+    inset: 0;
+}
+
+.flacso-premium-card__badges {
+    top: 14px;
+    right: 14px;
+}
+
+.flacso-badge {
+    border-radius: 999px;
+    box-shadow: 0 6px 16px rgba(8,43,96,.12);
+}
+
+.flacso-premium-card__body {
+    padding: 1.25rem 1.25rem 1.35rem;
+}
+
+.flacso-premium-card__meta {
+    gap: .55rem .8rem;
+    margin-bottom: .75rem;
+}
+
+.flacso-premium-card__title {
+    color: #0a3470;
+    font-size: 1.15rem;
+    line-height: 1.24;
+}
+
+.flacso-premium-card__excerpt {
+    margin-bottom: 1rem;
+    color: #526277;
+    line-height: 1.55;
+}
+
+.flacso-premium-card__cta {
+    min-height: 42px;
+    border-radius: 999px;
+    background: #0a3470;
+}
+
+.flacso-premium-card__cta--open {
+    background: #21873b;
+}
+
+.flacso-premium-card:hover .flacso-premium-card__cta {
+    background: var(--offer-accent);
+}
+
+/* Mobile-first: tarjetas horizontales y foto 4:5 real. */
+@media (max-width: 767px) {
+    .flacso-taxonomy-oferta {
+        padding-bottom: 2rem;
+    }
+
+    .flacso-taxonomy-container {
+        width: min(100% - 20px, 1180px);
+    }
+
+    .flacso-taxonomy-hero {
+        margin-bottom: 1rem;
+        padding: 1.25rem 1rem 1.1rem;
+        border-radius: 18px;
+    }
+
+    .flacso-taxonomy-breadcrumb {
+        padding-bottom: .65rem;
+        font-size: .72rem;
+    }
+
+    .flacso-taxonomy-hero__kicker {
+        margin-bottom: .55rem;
+        padding: .3rem .52rem;
+        font-size: .58rem;
+    }
+
+    .flacso-taxonomy-hero__title {
+        font-size: clamp(2rem, 11vw, 2.8rem);
+    }
+
+    .flacso-taxonomy-hero__description {
+        margin-top: .7rem;
+        font-size: .84rem;
+        line-height: 1.45;
+    }
+
+    .flacso-taxonomy-hero::after {
+        top: -10px;
+        right: 16px;
+        width: 13px;
+        height: 13px;
+        box-shadow: 18px 0 0 #7a2bbd, 36px 0 0 #1eb98f;
+    }
+
+    .flacso-ofertas-toolbar {
+        margin-bottom: .7rem;
+        padding: .75rem .8rem;
+        border-radius: 12px;
+    }
+
+    .flacso-ofertas-toolbar__title {
+        font-size: .98rem;
+    }
+
+    .flacso-ofertas-toolbar__note {
+        font-size: .76rem;
+        line-height: 1.4;
+    }
+
+    .flacso-ofertas-toolbar__count {
+        padding: .28rem .55rem;
+        font-size: .68rem;
+    }
+
+    .flacso-ofertas-grid {
+        grid-template-columns: 1fr;
+        gap: .65rem;
+        padding-bottom: 1rem;
+    }
+
+    .flacso-premium-card {
+        display: grid;
+        grid-template-columns: 118px minmax(0, 1fr);
+        min-height: 148px;
+        border-radius: 13px;
+    }
+
+    .flacso-premium-card__image-wrap {
+        width: 118px;
+        min-width: 118px;
+        align-self: start;
+        aspect-ratio: 4 / 5 !important;
+    }
+
+    .flacso-premium-card__body {
+        min-width: 0;
+        padding: .8rem .8rem .75rem;
+    }
+
+    .flacso-premium-card__badges {
+        top: 7px;
+        right: 7px;
+        left: 7px;
+        justify-content: flex-start;
+    }
+
+    .flacso-badge {
+        padding: 4px 7px;
+        font-size: .55rem;
+    }
+
+    .flacso-premium-card__meta {
+        gap: .28rem .5rem;
+        margin-bottom: .45rem;
+        font-size: .67rem;
+    }
+
+    .flacso-premium-card__title {
+        margin-bottom: .35rem;
+        font-size: .92rem;
+        line-height: 1.18;
+    }
+
+    .flacso-premium-card__excerpt {
+        display: -webkit-box;
+        margin-bottom: .55rem;
+        overflow: hidden;
+        font-size: .72rem;
+        line-height: 1.35;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .flacso-premium-card__footer {
+        padding-top: .45rem;
+    }
+
+    .flacso-premium-card__cta {
+        width: fit-content;
+        min-height: 30px;
+        padding: .35rem .55rem;
+        font-size: .67rem;
+    }
+}
+
+@media (max-width: 390px) {
+    .flacso-premium-card {
+        grid-template-columns: 104px minmax(0, 1fr);
+    }
+
+    .flacso-premium-card__image-wrap {
+        width: 104px;
+        min-width: 104px;
+    }
+
+    .flacso-premium-card__body {
+        padding: .7rem;
+    }
+}
