@@ -1043,3 +1043,241 @@
         display: block !important;
     }
 }
+
+
+/* ==========================================================================
+   LEGIBILIDAD TIPOGRAFICA CARTAS 2026
+   Corrige textos demasiado pequeños detectados en mobile y escritorio.
+   Regla: cuerpo >= 16px mobile, microtexto >= 12px, contenido >= 15px.
+   ========================================================================== */
+
+.flacso-carta-virtual {
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+}
+
+/* Microtexto: nunca por debajo de 12px */
+.flacso-carta-virtual .fc-eyebrow,
+.flacso-carta-virtual .fc-hero-ribbon,
+.flacso-carta-virtual .fc-hero-meta span,
+.flacso-carta-virtual .fc-chip-block p,
+.flacso-carta-virtual .fc-chip-grid span,
+.flacso-carta-virtual .fc-convenio-pill,
+.flacso-carta-virtual .fc-feature-card h3,
+.flacso-carta-virtual .fc-pricing-cta span,
+.flacso-carta-virtual .fc-assistant-label,
+.flacso-carta-virtual .fc-final-cta span,
+.flacso-carta-virtual .fc-pricing-table thead th span {
+    font-size: 12px !important;
+    line-height: 1.3 !important;
+}
+
+/* Botones y acciones */
+.flacso-carta-virtual .fc-primary-button,
+.flacso-carta-virtual .fc-secondary-button,
+.flacso-carta-virtual .fc-card-button,
+.flacso-carta-virtual .fc-action-buttons a,
+.flacso-carta-virtual .fc-pricing-cta a,
+.flacso-carta-virtual .fc-final-cta a {
+    font-size: 13.5px !important;
+    line-height: 1.25 !important;
+}
+
+/* Resumen superior */
+.flacso-carta-virtual .fc-feature-card p {
+    font-size: 14.5px !important;
+    line-height: 1.3 !important;
+}
+
+/* Títulos de secciones */
+.flacso-carta-virtual .fc-section-title {
+    font-size: 22px !important;
+    line-height: 1.1 !important;
+}
+
+.flacso-carta-virtual .fc-content-panel h2,
+.flacso-carta-virtual .fc-content-panel--primary h2,
+.flacso-carta-virtual .fc-content-panel--modality h2,
+.flacso-carta-virtual .fc-content-panel--objective h2 {
+    font-size: 18px !important;
+    line-height: 1.2 !important;
+}
+
+/* Texto académico principal */
+.flacso-carta-virtual .fc-content-panel-body,
+.flacso-carta-virtual .fc-content-panel-body p,
+.flacso-carta-virtual .fc-content-panel-body li,
+.flacso-carta-virtual .fc-academic-detail__body,
+.flacso-carta-virtual .fc-academic-detail__body p,
+.flacso-carta-virtual .fc-academic-detail__body li {
+    font-size: 16px !important;
+    line-height: 1.62 !important;
+}
+
+.flacso-carta-virtual .fc-content-panel-body {
+    max-width: 72ch !important;
+}
+
+/* Acordeones */
+.flacso-carta-virtual details.fc-academic-detail > summary {
+    min-height: 52px !important;
+    font-size: 15.5px !important;
+    line-height: 1.3 !important;
+}
+
+/* Documentos */
+.flacso-carta-virtual .fc-more-card h3 {
+    font-size: 16px !important;
+}
+
+.flacso-carta-virtual .fc-more-card p,
+.flacso-carta-virtual .fc-section > .fc-more-grid .fc-more-card p,
+.flacso-carta-virtual .fc-section > .fc-more-grid .fc-more-card li {
+    font-size: 14.5px !important;
+    line-height: 1.5 !important;
+}
+
+/* Costos */
+.flacso-carta-virtual .fc-pricing-table thead th {
+    font-size: 12.5px !important;
+    line-height: 1.3 !important;
+}
+
+.flacso-carta-virtual .fc-pricing-table tbody td,
+.flacso-carta-virtual .fc-pricing-note {
+    font-size: 14.5px !important;
+    line-height: 1.45 !important;
+}
+
+.flacso-carta-virtual .fc-pricing-cta strong {
+    font-size: 15px !important;
+    line-height: 1.3 !important;
+}
+
+/* Información importante */
+.flacso-carta-virtual .fc-info-row,
+.flacso-carta-virtual .fc-info-row:first-child,
+.flacso-carta-virtual .fc-info-row:last-child {
+    font-size: 14.5px !important;
+    line-height: 1.5 !important;
+}
+
+/* Contacto académico */
+.flacso-carta-virtual .fc-assistant-copy h2 {
+    font-size: 17px !important;
+}
+
+.flacso-carta-virtual .fc-assistant-copy p {
+    font-size: 14.5px !important;
+    line-height: 1.5 !important;
+}
+
+/* CTA final */
+.flacso-carta-virtual .fc-final-cta h2 {
+    font-size: 24px !important;
+    line-height: 1.08 !important;
+}
+
+.flacso-carta-virtual .fc-final-cta p {
+    font-size: 14.5px !important;
+    line-height: 1.45 !important;
+}
+
+/* Evita que el hero vuelva a introducir texto diminuto */
+.flacso-carta-virtual .fc-certification {
+    font-size: 12.5px !important;
+}
+
+@media (max-width: 767px) {
+    .flacso-carta-virtual {
+        font-size: 16px !important;
+    }
+
+    .flacso-carta-virtual .fc-hero h1 {
+        font-size: clamp(32px, 9.5vw, 40px) !important;
+        line-height: .96 !important;
+    }
+
+    .flacso-carta-virtual .fc-content-panel--primary,
+    .flacso-carta-virtual .fc-content-panel--objective,
+    .flacso-carta-virtual .fc-content-panel--modality {
+        padding: 15px !important;
+    }
+
+    .flacso-carta-virtual .fc-section-title {
+        font-size: 22px !important;
+    }
+
+    .flacso-carta-virtual .fc-content-panel-body,
+    .flacso-carta-virtual .fc-content-panel-body p,
+    .flacso-carta-virtual .fc-content-panel-body li,
+    .flacso-carta-virtual .fc-academic-detail__body,
+    .flacso-carta-virtual .fc-academic-detail__body p,
+    .flacso-carta-virtual .fc-academic-detail__body li {
+        font-size: 16px !important;
+    }
+
+    .flacso-carta-virtual .fc-more-card p,
+    .flacso-carta-virtual .fc-section > .fc-more-grid .fc-more-card p,
+    .flacso-carta-virtual .fc-section > .fc-more-grid .fc-more-card li,
+    .flacso-carta-virtual .fc-info-row,
+    .flacso-carta-virtual .fc-assistant-copy p,
+    .flacso-carta-virtual .fc-pricing-table tbody td {
+        font-size: 14.5px !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .flacso-carta-virtual {
+        font-size: 17px !important;
+    }
+
+    /* En escritorio el contenido estaba demasiado abierto y parecía más chico */
+    .flacso-carta-virtual .fc-page-container,
+    .flacso-carta-virtual .fc-hero {
+        width: min(calc(100% - 2rem), 1120px) !important;
+    }
+
+    .flacso-carta-virtual .fc-hero h1 {
+        font-size: clamp(46px, 4.6vw, 62px) !important;
+        line-height: .96 !important;
+    }
+
+    .flacso-carta-virtual .fc-section-title {
+        font-size: 26px !important;
+    }
+
+    .flacso-carta-virtual .fc-content-panel h2,
+    .flacso-carta-virtual .fc-content-panel--primary h2,
+    .flacso-carta-virtual .fc-content-panel--modality h2,
+    .flacso-carta-virtual .fc-content-panel--objective h2 {
+        font-size: 20px !important;
+    }
+
+    .flacso-carta-virtual .fc-content-panel-body,
+    .flacso-carta-virtual .fc-content-panel-body p,
+    .flacso-carta-virtual .fc-content-panel-body li,
+    .flacso-carta-virtual .fc-academic-detail__body,
+    .flacso-carta-virtual .fc-academic-detail__body p,
+    .flacso-carta-virtual .fc-academic-detail__body li {
+        font-size: 16.5px !important;
+        line-height: 1.62 !important;
+    }
+
+    .flacso-carta-virtual details.fc-academic-detail > summary {
+        font-size: 16px !important;
+    }
+
+    .flacso-carta-virtual .fc-more-card p,
+    .flacso-carta-virtual .fc-section > .fc-more-grid .fc-more-card p,
+    .flacso-carta-virtual .fc-section > .fc-more-grid .fc-more-card li,
+    .flacso-carta-virtual .fc-info-row,
+    .flacso-carta-virtual .fc-assistant-copy p,
+    .flacso-carta-virtual .fc-pricing-table tbody td {
+        font-size: 15px !important;
+    }
+
+    .flacso-carta-virtual .fc-final-cta h2 {
+        font-size: 30px !important;
+    }
+}
