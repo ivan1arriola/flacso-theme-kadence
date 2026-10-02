@@ -54,6 +54,12 @@ if ($ofertas_query->have_posts()) {
             $carga_horaria = (string) ($ctx['academic']['carga_horaria'] ?? '');
 
             $image_id = (int) get_post_thumbnail_id($post_id);
+            $context_thumbnail_url = (string) ($ctx['thumbnail_url'] ?? '');
+
+            if ($image_id <= 0 && $context_thumbnail_url !== '') {
+                $image_id = (int) attachment_url_to_postid($context_thumbnail_url);
+            }
+
             $thumbnail_url = '';
             if ($image_id > 0) {
                 $cropped = wp_get_attachment_image_url($image_id, 'flacso-oferta-4x5');
@@ -61,8 +67,9 @@ if ($ofertas_query->have_posts()) {
                     $thumbnail_url = (string) $cropped;
                 }
             }
+
             if ($thumbnail_url === '') {
-                $thumbnail_url = (string) ($ctx['thumbnail_url'] ?? '');
+                $thumbnail_url = $context_thumbnail_url;
             }
 
             $raw_color = '';
