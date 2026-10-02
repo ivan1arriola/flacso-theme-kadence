@@ -1602,3 +1602,91 @@
         -webkit-line-clamp: 2;
     }
 }
+
+
+/* ==========================================================================
+   ACORDEONES MENSUALES SEMINARIOS 2026
+   ========================================================================== */
+
+.flacso-seminarios-page .seminarios-group {
+    overflow: hidden;
+    border: 1px solid rgba(22, 58, 114, .10);
+    border-radius: 16px;
+    background: rgba(255,255,255,.72);
+    box-shadow: 0 8px 22px rgba(17,45,91,.045);
+}
+
+.flacso-seminarios-page .seminarios-group__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0 !important;
+    padding: 1rem 1.1rem !important;
+    border: 0 !important;
+    cursor: pointer;
+    list-style: none;
+    background: #fff;
+}
+
+.flacso-seminarios-page .seminarios-group__header::-webkit-details-marker {
+    display: none;
+}
+
+.flacso-seminarios-page .seminarios-group__header-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: .65rem;
+    flex: 0 0 auto;
+}
+
+.flacso-seminarios-page .seminarios-group__toggle {
+    color: var(--seminario-primary);
+    transition: transform .18s ease;
+}
+
+.flacso-seminarios-page .seminarios-group[open] .seminarios-group__toggle {
+    transform: rotate(180deg);
+}
+
+.flacso-seminarios-page .seminarios-group > .seminarios-grid {
+    padding: 1rem;
+    border-top: 1px solid rgba(22, 58, 114, .08);
+}
+
+.flacso-seminarios-page .seminarios-groups {
+    gap: .9rem !important;
+}
+
+/* Ya no existe el desplegable del hero. */
+.flacso-seminarios-page .seminarios-hero__details,
+.flacso-seminarios-page .seminarios-hero__details-body {
+    display: none !important;
+}
+
+@media (max-width: 767px) {
+    .flacso-seminarios-page .seminarios-group {
+        border-radius: 12px;
+    }
+
+    .flacso-seminarios-page .seminarios-group__header {
+        min-height: 3rem;
+        padding: .75rem .8rem !important;
+    }
+
+    .flacso-seminarios-page .seminarios-group__title {
+        font-size: .88rem !important;
+    }
+
+    .flacso-seminarios-page .seminarios-group__count {
+        font-size: .63rem !important;
+    }
+
+    .flacso-seminarios-page .seminarios-group__header-meta {
+        gap: .45rem;
+    }
+
+    .flacso-seminarios-page .seminarios-group > .seminarios-grid {
+        padding: .65rem;
+    }
+}
