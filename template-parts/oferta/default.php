@@ -432,8 +432,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
 
     $cv_raw = (string) get_post_meta($docente_id, 'cv', true);
     $has_cv = trim(wp_strip_all_tags($cv_raw)) !== '';
-    $docente_url = get_permalink($docente_id);
-    $has_docente_url = is_string($docente_url) && $docente_url !== '';
 
     $avatar_size = [
         '1' => 260,
@@ -511,11 +509,11 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
             echo '<div class="flacso-oa-person-card__cv">' . wp_kses_post(wpautop($cv_raw)) . '</div>';
         }
 
-        if ($has_docente_url) {
-            echo '<a class="flacso-oa-person-card__profile-link" href="' . esc_url($docente_url) . '">';
-            echo esc_html__('Ver perfil', 'flacso-uruguay');
-            echo '<i class="bi bi-arrow-up-right" aria-hidden="true"></i>';
-            echo '</a>';
+        if ($has_cv) {
+            echo '<button type="button" class="flacso-oa-person-card__expand" aria-expanded="false">';
+            echo '<span class="flacso-oa-person-card__expand-label">' . esc_html__('Ampliar', 'flacso-uruguay') . '</span>';
+            echo '<i class="bi bi-plus-lg" aria-hidden="true"></i>';
+            echo '</button>';
         }
 
         echo '</div>';
@@ -539,18 +537,10 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
         if ($nivel === '2' && $has_cv) {
             echo '<div class="flacso-oa-person-card__content">';
             echo '<div class="flacso-oa-person-card__cv">' . wp_kses_post(wpautop($cv_raw)) . '</div>';
-            if ($has_docente_url) {
-                echo '<a class="flacso-oa-person-card__profile-link" href="' . esc_url($docente_url) . '">';
-                echo esc_html__('Ver perfil', 'flacso-uruguay');
-                echo '<i class="bi bi-arrow-up-right" aria-hidden="true"></i>';
-                echo '</a>';
-            }
-            echo '</div>';
-        } elseif ($nivel === '3' && $has_docente_url) {
-            echo '<div class="flacso-oa-person-card__quick-link">';
-            echo '<a class="flacso-oa-person-card__profile-link" href="' . esc_url($docente_url) . '" aria-label="' . esc_attr(sprintf(__('Ver perfil de %s', 'flacso-uruguay'), $doc_titulo)) . '">';
-            echo '<i class="bi bi-arrow-up-right" aria-hidden="true"></i>';
-            echo '</a>';
+            echo '<button type="button" class="flacso-oa-person-card__expand" aria-expanded="false">';
+            echo '<span class="flacso-oa-person-card__expand-label">' . esc_html__('Ampliar', 'flacso-uruguay') . '</span>';
+            echo '<i class="bi bi-plus-lg" aria-hidden="true"></i>';
+            echo '</button>';
             echo '</div>';
         }
     }
@@ -1077,6 +1067,29 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
 </div>
 
 <script>
+(function() {
+    document.addEventListener('click', function(event) {
+        var button = event.target.closest('.flacso-oa-person-card__expand');
+        if (!button) return;
+
+        var card = button.closest('.flacso-oa-person-card');
+        if (!card) return;
+
+        var expanded = card.classList.toggle('is-expanded');
+        button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+
+        var label = button.querySelector('.flacso-oa-person-card__expand-label');
+        var icon = button.querySelector('i');
+
+        if (label) {
+            label.textContent = expanded ? 'Reducir' : 'Ampliar';
+        }
+        if (icon) {
+            icon.className = expanded ? 'bi bi-dash-lg' : 'bi bi-plus-lg';
+        }
+    });
+})();
+
 (function() {
     if (typeof window.flacsoMetaTrack !== 'function') return;
     try {
