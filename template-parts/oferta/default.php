@@ -663,10 +663,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                 <?php endif; ?>
 
                                 <!-- SECCIÓN: PROPUESTA ACADÉMICA (CON ACORDEONES SEMÁNTICOS <details>) -->
-                                <section class="section" id="programa">
-                                    <div class="kicker"><?php esc_html_e('Propuesta académica', 'flacso-uruguay'); ?></div>
-                                    <h2><?php esc_html_e('Plan de estudios y descripción', 'flacso-uruguay'); ?></h2>
-
+                                <section class="section section--programa" id="programa">
                                     <?php if ($has_main_content) : ?>
                                         <div class="prose lead">
                                             <?php echo wpautop(wp_kses_post($filtered_main_content ?: $descripcion_html)); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
