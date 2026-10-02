@@ -957,8 +957,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         </div>
                                     <?php endif; ?>
                                 </div>
-                                    </div>
-                                </div>
                             </aside>
 
                         </div>
