@@ -466,6 +466,12 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                     <p><?php echo esc_html($modalidad); ?></p>
                 </article>
 
+                <article class="fc-feature-card">
+                    <div class="fc-feature-icon"><i class="bi bi-layers" aria-hidden="true"></i></div>
+                    <h3><?php esc_html_e('Edición', 'flacso-uruguay'); ?></h3>
+                    <p><?php echo esc_html($cohorte_label !== '' ? $cohorte_label : $anio); ?></p>
+                </article>
+
                 <?php if ($mostrar_instancias_presenciales) : ?>
                     <article class="fc-feature-card">
                         <div class="fc-feature-icon"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i></div>
@@ -486,19 +492,75 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                 <?php endif; ?>
 
                 <?php if ($hay_bloques_detallados) : ?>
-                    <div class="fc-rich-grid">
-                        <?php foreach ($bloques_html as $meta_key => $titulo_bloque) :
-                            $bloque_val = $academic[$meta_key] ?? '';
-                            if (!empty($bloque_val)) :
-                                $panel_id = 'fc-panel-' . sanitize_title($meta_key);
-                        ?>
-                                <article class="fc-content-panel fc-content-wrapper fc-content-wrapper-compact fc-rich-block" aria-labelledby="<?php echo esc_attr($panel_id); ?>">
-                                    <h2 id="<?php echo esc_attr($panel_id); ?>"><?php echo esc_html($titulo_bloque); ?></h2>
+                    <div class="fc-academic-layout">
+                        <?php if (!empty($academic['descripcion_html'])) : ?>
+                            <article class="fc-content-panel fc-content-panel--primary" aria-labelledby="fc-panel-descripcion">
+                                <h2 id="fc-panel-descripcion"><?php esc_html_e('Información General', 'flacso-uruguay'); ?></h2>
+                                <div class="fc-content-panel-body">
+                                    <?php echo wp_kses_post($academic['descripcion_html']); ?>
+                                </div>
+                            </article>
+                        <?php endif; ?>
+
+                        <?php if (!empty($academic['modalidad_html'])) : ?>
+                            <article class="fc-content-panel fc-content-panel--modality" aria-labelledby="fc-panel-modalidad">
+                                <div class="fc-content-panel__icon"><i class="bi bi-laptop" aria-hidden="true"></i></div>
+                                <div>
+                                    <h2 id="fc-panel-modalidad"><?php esc_html_e('Modalidad de Cursada', 'flacso-uruguay'); ?></h2>
                                     <div class="fc-content-panel-body">
-                                        <?php echo wp_kses_post($bloque_val); ?>
+                                        <?php echo wp_kses_post($academic['modalidad_html']); ?>
                                     </div>
-                                </article>
-                        <?php endif; endforeach; ?>
+                                </div>
+                            </article>
+                        <?php endif; ?>
+
+                        <?php if (!empty($academic['objetivos_html'])) : ?>
+                            <article class="fc-content-panel fc-content-panel--objective" aria-labelledby="fc-panel-objetivos">
+                                <h2 id="fc-panel-objetivos"><?php esc_html_e('Objetivos del Programa', 'flacso-uruguay'); ?></h2>
+                                <div class="fc-content-panel-body">
+                                    <?php echo wp_kses_post($academic['objetivos_html']); ?>
+                                </div>
+                            </article>
+                        <?php endif; ?>
+
+                        <?php
+                        $fc_academic_details = [
+                            'duracion_html'                => __('Duración y Carga Horaria', 'flacso-uruguay'),
+                            'perfil_ingreso_html'          => __('Perfil de Ingreso', 'flacso-uruguay'),
+                            'requisitos_ingreso_html'      => __('Requisitos de Ingreso', 'flacso-uruguay'),
+                            'perfil_egreso_html'           => __('Perfil del Egresado', 'flacso-uruguay'),
+                            'requisitos_egreso_html'       => __('Requisitos para Titulación', 'flacso-uruguay'),
+                            'titulos_certificaciones_html' => __('Títulos y Certificaciones', 'flacso-uruguay'),
+                            'acreditacion'                 => __('Acreditaciones y Validez Oficial', 'flacso-uruguay'),
+                        ];
+                        $fc_has_academic_details = false;
+                        foreach ($fc_academic_details as $fc_detail_key => $fc_detail_label) {
+                            if (!empty($academic[$fc_detail_key])) {
+                                $fc_has_academic_details = true;
+                                break;
+                            }
+                        }
+                        ?>
+
+                        <?php if ($fc_has_academic_details) : ?>
+                            <div class="fc-academic-details" aria-label="<?php esc_attr_e('Detalles académicos', 'flacso-uruguay'); ?>">
+                                <?php foreach ($fc_academic_details as $fc_detail_key => $fc_detail_label) :
+                                    if (empty($academic[$fc_detail_key])) {
+                                        continue;
+                                    }
+                                ?>
+                                    <details class="fc-academic-detail">
+                                        <summary>
+                                            <span><?php echo esc_html($fc_detail_label); ?></span>
+                                            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                                        </summary>
+                                        <div class="fc-academic-detail__body">
+                                            <?php echo wp_kses_post($academic[$fc_detail_key]); ?>
+                                        </div>
+                                    </details>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 <?php endif; ?>
 
@@ -553,17 +615,11 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                 </section>
             <?php endif; ?>
 
-            <!-- REQUISITOS DE POSTULACIÓN -->
-            <section class="fc-section">
-                <h2 class="fc-section-title"><?php esc_html_e('Requisitos de Postulación y Admisión', 'flacso-uruguay'); ?></h2>
-
-                <?php if (!empty($academic['requisitos_ingreso_html'])) : ?>
-                    <div class="fc-content-panel">
-                        <div class="fc-content-panel-body">
-                            <?php echo wp_kses_post($academic['requisitos_ingreso_html']); ?>
-                        </div>
-                    </div>
-                <?php else : ?>
+            <!-- REQUISITOS DE POSTULACIÓN: fallback solo cuando no hay requisitos cargados -->
+            <?php if (empty($academic['requisitos_ingreso_html'])) : ?>
+                <section class="fc-section">
+                    <h2 class="fc-section-title"><?php esc_html_e('Requisitos de Postulación y Admisión', 'flacso-uruguay'); ?></h2>
+                    
                     <div class="fc-requirements-grid">
                         <div class="fc-requirement">
                             <div class="fc-requirement-icon"><i class="bi bi-mortarboard" aria-hidden="true"></i></div>
@@ -597,8 +653,9 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                             </div>
                         </div>
                     </div>
-                <?php endif; ?>
-            </section>
+
+                </section>
+            <?php endif; ?>
 
             <!-- TABLA DE PRECIOS E INVERSIÓN -->
             <section class="fc-section fc-pricing-section">
@@ -664,6 +721,19 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                     </div>
                 <?php endif; ?>
             </section>
+
+            <?php if ($inscripciones_abiertas) : ?>
+                <div class="fc-pricing-cta">
+                    <div>
+                        <span><?php esc_html_e('¿Querés avanzar?', 'flacso-uruguay'); ?></span>
+                        <strong><?php esc_html_e('Podés iniciar tu preinscripción ahora.', 'flacso-uruguay'); ?></strong>
+                    </div>
+                    <a data-flacso-preinscription-cta="1" href="<?php echo esc_url($url_inscripcion); ?>">
+                        <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                        <?php esc_html_e('Preinscribirme', 'flacso-uruguay'); ?>
+                    </a>
+                </div>
+            <?php endif; ?>
 
             <!-- INFORMACIÓN IMPORTANTE -->
             <section class="fc-section fc-info-important">
