@@ -103,6 +103,10 @@
 
                 section.hidden = sectionVisibleItems.length === 0;
 
+                if (!section.hidden && (term || activeMonth !== 'all') && section.tagName === 'DETAILS') {
+                    section.open = true;
+                }
+
                 if (sectionCount) {
                     sectionCount.textContent = sectionVisibleItems.length === 1
                         ? '1 seminario'
