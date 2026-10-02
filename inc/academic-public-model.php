@@ -245,7 +245,11 @@ function flacso_theme_get_offer_context(int $offer_id): array {
     $documentos = !empty($documentos_raw) && is_string($documentos_raw) ? json_decode($documentos_raw, true) : (is_array($documentos_raw) ? $documentos_raw : []);
 
     $cartamalla_pdf = !empty($documentos['cartamalla']['link']) ? trim((string) $documentos['cartamalla']['link']) : (string) get_post_meta($offer_id, "cartamalla_pdf_url", true);
-    $malla_pdf = !empty($documentos['malla']['link']) ? trim((string) $documentos['malla']['link']) : (!empty($data['malla_curricular']) ? trim((string) $data['malla_curricular']) : (string) get_post_meta($offer_id, "malla_pdf_url", true));
+    $malla_pdf = !empty($data['malla_curricular'])
+    ? trim((string) $data['malla_curricular'])
+    : (!empty($documentos['malla']['link'])
+        ? trim((string) $documentos['malla']['link'])
+        : (string) get_post_meta($offer_id, "malla_pdf_url", true));
     $calendario_pdf = trim((string) $instance["calendario_academico"]);
 
     $academic = [
