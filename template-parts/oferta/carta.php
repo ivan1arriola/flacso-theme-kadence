@@ -771,20 +771,20 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                         </p>
                     </div>
                 <?php endif; ?>
-            </section>
 
-            <?php if ($inscripciones_abiertas) : ?>
-                <div class="fc-pricing-cta">
-                    <div>
-                        <span><?php esc_html_e('¿Querés avanzar?', 'flacso-uruguay'); ?></span>
-                        <strong><?php esc_html_e('Podés iniciar tu preinscripción ahora.', 'flacso-uruguay'); ?></strong>
+                <?php if ($inscripciones_abiertas) : ?>
+                    <div class="fc-pricing-cta">
+                        <div>
+                            <span><?php esc_html_e('¿Querés avanzar?', 'flacso-uruguay'); ?></span>
+                            <strong><?php esc_html_e('Podés iniciar tu preinscripción ahora.', 'flacso-uruguay'); ?></strong>
+                        </div>
+                        <a data-flacso-preinscription-cta="1" href="<?php echo esc_url($url_inscripcion); ?>">
+                            <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                            <?php esc_html_e('Preinscribirme', 'flacso-uruguay'); ?>
+                        </a>
                     </div>
-                    <a data-flacso-preinscription-cta="1" href="<?php echo esc_url($url_inscripcion); ?>">
-                        <i class="bi bi-pencil-square" aria-hidden="true"></i>
-                        <?php esc_html_e('Preinscribirme', 'flacso-uruguay'); ?>
-                    </a>
-                </div>
-            <?php endif; ?>
+                <?php endif; ?>
+            </section>
 
             </div><!-- /.fc-resource-grid -->
 
