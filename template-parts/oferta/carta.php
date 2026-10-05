@@ -568,9 +568,11 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                         ?>
                         <?php if (trim(wp_strip_all_tags($fc_objectives_html)) !== '') : ?>
                             <article class="fc-content-panel fc-content-panel--objective" aria-labelledby="fc-panel-objetivos">
-                                <h2 id="fc-panel-objetivos"><?php esc_html_e('Objetivo general', 'flacso-uruguay'); ?></h2>
-                                <div class="fc-content-panel-body">
-                                    <?php echo wpautop(wp_kses_post($fc_objectives_html)); ?>
+                                <div class="fc-content-panel__content">
+                                    <h2 id="fc-panel-objetivos"><?php esc_html_e('Objetivo general', 'flacso-uruguay'); ?></h2>
+                                    <div class="fc-content-panel-body">
+                                        <?php echo wpautop(wp_kses_post($fc_objectives_html)); ?>
+                                    </div>
                                 </div>
                             </article>
                         <?php endif; ?>
