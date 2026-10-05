@@ -523,6 +523,10 @@
     background: linear-gradient(90deg, rgba(var(--fc-brand-rgb), .065), #fff 45%);
 }
 
+.flacso-carta-virtual .fc-content-panel--objective > .fc-content-panel__content {
+    min-width: 0;
+}
+
 .flacso-carta-virtual .fc-content-panel--objective::before {
     content: "◎";
     width: 38px;
