@@ -9,14 +9,24 @@ if ($template === false || $styles === false) {
     exit(1);
 }
 
-if (strpos($template, 'is-image-only') === false) {
-    fwrite(STDERR, "FAIL: la carta debe distinguir un panel de audiencia sin resumen\n");
+$audienceStart = strpos($template, '<aside class="fc-audience-panel">');
+$audienceEnd = $audienceStart !== false ? strpos($template, '</aside>', $audienceStart) : false;
+
+if ($audienceStart === false || $audienceEnd === false) {
+    fwrite(STDERR, "FAIL: no se encontró el bloque ¿A quiénes está dirigido?\n");
     exit(1);
 }
 
-if (strpos($styles, '.fc-audience-panel.is-image-only .fc-audience-panel__image') === false
-    || strpos($styles, 'height: 100%;') === false) {
-    fwrite(STDERR, "FAIL: un panel de audiencia sólo con imagen debe ocupar toda la altura\n");
+$audienceBlock = substr($template, $audienceStart, $audienceEnd - $audienceStart);
+
+if (strpos($audienceBlock, '<img') !== false || strpos($audienceBlock, 'fc-audience-panel__image') !== false) {
+    fwrite(STDERR, "FAIL: la imagen ilustrativa debe aparecer solamente en el hero\n");
+    exit(1);
+}
+
+if (strpos($styles, '.fc-audience-panel__copy') === false
+    || strpos($styles, 'grid-template-columns: 42px minmax(0,1fr);') === false) {
+    fwrite(STDERR, "FAIL: el bloque de audiencia debe conservar su composición editorial\n");
     exit(1);
 }
 
