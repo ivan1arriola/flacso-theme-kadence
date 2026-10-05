@@ -525,24 +525,15 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                                         </div>
                                     </div>
 
-                                    <?php if ($thumbnail_url !== '' || $fc_audience_summary !== '') :
-                                        $fc_audience_panel_class = $fc_audience_summary !== '' ? 'has-summary' : 'is-image-only';
-                                    ?>
-                                        <aside class="fc-audience-panel <?php echo esc_attr($fc_audience_panel_class); ?>">
-                                            <?php if ($thumbnail_url !== '') : ?>
-                                                <div class="fc-audience-panel__image">
-                                                    <img src="<?php echo esc_url($thumbnail_url); ?>" alt="" loading="lazy" decoding="async">
+                                    <?php if ($fc_audience_summary !== '') : ?>
+                                        <aside class="fc-audience-panel">
+                                            <div class="fc-audience-panel__copy">
+                                                <span class="fc-audience-panel__icon"><i class="bi bi-people-fill" aria-hidden="true"></i></span>
+                                                <div>
+                                                    <h3><?php esc_html_e('¿A quiénes está dirigido?', 'flacso-uruguay'); ?></h3>
+                                                    <p><?php echo esc_html($fc_audience_summary); ?></p>
                                                 </div>
-                                            <?php endif; ?>
-                                            <?php if ($fc_audience_summary !== '') : ?>
-                                                <div class="fc-audience-panel__copy">
-                                                    <span class="fc-audience-panel__icon"><i class="bi bi-people-fill" aria-hidden="true"></i></span>
-                                                    <div>
-                                                        <h3><?php esc_html_e('¿A quiénes está dirigido?', 'flacso-uruguay'); ?></h3>
-                                                        <p><?php echo esc_html($fc_audience_summary); ?></p>
-                                                    </div>
-                                                </div>
-                                            <?php endif; ?>
+                                            </div>
                                         </aside>
                                     <?php endif; ?>
                                 </div>
