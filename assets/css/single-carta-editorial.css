@@ -1161,6 +1161,10 @@
         aspect-ratio: auto;
     }
 
+    .flacso-carta-virtual .fc-audience-panel.is-image-only .fc-audience-panel__image {
+        height: 100%;
+    }
+
     .flacso-carta-virtual .fc-audience-panel__copy {
         min-height: 36%;
         align-content: center;
