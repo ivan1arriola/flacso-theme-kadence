@@ -525,8 +525,10 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                                         </div>
                                     </div>
 
-                                    <?php if ($thumbnail_url !== '' || $fc_audience_summary !== '') : ?>
-                                        <aside class="fc-audience-panel">
+                                    <?php if ($thumbnail_url !== '' || $fc_audience_summary !== '') :
+                                        $fc_audience_panel_class = $fc_audience_summary !== '' ? 'has-summary' : 'is-image-only';
+                                    ?>
+                                        <aside class="fc-audience-panel <?php echo esc_attr($fc_audience_panel_class); ?>">
                                             <?php if ($thumbnail_url !== '') : ?>
                                                 <div class="fc-audience-panel__image">
                                                     <img src="<?php echo esc_url($thumbnail_url); ?>" alt="" loading="lazy" decoding="async">
