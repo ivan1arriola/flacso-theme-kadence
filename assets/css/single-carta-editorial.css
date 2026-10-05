@@ -383,13 +383,12 @@
 }
 
 .flacso-carta-virtual .fc-general-grid {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: block;
 }
 
 .flacso-carta-virtual .fc-general-copy {
     position: relative;
-    padding: 15px;
+    padding: 22px 22px 18px;
 }
 
 .flacso-carta-virtual .fc-editorial-dots {
@@ -441,6 +440,10 @@
     max-width: 74ch;
 }
 
+.flacso-carta-virtual .fc-editorial-intro .fc-content-panel-body {
+    max-width: none;
+}
+
 .flacso-carta-virtual .fc-content-panel-body p {
     margin: 0 0 10px;
 }
@@ -457,36 +460,25 @@
 
 .flacso-carta-virtual .fc-audience-panel {
     position: relative;
+    margin: 0 22px 22px;
     overflow: hidden;
-    min-height: 0;
-    background: #eef3f8;
-}
-
-.flacso-carta-virtual .fc-audience-panel__image {
-    aspect-ratio: 16 / 8.5;
-    overflow: hidden;
-}
-
-.flacso-carta-virtual .fc-audience-panel__image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 28%;
+    border: 1px solid var(--fc-ui-line);
+    border-radius: 12px;
+    background: #f4f7fb;
 }
 
 .flacso-carta-virtual .fc-audience-panel__copy {
     display: grid;
-    grid-template-columns: 36px minmax(0, 1fr);
-    gap: 9px;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 12px;
     align-items: start;
-    padding: 12px;
-    border-top: 1px solid rgba(10,52,112,.08);
-    background: rgba(255,255,255,.92);
+    padding: 16px 18px;
+    background: #f4f7fb;
 }
 
 .flacso-carta-virtual .fc-audience-panel__icon {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     display: grid;
     place-items: center;
     border-radius: 50%;
@@ -495,9 +487,9 @@
 }
 
 .flacso-carta-virtual .fc-audience-panel__copy h3 {
-    margin: 0 0 4px;
+    margin: 0 0 5px;
     color: var(--fc-ui-navy);
-    font-size: 16px !important;
+    font-size: 17px !important;
     line-height: 1.2 !important;
     font-weight: 850;
 }
@@ -505,8 +497,8 @@
 .flacso-carta-virtual .fc-audience-panel__copy p {
     margin: 0;
     color: #475970;
-    font-size: 14px !important;
-    line-height: 1.45 !important;
+    font-size: 14.5px !important;
+    line-height: 1.5 !important;
 }
 
 /* ==========================================================================
@@ -1138,12 +1130,12 @@
     }
 
     .flacso-carta-virtual .fc-general-grid {
-        grid-template-columns: minmax(0, 1.15fr) minmax(330px, .85fr);
+        display: block;
         min-height: 0;
     }
 
     .flacso-carta-virtual .fc-general-copy {
-        padding: 20px 22px;
+        padding: 24px 26px 20px;
     }
 
     .flacso-carta-virtual .fc-editorial-intro h2 {
@@ -1157,22 +1149,18 @@
     }
 
     .flacso-carta-virtual .fc-audience-panel {
-        min-height: 100%;
-    }
-
-    .flacso-carta-virtual .fc-audience-panel__image {
-        height: 64%;
-        aspect-ratio: auto;
-    }
-
-    .flacso-carta-virtual .fc-audience-panel.is-image-only .fc-audience-panel__image {
-        height: 100%;
+        margin: 0 26px 24px;
     }
 
     .flacso-carta-virtual .fc-audience-panel__copy {
-        min-height: 36%;
-        align-content: center;
-        padding: 15px;
+        grid-template-columns: 44px minmax(0, 1fr);
+        gap: 14px;
+        padding: 18px 20px;
+    }
+
+    .flacso-carta-virtual .fc-audience-panel__icon {
+        width: 44px;
+        height: 44px;
     }
 
     .flacso-carta-virtual .fc-audience-panel__copy h3 {
@@ -1180,7 +1168,8 @@
     }
 
     .flacso-carta-virtual .fc-audience-panel__copy p {
-        font-size: 14.5px !important;
+        font-size: 15px !important;
+        line-height: 1.55 !important;
     }
 
     .flacso-carta-virtual .fc-content-panel--modality,
