@@ -468,7 +468,135 @@
 }
 
 /* ==========================================================================
-   05. OVERVIEW — SECCIÓN EDITORIAL, NO CARD
+   05. JERARQUÍA DE SECCIONES
+   ========================================================================== */
+
+.flacso-carta-virtual .fc-major-section {
+    min-width: 0;
+}
+
+.flacso-carta-virtual .fc-content-sections {
+    margin-bottom: 20px;
+}
+
+.flacso-carta-virtual .fc-academic-layout {
+    display: block;
+}
+
+.flacso-carta-virtual .fc-major-section--overview,
+.flacso-carta-virtual .fc-major-section--experience,
+.flacso-carta-virtual .fc-major-section--planning,
+.flacso-carta-virtual .fc-major-section--practical,
+.flacso-carta-virtual .fc-major-section--trust,
+.flacso-carta-virtual .fc-major-section--contact {
+    margin-bottom: 54px;
+}
+
+.flacso-carta-virtual .fc-major-heading {
+    display: grid;
+    grid-template-columns: 42px minmax(0,1fr);
+    gap: 12px;
+    align-items: start;
+    margin-bottom: 24px;
+}
+
+.flacso-carta-virtual .fc-major-heading__kicker {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    color: #fff;
+    background: var(--fc-ui-navy);
+    font-size: 11px;
+    line-height: 1;
+    font-weight: 850;
+    letter-spacing: .04em;
+}
+
+.flacso-carta-virtual .fc-major-heading h2 {
+    margin: 0;
+    color: var(--fc-ui-navy);
+    font-size: 29px;
+    line-height: 1.05;
+    font-weight: 850;
+    letter-spacing: -.035em;
+}
+
+.flacso-carta-virtual .fc-major-heading__rule {
+    display: block;
+    width: min(140px, 38vw);
+    height: 3px;
+    margin-top: 10px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--fc-brand), rgba(var(--fc-brand-rgb), .12));
+}
+
+.flacso-carta-virtual .fc-major-section--overview {
+    padding-top: 4px;
+}
+
+.flacso-carta-virtual .fc-major-section--overview .fc-editorial-intro {
+    padding-left: 54px;
+}
+
+.flacso-carta-virtual .fc-major-section--overview .fc-general-copy {
+    padding-top: 0;
+}
+
+.flacso-carta-virtual .fc-major-section--experience {
+    padding: 28px 0 4px;
+    border-top: 1px solid var(--fc-ui-line);
+}
+
+.flacso-carta-virtual .fc-experience-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding-left: 54px;
+}
+
+.flacso-carta-virtual .fc-major-section--planning {
+    padding-top: 28px;
+    border-top: 1px solid var(--fc-ui-line);
+}
+
+.flacso-carta-virtual .fc-major-section--planning .fc-resource-grid {
+    margin-bottom: 0;
+    padding-left: 54px;
+}
+
+.flacso-carta-virtual .fc-major-section--practical {
+    padding-top: 28px;
+    border-top: 1px solid var(--fc-ui-line);
+}
+
+.flacso-carta-virtual .fc-major-section--practical .fc-info-list,
+.flacso-carta-virtual .fc-major-section--practical .fc-action-buttons {
+    margin-left: 54px;
+}
+
+.flacso-carta-virtual .fc-major-section--trust {
+    padding-top: 28px;
+    border-top: 1px solid var(--fc-ui-line);
+}
+
+.flacso-carta-virtual .fc-major-section--trust > .fc-more-grid {
+    margin-left: 54px;
+}
+
+.flacso-carta-virtual .fc-major-section--contact {
+    padding-top: 28px;
+    border-top: 1px solid var(--fc-ui-line);
+}
+
+.flacso-carta-virtual .fc-major-section--contact .fc-assistant-card {
+    margin-left: 54px;
+    margin-bottom: 0;
+}
+
+/* ==========================================================================
+   06. OVERVIEW — SECCIÓN EDITORIAL, NO CARD
    ========================================================================== */
 
 .flacso-carta-virtual .fc-academic-layout {
@@ -590,7 +718,7 @@
 }
 
 /* ==========================================================================
-   06. MODALIDAD + OBJETIVO
+   07. MODALIDAD + OBJETIVO
    ========================================================================== */
 
 .flacso-carta-virtual .fc-content-panel--modality,
@@ -652,7 +780,7 @@
 }
 
 /* ==========================================================================
-   07. CONTENIDOS / ACORDEONES
+   08. CONTENIDOS / ACORDEONES
    ========================================================================== */
 
 .flacso-carta-virtual .fc-academic-details {
@@ -747,7 +875,7 @@
 }
 
 /* ==========================================================================
-   08. CONTENIDO ADICIONAL
+   09. CONTENIDO ADICIONAL
    ========================================================================== */
 
 .flacso-carta-virtual .fc-child-content {
@@ -758,7 +886,7 @@
 }
 
 /* ==========================================================================
-   09. PLANIFICACIÓN E INVERSIÓN
+   10. PLANIFICACIÓN E INVERSIÓN
    ========================================================================== */
 
 .flacso-carta-virtual .fc-resource-grid {
@@ -1009,7 +1137,7 @@
 }
 
 /* ==========================================================================
-   10. INFORMACIÓN PRÁCTICA
+   11. INFORMACIÓN PRÁCTICA
    ========================================================================== */
 
 .flacso-carta-virtual .fc-info-important {
@@ -1082,7 +1210,7 @@
 }
 
 /* ==========================================================================
-   11. POR QUÉ FLACSO / MÁS INFORMACIÓN
+   12. POR QUÉ FLACSO / MÁS INFORMACIÓN
    ========================================================================== */
 
 .flacso-carta-virtual .fc-section > .fc-more-grid {
@@ -1107,7 +1235,7 @@
 }
 
 /* ==========================================================================
-   12. CONTACTO ACADÉMICO
+   13. CONTACTO ACADÉMICO
    ========================================================================== */
 
 .flacso-carta-virtual .fc-assistant-card {
@@ -1199,7 +1327,7 @@
 }
 
 /* ==========================================================================
-   13. CTA FINAL
+   14. CTA FINAL
    ========================================================================== */
 
 .flacso-carta-virtual .fc-final-cta {
@@ -1259,7 +1387,7 @@
 }
 
 /* ==========================================================================
-   14. INTERACCIONES
+   15. INTERACCIONES
    ========================================================================== */
 
 @media (hover: hover) {
@@ -1280,7 +1408,7 @@
 }
 
 /* ==========================================================================
-   15. TABLET / DESKTOP
+   16. TABLET / DESKTOP
    ========================================================================== */
 
 @media (min-width: 768px) {
@@ -1379,12 +1507,42 @@
         margin-bottom: 20px;
     }
 
-    .flacso-carta-virtual .fc-academic-layout {
+    .flacso-carta-virtual .fc-major-heading {
+        grid-template-columns: 48px minmax(0,1fr);
+        gap: 16px;
+        margin-bottom: 28px;
+    }
+
+    .flacso-carta-virtual .fc-major-heading__kicker {
+        width: 48px;
+        height: 48px;
+        font-size: 12px;
+    }
+
+    .flacso-carta-virtual .fc-major-heading h2 {
+        font-size: 35px;
+    }
+
+    .flacso-carta-virtual .fc-major-heading__rule {
+        width: 160px;
+    }
+
+    .flacso-carta-virtual .fc-major-section--overview .fc-editorial-intro,
+    .flacso-carta-virtual .fc-experience-grid,
+    .flacso-carta-virtual .fc-major-section--planning .fc-resource-grid,
+    .flacso-carta-virtual .fc-major-section--practical .fc-info-list,
+    .flacso-carta-virtual .fc-major-section--practical .fc-action-buttons,
+    .flacso-carta-virtual .fc-major-section--trust > .fc-more-grid,
+    .flacso-carta-virtual .fc-major-section--contact .fc-assistant-card {
+        margin-left: 64px;
+        padding-left: 0;
+    }
+
+    .flacso-carta-virtual .fc-experience-grid {
         grid-template-columns: repeat(2, minmax(0,1fr));
         gap: 20px;
     }
 
-    .flacso-carta-virtual .fc-editorial-intro,
     .flacso-carta-virtual .fc-academic-details,
     .flacso-carta-virtual .fc-child-content {
         grid-column: 1 / -1;
@@ -1575,6 +1733,35 @@
 }
 
 @media (max-width: 767px) {
+    .flacso-carta-virtual .fc-major-heading {
+        grid-template-columns: 38px minmax(0,1fr);
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .flacso-carta-virtual .fc-major-heading__kicker {
+        width: 38px;
+        height: 38px;
+        font-size: 10px;
+    }
+
+    .flacso-carta-virtual .fc-major-heading h2 {
+        font-size: 27px;
+    }
+
+    .flacso-carta-virtual .fc-major-section--overview .fc-editorial-intro,
+    .flacso-carta-virtual .fc-experience-grid,
+    .flacso-carta-virtual .fc-major-section--planning .fc-resource-grid {
+        padding-left: 0;
+    }
+
+    .flacso-carta-virtual .fc-major-section--practical .fc-info-list,
+    .flacso-carta-virtual .fc-major-section--practical .fc-action-buttons,
+    .flacso-carta-virtual .fc-major-section--trust > .fc-more-grid,
+    .flacso-carta-virtual .fc-major-section--contact .fc-assistant-card {
+        margin-left: 0;
+    }
+
     .flacso-carta-virtual .fc-pricing-table thead {
         display: none;
     }

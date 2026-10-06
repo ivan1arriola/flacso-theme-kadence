@@ -514,7 +514,15 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
 
                 <?php if ($hay_bloques_detallados) : ?>
                     <div class="fc-academic-layout">
-                        <?php if (!empty($academic['descripcion_html'])) : ?>
+                        <section class="fc-major-section fc-major-section--overview" aria-labelledby="fc-overview-title">
+                            <header class="fc-major-heading">
+                                <span class="fc-major-heading__kicker" aria-hidden="true">01</span>
+                                <div>
+                                    <h2 id="fc-overview-title"><?php esc_html_e('Sobre la propuesta', 'flacso-uruguay'); ?></h2>
+                                    <span class="fc-major-heading__rule" aria-hidden="true"></span>
+                                </div>
+                            </header>
+                            <?php if (!empty($academic['descripcion_html'])) : ?>
                             <article class="fc-content-panel fc-content-panel--primary fc-editorial-intro" aria-labelledby="fc-panel-descripcion">
                                 <div class="fc-general-grid">
                                     <div class="fc-general-copy">
@@ -538,8 +546,19 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                                     <?php endif; ?>
                                 </div>
                             </article>
-                        <?php endif; ?>
+                            <?php endif; ?>
+                        </section>
 
+                        <section class="fc-major-section fc-major-section--experience" aria-labelledby="fc-experience-title">
+                            <header class="fc-major-heading">
+                                <span class="fc-major-heading__kicker" aria-hidden="true">02</span>
+                                <div>
+                                    <h2 id="fc-experience-title"><?php esc_html_e('Experiencia académica', 'flacso-uruguay'); ?></h2>
+                                    <span class="fc-major-heading__rule" aria-hidden="true"></span>
+                                </div>
+                            </header>
+
+                            <div class="fc-experience-grid">
                         <?php if (!empty($academic['modalidad_html'])) : ?>
                             <article class="fc-content-panel fc-content-panel--modality" aria-labelledby="fc-panel-modalidad">
                                 <div class="fc-content-panel__icon"><i class="bi bi-laptop" aria-hidden="true"></i></div>
@@ -610,6 +629,8 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                                 <?php endforeach; ?>
                             </div>
                         <?php endif; ?>
+                            </div>
+                        </section>
                     </div>
                 <?php endif; ?>
 
@@ -622,7 +643,16 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                 <?php endif; ?>
             </section>
 
-            <div class="fc-resource-grid">
+            <section class="fc-major-section fc-major-section--planning" aria-labelledby="fc-planning-title">
+                <header class="fc-major-heading">
+                    <span class="fc-major-heading__kicker" aria-hidden="true">03</span>
+                    <div>
+                        <h2 id="fc-planning-title"><?php esc_html_e('Planificación e inversión', 'flacso-uruguay'); ?></h2>
+                        <span class="fc-major-heading__rule" aria-hidden="true"></span>
+                    </div>
+                </header>
+
+                <div class="fc-resource-grid">
 
             <!-- DOCUMENTOS: MALLA Y CALENDARIO -->
             <?php if ($cartamalla_url || $malla_url || $calendario_url) :
@@ -786,11 +816,18 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                 <?php endif; ?>
             </section>
 
-            </div><!-- /.fc-resource-grid -->
+                </div><!-- /.fc-resource-grid -->
+            </section>
 
-            <!-- INFORMACIÓN IMPORTANTE -->
-            <section class="fc-section fc-info-important">
-                <h2 class="fc-section-title"><?php esc_html_e('Información importante', 'flacso-uruguay'); ?></h2>
+            <!-- INFORMACIÓN PRÁCTICA -->
+            <section class="fc-section fc-info-important fc-major-section fc-major-section--practical">
+                <header class="fc-major-heading">
+                    <span class="fc-major-heading__kicker" aria-hidden="true">04</span>
+                    <div>
+                        <h2><?php esc_html_e('Información práctica', 'flacso-uruguay'); ?></h2>
+                        <span class="fc-major-heading__rule" aria-hidden="true"></span>
+                    </div>
+                </header>
 
                 <div class="fc-info-list">
                     <?php if ($mostrar_precios_dolares) : ?>
@@ -862,7 +899,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
 
             <!-- MÁS INFORMACIÓN (TRAYECTORIA, GESTIÓN, FINANCIACIÓN) -->
             <?php
-            $carta_mas_info_section_title = trim((string) get_option('flacso_carta_mas_info_section_title', __('Más información', 'flacso-uruguay')));
+            $carta_mas_info_section_title = trim((string) get_option('flacso_carta_mas_info_section_title', __('Por qué estudiar en FLACSO Uruguay', 'flacso-uruguay')));
             $carta_mas_info_trayectoria_title = trim((string) get_option('flacso_carta_mas_info_trayectoria_title', __('Trayectoria Académica', 'flacso-uruguay')));
             $carta_mas_info_trayectoria_html = (string) get_option('flacso_carta_mas_info_trayectoria_html', '<p>' . __('Nuestra <strong>Facultad de Posgrados</strong> busca formar a sus estudiantes a nivel <strong>académico, profesional y laboral</strong>. Nos distinguen <strong>19 años de trayectoria</strong> a nivel nacional y más de <strong>65 años a nivel internacional</strong>. Además, más de <strong>7000 personas egresadas</strong> de FLACSO Uruguay trabajan en el ámbito público y privado.', 'flacso-uruguay') . '</p>');
             $carta_mas_info_gestion_title = trim((string) get_option('flacso_carta_mas_info_gestion_title', __('Gestión Académica', 'flacso-uruguay')));
@@ -870,8 +907,14 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
             $carta_mas_info_financiacion_title = trim((string) get_option('flacso_carta_mas_info_financiacion_title', __('Financiamiento Flexible', 'flacso-uruguay')));
             $carta_mas_info_financiacion_html = (string) get_option('flacso_carta_mas_info_financiacion_html', '<p>' . __('Puedes abonar el posgrado en <strong>cuotas sin recargo</strong> a lo largo de la cursada. Contamos con <strong>múltiples convenios, descuentos de hasta el 25%</strong> y la posibilidad de acceder a <strong>becas</strong>.', 'flacso-uruguay') . '</p>');
             ?>
-            <section class="fc-section">
-                <h2 class="fc-section-title"><?php echo esc_html($carta_mas_info_section_title); ?></h2>
+            <section class="fc-section fc-major-section fc-major-section--trust">
+                <header class="fc-major-heading">
+                    <span class="fc-major-heading__kicker" aria-hidden="true">05</span>
+                    <div>
+                        <h2><?php echo esc_html($carta_mas_info_section_title); ?></h2>
+                        <span class="fc-major-heading__rule" aria-hidden="true"></span>
+                    </div>
+                </header>
 
                 <div class="fc-more-grid">
                     <article class="fc-more-card">
@@ -895,7 +938,15 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
             </section>
 
             <!-- CONTACTO ACADÉMICO -->
-            <section class="fc-assistant-card">
+            <section class="fc-major-section fc-major-section--contact" aria-labelledby="fc-contact-title">
+                <header class="fc-major-heading">
+                    <span class="fc-major-heading__kicker" aria-hidden="true">06</span>
+                    <div>
+                        <h2 id="fc-contact-title"><?php esc_html_e('Contacto académico', 'flacso-uruguay'); ?></h2>
+                        <span class="fc-major-heading__rule" aria-hidden="true"></span>
+                    </div>
+                </header>
+                <div class="fc-assistant-card">
                 <div class="fc-assistant-photo">
                     <?php if ($asistente_foto_url) : ?>
                         <img src="<?php echo esc_url($asistente_foto_url); ?>" alt="<?php echo esc_attr(wp_strip_all_tags($asistente_nombre_completo)); ?>">
@@ -931,6 +982,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                         <i class="bi bi-arrow-right" aria-hidden="true"></i>
                     </a>
                 <?php endif; ?>
+                </div>
             </section>
 
             <!-- FINAL CTA -->
