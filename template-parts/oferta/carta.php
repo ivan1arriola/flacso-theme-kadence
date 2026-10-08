@@ -333,7 +333,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
 
                     <div class="fc-eyebrow">
                         <i class="bi bi-stars" aria-hidden="true"></i>
-                        <span><?php esc_html_e('Formación de excelencia, estés donde estés', 'flacso-uruguay'); ?></span>
+                        <span><?php echo esc_html(flacso_theme_brand_slogan()); ?></span>
                     </div>
 
                     <?php if ($mostrar_instancias_presenciales) : ?>
@@ -988,7 +988,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
             <!-- FINAL CTA -->
             <section class="fc-final-cta">
                 <div>
-                    <span><?php esc_html_e('Formación que transforma', 'flacso-uruguay'); ?></span>
+                    <span><?php echo esc_html(flacso_theme_brand_slogan()); ?></span>
                     <h2><?php echo esc_html($carta_cta_titulo); ?></h2>
                     <p><strong><?php esc_html_e('Formación 100% a distancia', 'flacso-uruguay'); ?></strong></p>
                 </div>

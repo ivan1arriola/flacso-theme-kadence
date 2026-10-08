@@ -16,7 +16,7 @@ if ( ! function_exists( 'flacso_section_hero_render' ) ) {
 	function flacso_section_hero_render() {
 		$fallback = array(
 			'kicker'          => __( 'FLACSO Uruguay', 'kadence-child-flacso' ),
-			'title'           => __( 'Formación para comprender y transformar', 'kadence-child-flacso' ),
+			'title'           => flacso_theme_brand_slogan(),
 			'subtitle'        => __( 'Posgrados, diplomas y seminarios con perspectiva latinoamericana.', 'kadence-child-flacso' ),
 			'background_image' => '',
 			'show_buttons'    => true,
@@ -27,8 +27,13 @@ if ( ! function_exists( 'flacso_section_hero_render' ) ) {
 			: array();
 		$settings = wp_parse_args( is_array( $settings ) ? $settings : array(), $fallback );
 
-		$title    = trim( wp_strip_all_tags( (string) $settings['title'] ) );
-		$subtitle = trim( wp_strip_all_tags( (string) $settings['subtitle'] ) );
+		$title    = flacso_theme_brand_slogan_replace_legacy( $settings['title'] );
+		$subtitle = flacso_theme_brand_slogan_replace_legacy( $settings['subtitle'] );
+		$slogan   = flacso_theme_brand_slogan();
+		if ( $title === $slogan && $subtitle === $slogan ) {
+			$subtitle = '';
+		}
+		$show_slogan = $title !== $slogan && $subtitle !== $slogan;
 		$kicker   = trim( wp_strip_all_tags( (string) $settings['kicker'] ) );
 		$image    = esc_url( (string) $settings['background_image'] );
 		$buttons  = array();
@@ -94,6 +99,9 @@ if ( ! function_exists( 'flacso_section_hero_render' ) ) {
 						<p class="flacso-front-hero__kicker"><?php echo esc_html( $kicker ); ?></p>
 					<?php endif; ?>
 					<h1 class="flacso-front-hero__title"><?php echo wp_kses( $title_html, array( 'span' => array( 'class' => true ) ) ); ?></h1>
+					<?php if ( $show_slogan ) : ?>
+						<p class="flacso-front-hero__slogan"><?php echo esc_html( $slogan ); ?></p>
+					<?php endif; ?>
 					<?php if ( $subtitle ) : ?>
 						<p class="flacso-front-hero__subtitle"><?php echo esc_html( $subtitle ); ?></p>
 					<?php endif; ?>

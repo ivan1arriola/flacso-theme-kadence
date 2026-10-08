@@ -68,6 +68,16 @@
     color: var(--hero-yellow);
 }
 
+.flacso-front-hero__slogan {
+    max-width: 44ch;
+    margin: 1rem 0 0;
+    color: var(--hero-yellow, #fdd223);
+    font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+    font-weight: 750;
+    line-height: 1.4;
+    text-wrap: balance;
+}
+
 .flacso-front-hero__subtitle {
     max-width: 48ch;
     margin: 1rem 0 0;

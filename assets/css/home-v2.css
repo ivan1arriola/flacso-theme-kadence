@@ -4,6 +4,7 @@
 .flacso-home-v2__inner { padding: 56px 0; }
 .flacso-home-v2__kicker { font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .flacso-home-v2 h1 { max-width: 760px; color: inherit; font-size: clamp(2.5rem, 6vw, 5.4rem); line-height: .98; margin: 18px 0; }
+.flacso-home-v2__slogan { max-width: 680px; color: #fdd223; font-size: clamp(1.05rem, 1.8vw, 1.3rem); font-weight: 750; line-height: 1.4; margin: 0 0 14px; text-wrap: balance; }
 .flacso-home-v2__description { max-width: 650px; font-size: clamp(1.1rem, 2vw, 1.45rem); }
 .flacso-home-v2__actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
 .flacso-home-v2__cta { background: #fcd116; border-radius: 999px; color: #17365d; display: inline-block; font-weight: 700; padding: 15px 24px; text-decoration: none; }

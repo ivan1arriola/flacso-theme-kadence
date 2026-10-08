@@ -158,14 +158,20 @@
     padding: 6px 10px;
     border-radius: 999px;
     font-size: 12px;
-    line-height: 1.15;
+    line-height: 1.35;
     font-weight: 750;
+    max-width: 100%;
 }
 
 .flacso-carta-virtual .fc-eyebrow {
     color: rgba(255,255,255,.94);
     border: 1px solid rgba(255,255,255,.16);
     background: rgba(255,255,255,.08);
+}
+
+.flacso-carta-virtual .fc-eyebrow span {
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .flacso-carta-virtual .fc-hero-ribbon {

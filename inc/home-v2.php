@@ -9,13 +9,21 @@ function flacso_home_v2_render(): string {
     $image = $image_id && function_exists('wp_get_attachment_image_url') ? wp_get_attachment_image_url($image_id, 'full') : '';
     $primary = is_array($campaign['cta_primary'] ?? null) ? $campaign['cta_primary'] : null;
     $secondary = is_array($campaign['cta_secondary'] ?? null) ? $campaign['cta_secondary'] : null;
+    $slogan = flacso_theme_brand_slogan();
+    $hero_title = flacso_theme_brand_slogan_replace_legacy($campaign['title'] ?? 'FLACSO Uruguay');
+    $hero_description = flacso_theme_brand_slogan_replace_legacy($campaign['description'] ?? '');
+    if ($hero_title === $slogan && $hero_description === $slogan) {
+        $hero_description = '';
+    }
+    $show_slogan = $hero_title !== $slogan && $hero_description !== $slogan;
     ob_start(); ?>
     <main id="main" class="flacso-home-v2" role="main">
         <section class="flacso-home-v2__hero"<?php echo $image ? ' style="--flacso-home-v2-image:url(' . esc_url($image) . ')"' : ''; ?>>
             <div class="flacso-home-v2__inner">
                 <?php if (!empty($campaign['kicker'])) : ?><p class="flacso-home-v2__kicker"><?php echo esc_html($campaign['kicker']); ?></p><?php endif; ?>
-                <h1><?php echo esc_html($campaign['title'] ?? 'FLACSO Uruguay'); ?></h1>
-                <?php if (!empty($campaign['description'])) : ?><p class="flacso-home-v2__description"><?php echo esc_html($campaign['description']); ?></p><?php endif; ?>
+                <h1><?php echo esc_html($hero_title); ?></h1>
+                <?php if ($show_slogan) : ?><p class="flacso-home-v2__slogan"><?php echo esc_html($slogan); ?></p><?php endif; ?>
+                <?php if ($hero_description !== '') : ?><p class="flacso-home-v2__description"><?php echo esc_html($hero_description); ?></p><?php endif; ?>
                 <?php if ($primary || $secondary) : ?><div class="flacso-home-v2__actions">
                     <?php foreach ([$primary, $secondary] as $index => $cta) : if (!$cta) { continue; } ?><a class="flacso-home-v2__cta <?php echo $index ? 'flacso-home-v2__cta--secondary' : ''; ?>" href="<?php echo esc_url($cta['url']); ?>"><?php echo esc_html($cta['label']); ?></a><?php endforeach; ?>
                 </div><?php endif; ?>
