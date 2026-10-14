@@ -4,6 +4,9 @@
 .flacso-home-v2__inner { padding: 56px 0; }
 .flacso-home-v2__kicker { font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .flacso-home-v2 h1 { max-width: 760px; color: inherit; font-size: clamp(2.25rem, 4.5vw, 3.5rem); line-height: 1.15; margin: 0 0 20px; }
+.flacso-home-v2 h1.flacso-home-v2__title--slogan { max-width: 1000px; text-wrap: balance; }
+.flacso-home-v2__title--slogan span { display: block; }
+.flacso-home-v2__title--slogan span:last-child { color: #fdd223; }
 .flacso-home-v2__slogan { max-width: 680px; color: #fdd223; font-size: clamp(1.15rem, 1.8vw, 1.35rem); font-weight: 750; line-height: 1.4; margin: 0 0 2rem; text-wrap: balance; }
 .flacso-home-v2__description { max-width: 650px; font-size: clamp(1.1rem, 2vw, 1.45rem); }
 .flacso-home-v2__actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
@@ -190,6 +193,8 @@
     .flacso-home-v2__hero { min-height: 300px; }
     .flacso-home-v2__inner { padding: 40px 0; }
     .flacso-home-v2 h1 { font-size: clamp(2rem, 7.8vw, 2.6rem); line-height: 1.12; letter-spacing: -.025em; margin-bottom: 18px; }
+    .flacso-home-v2 h1.flacso-home-v2__title--slogan { font-size: clamp(1.5rem, 6.5vw, 2.2rem); line-height: 1.2; }
+    .flacso-home-v2__description { font-size: 1rem; line-height: 1.5; margin: 0; }
     .flacso-home-v2__slogan { font-size: 1.05rem; line-height: 1.45; margin-bottom: 24px; }
     .flacso-home-v2__cta { min-height: 46px; box-sizing: border-box; font-size: .88rem; padding: 14px 20px; }
     .flacso-home-v2__links { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 18px 0 30px; }

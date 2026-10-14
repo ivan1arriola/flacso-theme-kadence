@@ -21,7 +21,12 @@ function flacso_home_v2_render(): string {
         <section class="flacso-home-v2__hero"<?php echo $image ? ' style="--flacso-home-v2-image:url(' . esc_url($image) . ')"' : ''; ?>>
             <div class="flacso-home-v2__inner">
                 <?php if (!empty($campaign['kicker'])) : ?><p class="flacso-home-v2__kicker"><?php echo esc_html($campaign['kicker']); ?></p><?php endif; ?>
-                <h1><?php echo esc_html($hero_title); ?></h1>
+                <?php if ($hero_title === $slogan) : ?>
+                    <?php $slogan_lines = explode(', ', $slogan, 2); ?>
+                    <h1 class="flacso-home-v2__title--slogan"><span><?php echo esc_html($slogan_lines[0]); ?>,</span> <span><?php echo esc_html($slogan_lines[1] ?? ''); ?></span></h1>
+                <?php else : ?>
+                    <h1><?php echo esc_html($hero_title); ?></h1>
+                <?php endif; ?>
                 <?php if ($show_slogan) : ?><p class="flacso-home-v2__slogan"><?php echo esc_html($slogan); ?></p><?php endif; ?>
                 <?php if ($hero_description !== '') : ?><p class="flacso-home-v2__description"><?php echo esc_html($hero_description); ?></p><?php endif; ?>
                 <?php if ($primary || $secondary) : ?><div class="flacso-home-v2__actions">
