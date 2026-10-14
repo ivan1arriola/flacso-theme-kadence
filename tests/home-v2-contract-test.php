@@ -269,7 +269,7 @@ function home_v2_closing_sections_layout(string $css, int $width, int $height): 
 
 $closing_mobile = home_v2_closing_sections_layout($css, 390, 844);
 home_v2_assert($closing_mobile['offerDisplay'] === 'grid' && $closing_mobile['offerColumnCount'] === 1, 'la oferta debe comenzar en una columna móvil');
-home_v2_assert($closing_mobile['contactDisplay'] === 'grid' && $closing_mobile['contactColumnCount'] === 1, 'contacto debe apilar su contenido en móvil');
+home_v2_assert($closing_mobile['contactDisplay'] === 'grid' && $closing_mobile['contactColumnCount'] === 2, 'contacto reúne icono y título en una fila móvil');
 home_v2_assert($closing_mobile['contactBackground'] === 'rgb(23, 54, 93)', 'contacto debe cerrar la portada con alto contraste');
 home_v2_assert($closing_mobile['featuredAspect'] === 'auto', 'la portada nueva debe neutralizar la proporción móvil heredada');
 home_v2_assert($closing_mobile['featuredWidth'] <= $closing_mobile['gridWidth'], 'las tarjetas de oferta no deben exceder la columna móvil');
