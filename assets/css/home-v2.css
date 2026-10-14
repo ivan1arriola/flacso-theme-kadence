@@ -1,12 +1,13 @@
 .flacso-home-v2 { color: var(--global-palette3, #17365d); }
-.flacso-home-v2__hero { background: linear-gradient(110deg, #17365d, #255b8d); background-image: linear-gradient(110deg, rgba(23,54,93,.96), rgba(37,91,141,.78)), var(--flacso-home-v2-image, none); background-position: center; background-size: cover; color: #fff; min-height: 480px; display: grid; align-items: center; }
+.flacso-home-v2__hero { background: linear-gradient(110deg, #17365d, #255b8d); background-image: linear-gradient(110deg, rgba(23,54,93,.96), rgba(37,91,141,.78)), var(--flacso-home-v2-image, none); background-position: center; background-size: cover; color: #fff; min-height: 360px; display: grid; align-items: center; }
 .flacso-home-v2__inner, .flacso-home-v2__links { max-width: 1180px; width: min(100% - 40px, 1180px); margin: 0 auto; }
 .flacso-home-v2__inner { padding: 56px 0; }
 .flacso-home-v2__kicker { font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-.flacso-home-v2 h1 { max-width: 760px; color: inherit; font-size: clamp(2.5rem, 6vw, 5.4rem); line-height: .98; margin: 18px 0; }
-.flacso-home-v2__slogan { max-width: 680px; color: #fdd223; font-size: clamp(1.05rem, 1.8vw, 1.3rem); font-weight: 750; line-height: 1.4; margin: 0 0 14px; text-wrap: balance; }
+.flacso-home-v2 h1 { max-width: 760px; color: inherit; font-size: clamp(2.25rem, 4.5vw, 3.5rem); line-height: 1.15; margin: 0 0 20px; }
+.flacso-home-v2__slogan { max-width: 680px; color: #fdd223; font-size: clamp(1.15rem, 1.8vw, 1.35rem); font-weight: 750; line-height: 1.4; margin: 0 0 2rem; text-wrap: balance; }
 .flacso-home-v2__description { max-width: 650px; font-size: clamp(1.1rem, 2vw, 1.45rem); }
 .flacso-home-v2__actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+.flacso-home-v2__slogan + .flacso-home-v2__actions { margin-top: 0; }
 .flacso-home-v2__cta { background: #fcd116; border-radius: 999px; color: #17365d; display: inline-block; font-weight: 700; padding: 15px 24px; text-decoration: none; }
 .flacso-home-v2__cta--secondary { background: transparent; border: 1px solid rgba(255,255,255,.8); color: #fff; }
 .flacso-home-v2__links { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 30px 0 48px; }
@@ -123,7 +124,7 @@
     .flacso-home-v2__section--posgrados .flacso-oferta-mosaico__card.flacso-oferta-mosaico__card--featured { grid-column: 1 / -1; min-height: 360px; }
 }
 @media (min-width: 761px) {
-    .flacso-home-v2__hero { min-height: 520px; }
+    .flacso-home-v2__hero { min-height: 400px; }
     .flacso-home-v2__inner { padding: 80px 0; }
     .flacso-home-v2__links { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; padding: 42px 0 70px; }
     .flacso-home-v2__carousel-shell { padding: 26px; }
