@@ -14,24 +14,25 @@ function flacso_section_novedades_get_sticky_posts($limit) {
     $posts = $count ? array_map(static fn($id) => (object) ['ID' => $id], range(100, 99 + $count)) : [];
     return $limit === -1 ? $posts : array_slice($posts, 0, $limit);
 }
-function flacso_section_novedades_get_posts($limit, $category, $page) { return ['posts' => [(object) ['ID' => 101]]]; }
+function flacso_section_novedades_get_posts($limit, $category, $page) { return ['posts' => [(object) ['ID' => 201], (object) ['ID' => 202]]]; }
 function wp_strip_all_tags($value) { return strip_tags((string) $value); }
 function get_the_title($post_id) { return 'Noticia de prueba'; }
 function has_excerpt($post_id) { return true; }
 function get_the_excerpt($post_id) { return 'Resumen de prueba'; }
 function get_post_thumbnail_id($post_id) { return 0; }
-function get_permalink($post_id) { return 'https://example.test/noticia'; }
+function get_permalink($post_id) { return 'https://example.test/noticia-' . $post_id; }
 function get_the_date($format, $post_id) { return $format === 'c' ? '2026-10-01T00:00:00-03:00' : '01/10/2026'; }
 function esc_attr($value) { return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); }
 function esc_html($value) { return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); }
 function esc_url($value) { return (string) $value; }
 function home_url($path = '') { return 'https://example.test' . $path; }
+function flacso_section_eventos_render() { return !empty($GLOBALS['has_events']) ? '<h2>Próximos eventos</h2>' : ''; }
 function flacso_section_quienes_somos_render() { return '<h2>Institucional</h2>'; }
 function flacso_section_oferta_educativa_render() { return '<h2>Oferta educativa</h2>'; }
 function flacso_section_contacto_render() { return '<h2>Contacto</h2>'; }
 class Flacso_Main_Page_Settings {
     public static function get_homepage_section_order() { return ['novedades', 'quienes', 'posgrados', 'contacto']; }
-    public static function is_section_visible($key) { return true; }
+    public static function is_section_visible($key) { return ($GLOBALS['hidden_section'] ?? '') !== $key; }
 }
 require_once $root . '/inc/home-v2.php';
 $rendered_news = flacso_home_v2_render_featured_news();
@@ -40,16 +41,16 @@ foreach ([0, 1, 2, 3, 4, 5, 8] as $count) {
     $GLOBALS['featured_count'] = $count;
     $news = flacso_home_v2_render_featured_news();
     home_v2_assert(substr_count($news, 'news-card--featured') === $count, 'renderiza todos los destacados: ' . $count);
-    home_v2_assert(strpos($news, 'data-home-news-status') === false, 'la grilla no usa paginación');
+    home_v2_assert(strpos($news, 'data-home-news-status') === false, 'el listado no usa paginación');
 }
 unset($GLOBALS['featured_count']);
 
  home_v2_assert($GLOBALS['featured_limit'] === -1 && substr_count($rendered_news, 'news-card--featured') === 3, 'la portada solicita todos los destacados');
- home_v2_assert(strpos($rendered_news, 'data-home-news-next') === false && strpos($rendered_news, 'data-home-news-status') === false, 'el puzzle no muestra flechas ni paginador');
+home_v2_assert(strpos($rendered_news, 'data-home-news-next') === false && strpos($rendered_news, 'data-home-news-status') === false, 'no se usan flechas ni paginador');
 
 home_v2_assert(strpos($rendered_news, '>Actualidad<') === false, 'la portada renderizada no debe mostrar el supratítulo Actualidad');
 home_v2_assert(strpos($rendered_news, '>Novedades</h2>') !== false, 'Novedades debe conservarse como encabezado principal');
-home_v2_assert(strpos($rendered_news, '<h3>Destacados</h3>') !== false, 'el carrusel debe identificarse como Destacados');
+home_v2_assert(strpos($rendered_news, '<h3>Destacados</h3>') !== false, 'las noticias fijadas deben identificarse como Destacados');
 home_v2_assert(preg_match('/news-card--featured.*?news-badge[^>]*>Destacada<.*?<p>Resumen de prueba<\/p>/s', $rendered_news) === 1, 'cada noticia destacada debe mostrar su sello y resumen');
 home_v2_assert(preg_match('/news-card--latest.*?<\/article>/s', $rendered_news, $latest_card) === 1 && strpos($latest_card[0], '<p>') === false, 'las últimas noticias deben ser compactas y no mostrar resumen');
 $news_position = strpos($rendered_sections, 'data-section-key="novedades"');
@@ -64,7 +65,7 @@ home_v2_assert(strpos($template, 'flacso_home_v2_render_sections') !== false, 'l
 home_v2_assert(strpos($template, 'flacso_home_v2_render_featured_news') !== false, 'la portada v2 ofrece formato editorial alternativo');
 home_v2_assert(strpos($template, 'flacso-home-v2__featured-news') !== false, 'el formato destacado tiene markup propio');
 home_v2_assert(strpos($template, "'instagram' =>") === false, 'Instagram no debe renderizarse en la portada');
-home_v2_assert(strpos($template, 'flacso-home-v2__bento-grid') !== false, 'las noticias fijadas deben usar el puzzle');
+home_v2_assert(strpos($template, 'flacso-home-v2__bento-grid') !== false, 'las noticias fijadas deben utilizar la grilla editorial');
  home_v2_assert(strpos($functions, 'assets/js/home-v2.js') === false, 'la portada no carga JavaScript para los destacados');
 home_v2_assert(strpos($template, 'flacso_section_novedades_get_posts(6') !== false, 'la portada debe cargar seis noticias no fijadas');
 home_v2_assert(strpos($template, 'flacso-home-v2__latest-news') !== false, 'las noticias no fijadas deben tener un listado propio');
@@ -75,6 +76,27 @@ home_v2_assert(strpos($css, 'aspect-ratio: 4 / 5') !== false, 'las portadas de n
 home_v2_assert(strpos($template, 'flacso-home-v2__hero') !== false && strpos($css, '.flacso-home-v2__hero') !== false, 'hero v2 tiene markup y estilos');
 home_v2_assert(strpos($template, 'flacso_section_congreso_render') === false, 'la portada v2 no debe renderizar Congreso');
 home_v2_assert(strpos($front, "'congreso'") === false, 'el fallback de portada no debe renderizar Congreso');
+
+// Sin noticias fijadas: promocionar la más reciente y excluirla del listado inferior.
+$GLOBALS['featured_count'] = 0;
+$fallback_news = flacso_home_v2_render_featured_news();
+home_v2_assert(strpos($fallback_news, '<h3>En portada</h3>') !== false, 'el fallback promociona una noticia reciente');
+home_v2_assert(substr_count($fallback_news, 'news-card--spotlight') === 1, 'una sola noticia ocupa la cabecera sin fijadas');
+preg_match('/news-card--spotlight.*?<\/article>/s', $fallback_news, $lead_fallback);
+preg_match('/news-card--latest.*?<\/article>/s', $fallback_news, $latest_fallback);
+home_v2_assert(strpos($lead_fallback[0] ?? '', 'noticia-201') !== false, 'la primera noticia es la principal');
+home_v2_assert(strpos($latest_fallback[0] ?? '', 'noticia-202') !== false, 'el listado excluye la noticia promocionada');
+unset($GLOBALS['featured_count']);
+
+// Eventos: la portada omite por completo la sección si no hay futuros y la incluye cuando hay.
+home_v2_assert(strpos($rendered_sections, 'data-section-key="eventos"') === false, 'sin eventos no se imprime contenedor vacío');
+$GLOBALS['has_events'] = true;
+$sections_with_events = flacso_home_v2_render_sections();
+home_v2_assert(strpos($sections_with_events, 'data-section-key="novedades"') < strpos($sections_with_events, 'data-section-key="eventos"'), 'las noticias preceden los eventos');
+home_v2_assert(strpos($sections_with_events, 'data-section-key="eventos"') < strpos($sections_with_events, 'data-section-key="posgrados"'), 'los eventos preceden la oferta');
+$GLOBALS['hidden_section'] = 'eventos';
+home_v2_assert(strpos(flacso_home_v2_render_sections(), 'data-section-key="eventos"') === false, 'la visibilidad editorial puede ocultar eventos');
+unset($GLOBALS['hidden_section'], $GLOBALS['has_events']);
 
 function home_v2_exact_viewport(string $html, int $width, int $height): string {
     $html = str_replace('<style>', '<style>body{margin:0}', $html);
@@ -96,7 +118,7 @@ function home_v2_news_layout(string $css, string $news, int $width, int $height)
         . 'latestColumns:getComputedStyle(latestGrid).gridTemplateColumns.split(" ").length,'
         . 'featuredAspect:getComputedStyle(featuredImage).aspectRatio,latestAspect:getComputedStyle(latestImage).aspectRatio,'
         . 'featuredWidth:Math.round(featured.getBoundingClientRect().width),trackWidth:Math.round(track.getBoundingClientRect().width),'
-        . 'display:getComputedStyle(track).display,cards:Array.from(track.children).map(c=>{const r=c.getBoundingClientRect(),i=c.querySelector(".flacso-home-v2__news-image").getBoundingClientRect(),b=c.querySelector(".flacso-home-v2__news-body");return {x:r.x,y:r.y,width:r.width,height:r.height,imageWidth:i.width,imageHeight:i.height,bodyWidth:b.clientWidth,bodyScroll:b.scrollHeight,bodyHeight:b.clientHeight}}),'
+        . 'display:getComputedStyle(track).display,trackOverflow:track.scrollWidth>track.clientWidth,leadColumns:getComputedStyle(featured).gridTemplateColumns.split(" ").length,cards:Array.from(track.children).map(c=>{const r=c.getBoundingClientRect(),i=c.querySelector(".flacso-home-v2__news-image").getBoundingClientRect(),b=c.querySelector(".flacso-home-v2__news-body");return {x:r.x,y:r.y,width:r.width,height:r.height,imageWidth:i.width,imageHeight:i.height,bodyWidth:b.clientWidth,bodyScroll:b.scrollHeight,bodyHeight:b.clientHeight}}),'
         . 'latestWidth:Math.round(latest.getBoundingClientRect().width),latestImageWidth:Math.round(latestImage.getBoundingClientRect().width),'
         . 'latestTitleSize:parseFloat(getComputedStyle(latest.querySelector("h4")).fontSize),'
         . 'overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth});</script></body></html>';
@@ -115,55 +137,38 @@ function home_v2_news_layout(string $css, string $news, int $width, int $height)
 }
 
 $news_mobile = home_v2_news_layout($css, $rendered_news, 390, 844);
-home_v2_assert($news_mobile['shellBackground'] === 'rgba(0, 0, 0, 0)', 'los destacados no llevan un recuadro de fondo');
-home_v2_assert($news_mobile['badgeBackground'] === 'rgb(252, 209, 22)', 'la noticia destacada debe llevar un sello amarillo');
-home_v2_assert($news_mobile['latestDisplay'] === 'grid' && $news_mobile['latestColumns'] === 1, 'las últimas noticias deben formar un listado horizontal de una columna en móvil');
-home_v2_assert($news_mobile['latestShadow'] === 'none', 'el listado cronológico no debe usar sombras de carrusel');
-home_v2_assert($news_mobile['featuredAspect'] === '4 / 5' && $news_mobile['latestAspect'] === '4 / 5', 'ambos tipos de portada deben conservar 4:5');
-home_v2_assert($news_mobile['latestImageWidth'] < $news_mobile['latestWidth'] * .45, 'la miniatura cronológica debe quedar a la izquierda del texto');
-home_v2_assert($news_mobile['overflow'] === false, 'las novedades no deben desbordar en móvil');
+home_v2_assert($news_mobile['shellBackground'] === 'rgba(0, 0, 0, 0)', 'las noticias no tienen contenedor decorativo');
+home_v2_assert($news_mobile['badgeBackground'] === 'rgb(252, 209, 22)', 'las fijadas conservan el identificador amarillo');
+home_v2_assert($news_mobile['latestDisplay'] === 'grid' && $news_mobile['latestColumns'] === 1, 'las noticias recientes se muestran en una columna móvil');
+home_v2_assert($news_mobile['latestShadow'] === 'none', 'el listado de recientes no debe llevar sombras');
+home_v2_assert($news_mobile['latestAspect'] === '4 / 5', 'las miniaturas cronológicas conservan 4:5');
+home_v2_assert($news_mobile['latestImageWidth'] < $news_mobile['latestWidth'] * .45, 'las miniaturas quedan a la izquierda');
+home_v2_assert($news_mobile['display'] === 'grid' && $news_mobile['leadColumns'] === 1, 'el destacado principal ocupa todo el ancho móvil');
+home_v2_assert($news_mobile['trackOverflow'] === false && $news_mobile['overflow'] === false, 'el móvil no tiene carrusel ni desbordamiento horizontal');
 
-$news_desktop = home_v2_news_layout($css, $rendered_news, 1440, 1000);
-foreach ([901, 1000, 1150, 1151, 1440, 1920] as $width) {
-    $puzzle = home_v2_news_layout($css, $rendered_news, $width, 1000);
-    $cards = $puzzle['cards'];
-
-    home_v2_assert(abs(($cards[0]['y'] + $cards[0]['height']) - ($cards[2]['y'] + $cards[2]['height'])) < 1, 'las tres piezas cierran a la misma altura en ' . $width);
+foreach ([320, 360, 390, 768, 901, 1151, 1440, 1920] as $width) {
+    $layout = home_v2_news_layout($css, $rendered_news, $width, 1100);
+    $cards = $layout['cards'];
+    home_v2_assert($layout['display'] === 'grid' && !$layout['trackOverflow'] && !$layout['overflow'], 'ningún ancho requiere desplazamiento lateral: ' . $width);
+    home_v2_assert(count($cards) === 3 && $cards[0]['width'] <= $layout['trackWidth'] + 1, 'los destacados se adaptan a la retícula: ' . $width);
     foreach ($cards as $card) {
-        home_v2_assert(abs($card['imageWidth'] / $card['imageHeight'] - .8) < .01, 'las imágenes conservan 4:5 en ' . $width);
-        home_v2_assert($card['bodyWidth'] >= 140 && $card['bodyScroll'] <= $card['bodyHeight'] + 1, 'el texto cabe dentro de cada pieza en ' . $width);
+        home_v2_assert($card['bodyWidth'] >= 100 && $card['bodyScroll'] <= $card['bodyHeight'] + 2, 'las tarjetas contienen el texto en ' . $width);
     }
-    home_v2_assert(!$puzzle['overflow'], 'el puzzle no desborda en ' . $width);
 }
-
-home_v2_assert($news_desktop['latestColumns'] === 2, 'las últimas noticias deben usar dos columnas en escritorio');
-home_v2_assert($news_desktop['display'] === 'grid' && $news_desktop['cards'][0]['height'] > $news_desktop['cards'][1]['height'] * 2, 'la primera pieza ocupa dos filas');
-home_v2_assert($news_desktop['latestImageWidth'] >= 124 && $news_desktop['latestTitleSize'] >= 16.5, 'las últimas noticias deben conservar una lectura editorial visible');
-home_v2_assert($news_desktop['overflow'] === false, 'las novedades no deben desbordar en escritorio');
-
+$news_desktop = home_v2_news_layout($css, $rendered_news, 1440, 1000);
+home_v2_assert($news_desktop['latestColumns'] === 2, 'las últimas noticias tienen dos columnas en escritorio');
+home_v2_assert($news_desktop['leadColumns'] === 2, 'el destacado principal tiene imagen y texto en escritorio');
+home_v2_assert($news_desktop['cards'][0]['width'] > $news_desktop['cards'][1]['width'] * 1.9, 'la noticia principal ocupa la fila completa');
+home_v2_assert($news_desktop['latestTitleSize'] >= 16.5, 'los títulos recientes son legibles en escritorio');
 
 foreach ([1, 2, 4, 5, 8] as $count) {
     $GLOBALS['featured_count'] = $count;
-    $layout = home_v2_news_layout($css, flacso_home_v2_render_featured_news(), 1440, 1600);
-    $cards = $layout['cards'];
-    home_v2_assert(count($cards) === $count && !$layout['overflow'], 'la grilla variable conserva todas las piezas: ' . $count);
-    foreach ($cards as $card) {
-        home_v2_assert(abs($card['imageWidth'] / $card['imageHeight'] - .8) < .01 && $card['bodyScroll'] <= $card['bodyHeight'] + 1, 'imagen y texto correctos con ' . $count . ' destacados');
-    }
-    if ($count === 2) {
-        home_v2_assert(abs($cards[0]['width'] - $cards[1]['width']) < 1 && abs($cards[0]['height'] - $cards[1]['height']) < 1, 'dos destacados tienen el mismo tamaño');
-    }
-    if ($count > 3 && $count % 2 === 0) {
-        home_v2_assert(abs($cards[$count - 1]['width'] - $layout['trackWidth']) < 1, 'la última pieza par cierra toda la fila');
-    }
-}
-unset($GLOBALS['featured_count']);
-
-foreach ([901, 1151, 1440] as $width) {
-    $GLOBALS['featured_count'] = 2;
-    $pair = home_v2_news_layout($css, flacso_home_v2_render_featured_news(), $width, 1000);
-    foreach ($pair['cards'] as $card) {
-        home_v2_assert($card['bodyWidth'] >= 160 && $card['bodyScroll'] <= $card['bodyHeight'] + 1, 'dos destacados conservan espacio para los títulos en ' . $width);
+    foreach ([390, 1440] as $width) {
+        $layout = home_v2_news_layout($css, flacso_home_v2_render_featured_news(), $width, 1600);
+        home_v2_assert(count($layout['cards']) === $count && !$layout['trackOverflow'] && !$layout['overflow'], 'los ' . $count . ' fijados se ven sin carrusel en ' . $width);
+        foreach ($layout['cards'] as $card) {
+            home_v2_assert($card['bodyWidth'] >= 100 && $card['bodyScroll'] <= $card['bodyHeight'] + 2, 'las tarjetas fijadas son legibles en ' . $width);
+        }
     }
 }
 unset($GLOBALS['featured_count']);

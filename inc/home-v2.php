@@ -44,6 +44,11 @@ function flacso_home_v2_render(): string {
     <?php return (string) ob_get_clean();
 }
 
+/**
+ * Jerarquía editorial de la portada v2. El orden administrativo sigue siendo
+ * fuente de verdad para las secciones opcionales y para su visibilidad.
+ * El render de eventos devuelve '' cuando no hay eventos futuros.
+ */
 function flacso_home_v2_render_sections(): string {
     $renderers = [
         'eventos' => 'flacso_section_eventos_render',
@@ -54,19 +59,23 @@ function flacso_home_v2_render_sections(): string {
         'mailing' => 'flacso_section_mailing_render',
         'contacto' => 'flacso_section_contacto_render',
     ];
-    $order = array_keys($renderers);
+    $configured_order = array_keys($renderers);
     if (class_exists('Flacso_Main_Page_Settings')) {
         $configured = Flacso_Main_Page_Settings::get_homepage_section_order();
         if (is_array($configured) && $configured) {
-            $order = array_values(array_unique(array_merge($configured, $order)));
+            $configured_order = array_values(array_unique(array_merge($configured, $configured_order)));
         }
     }
-    $priority = ['posgrados', 'quienes'];
-    $order = array_values(array_filter($order, static fn($key) => !in_array($key, $priority, true)));
-    $news_index = array_search('novedades', $order, true);
-    if ($news_index !== false) {
-        array_splice($order, $news_index + 1, 0, $priority);
-    }
+
+    // Noticias, eventos (solo si existen), oferta e institución tienen una
+    // posición consistente. Las otras secciones conservan el orden configurado.
+    $editorial_order = ['novedades', 'eventos', 'posgrados', 'quienes'];
+    $optional_order = array_values(array_filter(
+        $configured_order,
+        static fn($key) => isset($renderers[$key]) && !in_array($key, array_merge($editorial_order, ['contacto']), true)
+    ));
+    $order = array_merge($editorial_order, $optional_order, ['contacto']);
+
     ob_start();
     foreach ($order as $key) {
         if (!isset($renderers[$key]) || !function_exists($renderers[$key])) { continue; }
@@ -80,6 +89,10 @@ function flacso_home_v2_render_sections(): string {
     return (string) ob_get_clean();
 }
 
+/**
+ * No duplicar noticias: el plugin excluye posts fijados del listado cronológico.
+ * Si no hay fijados, se promociona la primera noticia reciente a la cabecera.
+ */
 function flacso_home_v2_render_featured_news(): string {
     if (!function_exists('flacso_section_novedades_get_sticky_posts') || !function_exists('flacso_section_novedades_get_posts')) {
         return '';
@@ -87,6 +100,10 @@ function flacso_home_v2_render_featured_news(): string {
     $featured = flacso_section_novedades_get_sticky_posts(-1);
     $latest_data = flacso_section_novedades_get_posts(6, 'novedades', 1);
     $latest = is_array($latest_data['posts'] ?? null) ? $latest_data['posts'] : [];
+    $has_pinned = !empty($featured);
+    if (!$has_pinned && $latest) {
+        $featured = [array_shift($latest)];
+    }
     if (!$featured && !$latest) {
         return '';
     }
@@ -98,10 +115,12 @@ function flacso_home_v2_render_featured_news(): string {
         <?php if ($featured) : ?>
             <div class="flacso-home-v2__bento-shell">
                 <div class="flacso-home-v2__bento-heading">
-                    <h3>Destacados</h3>
+                    <h3><?php echo $has_pinned ? 'Destacados' : 'En portada'; ?></h3>
                 </div>
-                <div class="flacso-home-v2__bento-grid" tabindex="0" role="region" aria-label="Noticias destacadas">
-                    <?php foreach ($featured as $post) : echo flacso_home_v2_render_news_card($post, 'featured'); endforeach; ?>
+                <div class="flacso-home-v2__bento-grid">
+                    <?php foreach ($featured as $index => $post) : ?>
+                        <?php echo flacso_home_v2_render_news_card($post, $has_pinned ? 'featured' : 'spotlight', $index === 0); ?>
+                    <?php endforeach; ?>
                 </div>
             </div>
         <?php endif; ?>
@@ -113,28 +132,29 @@ function flacso_home_v2_render_featured_news(): string {
                 </div>
             </div>
         <?php endif; ?>
-        <a class="flacso-home-v2__all-news" href="<?php echo esc_url(home_url('/categoria/novedades/')); ?>">Ver todas las novedades</a>
+        <a class="flacso-home-v2__all-news" href="<?php echo esc_url(home_url('/categoria/novedades/')); ?>">Ver todas las novedades <span aria-hidden="true">→</span></a>
     </section>
     <?php return (string) ob_get_clean();
 }
 
-function flacso_home_v2_render_news_card($post, string $variant): string {
+function flacso_home_v2_render_news_card($post, string $variant, bool $is_lead = false): string {
     $post_id = (int) $post->ID;
     $title = wp_strip_all_tags(get_the_title($post_id));
     $excerpt = has_excerpt($post_id)
         ? get_the_excerpt($post_id)
         : wp_trim_words(wp_strip_all_tags((string) get_post_field('post_content', $post_id)), 20, '…');
     $image_id = get_post_thumbnail_id($post_id);
+    $pinned = $variant === 'featured';
     ob_start(); ?>
-    <article class="flacso-home-v2__news-card flacso-home-v2__news-card--<?php echo esc_attr($variant); ?>">
-        <a class="flacso-home-v2__news-image" href="<?php echo esc_url(get_permalink($post_id)); ?>">
-            <?php if ($image_id) : echo wp_get_attachment_image($image_id, $variant === 'featured' ? 'large' : 'medium_large', false, ['alt' => esc_attr($title), 'loading' => 'lazy']); else : ?><span aria-hidden="true"></span><?php endif; ?>
+    <article class="flacso-home-v2__news-card flacso-home-v2__news-card--<?php echo esc_attr($variant); ?><?php echo $is_lead ? ' flacso-home-v2__news-card--lead' : ''; ?>">
+        <a class="flacso-home-v2__news-image" href="<?php echo esc_url(get_permalink($post_id)); ?>" aria-label="<?php echo esc_attr('Leer: ' . $title); ?>">
+            <?php if ($image_id) : echo wp_get_attachment_image($image_id, $is_lead ? 'large' : 'medium_large', false, ['alt' => '', 'loading' => 'lazy']); else : ?><span aria-hidden="true"></span><?php endif; ?>
         </a>
         <div class="flacso-home-v2__news-body">
-            <?php if ($variant === 'featured') : ?><span class="flacso-home-v2__news-badge">Destacada</span><?php endif; ?>
+            <?php if ($pinned || $is_lead) : ?><span class="flacso-home-v2__news-badge"><?php echo $pinned ? 'Destacada' : 'Novedad'; ?></span><?php endif; ?>
             <time datetime="<?php echo esc_attr(get_the_date('c', $post_id)); ?>"><?php echo esc_html(get_the_date('d/m/Y', $post_id)); ?></time>
             <h4><a href="<?php echo esc_url(get_permalink($post_id)); ?>"><?php echo esc_html($title); ?></a></h4>
-            <?php if ($variant === 'featured') : ?><p><?php echo esc_html(wp_strip_all_tags((string) $excerpt)); ?></p><?php endif; ?>
+            <?php if ($is_lead && trim((string) $excerpt) !== '') : ?><p><?php echo esc_html(wp_strip_all_tags((string) $excerpt)); ?></p><?php endif; ?>
             <a class="flacso-home-v2__news-link" href="<?php echo esc_url(get_permalink($post_id)); ?>">Leer noticia <span aria-hidden="true">→</span></a>
         </div>
     </article>
