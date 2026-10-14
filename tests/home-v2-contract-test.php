@@ -115,7 +115,7 @@ function home_v2_news_layout(string $css, string $news, int $width, int $height)
 }
 
 $news_mobile = home_v2_news_layout($css, $rendered_news, 390, 844);
-home_v2_assert($news_mobile['shellBackground'] === 'rgb(238, 245, 251)', 'el carrusel debe ocupar una franja azul clara');
+home_v2_assert($news_mobile['shellBackground'] === 'rgba(0, 0, 0, 0)', 'los destacados no llevan un recuadro de fondo');
 home_v2_assert($news_mobile['badgeBackground'] === 'rgb(252, 209, 22)', 'la noticia destacada debe llevar un sello amarillo');
 home_v2_assert($news_mobile['latestDisplay'] === 'grid' && $news_mobile['latestColumns'] === 1, 'las últimas noticias deben formar un listado horizontal de una columna en móvil');
 home_v2_assert($news_mobile['latestShadow'] === 'none', 'el listado cronológico no debe usar sombras de carrusel');
