@@ -27,17 +27,19 @@
 .flacso-home-v2__news-card--featured { box-sizing: border-box; flex: 0 0 84%; max-width: 340px; scroll-snap-align: start; }
 .flacso-home-v2__news-card--featured .flacso-home-v2__news-image { flex-shrink: 0; }
 .flacso-home-v2__news-card--featured .flacso-home-v2__news-image img { object-fit: contain; }
+.flacso-home-v2__news-card--featured:first-child .flacso-home-v2__news-image { background: #0d254c; }
 .flacso-home-v2__news-card--featured .flacso-home-v2__news-body { padding: 16px; min-width: 0; }
 .flacso-home-v2__news-card--featured h4 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
 .flacso-home-v2__news-card--featured .flacso-home-v2__news-body p { display: none; }
 @media (min-width: 901px) {
     .flacso-home-v2__bento-shell { padding: 28px; }
-    .flacso-home-v2__bento-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); grid-auto-rows: 160px; gap: 20px; overflow: visible; padding: 0; }
+    .flacso-home-v2__bento-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); grid-auto-rows: 160px; gap: 20px; overflow: visible; padding: 0; }
     .flacso-home-v2__bento-grid > .flacso-home-v2__news-card--featured { flex-direction: row; max-width: none; min-width: 0; box-shadow: 0 2px 10px rgba(15,41,74,.04); }
     .flacso-home-v2__news-card--featured:first-child { grid-row: span 2; }
     .flacso-home-v2__news-card--featured .flacso-home-v2__news-image { height: 100%; width: auto; aspect-ratio: 4 / 5; }
     .flacso-home-v2__news-card--featured .flacso-home-v2__news-body { padding: 12px 16px; gap: 6px; }
-    .flacso-home-v2__news-card--featured:first-child .flacso-home-v2__news-body { padding: 24px; justify-content: center; }
+    .flacso-home-v2__news-card--featured:first-child .flacso-home-v2__news-body { padding: 28px 24px; justify-content: center; }
+    .flacso-home-v2__news-card--featured:first-child .flacso-home-v2__news-link { margin-top: 16px; }
     .flacso-home-v2__news-card--featured h4 { font-size: .95rem; line-height: 1.35; -webkit-line-clamp: 3; }
     .flacso-home-v2__news-card--featured:first-child h4 { font-size: 1.15rem; }
     .flacso-home-v2__news-card--featured:first-child .flacso-home-v2__news-body p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
