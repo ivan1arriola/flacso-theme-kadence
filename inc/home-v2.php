@@ -91,14 +91,79 @@ function flacso_home_v2_render_sections(): string {
     ob_start();
     foreach ($order as $key) {
         if (!isset($renderers[$key]) || !function_exists($renderers[$key])) { continue; }
-        if (class_exists('Flacso_Main_Page_Settings') && !Flacso_Main_Page_Settings::is_section_visible($key)) { continue; }
-        $content = $key === 'novedades'
-            ? flacso_home_v2_render_featured_news()
-            : call_user_func($renderers[$key]);
+        if (
+            $key !== 'posgrados'
+            && class_exists('Flacso_Main_Page_Settings')
+            && !Flacso_Main_Page_Settings::is_section_visible($key)
+        ) { continue; }
+        if ($key === 'novedades') {
+            $content = flacso_home_v2_render_featured_news();
+        } elseif ($key === 'posgrados') {
+            $content = flacso_home_v2_render_academic_offer();
+        } else {
+            $content = call_user_func($renderers[$key]);
+        }
         if (!$content) { continue; }
         ?><article class="flacso-home-v2__section flacso-home-v2__section--<?php echo esc_attr($key); ?>" data-section-key="<?php echo esc_attr($key); ?>"><?php echo $content; ?></article><?php
     }
     return (string) ob_get_clean();
+}
+
+function flacso_home_v2_render_academic_offer(): string {
+    if (!function_exists('flacso_section_oferta_educativa_get_cards')) {
+        return '';
+    }
+
+    $cards_by_type = [];
+    foreach (flacso_section_oferta_educativa_get_cards() as $card) {
+        $title = trim(wp_strip_all_tags((string) ($card['title'] ?? '')));
+        $normalized_title = strtolower(remove_accents($title));
+        $slug = '';
+        if (strpos($normalized_title, 'maestr') !== false) {
+            $slug = 'maestrias';
+        } elseif (strpos($normalized_title, 'especial') !== false) {
+            $slug = 'especializaciones';
+        } elseif (strpos($normalized_title, 'diplomado') !== false) {
+            $slug = 'diplomados';
+        } elseif (strpos($normalized_title, 'diploma') !== false) {
+            $slug = 'diplomas';
+        } elseif (strpos($normalized_title, 'seminar') !== false) {
+            $slug = 'seminarios';
+        }
+        if ($slug !== '') {
+            $cards_by_type[$slug] = $card;
+        }
+    }
+
+    $categories = [
+        'maestrias' => ['label' => 'Posgrado', 'title' => 'Maestrías', 'icon' => '<path d="M3 5.5c3.2-1.6 6.2-1.1 9 1.2v13c-2.8-2.3-5.8-2.8-9-1.2z"/><path d="M21 5.5c-3.2-1.6-6.2-1.1-9 1.2v13c2.8-2.3 5.8-2.8 9-1.2z"/><path class="accent" d="M6 9h3M15 9h3"/>'],
+        'especializaciones' => ['label' => 'Posgrado', 'title' => 'Especializaciones', 'icon' => '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/><path class="accent" d="M10.5 7.5v6M7.5 10.5h6"/>'],
+        'diplomados' => ['label' => 'Posgrado', 'title' => 'Diplomados', 'icon' => '<path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11v5c3.4 2.6 8.6 2.6 12 0v-5"/><path d="M22 9v6"/><circle class="accent-fill" cx="21" cy="17" r="1.5"/>'],
+        'diplomas' => ['label' => 'Posgrado', 'title' => 'Diplomas', 'icon' => '<rect x="4" y="3" width="16" height="19" rx="1"/><path d="M8 8h8M8 12h8M8 16h4"/><circle class="accent" cx="16" cy="17" r="3"/><path class="accent" d="m14.5 19.5-.5 3 2-1 2 1-.5-3"/>'],
+        'seminarios' => ['label' => 'Formación', 'title' => 'Seminarios', 'icon' => '<path d="M3 4h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-5 4v-4H5a2 2 0 0 1-2-2z"/><path d="M19 9h2a2 2 0 0 1 2 2v8l-4-3"/><path class="accent" d="M7 9h7M7 12h5"/>'],
+    ];
+
+    ob_start(); ?>
+    <section class="flacso-home-v2__academic-offer" aria-labelledby="flacso-home-v2-academic-title">
+        <header class="flacso-home-v2__academic-heading">
+            <div>
+                <p class="flacso-home-v2__academic-kicker">Oferta académica</p>
+                <h2 id="flacso-home-v2-academic-title">Encontrá la formación que buscás</h2>
+            </div>
+            <p class="flacso-home-v2__academic-intro">Conocé las propuestas de formación de posgrado de FLACSO Uruguay.</p>
+        </header>
+        <nav class="flacso-home-v2__academic-grid" aria-label="Categorías de formación académica">
+            <?php $index = 0; foreach ($categories as $slug => $category) : if (empty($cards_by_type[$slug])) { continue; } $card = $cards_by_type[$slug]; $index++; ?>
+                <a class="flacso-home-v2__academic-card" href="<?php echo esc_url($card['url'] ?? '#'); ?>">
+                    <span class="flacso-home-v2__academic-label"><?php echo esc_html(sprintf('%02d / %s', $index, $category['label'])); ?></span>
+                    <h3><?php echo esc_html($category['title']); ?></h3>
+                    <span class="flacso-home-v2__academic-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><?php echo $category['icon']; ?></svg></span>
+                    <span class="flacso-home-v2__academic-arrow" aria-hidden="true">→</span>
+                </a>
+            <?php endforeach; ?>
+        </nav>
+    </section>
+    <?php return (string) ob_get_clean();
 }
 
 /**

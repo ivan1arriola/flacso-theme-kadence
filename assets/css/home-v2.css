@@ -242,6 +242,53 @@
     .flacso-home-v2__section--contacto .flacso-contacto-cta { grid-column: 1 / -1; min-height: 48px; font-size: .92rem; }
 }
 
+/* Oferta académica en portada: categorías claras y navegación directa. */
+.flacso-home-v2__section--posgrados { width: min(100% - 40px, 1480px); padding: 30px 0 68px; }
+.flacso-home-v2__academic-offer { width: 100%; }
+.flacso-home-v2__academic-heading { align-items: end; display: grid; gap: 18px; grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr); margin-bottom: 36px; }
+.flacso-home-v2__academic-kicker { color: #17365d; font-size: .88rem; font-weight: 800; letter-spacing: .09em; margin: 0 0 20px; text-transform: uppercase; }
+.flacso-home-v2__academic-heading h2 { color: #203f79; font-size: clamp(2.5rem, 4vw, 3.65rem); letter-spacing: -.04em; line-height: 1.08; margin: 0; max-width: 16ch; }
+.flacso-home-v2__academic-intro { color: #526378; font-size: 1.16rem; line-height: 1.5; margin: 0 0 4px; max-width: 52ch; }
+.flacso-home-v2__academic-grid { border-bottom: 1px solid #d5ddeb; border-top: 1px solid #d5ddeb; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.flacso-home-v2__academic-card { background: #fff; border-right: 1px solid #d5ddeb; box-sizing: border-box; color: #17365d; display: grid; grid-template-rows: auto auto 1fr; min-height: 244px; padding: 27px 24px 22px; position: relative; text-decoration: none; transition: background-color .18s ease, color .18s ease; }
+.flacso-home-v2__academic-card:last-child { border-right: 0; }
+.flacso-home-v2__academic-card:hover, .flacso-home-v2__academic-card:focus-visible { background: #f7f9fc; color: #17365d; }
+.flacso-home-v2__academic-card:focus-visible { outline: 3px solid #e6b800; outline-offset: -3px; }
+.flacso-home-v2__academic-label { color: #61758f; font-size: .79rem; font-weight: 800; letter-spacing: .09em; line-height: 1.3; text-transform: uppercase; }
+.flacso-home-v2__academic-card h3 { color: #17365d; font-size: clamp(1.05rem, 1.45vw, 1.38rem); font-weight: 750; line-height: 1.3; margin: 29px 0 0; }
+.flacso-home-v2__academic-icon { align-self: end; color: #173f86; display: block; height: 40px; margin-top: 28px; width: 40px; }
+.flacso-home-v2__academic-icon svg { height: 100%; overflow: visible; width: 100%; }
+.flacso-home-v2__academic-icon .accent { stroke: #d6aa00; }
+.flacso-home-v2__academic-icon .accent-fill { fill: #fcd116; stroke: #d6aa00; }
+.flacso-home-v2__academic-arrow { bottom: 28px; color: #173f86; font-size: 1.35rem; line-height: 1; position: absolute; right: 24px; }
+@media (max-width: 1100px) {
+    .flacso-home-v2__section--posgrados { width: min(100% - 40px, 960px); }
+    .flacso-home-v2__academic-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .flacso-home-v2__academic-card:nth-child(3n) { border-right: 0; }
+    .flacso-home-v2__academic-card:nth-child(n + 4) { border-top: 1px solid #d5ddeb; }
+}
+@media (max-width: 760px) {
+    .flacso-home-v2__section--posgrados { padding: 20px 0 48px; }
+    .flacso-home-v2__academic-heading { align-items: start; gap: 14px; grid-template-columns: 1fr; margin-bottom: 26px; }
+    .flacso-home-v2__academic-kicker { font-size: .75rem; margin-bottom: 12px; }
+    .flacso-home-v2__academic-heading h2 { font-size: clamp(2.15rem, 9vw, 3rem); }
+    .flacso-home-v2__academic-intro { font-size: 1rem; }
+    .flacso-home-v2__academic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .flacso-home-v2__academic-card { min-height: 190px; padding: 20px 18px 18px; }
+    .flacso-home-v2__academic-card:nth-child(3n) { border-right: 1px solid #d5ddeb; }
+    .flacso-home-v2__academic-card:nth-child(2n) { border-right: 0; }
+    .flacso-home-v2__academic-card:nth-child(n + 3) { border-top: 1px solid #d5ddeb; }
+    .flacso-home-v2__academic-card h3 { font-size: 1.05rem; margin-top: 20px; }
+    .flacso-home-v2__academic-icon { height: 34px; margin-top: 22px; width: 34px; }
+    .flacso-home-v2__academic-arrow { bottom: 24px; right: 18px; }
+}
+@media (max-width: 480px) {
+    .flacso-home-v2__academic-grid { grid-template-columns: 1fr; }
+    .flacso-home-v2__academic-card, .flacso-home-v2__academic-card:nth-child(2n), .flacso-home-v2__academic-card:nth-child(3n) { border-right: 0; }
+    .flacso-home-v2__academic-card:nth-child(n + 2) { border-top: 1px solid #d5ddeb; }
+    .flacso-home-v2__academic-card { min-height: 156px; }
+}
+
 /* Pantallas muy estrechas: priorizar el titular y evitar tarjetas apretadas. */
 @media (max-width: 359px) {
     .flacso-home-v2__news-card--lead { grid-template-columns: minmax(0, 1fr) 78px; gap: 10px; padding: 15px; }

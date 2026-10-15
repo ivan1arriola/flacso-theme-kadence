@@ -29,6 +29,16 @@ function home_url($path = '') { return 'https://example.test' . $path; }
 function flacso_section_eventos_render() { return !empty($GLOBALS['has_events']) ? '<h2>Próximos eventos</h2>' : ''; }
 function flacso_section_quienes_somos_render() { return '<h2>Institucional</h2>'; }
 function flacso_section_oferta_educativa_render() { return '<h2>Oferta educativa</h2>'; }
+function flacso_section_oferta_educativa_get_cards() {
+    return [
+        ['title' => 'Diplomas', 'desc' => 'DESCRIPCIÓN QUE NO DEBE MOSTRARSE', 'url' => '/formacion/diplomas/'],
+        ['title' => 'Seminarios', 'desc' => 'DESCRIPCIÓN QUE NO DEBE MOSTRARSE', 'url' => '/formacion/seminarios/'],
+        ['title' => 'Maestrías', 'desc' => 'DESCRIPCIÓN QUE NO DEBE MOSTRARSE', 'url' => '/formacion/maestrias/'],
+        ['title' => 'Diplomados', 'desc' => 'DESCRIPCIÓN QUE NO DEBE MOSTRARSE', 'url' => '/formacion/diplomados/'],
+        ['title' => 'Especializaciones', 'desc' => 'DESCRIPCIÓN QUE NO DEBE MOSTRARSE', 'url' => '/formacion/especializaciones/'],
+    ];
+}
+function remove_accents($value) { return strtr((string) $value, ['á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u', 'Á' => 'A', 'É' => 'E', 'Í' => 'I', 'Ó' => 'O', 'Ú' => 'U']); }
 function flacso_section_contacto_render() { return '<h2>Contacto</h2>'; }
 class Flacso_Main_Page_Settings {
     public static function get_homepage_section_order() { return ['novedades', 'quienes', 'posgrados', 'contacto']; }
@@ -37,6 +47,7 @@ class Flacso_Main_Page_Settings {
 require_once $root . '/inc/home-v2.php';
 $rendered_news = flacso_home_v2_render_featured_news();
 $rendered_sections = flacso_home_v2_render_sections();
+$rendered_academic_offer = flacso_home_v2_render_academic_offer();
 foreach ([0, 1, 2, 3, 4, 5, 8] as $count) {
     $GLOBALS['featured_count'] = $count;
     $news = flacso_home_v2_render_featured_news();
@@ -50,6 +61,17 @@ home_v2_assert(strpos($rendered_news, 'data-home-news-next') === false && strpos
 
 home_v2_assert(strpos($rendered_news, '>Actualidad<') === false, 'la portada renderizada no debe mostrar el supratítulo Actualidad');
 home_v2_assert(strpos($rendered_news, '>Novedades</h2>') !== false, 'Novedades debe conservarse como encabezado principal');
+home_v2_assert(strpos($rendered_sections, 'Encontrá la formación que buscás') !== false, 'la portada usa el nuevo encabezado de oferta académica');
+home_v2_assert(strpos($rendered_academic_offer, 'Conocé las propuestas de formación de posgrado de FLACSO Uruguay.') !== false, 'la oferta presenta el alcance de formación de posgrado');
+$academic_titles = ['Maestrías', 'Especializaciones', 'Diplomados', 'Diplomas', 'Seminarios'];
+$academic_offsets = array_map(static fn($title) => strpos($rendered_academic_offer, '>' . $title . '</h3>'), $academic_titles);
+$sorted_academic_offsets = $academic_offsets;
+sort($sorted_academic_offsets);
+home_v2_assert(!in_array(false, $academic_offsets, true) && $academic_offsets === $sorted_academic_offsets, 'la oferta muestra las cinco categorías en el orden institucional aprobado');
+home_v2_assert(strpos($rendered_academic_offer, 'DESCRIPCIÓN QUE NO DEBE MOSTRARSE') === false, 'las tarjetas no muestran descripciones');
+home_v2_assert(strpos($rendered_academic_offer, 'href="/formacion/diplomados/"') !== false, 'Diplomados conserva su destino de formación');
+home_v2_assert(substr_count($rendered_academic_offer, 'flacso-home-v2__academic-card') === 5, 'la oferta renderiza cinco tarjetas');
+home_v2_assert(substr_count($rendered_academic_offer, '<svg') === 5, 'cada categoría conserva su icono SVG');
 home_v2_assert(strpos($rendered_news, '<h3>Destacados</h3>') !== false, 'las noticias fijadas deben identificarse como Destacados');
 home_v2_assert(preg_match('/news-card--featured.*?news-badge[^>]*>Noticia fijada<.*?<p>Resumen de prueba<\/p>/s', $rendered_news) === 1, 'cada noticia destacada debe mostrar su sello y resumen');
 home_v2_assert(preg_match('/news-card--latest.*?<\/article>/s', $rendered_news, $latest_card) === 1 && strpos($latest_card[0], '<p>') === false, 'las últimas noticias deben ser compactas y no mostrar resumen');
@@ -96,6 +118,8 @@ home_v2_assert(strpos($sections_with_events, 'data-section-key="novedades"') < s
 home_v2_assert(strpos($sections_with_events, 'data-section-key="eventos"') < strpos($sections_with_events, 'data-section-key="posgrados"'), 'los eventos preceden la oferta');
 $GLOBALS['hidden_section'] = 'eventos';
 home_v2_assert(strpos(flacso_home_v2_render_sections(), 'data-section-key="eventos"') === false, 'la visibilidad editorial puede ocultar eventos');
+$GLOBALS['hidden_section'] = 'posgrados';
+home_v2_assert(strpos(flacso_home_v2_render_sections(), 'data-section-key="posgrados"') !== false, 'la oferta académica aprobada debe aparecer en la portada aunque estuviera oculta en la configuración previa');
 unset($GLOBALS['hidden_section'], $GLOBALS['has_events']);
 
 function home_v2_exact_viewport(string $html, int $width, int $height): string {
