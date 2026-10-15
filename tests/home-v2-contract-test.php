@@ -49,6 +49,7 @@ preg_match('/<div class="home-recent-grid">(.*?)<\/div><\/div><\/section>/s', $h
 check(strpos($recent_markup[1] ?? '', 'noticia-101') === false, 'destacada no se duplica en recientes');
 check(strpos($html, 'Texto institucional editable.') !== false, 'contenido institucional del plugin');
 check(strpos($html, 'Conocer las novedades') === false, 'sin CTA redundante');
+check(strpos($html, 'cropped-cropped-Logos-FLACSO-Claro.png') !== false && strpos($html, 'admin-ajax.jpeg') === false, 'hero usa el logo oficial');
 check(strpos($html, 'Formación de posgrado, investigación rigurosa') === false, 'sin bajada retirada');
 
 $GLOBALS['events'] = [['id'=>301,'link'=>'https://example.test/evento-301','title'=>'Actividad abierta','day'=>'18','month'=>'Octubre']];

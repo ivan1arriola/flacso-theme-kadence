@@ -22,9 +22,9 @@ function flacso_home_v2_get_data(): array {
     $hero_image = $image_id ? wp_get_attachment_image_url($image_id, 'large') : '';
     $mobile_image_id = absint($campaign['mobile_image_id'] ?? 0);
     $hero_mobile_image = $mobile_image_id ? wp_get_attachment_image_url($mobile_image_id, 'large') : '';
-    // Imagen provisional de la misma serie de la maqueta hasta disponer del original.
+    // Identidad institucional cuando no hay una imagen de campaña activa.
     if (!$hero_image) {
-        $hero_image = 'https://flacso.edu.uy/wp-content/uploads/2026/03/admin-ajax.jpeg';
+        $hero_image = 'https://flacso.edu.uy/wp-content/uploads/2026/02/cropped-cropped-Logos-FLACSO-Claro.png';
     }
 
     $defaults = [
@@ -65,8 +65,9 @@ function flacso_home_v2_get_data(): array {
     $institution = class_exists('Flacso_Main_Page_Settings') ? Flacso_Main_Page_Settings::get_section('quienes') : [];
     return [
         'hero_image' => $hero_image,
+        'hero_is_logo' => !$image_id,
         'hero_mobile_image' => $hero_mobile_image,
-        'hero_image_alt' => $image_id ? 'Imagen de la campaña de FLACSO Uruguay' : 'Personas de FLACSO Uruguay en una mesa de trabajo',
+        'hero_image_alt' => $image_id ? 'Imagen de la campaña de FLACSO Uruguay' : 'Logo de FLACSO Uruguay',
         'hero_title' => $hero_title,
         'hero_kicker' => $hero_kicker,
         'hero_cta' => $hero_cta,
