@@ -1,124 +1,60 @@
 # Kadence Child FLACSO
 
-Tema hijo de WordPress utilizado por el sitio institucional de FLACSO Uruguay.
-
-Extiende al tema padre Kadence con:
-
-- portada y navegación institucional;
-- plantillas de oferta académica y seminarios;
-- docentes, eventos, convenios y novedades;
-- formularios y páginas de confirmación;
-- estilos y scripts propios del sitio;
-- metadatos Open Graph.
+Tema hijo de WordPress para el sitio institucional de FLACSO Uruguay. Extiende Kadence y contiene las plantillas y la presentación del sitio; el plugin `flacso-uruguay-plugin` conserva los tipos de contenido, campos, formularios, consultas y reglas académicas.
 
 ## Requisitos
 
-- WordPress 6.0 o posterior;
-- PHP 7.4 o posterior;
-- tema padre `kadence` instalado;
-- WP-CLI para las validaciones posteriores al despliegue.
+- WordPress 6.2 o posterior.
+- PHP 7.4 o posterior.
+- Tema padre `kadence` instalado.
+- Bash y PHP para ejecutar la validación local; Chrome o Chromium para las comprobaciones visuales de portada.
+- WP-CLI en el servidor para el smoke test de despliegue.
 
-El slug del tema es `kadence-child-flacso` y su archivo principal de metadatos es `style.css`.
+El slug del tema es `kadence-child-flacso`. WordPress lee sus metadatos desde `style.css`.
 
-## Dominio académico
+## Modelo académico
 
-El tema consume el modelo académico canónico del plugin (`FLACSO_Academic_Catalog` y `FLACSO_Academic_Repository`):
-- Las ofertas de posgrado son `OfertaAcademica` (`doctorado`, `maestria`, `especializacion`, `diplomado`, `diploma`) y sus ocurrencias temporales son `Cohorte`.
-- Los seminarios son `Seminario` y sus ocurrencias temporales son `EdicionSeminario`.
-- Los aranceles provienen de `TablaPrecio`.
-- Todas las plantillas consumen el adaptador de sólo lectura `inc/academic-public-model.php`.
-- Todo CTA de preinscripción apunta al portal externo centralizado. Ver [`docs/academic-model-compatibility.md`](docs/academic-model-compatibility.md).
+El tema consume el modelo canónico del plugin (`FLACSO_Academic_Catalog` y `FLACSO_Academic_Repository`) mediante el adaptador de sólo lectura `inc/academic-public-model.php`. Las ofertas académicas tienen ocurrencias `Cohorte`; los seminarios tienen `EdicionSeminario`; los aranceles provienen de `TablaPrecio`. Los CTA de preinscripción apuntan al portal externo centralizado. Ver [`docs/academic-model-compatibility.md`](docs/academic-model-compatibility.md).
 
-## Versionado automático
-
-Cada commit de `main` produce una versión efectiva con el formato:
+## Estructura
 
 ```text
-<versión base>.<cantidad de commits>
+kadence-child-flacso/
+├── assets/                 CSS, JavaScript e imágenes
+├── bin/                    validación local
+├── docs/                   documentación técnica
+├── inc/                    módulos PHP del tema
+├── template-parts/         componentes reutilizables por dominio
+├── tests/                  pruebas contractuales y de presentación
+├── *.php                   plantillas reconocidas por WordPress
+├── functions.php           protección y carga ordenada del tema
+├── style.css               metadatos y estilos globales
+├── ARCHITECTURE.md         límites y responsabilidades
+└── CONTRIBUTING.md         convenciones para cambios
 ```
 
-Por ejemplo, si `style.css` declara `1.1.52` y el commit es el número 250 del historial, la versión desplegada será `1.1.52.250`.
+Los archivos de plantilla como `single-seminario.php`, `archive-docente.php` y `page-contacto.php` permanecen en la raíz para conservar la jerarquía de plantillas de WordPress. La responsabilidad de cada módulo está descrita en [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
-El workflow deriva la versión directamente del historial Git del SHA, actualiza la copia de distribución de `style.css` y comprueba después del despliegue que WordPress reporte exactamente esa versión.
+## Desarrollo y validación
 
-La versión base solo debe cambiarse manualmente cuando corresponda iniciar una nueva línea de versión. El workflow no crea commits automáticos.
-
-## Desarrollo local
-
-No se utiliza `./build`, `package-theme.sh` ni otro script local para preparar entregas.
-
-La validación antes de publicar cambios es:
+La validación local oficial es:
 
 ```bash
 bash bin/check-theme.sh
 ```
 
-`bin/check-theme.sh` valida sintaxis PHP, enlaces externos seguros y que las plantillas no vuelvan a introducir estilos embebidos. El workflow de producción lo ejecuta como gate antes de crear el artifact.
+El script revisa la sintaxis de todos los PHP, ejecuta las pruebas académica, FAQ, portada y cargador modular, y comprueba enlaces externos, estilos embebidos, CTA y referencias legacy. La prueba de portada necesita Chrome o Chromium disponible en el entorno; puede indicarse su ruta mediante `FLACSO_TEST_BROWSER`.
 
-## Despliegue a producción
+No se utiliza `./build`, `package-theme.sh` ni otro script local para preparar entregas. Para agregar o modificar componentes, seguir [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
-Cada push a `main` activa `.github/workflows/deploy-theme.yml`.
+## Despliegue
 
-El flujo oficial es:
+Cada push a `main` activa `.github/workflows/deploy-theme.yml`. El flujo valida el SHA y los archivos requeridos, calcula la versión efectiva, ejecuta `bin/check-theme.sh`, crea y sube un ZIP, copia los archivos por SSH a un staging temporal, sincroniza exclusivamente la carpeta del tema y verifica con WP-CLI el tema activo y la versión instalada.
 
-1. checkout del SHA que activó el workflow;
-2. cálculo de la versión efectiva;
-3. validación de archivos requeridos, sintaxis PHP y separación del CSS;
-4. creación del ZIP como artifact;
-5. copia por SSH a un staging exclusivo bajo `/tmp`;
-6. sincronización con `rsync --delete` exclusivamente sobre la carpeta del tema;
-7. asignación de propietario y grupo `web5:client2`;
-8. inicialización de WordPress mediante WP-CLI como usuario `web5`;
-9. comprobación del tema activo y de la versión instalada.
+WordPress está instalado en `/var/www/clients/client2/web5/web`; el destino es `/var/www/clients/client2/web5/web/wp-content/themes/kadence-child-flacso`. El servidor no ejecuta `git pull` dentro de WordPress. El workflow requiere los secretos `EC2_HOST`, `EC2_USER` y `EC2_SSH_KEY`.
 
-WordPress está instalado en:
+El artifact excluye `.git`, `.github`, `docs/`, `tests/`, `bin/`, `node_modules/`, `vendor/`, documentación de raíz y archivos temporales del sistema. Las reglas están en el workflow.
 
-```text
-/var/www/clients/client2/web5/web
-```
+## Versionado automático
 
-El tema se despliega exclusivamente en:
-
-```text
-/var/www/clients/client2/web5/web/wp-content/themes/kadence-child-flacso
-```
-
-El servidor no ejecuta `git pull` dentro de WordPress.
-
-### GitHub Secrets
-
-El workflow requiere:
-
-- `EC2_HOST`;
-- `EC2_USER`;
-- `EC2_SSH_KEY`.
-
-## Estructura principal
-
-```text
-kadence-child-flacso/
-├── style.css
-├── functions.php
-├── header.php
-├── footer.php
-├── front-page.php
-├── assets/
-│   ├── css/
-│   ├── js/
-│   └── img/
-├── inc/
-├── template-parts/
-├── templates/
-├── bin/
-└── ARCHITECTURE.md
-```
-
-## Archivos excluidos de producción
-
-El artifact y el despliegue excluyen:
-
-- metadatos Git y workflows;
-- `node_modules/` y `vendor/`;
-- herramientas de desarrollo bajo `bin/`;
-- `README.md`, `ARCHITECTURE.md` y `phpcs.xml.dist`;
-- logs y archivos temporales del sistema.
+El workflow deriva la versión del historial Git del SHA con el formato `<versión base>.<cantidad de commits>`. La versión base se declara en `style.css` y solo se cambia manualmente al iniciar una nueva línea. El workflow no crea commits automáticos.

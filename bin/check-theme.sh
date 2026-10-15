@@ -50,4 +50,5 @@ if grep -rn -E 'get_post_meta\([^)]*(_seminario_|_flacso_relaciones|_flacso_inst
     exit 1
 fi
 
+php "$theme_dir/tests/theme-bootstrap-contract-test.php"
 echo 'Tema FLACSO: sintaxis, pruebas, enlaces externos, contratos de CTA y ausencia de código legacy correctos.'

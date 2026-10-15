@@ -3,7 +3,7 @@
 
 $root = dirname(__DIR__);
 $template = file_get_contents($root . '/page-preguntas-frecuentes.php');
-$functions = file_get_contents($root . '/functions.php');
+$functions = file_get_contents($root . '/inc/assets.php');
 $css = file_get_contents($root . '/assets/css/page-faq.css');
 $js = file_get_contents($root . '/assets/js/page-faq.js');
 

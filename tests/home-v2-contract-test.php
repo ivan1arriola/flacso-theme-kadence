@@ -2,7 +2,7 @@
 $root = dirname(__DIR__);
 function home_v2_assert($ok, $message) { if (!$ok) { fwrite(STDERR, "FAIL: {$message}\n"); exit(1); } }
 $front = file_get_contents($root . '/front-page.php');
-$functions = file_get_contents($root . '/functions.php');
+$functions = file_get_contents($root . '/inc/assets.php');
 $template = file_get_contents($root . '/inc/home-v2.php');
 $css = file_get_contents($root . '/assets/css/home-v2.css');
 
