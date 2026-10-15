@@ -49,6 +49,16 @@ function flacso_home_v2_get_data(): array {
                 break;
             }
         }
+    if (!function_exists('flacso_section_eventos_get_items')) {
+        if (class_exists('Flacso_Main_Page_Loader')) {
+            Flacso_Main_Page_Loader::load_components();
+        }
+        if (!function_exists('flacso_section_eventos_get_items') && defined('FLACSO_URUGUAY_PATH')) {
+            $eventos_carousel_file = FLACSO_URUGUAY_PATH . 'modules/main-page/sections/eventos-carousel.php';
+            if (file_exists($eventos_carousel_file)) {
+                require_once $eventos_carousel_file;
+            }
+        }
     }
     $events = function_exists('flacso_section_eventos_get_items') ? flacso_section_eventos_get_items(3) : [];
     $events = is_array($events) ? array_slice($events, 0, 3) : [];

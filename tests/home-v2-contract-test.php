@@ -77,5 +77,6 @@ $css = file_get_contents($root . '/assets/css/home-v2.css');
 check(strpos($front, 'FLACSO_Home_Campaign::is_enabled()') !== false, 'conserva bandera de reversión');
 check(strpos($front, "return;") !== false, 'CSS antiguo no se carga en portada nueva');
 check(strpos($css, 'aspect-ratio:4/5') !== false, 'imágenes de actividades y noticias 4:5');
+check(strpos($css, 'object-position:center center !important') !== false, 'hero logo centrado verticalmente');
 check(strpos($css, '@media(max-width:760px)') !== false, 'diseño móvil');
 echo "Portada v2: contrato de contenido y estructura correcto.\n";
