@@ -211,7 +211,7 @@ function home_v2_mobile_rhythm(string $css): array {
         . escapeshellarg('file:///' . str_replace('\\', '/', $path)) . ' 2>/dev/null';
     $dump = (string) shell_exec($cmd);
     unlink($path);
-    home_v2_assert(preg_match('/<pre id="result">(.*?)<\\/pre>/s', $dump, $matches) === 1, 'Chromium mide la portada');
+    home_v2_assert(preg_match('/<pre id="result">(.*?)<\/pre>/s', $dump, $matches) === 1, 'Chromium mide la portada');
     $layout = json_decode(html_entity_decode($matches[1], ENT_QUOTES | ENT_HTML5), true);
     home_v2_assert(is_array($layout), 'las métricas móviles son válidas');
     return $layout;
