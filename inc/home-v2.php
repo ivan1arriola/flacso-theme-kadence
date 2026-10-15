@@ -49,6 +49,7 @@ function flacso_home_v2_get_data(): array {
                 break;
             }
         }
+    }
     if (!function_exists('flacso_section_eventos_get_items')) {
         if (class_exists('Flacso_Main_Page_Loader')) {
             Flacso_Main_Page_Loader::load_components();
