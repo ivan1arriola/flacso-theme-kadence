@@ -90,7 +90,8 @@ function flacso_home_v2_render_sections(): string {
 
     ob_start();
     foreach ($order as $key) {
-        if (!isset($renderers[$key]) || !function_exists($renderers[$key])) { continue; }
+        if (!isset($renderers[$key])) { continue; }
+        if ($key !== 'posgrados' && !function_exists($renderers[$key])) { continue; }
         if (
             $key !== 'posgrados'
             && class_exists('Flacso_Main_Page_Settings')
@@ -110,12 +111,21 @@ function flacso_home_v2_render_sections(): string {
 }
 
 function flacso_home_v2_render_academic_offer(): string {
-    if (!function_exists('flacso_section_oferta_educativa_get_cards')) {
-        return '';
+    $source_cards = function_exists('flacso_section_oferta_educativa_get_cards')
+        ? flacso_section_oferta_educativa_get_cards()
+        : [];
+    if (!$source_cards) {
+        $source_cards = [
+            ['title' => 'Maestrías', 'url' => home_url('/formacion/maestrias/')],
+            ['title' => 'Especializaciones', 'url' => home_url('/formacion/especializaciones/')],
+            ['title' => 'Diplomados', 'url' => home_url('/formacion/diplomados/')],
+            ['title' => 'Diplomas', 'url' => home_url('/formacion/diplomas/')],
+            ['title' => 'Seminarios', 'url' => home_url('/formacion/seminarios/')],
+        ];
     }
 
     $cards_by_type = [];
-    foreach (flacso_section_oferta_educativa_get_cards() as $card) {
+    foreach ($source_cards as $card) {
         $title = trim(wp_strip_all_tags((string) ($card['title'] ?? '')));
         $normalized_title = strtolower(remove_accents($title));
         $slug = '';

@@ -30,6 +30,9 @@ function flacso_section_eventos_render() { return !empty($GLOBALS['has_events'])
 function flacso_section_quienes_somos_render() { return '<h2>Institucional</h2>'; }
 function flacso_section_oferta_educativa_render() { return '<h2>Oferta educativa</h2>'; }
 function flacso_section_oferta_educativa_get_cards() {
+    if (array_key_exists('academic_cards', $GLOBALS)) {
+        return $GLOBALS['academic_cards'];
+    }
     return [
         ['title' => 'Diplomas', 'desc' => 'DESCRIPCIÓN QUE NO DEBE MOSTRARSE', 'url' => '/formacion/diplomas/'],
         ['title' => 'Seminarios', 'desc' => 'DESCRIPCIÓN QUE NO DEBE MOSTRARSE', 'url' => '/formacion/seminarios/'],
@@ -72,6 +75,11 @@ home_v2_assert(strpos($rendered_academic_offer, 'DESCRIPCIÓN QUE NO DEBE MOSTRA
 home_v2_assert(strpos($rendered_academic_offer, 'href="/formacion/diplomados/"') !== false, 'Diplomados conserva su destino de formación');
 home_v2_assert(substr_count($rendered_academic_offer, 'flacso-home-v2__academic-card') === 5, 'la oferta renderiza cinco tarjetas');
 home_v2_assert(substr_count($rendered_academic_offer, '<svg') === 5, 'cada categoría conserva su icono SVG');
+$GLOBALS['academic_cards'] = [];
+$fallback_academic_offer = flacso_home_v2_render_academic_offer();
+home_v2_assert(substr_count($fallback_academic_offer, 'flacso-home-v2__academic-card') === 5, 'la portada mantiene las cinco categorías con enlaces de respaldo');
+home_v2_assert(strpos($fallback_academic_offer, 'href="https://example.test/formacion/maestrias/"') !== false, 'el enlace de respaldo de Maestrías apunta al catálogo público');
+unset($GLOBALS['academic_cards']);
 home_v2_assert(strpos($rendered_news, '<h3>Destacados</h3>') !== false, 'las noticias fijadas deben identificarse como Destacados');
 home_v2_assert(preg_match('/news-card--featured.*?news-badge[^>]*>Noticia fijada<.*?<p>Resumen de prueba<\/p>/s', $rendered_news) === 1, 'cada noticia destacada debe mostrar su sello y resumen');
 home_v2_assert(preg_match('/news-card--latest.*?<\/article>/s', $rendered_news, $latest_card) === 1 && strpos($latest_card[0], '<p>') === false, 'las últimas noticias deben ser compactas y no mostrar resumen');
