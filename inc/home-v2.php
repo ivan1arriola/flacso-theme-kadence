@@ -35,6 +35,9 @@ function flacso_home_v2_get_data(): array {
         'seminarios' => 'Seminarios',
     ];
     $cards = [];
+    foreach ($defaults as $slug => $label) {
+        $cards[$slug] = ['title' => $label, 'url' => home_url('/formacion/' . $slug . '/')];
+    }
     $source = function_exists('flacso_section_oferta_educativa_get_cards') ? flacso_section_oferta_educativa_get_cards() : [];
     foreach ((array) $source as $card) {
         $title = trim(wp_strip_all_tags((string) ($card['title'] ?? '')));
@@ -47,8 +50,6 @@ function flacso_home_v2_get_data(): array {
             }
         }
     }
-    $cards = array_replace(array_fill_keys(array_keys($defaults), null), $cards);
-
     $events = function_exists('flacso_section_eventos_get_items') ? flacso_section_eventos_get_items(3) : [];
     $events = is_array($events) ? array_slice($events, 0, 3) : [];
     $featured = function_exists('flacso_section_novedades_get_sticky_posts') ? flacso_section_novedades_get_sticky_posts(-1) : [];

@@ -68,7 +68,8 @@ check(strpos($with_campaign, 'Convocatoria de prueba') !== false && strpos($with
 unset($GLOBALS['campaign']);
 $GLOBALS['cards'] = [['title'=>'Maestrías','url'=>'#'],['title'=>'Seminarios','url'=>'/formacion/seminarios/']];
 $with_invalid_card = flacso_home_v2_render();
-check(substr_count($with_invalid_card, 'home-offer-card') === 1, 'se omiten categorías sin destino');
+check(substr_count($with_invalid_card, 'home-offer-card') === 5, 'las categorías sin enlace usan su destino predeterminado');
+check(strpos($with_invalid_card, 'https://example.test/formacion/maestrias/') !== false, 'maestrías conserva su ruta predeterminada');
 unset($GLOBALS['cards']);
 
 $front = file_get_contents($root . '/front-page.php');
