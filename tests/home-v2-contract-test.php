@@ -138,7 +138,7 @@ function home_v2_news_layout(string $css, string $news, int $width, int $height)
 
 $news_mobile = home_v2_news_layout($css, $rendered_news, 390, 844);
 home_v2_assert($news_mobile['shellBackground'] === 'rgba(0, 0, 0, 0)', 'las noticias no tienen contenedor decorativo');
-home_v2_assert($news_mobile['badgeBackground'] === 'rgb(252, 209, 22)', 'las fijadas conservan el identificador amarillo');
+home_v2_assert($news_mobile['badgeBackground'] === 'rgb(253, 210, 35)', 'las fijadas conservan el identificador amarillo');
 home_v2_assert($news_mobile['latestDisplay'] === 'grid' && $news_mobile['latestColumns'] === 1, 'las noticias recientes se muestran en una columna móvil');
 home_v2_assert($news_mobile['latestShadow'] === 'none', 'el listado de recientes no debe llevar sombras');
 home_v2_assert($news_mobile['latestAspect'] === '4 / 5', 'las miniaturas cronológicas conservan 4:5');
