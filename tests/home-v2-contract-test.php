@@ -51,7 +51,7 @@ home_v2_assert(strpos($rendered_news, 'data-home-news-next') === false && strpos
 home_v2_assert(strpos($rendered_news, '>Actualidad<') === false, 'la portada renderizada no debe mostrar el supratítulo Actualidad');
 home_v2_assert(strpos($rendered_news, '>Novedades</h2>') !== false, 'Novedades debe conservarse como encabezado principal');
 home_v2_assert(strpos($rendered_news, '<h3>Destacados</h3>') !== false, 'las noticias fijadas deben identificarse como Destacados');
-home_v2_assert(preg_match('/news-card--featured.*?news-badge[^>]*>Destacada<.*?<p>Resumen de prueba<\/p>/s', $rendered_news) === 1, 'cada noticia destacada debe mostrar su sello y resumen');
+home_v2_assert(preg_match('/news-card--featured.*?news-badge[^>]*>Noticia fijada<.*?<p>Resumen de prueba<\/p>/s', $rendered_news) === 1, 'cada noticia destacada debe mostrar su sello y resumen');
 home_v2_assert(preg_match('/news-card--latest.*?<\/article>/s', $rendered_news, $latest_card) === 1 && strpos($latest_card[0], '<p>') === false, 'las últimas noticias deben ser compactas y no mostrar resumen');
 $news_position = strpos($rendered_sections, 'data-section-key="novedades"');
 $offer_position = strpos($rendered_sections, 'data-section-key="posgrados"');
@@ -120,7 +120,7 @@ function home_v2_news_layout(string $css, string $news, int $width, int $height)
         . 'featuredWidth:Math.round(featured.getBoundingClientRect().width),trackWidth:Math.round(track.getBoundingClientRect().width),'
         . 'display:getComputedStyle(track).display,trackOverflow:track.scrollWidth>track.clientWidth,leadColumns:getComputedStyle(featured).gridTemplateColumns.split(" ").length,cards:Array.from(track.children).map(c=>{const r=c.getBoundingClientRect(),i=c.querySelector(".flacso-home-v2__news-image").getBoundingClientRect(),b=c.querySelector(".flacso-home-v2__news-body");return {x:r.x,y:r.y,width:r.width,height:r.height,imageWidth:i.width,imageHeight:i.height,bodyWidth:b.clientWidth,bodyScroll:b.scrollHeight,bodyHeight:b.clientHeight}}),'
         . 'latestWidth:Math.round(latest.getBoundingClientRect().width),latestImageWidth:Math.round(latestImage.getBoundingClientRect().width),'
-        . 'latestTitleSize:parseFloat(getComputedStyle(latest.querySelector("h4")).fontSize),'
+        . 'latestTitleSize:parseFloat(getComputedStyle(latest.querySelector("h4")).fontSize),leadBackground:getComputedStyle(featured).backgroundColor,leadImageWidth:Math.round(featuredImage.getBoundingClientRect().width),'
         . 'overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth});</script></body></html>';
     $html = home_v2_exact_viewport($html, $width, $height);
     $temporary = tempnam(sys_get_temp_dir(), 'flacso-home-v2-news-');
@@ -143,8 +143,13 @@ home_v2_assert($news_mobile['latestDisplay'] === 'grid' && $news_mobile['latestC
 home_v2_assert($news_mobile['latestShadow'] === 'none', 'el listado de recientes no debe llevar sombras');
 home_v2_assert($news_mobile['latestAspect'] === '4 / 5', 'las miniaturas cronológicas conservan 4:5');
 home_v2_assert($news_mobile['latestImageWidth'] < $news_mobile['latestWidth'] * .45, 'las miniaturas quedan a la izquierda');
-home_v2_assert($news_mobile['display'] === 'grid' && $news_mobile['leadColumns'] === 1, 'el destacado principal ocupa todo el ancho móvil');
+home_v2_assert($news_mobile['display'] === 'grid' && $news_mobile['leadColumns'] === 2, 'el destacado muestra texto y afiche en dos columnas móviles');
 home_v2_assert($news_mobile['trackOverflow'] === false && $news_mobile['overflow'] === false, 'el móvil no tiene carrusel ni desbordamiento horizontal');
+home_v2_assert($news_mobile['leadBackground'] === 'rgb(32, 63, 107)', 'la noticia principal tiene tratamiento editorial azul en móvil');
+home_v2_assert($news_mobile['leadImageWidth'] < $news_mobile['cards'][0]['width'] * .4, 'el afiche no debe desplazar el titular móvil');
+home_v2_assert(strpos($template, '<nav class="flacso-home-v2__links"') !== false, 'los accesos se presentan como navegación');
+home_v2_assert(substr_count($template, 'flacso-home-v2__link-arrow') === 3, 'los tres accesos incluyen indicador visible');
+home_v2_assert(strpos($css, '.flacso-home-v2__section--quienes .flacso-quienes-text p:not(:first-child) { display: none; }') !== false, 'la introducción institucional móvil es un resumen');
 
 foreach ([320, 360, 390, 768, 901, 1151, 1440, 1920] as $width) {
     $layout = home_v2_news_layout($css, $rendered_news, $width, 1100);
