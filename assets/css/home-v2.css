@@ -14,16 +14,19 @@
 .flacso-home-v2__cta { background: #fcd116; border-radius: 999px; color: #17365d; display: inline-block; font-weight: 700; padding: 15px 24px; text-decoration: none; }
 .flacso-home-v2__cta--secondary { background: transparent; border: 1px solid rgba(255,255,255,.8); color: #fff; }
 .flacso-home-v2__links { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 30px 0 48px; }
-.flacso-home-v2__links a { border: 1px solid #d8e1ea; border-radius: 18px; display: grid; gap: 8px; padding: 24px; text-decoration: none; }
-.flacso-home-v2__links strong { color: #17365d; font-size: 1.25rem; }
-.flacso-home-v2__links span { color: #536579; }
+.flacso-home-v2__links a { position: relative; min-width: 0; min-height: 108px; box-sizing: border-box; border: 1px solid #d8e1ea; border-radius: 18px; display: grid; grid-template-columns: 32px minmax(0, 1fr) 18px; grid-template-rows: auto auto; align-content: center; align-items: center; column-gap: 14px; row-gap: 4px; padding: 20px; text-decoration: none; transition: border-color .2s, background .2s; }
+.flacso-home-v2__links a:hover, .flacso-home-v2__links a:focus-visible { border-color: #7797bc; background: #f5f8fc; }
+.flacso-home-v2__links a svg { grid-row: 1 / 3; grid-column: 1; color: #17365d; width: 30px; height: 30px; }
+.flacso-home-v2__links strong { grid-row: 1; grid-column: 2; color: #17365d; font-size: 1.05rem; font-weight: 750; }
+.flacso-home-v2__links a > span:not(.flacso-home-v2__link-arrow) { grid-row: 2; grid-column: 2; color: #536579; font-size: .86rem; line-height: 1.4; }
+.flacso-home-v2__links a > .flacso-home-v2__link-arrow { grid-column: 3; grid-row: 1 / 3; color: #17365d; font-size: 1.2rem; }
 .flacso-home-v2__section { width: min(100% - 40px, 1180px); margin: 0 auto; }
 .flacso-home-v2__section > * { margin-left: 0; margin-right: 0; }
 .flacso-home-v2 svg { width: 1.25rem; height: 1.25rem; display: block; flex: 0 0 auto; }
 /* Actualidad: noticia editorial principal y lista de fijadas sin carrusel. */
 .flacso-home-v2__featured-news { padding: 12px 0 56px; }
 .flacso-home-v2__section-heading { margin-bottom: 20px; }
-.flacso-home-v2__section-heading h2 { color: #17365d; font-size: clamp(1.8rem, 3vw, 2.6rem); margin: 0; line-height: 1.15; }
+.flacso-home-v2__section-heading h2 { color: #17365d; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 750; letter-spacing: -.03em; margin: 0; line-height: 1.15; }
 .flacso-home-v2__bento-shell { margin-bottom: 32px; min-width: 0; }
 .flacso-home-v2__bento-heading { margin-bottom: 14px; }
 .flacso-home-v2__bento-heading h3 { color: #17365d; font-size: 1.05rem; margin: 0; }
@@ -50,7 +53,7 @@
 .flacso-home-v2__news-card--featured:not(.flacso-home-v2__news-card--lead) .flacso-home-v2__news-image { width: 104px; }
 .flacso-home-v2__news-card--featured:not(.flacso-home-v2__news-card--lead) .flacso-home-v2__news-body { padding: 13px 14px; justify-content: center; gap: 6px; }
 .flacso-home-v2__news-card--featured:not(.flacso-home-v2__news-card--lead) h4 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; font-size: .96rem; }
-.flacso-home-v2__news-card--featured:not(.flacso-home-v2__news-card--lead) .flacso-home-v2__news-badge { padding: 5px 7px; font-size: .62rem; }
+.flacso-home-v2__news-card--featured:not(.flacso-home-v2__news-card--lead) .flacso-home-v2__news-badge { padding: 5px 8px; font-size: .62rem; background: #eaf0f8; color: #17365d; }
 .flacso-home-v2__latest-news > h3 { border-bottom: 1px solid #dbe4ed; margin-bottom: 4px; padding-bottom: 14px; color: #17365d; font-size: 1.12rem; }
 .flacso-home-v2__latest-grid { display: grid; grid-template-columns: 1fr; gap: 0; }
 .flacso-home-v2__news-card--latest { border: 0; border-bottom: 1px solid #dbe4ed; border-radius: 0; box-shadow: none; display: grid; gap: 0; grid-template-columns: 104px minmax(0, 1fr); padding: 15px 0; }
@@ -179,15 +182,16 @@
     .flacso-home-v2__hero { min-height: 300px; }
     .flacso-home-v2__inner { padding: 40px 0; }
     .flacso-home-v2 h1 { font-size: clamp(2rem, 7.8vw, 2.6rem); line-height: 1.12; letter-spacing: -.025em; margin-bottom: 18px; }
-    .flacso-home-v2 h1.flacso-home-v2__title--slogan { font-size: clamp(1.5rem, 6.5vw, 2.2rem); line-height: 1.2; }
+    .flacso-home-v2 h1.flacso-home-v2__title--slogan { font-size: clamp(1.78rem, 7.7vw, 2.25rem); font-weight: 750; line-height: 1.17; }
     .flacso-home-v2__description { font-size: 1rem; line-height: 1.5; margin: 0; }
     .flacso-home-v2__slogan { font-size: 1.05rem; line-height: 1.45; margin-bottom: 24px; }
     .flacso-home-v2__cta { min-height: 46px; box-sizing: border-box; font-size: .88rem; padding: 14px 20px; }
     .flacso-home-v2__links { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 18px 0 30px; }
-    .flacso-home-v2__links a { border-radius: 12px; gap: 8px; padding: 15px 8px; background: #f5f8fc; text-align: center; }
-    .flacso-home-v2__links strong { font-size: .85rem; }
-    .flacso-home-v2__links span { display: none; }
-    .flacso-home-v2__links a::after { content: '→'; color: #17365d; font-size: 1.1rem; }
+    .flacso-home-v2__links a { min-height: 102px; border-radius: 14px; display: flex; flex-direction: column; justify-content: center; gap: 7px; padding: 13px 5px; background: #f5f8fc; text-align: center; }
+    .flacso-home-v2__links a svg { width: 24px; height: 24px; flex: 0 0 auto; }
+    .flacso-home-v2__links strong { font-size: clamp(.82rem, 3.5vw, 1rem); line-height: 1.2; }
+    .flacso-home-v2__links a > span:not(.flacso-home-v2__link-arrow) { display: none; }
+    .flacso-home-v2__links a > .flacso-home-v2__link-arrow { display: block; line-height: 1; font-size: 1.02rem; }
     .flacso-home-v2__section-heading { margin-bottom: 18px; }
     .flacso-home-v2__section-heading h2 { font-size: 1.75rem; letter-spacing: -.025em; }
     .flacso-home-v2__featured-news { padding: 4px 0 30px; }
@@ -195,11 +199,17 @@
     .flacso-home-v2__bento-heading { margin-bottom: 14px; }
     .flacso-home-v2__bento-heading h3 { font-size: .94rem; }
     .flacso-home-v2__bento-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
-    .flacso-home-v2__news-card--lead { grid-template-columns: minmax(0, 1fr); }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-image { min-height: 220px; padding: 12px; }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-image img { width: min(100%, 205px); }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-body { padding: 20px; }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-body h4 { font-size: 1.25rem; }
+    /* El titular es la pieza principal: el afiche queda visible sin ocupar un bloque enorme. */
+    .flacso-home-v2__news-card--lead { display: grid; grid-template-columns: minmax(0, 1fr) 96px; grid-template-areas: "story poster"; align-items: start; gap: 12px; padding: 20px; background: #203f6b; border-color: #203f6b; min-height: 0; border-radius: 18px; }
+    .flacso-home-v2__news-card--lead .flacso-home-v2__news-image { grid-area: poster; width: 96px; min-height: 0; height: auto; aspect-ratio: 4 / 5; padding: 0; border-radius: 8px; overflow: hidden; background: #1a3665; }
+    .flacso-home-v2__news-card--lead .flacso-home-v2__news-image img { display: block; width: 100%; height: 100%; aspect-ratio: 4 / 5; object-fit: contain; }
+    .flacso-home-v2__news-card--lead .flacso-home-v2__news-body { grid-area: story; padding: 0; justify-content: start; gap: 8px; }
+    .flacso-home-v2__news-card--lead .flacso-home-v2__news-body h4 { font-size: clamp(1.06rem, 4.5vw, 1.2rem); line-height: 1.28; font-weight: 750; }
+    .flacso-home-v2__news-card--lead .flacso-home-v2__news-body h4 a { color: #fff; }
+    .flacso-home-v2__news-card--lead .flacso-home-v2__news-body time { color: #ccd9eb; }
+    .flacso-home-v2__news-card--lead .flacso-home-v2__news-body p { color: #e7edf7; font-size: .83rem; line-height: 1.45; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+    .flacso-home-v2__news-card--lead .flacso-home-v2__news-link { color: #fdd223; min-height: 24px; font-size: .84rem; }
+    .flacso-home-v2__news-card--lead .flacso-home-v2__news-badge { background: #fdd223; color: #17365d; font-size: .62rem; padding: 6px 8px; }
     .flacso-home-v2__news-card--featured:not(.flacso-home-v2__news-card--lead) { grid-template-columns: 94px minmax(0, 1fr); }
     .flacso-home-v2__news-card--featured:not(.flacso-home-v2__news-card--lead) .flacso-home-v2__news-image { width: 94px; }
     .flacso-home-v2__news-card--featured:not(.flacso-home-v2__news-card--lead) .flacso-home-v2__news-body { padding: 12px; }
@@ -217,6 +227,10 @@
     .flacso-home-v2__section--quienes .flacso-quienes-title { font-size: 1.85rem; line-height: 1.15; }
     .flacso-home-v2__section--quienes .flacso-quienes-text { font-size: 1rem; line-height: 1.65; text-align: left; }
     .flacso-home-v2__section--quienes .flacso-quienes-text p { text-align: left; }
+    /* La portada presenta un resumen: el texto completo continúa en «Conocer más». */
+    .flacso-home-v2__section--quienes .flacso-quienes-text p:first-child { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 6; overflow: hidden; }
+    .flacso-home-v2__section--quienes .flacso-quienes-text p:not(:first-child) { display: none; }
+    .flacso-home-v2__section--quienes .flacso-quienes-cta { margin-top: 18px; }
     .flacso-home-v2__section--contacto { padding: 16px 0 36px; }
     .flacso-home-v2__section--contacto .flacso-contacto-card { border-radius: 18px; padding: 24px 20px; gap: 16px; grid-template-columns: 44px minmax(0, 1fr); align-items: center; }
     .flacso-home-v2__section--contacto .flacso-contacto-icon { width: 44px; height: 44px; border-radius: 12px; }
@@ -224,4 +238,12 @@
     .flacso-home-v2__section--contacto .flacso-contacto-heading { font-size: 1.65rem; }
     .flacso-home-v2__section--contacto .flacso-contacto-subtitle { font-size: .9rem; }
     .flacso-home-v2__section--contacto .flacso-contacto-cta { grid-column: 1 / -1; min-height: 48px; font-size: .92rem; }
+}
+
+/* Pantallas muy estrechas: priorizar el titular y evitar tarjetas apretadas. */
+@media (max-width: 359px) {
+    .flacso-home-v2__news-card--lead { grid-template-columns: minmax(0, 1fr) 78px; gap: 10px; padding: 15px; }
+    .flacso-home-v2__news-card--lead .flacso-home-v2__news-image { width: 78px; }
+    .flacso-home-v2__news-card--lead .flacso-home-v2__news-body p { display: none; }
+    .flacso-home-v2__links strong { font-size: .78rem; }
 }
