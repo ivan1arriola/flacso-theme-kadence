@@ -242,7 +242,7 @@ function home_v2_quienes_layout(string $css, int $width, int $height): array {
         . 'cardHeight:Math.round(card.getBoundingClientRect().height),cardWidth:Math.round(card.getBoundingClientRect().width),'
         . 'sectionWidth:Math.round(document.querySelector(".flacso-home-v2__section").getBoundingClientRect().width),'
         . 'copyFont:parseFloat(getComputedStyle(text).fontSize),brandWidth:Math.round(brand.getBoundingClientRect().width),'
-        . 'copyWidth:Math.round(copy.getBoundingClientRect().width),paragraphs:Array.from(text.querySelectorAll('p')).map(p=>({display:getComputedStyle(p).display,clamp:getComputedStyle(p).webkitLineClamp,overflow:getComputedStyle(p).overflow,height:p.getBoundingClientRect().height}))});</script></body></html>';
+        . 'copyWidth:Math.round(copy.getBoundingClientRect().width),paragraphs:Array.from(text.querySelectorAll("p")).map(p=>({display:getComputedStyle(p).display,clamp:getComputedStyle(p).webkitLineClamp,overflow:getComputedStyle(p).overflow,height:p.getBoundingClientRect().height}))});</script></body></html>';
     $html = home_v2_exact_viewport($html, $width, $height);
     $temporary = tempnam(sys_get_temp_dir(), 'flacso-home-v2-quienes-');
     $path = $temporary === false ? false : $temporary . '.html';
