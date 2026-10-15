@@ -1,298 +1,84 @@
-.flacso-home-v2 { color: var(--global-palette3, #17365d); }
-.flacso-home-v2__hero { background: linear-gradient(110deg, #17365d, #255b8d); background-image: linear-gradient(110deg, rgba(23,54,93,.96), rgba(37,91,141,.78)), var(--flacso-home-v2-image, none); background-position: center; background-size: cover; color: #fff; min-height: 360px; display: grid; align-items: center; }
-.flacso-home-v2__inner, .flacso-home-v2__links { max-width: 1180px; width: min(100% - 40px, 1180px); margin: 0 auto; }
-.flacso-home-v2__inner { padding: 56px 0; }
-.flacso-home-v2__kicker { font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-.flacso-home-v2 h1 { max-width: 760px; color: inherit; font-size: clamp(2.25rem, 4.5vw, 3.5rem); line-height: 1.15; margin: 0 0 20px; }
-.flacso-home-v2 h1.flacso-home-v2__title--slogan { max-width: 1000px; text-wrap: balance; }
-.flacso-home-v2__title--slogan span { display: block; }
-.flacso-home-v2__title--slogan span:last-child { color: #fdd223; }
-.flacso-home-v2__slogan { max-width: 680px; color: #fdd223; font-size: clamp(1.15rem, 1.8vw, 1.35rem); font-weight: 750; line-height: 1.4; margin: 0 0 2rem; text-wrap: balance; }
-.flacso-home-v2__description { max-width: 650px; font-size: clamp(1.1rem, 2vw, 1.45rem); }
-.flacso-home-v2__actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
-.flacso-home-v2__slogan + .flacso-home-v2__actions { margin-top: 0; }
-.flacso-home-v2__cta { background: #fcd116; border-radius: 999px; color: #17365d; display: inline-block; font-weight: 700; padding: 15px 24px; text-decoration: none; }
-.flacso-home-v2__cta--secondary { background: transparent; border: 1px solid rgba(255,255,255,.8); color: #fff; }
-.flacso-home-v2__links { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 30px 0 48px; }
-.flacso-home-v2__links a { position: relative; min-width: 0; min-height: 108px; box-sizing: border-box; border: 1px solid #d8e1ea; border-radius: 18px; display: grid; grid-template-columns: 32px minmax(0, 1fr) 18px; grid-template-rows: auto auto; align-content: center; align-items: center; column-gap: 14px; row-gap: 4px; padding: 20px; text-decoration: none; transition: border-color .2s, background .2s; }
-.flacso-home-v2__links a:hover, .flacso-home-v2__links a:focus-visible { border-color: #7797bc; background: #f5f8fc; }
-.flacso-home-v2__links a svg { grid-row: 1 / 3; grid-column: 1; color: #17365d; width: 30px; height: 30px; }
-.flacso-home-v2__links strong { grid-row: 1; grid-column: 2; color: #17365d; font-size: 1.05rem; font-weight: 750; }
-.flacso-home-v2__links a > span:not(.flacso-home-v2__link-arrow) { grid-row: 2; grid-column: 2; color: #536579; font-size: .86rem; line-height: 1.4; }
-.flacso-home-v2__links a > .flacso-home-v2__link-arrow { grid-column: 3; grid-row: 1 / 3; color: #17365d; font-size: 1.2rem; }
-.flacso-home-v2__section { width: min(100% - 40px, 1180px); margin: 0 auto; }
-.flacso-home-v2__section > * { margin-left: 0; margin-right: 0; }
-.flacso-home-v2 svg { width: 1.25rem; height: 1.25rem; display: block; flex: 0 0 auto; }
-/* Actualidad: noticia editorial principal y lista de fijadas sin carrusel. */
-.flacso-home-v2__featured-news { padding: 12px 0 56px; }
-.flacso-home-v2__section-heading { margin-bottom: 20px; }
-.flacso-home-v2__section-heading h2 { color: #17365d; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 750; letter-spacing: -.03em; margin: 0; line-height: 1.15; }
-.flacso-home-v2__bento-shell { margin-bottom: 32px; min-width: 0; }
-.flacso-home-v2__bento-heading { margin-bottom: 14px; }
-.flacso-home-v2__bento-heading h3 { color: #17365d; font-size: 1.05rem; margin: 0; }
-.flacso-home-v2__bento-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; overflow: visible; }
-.flacso-home-v2__news-card { background: #fff; border: 1px solid #dbe4ed; border-radius: 16px; box-shadow: 0 7px 24px rgba(13,30,60,.065); display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
-.flacso-home-v2__news-card--lead { display: grid; grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr); border-radius: 20px; box-shadow: 0 14px 34px rgba(13,30,60,.1); }
-.flacso-home-v2__news-image { background: #dce8f2; display: block; aspect-ratio: 4 / 5; overflow: hidden; }
-.flacso-home-v2__news-image img { display: block; height: 100%; width: 100%; object-fit: cover; }
-.flacso-home-v2__news-image > span { display: block; width: 100%; height: 100%; }
-.flacso-home-v2__news-card--lead .flacso-home-v2__news-image { background: #0d254c; display: grid; place-items: center; aspect-ratio: auto; min-height: 235px; padding: 14px; box-sizing: border-box; }
-.flacso-home-v2__news-card--lead .flacso-home-v2__news-image img { width: min(100%, 235px); height: auto; aspect-ratio: 4 / 5; object-fit: contain; }
-.flacso-home-v2__news-body { display: flex; flex: 1; flex-direction: column; gap: 8px; padding: 16px; min-width: 0; }
-.flacso-home-v2__news-card--lead .flacso-home-v2__news-body { justify-content: center; gap: 12px; padding: clamp(20px, 3vw, 36px); }
-.flacso-home-v2__news-badge { align-self: flex-start; border-radius: 999px; background: #fcd116; color: #17365d; display: inline-flex; font-size: .7rem; font-weight: 800; letter-spacing: .04em; line-height: 1; padding: 7px 10px; text-transform: uppercase; }
-.flacso-home-v2__news-body time { color: #718398; font-size: .78rem; }
-.flacso-home-v2__news-body h4 { font-size: 1.05rem; line-height: 1.3; margin: 0; overflow-wrap: anywhere; }
-.flacso-home-v2__news-body h4 a { color: #17365d; text-decoration: none; }
-.flacso-home-v2__news-body p { color: #536579; font-size: .94rem; line-height: 1.55; margin: 0; }
-.flacso-home-v2__news-link { color: #1d5d91; font-size: .85rem; font-weight: 800; margin-top: 4px; text-decoration: none; }
-.flacso-home-v2__news-link:hover, .flacso-home-v2__news-link:focus-visible,
-.flacso-home-v2__news-body h4 a:hover, .flacso-home-v2__news-body h4 a:focus-visible { text-decoration: underline; }
-.flacso-home-v2__news-card--lead h4 { font-size: clamp(1.25rem, 2.5vw, 1.8rem); line-height: 1.2; }
-.flacso-home-v2__news-card--featured:not(.flacso-home-v2__news-card--lead) { display: grid; grid-template-columns: 104px minmax(0, 1fr); border-radius: 14px; box-shadow: none; }
-.flacso-home-v2__news-card--featured:not(.flacso-home-v2__news-card--lead) .flacso-home-v2__news-image { width: 104px; }
-.flacso-home-v2__news-card--featured:not(.flacso-home-v2__news-card--lead) .flacso-home-v2__news-body { padding: 13px 14px; justify-content: center; gap: 6px; }
-.flacso-home-v2__news-card--featured:not(.flacso-home-v2__news-card--lead) h4 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; font-size: .96rem; }
-.flacso-home-v2__news-card--featured:not(.flacso-home-v2__news-card--lead) .flacso-home-v2__news-badge { padding: 5px 8px; font-size: .62rem; background: #eaf0f8; color: #17365d; }
-.flacso-home-v2__latest-news > h3 { border-bottom: 1px solid #dbe4ed; margin-bottom: 4px; padding-bottom: 14px; color: #17365d; font-size: 1.12rem; }
-.flacso-home-v2__latest-grid { display: grid; grid-template-columns: 1fr; gap: 0; }
-.flacso-home-v2__news-card--latest { border: 0; border-bottom: 1px solid #dbe4ed; border-radius: 0; box-shadow: none; display: grid; gap: 0; grid-template-columns: 104px minmax(0, 1fr); padding: 15px 0; }
-.flacso-home-v2__news-card--latest .flacso-home-v2__news-image { align-self: start; border-radius: 10px; width: 104px; }
-.flacso-home-v2__news-card--latest .flacso-home-v2__news-body { gap: 6px; padding: 2px 0 2px 14px; }
-.flacso-home-v2__news-card--latest .flacso-home-v2__news-body h4 { font-size: 1rem; line-height: 1.35; }
-.flacso-home-v2__all-news { border-bottom: 2px solid #fcd116; color: #17365d; display: inline-block; font-weight: 800; margin-top: 24px; padding-bottom: 4px; text-decoration: none; }
-.flacso-home-v2__all-news:hover, .flacso-home-v2__all-news:focus-visible { color: #1d5d91; }
-.flacso-home-v2__section--eventos { padding: 8px 0 48px; }
-
-@media (min-width: 761px) {
-    .flacso-home-v2__bento-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-    .flacso-home-v2__news-card--lead { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); min-height: 315px; }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-image { min-height: 315px; }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-image img { width: min(100%, 235px); }
-}
-
-/* Institucional: tarjeta compacta y legible en la portada nueva. */
-.flacso-home-v2__section--quienes { padding: 42px 0 64px; }
-.flacso-home-v2__section--quienes .flacso-quienes-section,
-.flacso-home-v2__section--quienes .flacso-content-shell { margin: 0; max-width: none; padding: 0; width: 100%; }
-.flacso-home-v2__section--quienes .flacso-quienes-card { background: #fff; border: 1px solid #dbe4ed; border-radius: 24px; box-shadow: 0 18px 48px rgba(13,30,60,.1); display: grid; grid-template-columns: 1fr; margin-inline: auto; max-width: 1080px; overflow: hidden; }
-.flacso-home-v2__section--quienes .flacso-quienes-card::after,
-.flacso-home-v2__section--quienes .flacso-quienes-brand::before,
-.flacso-home-v2__section--quienes .flacso-quienes-brand::after { content: none; display: none; }
-.flacso-home-v2__section--quienes .flacso-quienes-brand { align-items: center; background: #17365d; color: #fff; display: grid; gap: 18px; grid-template-columns: 88px minmax(0, 1fr); min-height: 0; overflow: hidden; padding: 20px; position: relative; text-align: left; }
-.flacso-home-v2__section--quienes .flacso-quienes-brand__orb { background: var(--flacso-quienes-accent, #fcd116); border-radius: 999px; height: 10px; position: absolute; right: 20px; top: 20px; width: 10px; }
-.flacso-home-v2__section--quienes .flacso-quienes-brand__logo { align-items: center; aspect-ratio: 1; background: transparent; border: 0; border-radius: 0; box-shadow: none; display: flex; padding: 0; width: 88px; }
-.flacso-home-v2__section--quienes .flacso-quienes-brand__logo img { display: block; filter: brightness(0) invert(1); height: auto; max-height: 88px; object-fit: contain; width: 100%; }
-.flacso-home-v2__section--quienes .flacso-quienes-brand__name { color: rgba(255,255,255,.86); font-size: .72rem; font-weight: 750; letter-spacing: .08em; line-height: 1.45; margin: 0; max-width: 26ch; text-transform: uppercase; }
-.flacso-home-v2__section--quienes .flacso-quienes-copy { display: block; padding: 26px 22px 28px; }
-.flacso-home-v2__section--quienes .flacso-quienes-title { color: #17365d; font-size: clamp(1.85rem, 9vw, 2.45rem); letter-spacing: -.035em; line-height: 1.08; margin: 0; max-width: 18ch; text-align: left; }
-.flacso-home-v2__section--quienes .flacso-quienes-title::after { background: linear-gradient(90deg, #fcd116 0 62%, #248138 62%); border-radius: 999px; content: ""; display: block; height: 4px; margin-top: 16px; width: 68px; }
-.flacso-home-v2__section--quienes .flacso-quienes-text { color: #43546a; font-size: 1.0625rem; line-height: 1.65; margin-top: 20px; max-width: 68ch; text-align: left; }
-.flacso-home-v2__section--quienes .flacso-quienes-text p { margin: 0; }
-.flacso-home-v2__section--quienes .flacso-quienes-text p + p { margin-top: 15px; }
-.flacso-home-v2__section--quienes .flacso-quienes-text strong { color: #1d2d43; }
-.flacso-home-v2__section--quienes .flacso-quienes-cta { align-items: center; background: #17365d; border: 1px solid #17365d; border-radius: 999px; box-shadow: none; color: #fff; display: inline-flex; font-size: .92rem; font-weight: 800; gap: 10px; justify-content: center; margin-top: 24px; min-height: 50px; padding: 12px 20px; text-decoration: none; width: 100%; }
-.flacso-home-v2__section--quienes .flacso-quienes-cta:hover,
-.flacso-home-v2__section--quienes .flacso-quienes-cta:focus-visible { background: #248138; border-color: #248138; color: #fff; transform: none; }
-
-/* Oferta educativa: mosaico editorial mobile-first. */
-.flacso-home-v2__section--posgrados { padding: 16px 0 64px; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico,
-.flacso-home-v2__section--posgrados .flacso-content-shell { margin: 0; max-width: none; padding: 0; width: 100%; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__header { display: grid; gap: 12px; margin: 0 0 24px; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__header h2 { color: #17365d; font-size: clamp(2rem, 9vw, 2.8rem); letter-spacing: -.04em; line-height: 1.05; margin: 0; max-width: 13ch; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__header h2::after { background: linear-gradient(90deg, #fcd116 0 62%, #248138 62%); border-radius: 999px; content: ""; display: block; height: 4px; margin-top: 15px; width: 68px; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__intro { color: #526378; font-size: .98rem; line-height: 1.6; max-width: 66ch; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__intro p { margin: 0; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__card,
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__card:nth-child(n) { aspect-ratio: auto; background: #17365d; border: 0; border-radius: 20px; box-shadow: 0 12px 30px rgba(13,30,60,.12); color: #fff; display: grid; grid-column: auto; grid-row: auto; min-height: 240px; overflow: hidden; position: relative; text-decoration: none; width: 100%; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__card.flacso-oferta-mosaico__card--featured { min-height: 320px; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__media { inset: 0; min-height: 0; overflow: hidden; position: absolute; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__media::after { background: linear-gradient(180deg, rgba(10,31,61,.08) 15%, rgba(10,31,61,.88) 100%); content: ""; inset: 0; position: absolute; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__media img { height: 100%; object-fit: cover; transition: transform .3s ease; width: 100%; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__content { align-self: end; display: flex; flex-direction: column; min-height: 100%; padding: 22px; position: relative; z-index: 1; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__content h3 { color: #fff; font-size: clamp(1.35rem, 6vw, 1.8rem); line-height: 1.12; margin: auto 0 8px; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__description { color: rgba(255,255,255,.86); font-size: .86rem; line-height: 1.45; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__description p { margin: 0; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__link { color: #fff; font-size: .82rem; font-weight: 800; margin-top: 15px; }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__card:hover,
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__card:focus-visible { box-shadow: 0 18px 38px rgba(13,30,60,.18); color: #fff; transform: translateY(-2px); }
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__card:hover .flacso-oferta-mosaico__media img,
-.flacso-home-v2__section--posgrados .flacso-oferta-mosaico__card:focus-visible .flacso-oferta-mosaico__media img { transform: scale(1.025); }
-
-/* Contacto: cierre de servicio visible antes del pie. */
-.flacso-home-v2__section--contacto { padding: 28px 0 64px; }
-.flacso-home-v2__section--contacto .flacso-contacto-section,
-.flacso-home-v2__section--contacto .flacso-contacto-content { background: transparent; border: 0; box-shadow: none; margin: 0; max-width: none; overflow: visible; padding: 0; width: 100%; }
-.flacso-home-v2__section--contacto .flacso-contacto-section::before { content: none; display: none; }
-.flacso-home-v2__section--contacto .flacso-contacto-card { align-items: start; background: #17365d; border-radius: 24px; box-shadow: 0 18px 45px rgba(13,30,60,.16); color: #fff; display: grid; gap: 20px; grid-template-columns: 1fr; overflow: hidden; padding: 32px 26px; position: relative; }
-.flacso-home-v2__section--contacto .flacso-contacto-card::after { background: radial-gradient(circle, rgba(252,209,22,.2) 0 8%, transparent 9%); background-size: 28px 28px; content: ""; height: 150px; opacity: .55; pointer-events: none; position: absolute; right: -24px; top: -30px; width: 150px; }
-.flacso-home-v2__section--contacto .flacso-contacto-icon { align-items: center; background: rgba(255,255,255,.1); border-radius: 18px; color: #fcd116; display: flex; height: 58px; justify-content: center; width: 58px; }
-.flacso-home-v2__section--contacto .flacso-contacto-icon svg { fill: none; height: 28px; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; width: 28px; }
-.flacso-home-v2__section--contacto .flacso-contacto-copy { min-width: 0; position: relative; z-index: 1; }
-.flacso-home-v2__section--contacto .flacso-contacto-heading { color: #fff; font-size: clamp(2rem, 9vw, 2.8rem); letter-spacing: -.04em; line-height: 1.05; margin: 0 0 8px; }
-.flacso-home-v2__section--contacto .flacso-contacto-heading::after { content: none; display: none; }
-.flacso-home-v2__section--contacto .flacso-contacto-subtitle { color: rgba(255,255,255,.82); font-size: 1rem; line-height: 1.5; margin: 0; max-width: 50ch; }
-.flacso-home-v2__section--contacto .flacso-contacto-cta { align-items: center; background: #fcd116; border: 1px solid #fcd116; border-radius: 999px; color: #17365d; display: inline-flex; font-size: .96rem; font-weight: 800; gap: 10px; justify-content: center; min-height: 56px; padding: 14px 24px; position: relative; text-decoration: none; width: 100%; z-index: 1; }
-.flacso-home-v2__section--contacto .flacso-contacto-cta:hover,
-.flacso-home-v2__section--contacto .flacso-contacto-cta:focus-visible { background: #fff; border-color: #fff; color: #17365d; transform: none; }
-
-@media (min-width: 521px) {
-}
-@media (min-width: 640px) {
-    .flacso-home-v2__section--posgrados .flacso-oferta-mosaico__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .flacso-home-v2__section--posgrados .flacso-oferta-mosaico__card.flacso-oferta-mosaico__card--featured { grid-column: 1 / -1; min-height: 360px; }
-}
-@media (min-width: 761px) {
-    .flacso-home-v2__hero { min-height: 400px; }
-    .flacso-home-v2__inner { padding: 80px 0; }
-    .flacso-home-v2__links { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; padding: 42px 0 70px; }
-    .flacso-home-v2__latest-grid { column-gap: 28px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .flacso-home-v2__news-card--latest { grid-template-columns: 128px minmax(0, 1fr); padding: 20px 0; }
-    .flacso-home-v2__news-card--latest .flacso-home-v2__news-image { width: 128px; }
-    .flacso-home-v2__news-card--latest .flacso-home-v2__news-body { padding-left: 18px; }
-    .flacso-home-v2__news-card--latest .flacso-home-v2__news-body h4 { font-size: 1.08rem; }
-    .flacso-home-v2__section--quienes { padding: 52px 0 76px; }
-    .flacso-home-v2__section--quienes .flacso-quienes-card { grid-template-columns: minmax(220px, .56fr) minmax(0, 1.55fr); }
-    .flacso-home-v2__section--quienes .flacso-quienes-brand { align-content: center; display: flex; flex-direction: column; gap: 24px; justify-content: center; padding: 48px 36px; text-align: center; }
-    .flacso-home-v2__section--quienes .flacso-quienes-brand__orb { right: 28px; top: 28px; }
-    .flacso-home-v2__section--quienes .flacso-quienes-brand__logo { width: min(180px, 100%); }
-    .flacso-home-v2__section--quienes .flacso-quienes-brand__logo img { max-height: 180px; }
-    .flacso-home-v2__section--quienes .flacso-quienes-brand__name { text-align: center; }
-    .flacso-home-v2__section--quienes .flacso-quienes-copy { padding: clamp(42px, 5vw, 68px); }
-    .flacso-home-v2__section--quienes .flacso-quienes-title { font-size: clamp(2.4rem, 4vw, 3.35rem); }
-    .flacso-home-v2__section--quienes .flacso-quienes-cta { width: fit-content; }
-    .flacso-home-v2__section--posgrados { padding: 32px 0 80px; }
-    .flacso-home-v2__section--posgrados .flacso-oferta-mosaico__header { align-items: center; gap: 24px; grid-template-columns: minmax(230px, .7fr) minmax(0, 1.3fr); margin-bottom: 30px; }
-    .flacso-home-v2__section--posgrados .flacso-oferta-mosaico__header h2 { font-size: clamp(2.5rem, 4vw, 3.5rem); }
-    .flacso-home-v2__section--contacto { padding: 36px 0 80px; }
-    .flacso-home-v2__section--contacto .flacso-contacto-card { align-items: center; gap: 26px; grid-template-columns: 64px minmax(0, 1fr) auto; min-height: 140px; padding: 36px 38px; }
-    .flacso-home-v2__section--contacto .flacso-contacto-cta { width: auto; }
-}
-@media (min-width: 960px) {
-    .flacso-home-v2__section--posgrados .flacso-oferta-mosaico__grid { grid-auto-rows: 240px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .flacso-home-v2__section--posgrados .flacso-oferta-mosaico__card,
-    .flacso-home-v2__section--posgrados .flacso-oferta-mosaico__card:nth-child(n) { min-height: 240px; }
-    .flacso-home-v2__section--posgrados .flacso-oferta-mosaico__card.flacso-oferta-mosaico__card--featured { grid-column: auto; grid-row: span 2; }
-}
-
-/* Portada móvil: ritmo editorial y accesos compactos. */
-@media (max-width: 760px) {
-    .flacso-home-v2__hero { min-height: 0; }
-    .flacso-home-v2__inner { padding: 26px 0 28px; }
-    .flacso-home-v2 h1 { font-size: clamp(2rem, 7.8vw, 2.6rem); line-height: 1.12; letter-spacing: -.025em; margin-bottom: 12px; }
-    .flacso-home-v2 h1.flacso-home-v2__title--slogan { font-size: clamp(1.78rem, 7.7vw, 2.25rem); font-weight: 750; line-height: 1.17; }
-    .flacso-home-v2__description { font-size: 1rem; line-height: 1.45; margin: 0; }
-    .flacso-home-v2__actions { margin-top: 18px; gap: 10px; }
-    .flacso-home-v2__kicker { margin-bottom: 10px; }
-    .flacso-home-v2__slogan { font-size: 1.05rem; line-height: 1.45; margin-bottom: 24px; }
-    .flacso-home-v2__cta { min-height: 46px; box-sizing: border-box; font-size: .88rem; padding: 14px 20px; }
-    .flacso-home-v2__links { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 12px 0 14px; }
-    .flacso-home-v2__links a { min-height: 80px; border-radius: 14px; display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 10px 5px; background: #f5f8fc; text-align: center; }
-    .flacso-home-v2__links a svg { width: 23px; height: 23px; flex: 0 0 auto; }
-    .flacso-home-v2__links strong { font-size: clamp(.82rem, 3.5vw, 1rem); line-height: 1.2; }
-    .flacso-home-v2__links a > span:not(.flacso-home-v2__link-arrow) { display: none; }
-    .flacso-home-v2__links a > .flacso-home-v2__link-arrow { display: block; line-height: 1; font-size: 1.02rem; }
-    .flacso-home-v2__section-heading { margin-bottom: 12px; }
-    .flacso-home-v2__section-heading h2 { font-size: 1.75rem; letter-spacing: -.025em; }
-    .flacso-home-v2__featured-news { padding: 4px 0 30px; }
-    .flacso-home-v2__bento-shell { margin-bottom: 26px; }
-    .flacso-home-v2__bento-heading { margin-bottom: 8px; }
-    .flacso-home-v2__bento-heading h3 { font-size: .94rem; }
-    .flacso-home-v2__bento-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
-    /* El titular es la pieza principal: el afiche queda visible sin ocupar un bloque enorme. */
-    .flacso-home-v2__news-card--lead { display: grid; grid-template-columns: minmax(0, 1fr) 96px; grid-template-areas: "story poster"; align-items: start; gap: 12px; padding: 20px; background: #203f6b; border-color: #203f6b; min-height: 0; border-radius: 18px; }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-image { grid-area: poster; width: 96px; min-height: 0; height: auto; aspect-ratio: 4 / 5; padding: 0; border-radius: 8px; overflow: hidden; background: #1a3665; }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-image img { display: block; width: 100%; height: 100%; aspect-ratio: 4 / 5; object-fit: contain; }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-body { grid-area: story; padding: 0; justify-content: start; gap: 8px; }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-body h4 { font-size: clamp(1.06rem, 4.5vw, 1.2rem); line-height: 1.28; font-weight: 750; }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-body h4 a { color: #fff; }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-body time { color: #ccd9eb; }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-body p { color: #e7edf7; font-size: .83rem; line-height: 1.45; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-link { color: #fdd223; min-height: 24px; font-size: .84rem; }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-badge { background: #fdd223; color: #17365d; font-size: .62rem; padding: 6px 8px; }
-    .flacso-home-v2__news-card--featured:not(.flacso-home-v2__news-card--lead) { grid-template-columns: 94px minmax(0, 1fr); }
-    .flacso-home-v2__news-card--featured:not(.flacso-home-v2__news-card--lead) .flacso-home-v2__news-image { width: 94px; }
-    .flacso-home-v2__news-card--featured:not(.flacso-home-v2__news-card--lead) .flacso-home-v2__news-body { padding: 12px; }
-    .flacso-home-v2__latest-news > h3 { font-size: 1.08rem; margin-bottom: 8px; }
-    .flacso-home-v2__news-card--latest { grid-template-columns: 84px minmax(0, 1fr); padding: 16px 0; }
-    .flacso-home-v2__news-card--latest .flacso-home-v2__news-image { width: 84px; border-radius: 9px; }
-    .flacso-home-v2__news-card--latest .flacso-home-v2__news-body { padding-left: 14px; gap: 7px; }
-    .flacso-home-v2__news-card--latest .flacso-home-v2__news-body h4 { font-size: .96rem; line-height: 1.4; }
-    .flacso-home-v2__news-card--latest .flacso-home-v2__news-link { min-height: 28px; display: inline-flex; align-items: center; }
-    .flacso-home-v2__section--quienes { padding: 12px 0 30px; }
-    .flacso-home-v2__section--quienes .flacso-quienes-card { border-radius: 18px; box-shadow: 0 8px 24px rgba(13,30,60,.07); }
-    .flacso-home-v2__section--quienes .flacso-quienes-brand { grid-template-columns: 54px minmax(0, 1fr); padding: 16px 20px; gap: 16px; }
-    .flacso-home-v2__section--quienes .flacso-quienes-brand__logo { width: 54px; }
-    .flacso-home-v2__section--quienes .flacso-quienes-copy { padding: 24px 20px; }
-    .flacso-home-v2__section--quienes .flacso-quienes-title { font-size: 1.85rem; line-height: 1.15; }
-    .flacso-home-v2__section--quienes .flacso-quienes-text { font-size: 1rem; line-height: 1.65; text-align: left; }
-    .flacso-home-v2__section--quienes .flacso-quienes-text p { text-align: left; }
-    /* Los párrafos institucionales se muestran completos, sin corte ni ocultación. */
-    .flacso-home-v2__section--quienes .flacso-quienes-text p { display: block; overflow: visible; -webkit-line-clamp: unset; -webkit-box-orient: unset; }
-    .flacso-home-v2__section--quienes .flacso-quienes-text p + p { margin-top: 12px; }
-    .flacso-home-v2__section--quienes .flacso-quienes-cta { margin-top: 18px; }
-    .flacso-home-v2__section--contacto { padding: 16px 0 36px; }
-    .flacso-home-v2__section--contacto .flacso-contacto-card { border-radius: 18px; padding: 24px 20px; gap: 16px; grid-template-columns: 44px minmax(0, 1fr); align-items: center; }
-    .flacso-home-v2__section--contacto .flacso-contacto-icon { width: 44px; height: 44px; border-radius: 12px; }
-    .flacso-home-v2__section--contacto .flacso-contacto-copy { text-align: left; }
-    .flacso-home-v2__section--contacto .flacso-contacto-heading { font-size: 1.65rem; }
-    .flacso-home-v2__section--contacto .flacso-contacto-subtitle { font-size: .9rem; }
-    .flacso-home-v2__section--contacto .flacso-contacto-cta { grid-column: 1 / -1; min-height: 48px; font-size: .92rem; }
-}
-
-/* Oferta académica en portada: categorías claras y navegación directa. */
-.flacso-home-v2__section--posgrados { width: min(100% - 40px, 1480px); padding: 30px 0 68px; }
-.flacso-home-v2__academic-offer { width: 100%; }
-.flacso-home-v2__academic-heading { align-items: end; display: grid; gap: 18px; grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr); margin-bottom: 36px; }
-.flacso-home-v2__academic-kicker { color: #17365d; font-size: .88rem; font-weight: 800; letter-spacing: .09em; margin: 0 0 20px; text-transform: uppercase; }
-.flacso-home-v2__academic-heading h2 { color: #203f79; font-size: clamp(2.5rem, 4vw, 3.65rem); letter-spacing: -.04em; line-height: 1.08; margin: 0; max-width: 16ch; }
-.flacso-home-v2__academic-intro { color: #526378; font-size: 1.16rem; line-height: 1.5; margin: 0 0 4px; max-width: 52ch; }
-.flacso-home-v2__academic-grid { border-bottom: 1px solid #d5ddeb; border-top: 1px solid #d5ddeb; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
-.flacso-home-v2__academic-card { background: #fff; border-right: 1px solid #d5ddeb; box-sizing: border-box; color: #17365d; display: grid; grid-template-rows: auto auto 1fr; min-height: 244px; padding: 27px 24px 22px; position: relative; text-decoration: none; transition: background-color .18s ease, color .18s ease; }
-.flacso-home-v2__academic-card:last-child { border-right: 0; }
-.flacso-home-v2__academic-card:hover, .flacso-home-v2__academic-card:focus-visible { background: #f7f9fc; color: #17365d; }
-.flacso-home-v2__academic-card:focus-visible { outline: 3px solid #e6b800; outline-offset: -3px; }
-.flacso-home-v2__academic-label { color: #61758f; font-size: .79rem; font-weight: 800; letter-spacing: .09em; line-height: 1.3; text-transform: uppercase; }
-.flacso-home-v2__academic-card h3 { color: #17365d; font-size: clamp(1.05rem, 1.45vw, 1.38rem); font-weight: 750; line-height: 1.3; margin: 29px 0 0; }
-.flacso-home-v2__academic-icon { align-self: end; color: #173f86; display: block; height: 40px; margin-top: 28px; width: 40px; }
-.flacso-home-v2__academic-icon svg { height: 100%; overflow: visible; width: 100%; }
-.flacso-home-v2__academic-icon .accent { stroke: #d6aa00; }
-.flacso-home-v2__academic-icon .accent-fill { fill: #fcd116; stroke: #d6aa00; }
-.flacso-home-v2__academic-arrow { bottom: 28px; color: #173f86; font-size: 1.35rem; line-height: 1; position: absolute; right: 24px; }
-@media (max-width: 1100px) {
-    .flacso-home-v2__section--posgrados { width: min(100% - 40px, 960px); }
-    .flacso-home-v2__academic-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .flacso-home-v2__academic-card:nth-child(3n) { border-right: 0; }
-    .flacso-home-v2__academic-card:nth-child(n + 4) { border-top: 1px solid #d5ddeb; }
-}
-@media (max-width: 760px) {
-    .flacso-home-v2__section--posgrados { padding: 20px 0 48px; }
-    .flacso-home-v2__academic-heading { align-items: start; gap: 14px; grid-template-columns: 1fr; margin-bottom: 26px; }
-    .flacso-home-v2__academic-kicker { font-size: .75rem; margin-bottom: 12px; }
-    .flacso-home-v2__academic-heading h2 { font-size: clamp(2.15rem, 9vw, 3rem); }
-    .flacso-home-v2__academic-intro { font-size: 1rem; }
-    .flacso-home-v2__academic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .flacso-home-v2__academic-card { min-height: 190px; padding: 20px 18px 18px; }
-    .flacso-home-v2__academic-card:nth-child(3n) { border-right: 1px solid #d5ddeb; }
-    .flacso-home-v2__academic-card:nth-child(2n) { border-right: 0; }
-    .flacso-home-v2__academic-card:nth-child(n + 3) { border-top: 1px solid #d5ddeb; }
-    .flacso-home-v2__academic-card h3 { font-size: 1.05rem; margin-top: 20px; }
-    .flacso-home-v2__academic-icon { height: 34px; margin-top: 22px; width: 34px; }
-    .flacso-home-v2__academic-arrow { bottom: 24px; right: 18px; }
-}
-@media (max-width: 480px) {
-    .flacso-home-v2__academic-grid { grid-template-columns: 1fr; }
-    .flacso-home-v2__academic-card, .flacso-home-v2__academic-card:nth-child(2n), .flacso-home-v2__academic-card:nth-child(3n) { border-right: 0; }
-    .flacso-home-v2__academic-card:nth-child(n + 2) { border-top: 1px solid #d5ddeb; }
-    .flacso-home-v2__academic-card { min-height: 156px; }
-}
-
-/* Pantallas muy estrechas: priorizar el titular y evitar tarjetas apretadas. */
-@media (max-width: 359px) {
-    .flacso-home-v2__news-card--lead { grid-template-columns: minmax(0, 1fr) 78px; gap: 10px; padding: 15px; }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-image { width: 78px; }
-    .flacso-home-v2__news-card--lead .flacso-home-v2__news-body p { display: none; }
-    .flacso-home-v2__links strong { font-size: .78rem; }
-}
+.flacso-home-v2{--navy:#2a4676;--deep:#0a2145;--gold:#ffc725;--soft:#f4f7fa;color:var(--deep);font-family:Roboto,Arial,sans-serif}
+.flacso-home-v2 *{box-sizing:border-box}
+.flacso-home-v2 .home-container{width:min(100% - 48px,1400px);margin-inline:auto}
+.flacso-home-v2 a{text-decoration:none}
+.flacso-home-v2 h1,.flacso-home-v2 h2,.flacso-home-v2 h3,.flacso-home-v2 p{font-family:inherit}
+.flacso-home-v2 .home-eyebrow{margin:0 0 16px;color:#466080;font-size:.82rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+.flacso-home-v2 .home-section{padding-block:clamp(56px,6vw,90px)}
+.flacso-home-v2 .home-section-heading{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:36px}
+.flacso-home-v2 .home-section-heading h2{margin:0;color:var(--navy);font-size:clamp(1.9rem,3.2vw,3rem);font-weight:850;line-height:1.12;letter-spacing:-.035em}
+.flacso-home-v2 .home-heading-link{color:var(--navy);font-weight:800;border-bottom:1px solid #b8cbe0;padding-bottom:5px;white-space:nowrap}
+.flacso-home-v2 .home-heading-link:hover,.flacso-home-v2 .home-heading-link:focus-visible{color:#075fa7}
+.flacso-home-v2 .home-button{display:inline-flex;align-items:center;justify-content:center;gap:14px;width:max-content;min-height:48px;padding:13px 22px;border-radius:999px;background:var(--gold);color:#0a2145;font-weight:800;box-shadow:0 8px 24px rgba(255,199,37,.25)}
+.flacso-home-v2 .home-button:hover,.flacso-home-v2 .home-button:focus-visible{background:#ffdc60;color:#061a37}
+.flacso-home-v2 .home-hero{position:relative;overflow:hidden;background:radial-gradient(circle at 80% 40%,#13559c 0%,transparent 50%),linear-gradient(115deg,#061734,#103c79);color:#fff}
+.flacso-home-v2 .home-hero:before{content:"";position:absolute;inset:0;opacity:.28;background-image:radial-gradient(#2580ca 2px,transparent 3px),repeating-linear-gradient(135deg,transparent 0 84px,rgba(62,153,224,.24) 85px 87px,transparent 88px 120px);background-size:32px 32px,auto;pointer-events:none}
+.flacso-home-v2 .home-hero-layout{position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);align-items:center;gap:clamp(28px,5vw,68px);min-height:min(660px,calc(100svh - 145px));padding-block:clamp(44px,6vw,86px)}
+.flacso-home-v2 .home-hero .home-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:25px;color:var(--gold);font-size:.85rem}
+.flacso-home-v2 .home-hero .home-eyebrow span{width:30px;height:3px;background:var(--gold)}
+.flacso-home-v2 .home-hero h1{max-width:14ch;margin:0 0 32px;color:#fff;font-size:clamp(2.4rem,4.5vw,4.25rem);font-weight:900;line-height:1.08;letter-spacing:-.045em;text-wrap:balance}
+.flacso-home-v2 .home-hero h1 em{font-style:normal;color:var(--gold)}
+.flacso-home-v2 .home-hero-photo{width:100%;max-width:520px;aspect-ratio:16/11;margin-left:auto;overflow:hidden;border:1px solid rgba(255,255,255,.2);border-left:6px solid var(--gold);border-radius:20px;box-shadow:0 28px 60px rgba(0,9,25,.45);background:var(--deep)}
+.flacso-home-v2 .home-hero-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 35%}
+.flacso-home-v2 .home-offer-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+.flacso-home-v2 .home-offer-card{display:flex;flex-direction:column;align-items:start;min-height:180px;padding:22px;border:1px solid #e3eaf1;border-radius:18px;background:#f8fafc;color:var(--deep);transition:transform .2s,box-shadow .2s}
+.flacso-home-v2 .home-offer-card:hover,.flacso-home-v2 .home-offer-card:focus-visible{transform:translateY(-4px);box-shadow:0 14px 28px rgba(21,54,97,.12)}
+.flacso-home-v2 .home-offer-icon{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:#eaf1f7;color:#517aaa;font-size:1.55rem}
+.flacso-home-v2 .home-offer-card h3{margin:22px 0 auto;color:var(--deep);font-size:1.05rem;font-weight:850}
+.flacso-home-v2 .home-offer-bottom{display:flex;justify-content:space-between;width:100%;margin-top:24px;color:var(--navy);font-size:.8rem;font-weight:800}
+.flacso-home-v2 .home-events-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.flacso-home-v2 .home-events-empty{grid-column:1/-1;margin:0;padding:38px;border:1px solid #dce6f0;border-radius:18px;background:#f8fafc;color:#405771}
+.flacso-home-v2 .home-event-card{overflow:hidden;border:1px solid #e0e8f0;border-radius:20px;background:#fff;box-shadow:0 12px 30px rgba(20,51,88,.08)}
+.flacso-home-v2 .home-event-media{display:block;aspect-ratio:4/5;background:#294571;overflow:hidden}
+.flacso-home-v2 .home-event-media img{display:block;width:100%;height:100%;object-fit:cover}
+.flacso-home-v2 .home-event-date-art{display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;height:100%;color:#fff;font-size:4rem;font-weight:800}
+.flacso-home-v2 .home-event-date-art small{font-size:1rem;text-transform:uppercase;letter-spacing:.14em}
+.flacso-home-v2 .home-event-copy{padding:22px}
+.flacso-home-v2 .home-event-date{margin:0 0 8px;color:#56708c;font-size:.8rem;font-weight:800;text-transform:uppercase}
+.flacso-home-v2 .home-event-card h3{margin:0 0 20px;font-size:1.3rem;line-height:1.25}
+.flacso-home-v2 .home-event-card h3 a{color:var(--deep)}
+.flacso-home-v2 .home-news{background:var(--soft)}
+.flacso-home-v2 .home-featured-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:24px}
+.flacso-home-v2 .home-news-card{overflow:hidden;border-radius:24px;background:#fff;box-shadow:0 15px 35px rgba(25,55,88,.09)}
+.flacso-home-v2 .home-news-card--featured{display:grid;grid-template-columns:43% 57%;min-height:380px}
+.flacso-home-v2 .home-news-card--featured:first-child{background:#1e345c;color:#fff}
+.flacso-home-v2 .home-news-media{display:block;position:relative;overflow:hidden;background:#2a4676}
+.flacso-home-v2 .home-news-media img{display:block;width:100%;height:100%;min-height:100%;object-fit:cover;aspect-ratio:4/5}
+.flacso-home-v2 .home-media-empty{display:grid;place-items:center;position:absolute;inset:0;color:#a9bed5;font-weight:800;text-transform:uppercase;letter-spacing:.12em}
+.flacso-home-v2 .home-news-copy{display:flex;flex-direction:column;align-items:start;justify-content:center;padding:clamp(24px,3vw,48px)}
+.flacso-home-v2 .home-news-pin{margin-bottom:16px;color:#f7bd21;font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.flacso-home-v2 .home-news-card time{display:block;color:#688099;font-size:.83rem;font-weight:700}
+.flacso-home-v2 .home-news-card--featured:first-child time{color:#b2c5d7}
+.flacso-home-v2 .home-news-card h3{margin:18px 0;font-size:clamp(1.25rem,2vw,2rem);font-weight:850;line-height:1.2}
+.flacso-home-v2 .home-news-card h3 a{color:var(--deep)}
+.flacso-home-v2 .home-news-card--featured:first-child h3 a{color:#fff}
+.flacso-home-v2 .home-news-card p{margin:0 0 20px;color:inherit;line-height:1.6}
+.flacso-home-v2 .home-text-link{color:var(--navy);font-size:.88rem;font-weight:800}
+.flacso-home-v2 .home-news-card--featured:first-child .home-text-link{color:var(--gold)}
+.flacso-home-v2 .home-recent-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:44px 0 20px;border-bottom:1px solid #d9e3ec}
+.flacso-home-v2 .home-recent-heading h3{margin:0 0 12px;color:var(--navy);font-size:1.5rem}
+.flacso-home-v2 .home-recent-heading span{color:#6b8095;font-size:.85rem}
+.flacso-home-v2 .home-recent-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.flacso-home-v2 .home-news-card--recent{display:grid;grid-template-columns:100px 1fr;min-height:130px;border-radius:12px}
+.flacso-home-v2 .home-news-card--recent .home-news-copy{padding:16px 20px}
+.flacso-home-v2 .home-news-card--recent h3{margin:7px 0;font-size:1rem}
+.flacso-home-v2 .home-about-grid{display:grid;grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr);gap:clamp(32px,6vw,80px);align-items:center}
+.flacso-home-v2 .home-about-logo{display:grid;place-items:center}
+.flacso-home-v2 .home-about-logo img{display:block;width:min(100%,470px);height:auto}
+.flacso-home-v2 .home-about-copy h2{margin:0 0 24px;color:var(--navy);font-size:clamp(2rem,3.2vw,2.7rem);font-weight:850}
+.flacso-home-v2 .home-about-copy p{color:#3b4f62;font-size:1rem;line-height:1.8}
+.flacso-home-v2 .home-about-copy strong{color:var(--deep)}
+.flacso-home-v2 .home-about-links{display:flex;flex-wrap:wrap;gap:18px 30px;margin-top:30px}
+.flacso-home-v2 .home-impact{border-top:3px solid var(--gold);background:#1f355d;color:#fff}
+.flacso-home-v2 .home-impact-inner{display:flex;align-items:center;justify-content:space-between;gap:30px;padding-block:30px}
+.flacso-home-v2 .home-impact-inner>div{display:flex;flex-direction:column}
+.flacso-home-v2 .home-impact strong{color:var(--gold);font-size:2rem;font-weight:900}
+.flacso-home-v2 .home-impact span,.flacso-home-v2 .home-impact p{font-size:.85rem}
+.flacso-home-v2 .home-impact p{max-width:38ch;margin:0;color:#d1dce9}
+@media(max-width:1100px){.flacso-home-v2 .home-offer-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.flacso-home-v2 .home-featured-grid{grid-template-columns:1fr 1fr}.flacso-home-v2 .home-news-card--featured{grid-template-columns:1fr;min-height:0}.flacso-home-v2 .home-news-card--featured .home-news-media{aspect-ratio:4/3}}
+@media(max-width:760px){.flacso-home-v2 .home-container{width:min(100% - 32px,560px)}.flacso-home-v2 .home-hero-layout{grid-template-columns:1fr;min-height:0;padding-block:32px;gap:28px;text-align:center}.flacso-home-v2 .home-hero .home-eyebrow{justify-content:center}.flacso-home-v2 .home-hero h1{max-width:16ch;margin-inline:auto;font-size:clamp(2.1rem,8vw,3.2rem)}.flacso-home-v2 .home-hero-photo{width:min(100%,460px);margin-inline:auto}.flacso-home-v2 .home-section-heading{align-items:start}.flacso-home-v2 .home-offer-grid,.flacso-home-v2 .home-events-grid,.flacso-home-v2 .home-featured-grid,.flacso-home-v2 .home-recent-grid,.flacso-home-v2 .home-about-grid{grid-template-columns:1fr}.flacso-home-v2 .home-offer-card{min-height:110px;padding:18px}.flacso-home-v2 .home-offer-card h3{margin:10px 0 0}.flacso-home-v2 .home-offer-bottom{margin-top:10px}.flacso-home-v2 .home-about-logo img{width:min(100%,320px)}.flacso-home-v2 .home-impact-inner{flex-direction:column;text-align:center}.flacso-home-v2 .home-news-card--featured .home-news-media{aspect-ratio:4/5}.flacso-home-v2 .home-news-card--recent{grid-template-columns:95px 1fr}}
+@media(max-width:480px){.flacso-home-v2 .home-section-heading{flex-wrap:wrap;gap:12px}.flacso-home-v2 .home-heading-link{font-size:.85rem}.flacso-home-v2 .home-hero h1{font-size:clamp(2rem,10vw,2.6rem)}.flacso-home-v2 .home-hero .home-button{margin-inline:auto}.flacso-home-v2 .home-news-card--recent h3{font-size:.9rem}.flacso-home-v2 .home-news-card--recent .home-news-copy{padding:12px}.flacso-home-v2 .home-recent-heading span{display:none}}
+@media(max-width:480px){.flacso-home-v2 .home-hero h1{max-width:100%;font-size:clamp(1.9rem,8.5vw,2.25rem);overflow-wrap:normal}.flacso-home-v2 .home-section-heading{display:block}.flacso-home-v2 .home-section-heading .home-heading-link{display:inline-block;margin-top:16px;white-space:normal}}
+@media(max-width:600px){.flacso-home-v2 .home-hero h1{font-size:clamp(1.9rem,7vw,2.25rem)}.flacso-home-v2 .home-section-heading{display:block}.flacso-home-v2 .home-section-heading .home-heading-link{display:inline-block;margin-top:16px}}
+.flacso-home-v2 .home-offer-icon svg{width:22px;height:22px}
+.flacso-home-v2 .home-news-card--recent .home-media-empty{font-size:.55rem;letter-spacing:.02em;text-align:center;padding:4px;overflow-wrap:anywhere}

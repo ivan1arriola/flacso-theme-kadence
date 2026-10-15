@@ -63,7 +63,8 @@ function flacso_child_enqueue_front_page_assets() {
 
     if ( class_exists( 'FLACSO_Home_Campaign' ) && FLACSO_Home_Campaign::is_enabled() ) {
         $path    = 'assets/css/home-v2.css';
-        wp_enqueue_style( 'flacso-home-v2', get_stylesheet_directory_uri() . '/' . $path, array( 'flacso-site-chrome' ), flacso_child_asset_version( $path ) );
+        wp_enqueue_style( 'flacso-home-roboto', 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap', array(), null );
+        wp_enqueue_style( 'flacso-home-v2', get_stylesheet_directory_uri() . '/' . $path, array( 'flacso-site-chrome', 'flacso-home-roboto' ), flacso_child_asset_version( $path ) );
         return;
     }
 

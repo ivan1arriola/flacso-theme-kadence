@@ -1,0 +1,2 @@
+<?php if (!defined('ABSPATH')) { exit; } ?>
+<section class="home-impact" aria-label="Alcance de FLACSO"><div class="home-container home-impact-inner"><div><strong>+20 países</strong><span>Alcance de la red académica regional</span></div><p>Formación, investigación de frontera y cooperación con profunda perspectiva latinoamericana.</p><a class="home-button" href="<?php echo esc_url(home_url('/contactos/')); ?>">Ponete en contacto <span aria-hidden="true">→</span></a></div></section>

@@ -18,6 +18,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_action(
 	'wp_enqueue_scripts',
 	static function () {
+		if ( class_exists( 'FLACSO_Home_Campaign' ) && FLACSO_Home_Campaign::is_enabled() ) {
+			return;
+		}
 		$relative_path = 'assets/css/front-page-refresh.css';
 		$absolute_path = get_stylesheet_directory() . '/' . $relative_path;
 		$version       = file_exists( $absolute_path ) ? (string) filemtime( $absolute_path ) : wp_get_theme()->get( 'Version' );
