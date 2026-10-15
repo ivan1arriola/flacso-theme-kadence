@@ -34,11 +34,23 @@ function flacso_home_v2_render(): string {
                 </div><?php endif; ?>
             </div>
         </section>
-        <section class="flacso-home-v2__links" aria-label="Formación FLACSO Uruguay">
-            <a href="<?php echo esc_url(home_url('/formacion/')); ?>"><strong>Formación</strong><span>Conocé nuestra propuesta académica.</span></a>
-            <a href="<?php echo esc_url(home_url('/formacion/seminarios/')); ?>"><strong>Seminarios</strong><span>Actualización y formación intensiva.</span></a>
-            <a href="<?php echo esc_url(home_url('/contactos/')); ?>"><strong>Consultas</strong><span>Estamos para orientarte.</span></a>
-        </section>
+        <nav class="flacso-home-v2__links" aria-label="Accesos rápidos de FLACSO Uruguay">
+            <a href="<?php echo esc_url(home_url('/formacion/')); ?>">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m2 10 10-5 10 5-10 5-10-5Z"/><path d="M6 12v5c3 2.5 9 2.5 12 0v-5"/><path d="M22 10v7"/></svg>
+                <strong>Formación</strong><span>Conocé nuestra propuesta académica.</span>
+                <span class="flacso-home-v2__link-arrow" aria-hidden="true">→</span>
+            </a>
+            <a href="<?php echo esc_url(home_url('/formacion/seminarios/')); ?>">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18V5c3-1.5 6-1.5 9 .5 3-2 6-2 9-.5v13c-3-1.5-6-1.5-9 .5-3-2-6-2-9-.5Z"/></svg>
+                <strong>Seminarios</strong><span>Actualización y formación intensiva.</span>
+                <span class="flacso-home-v2__link-arrow" aria-hidden="true">→</span>
+            </a>
+            <a href="<?php echo esc_url(home_url('/contactos/')); ?>">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a8 8 0 0 1-8 8 8.5 8.5 0 0 1-3.5-.9L4 20l1.4-4.1A8 8 0 1 1 20 11.5Z"/><path d="M9 10h6M9 13h4"/></svg>
+                <strong>Consultas</strong><span>Estamos para orientarte.</span>
+                <span class="flacso-home-v2__link-arrow" aria-hidden="true">→</span>
+            </a>
+        </nav>
         <?php echo flacso_home_v2_render_sections(); ?>
     </main>
     <?php return (string) ob_get_clean();
@@ -151,7 +163,7 @@ function flacso_home_v2_render_news_card($post, string $variant, bool $is_lead =
             <?php if ($image_id) : echo wp_get_attachment_image($image_id, $is_lead ? 'large' : 'medium_large', false, ['alt' => '', 'loading' => 'lazy']); else : ?><span aria-hidden="true"></span><?php endif; ?>
         </a>
         <div class="flacso-home-v2__news-body">
-            <?php if ($pinned || $is_lead) : ?><span class="flacso-home-v2__news-badge"><?php echo $pinned ? 'Destacada' : 'Novedad'; ?></span><?php endif; ?>
+            <?php if ($pinned || $is_lead) : ?><span class="flacso-home-v2__news-badge"><?php echo $pinned ? ($is_lead ? 'Noticia fijada' : 'Fijada') : 'Novedad'; ?></span><?php endif; ?>
             <time datetime="<?php echo esc_attr(get_the_date('c', $post_id)); ?>"><?php echo esc_html(get_the_date('d/m/Y', $post_id)); ?></time>
             <h4><a href="<?php echo esc_url(get_permalink($post_id)); ?>"><?php echo esc_html($title); ?></a></h4>
             <?php if ($is_lead && trim((string) $excerpt) !== '') : ?><p><?php echo esc_html(wp_strip_all_tags((string) $excerpt)); ?></p><?php endif; ?>
