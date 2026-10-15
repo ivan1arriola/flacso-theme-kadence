@@ -1,6 +1,6 @@
 # Portada pública FLACSO Uruguay — especificación de diseño y frontend
 
-Estado: propuesta revisada el 28/09/2026. No autoriza implementación ni despliegue. Contrato de datos y administración: [campañas en el plugin](../../../flacso-uruguay-plugin/docs/toDo/2026-home-campaigns.md). Ejecución futura: [plan](2026-home-redesign-implementation-plan.md).
+Estado: propuesta histórica revisada el 28/09/2026. Para el diseño visual vigente de la portada, consultar [la especificación basada en la maqueta](../superpowers/specs/2026-10-15-homepage-from-mockup-design.md). Contrato de datos y administración: [campañas en el plugin](../../../flacso-uruguay-plugin/docs/toDo/2026-home-campaigns.md).
 
 ## Objetivo y límites
 

@@ -1,4 +1,6 @@
-# Portada pública FLACSO Uruguay — Implementation Plan
+# Portada pública FLACSO Uruguay — plan histórico de implementación
+
+Este plan responde al diseño del 28/09/2026. El diseño visual vigente se describe en [la especificación basada en la maqueta](../superpowers/specs/2026-10-15-homepage-from-mockup-design.md); actualizar este plan antes de implementarlo.
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
