@@ -149,7 +149,10 @@ home_v2_assert($news_mobile['leadBackground'] === 'rgb(32, 63, 107)', 'la notici
 home_v2_assert($news_mobile['leadImageWidth'] < $news_mobile['cards'][0]['width'] * .4, 'el afiche no debe desplazar el titular móvil');
 home_v2_assert(strpos($template, '<nav class="flacso-home-v2__links"') !== false, 'los accesos se presentan como navegación');
 home_v2_assert(substr_count($template, 'flacso-home-v2__link-arrow') === 3, 'los tres accesos incluyen indicador visible');
-home_v2_assert(strpos($css, '.flacso-home-v2__section--quienes .flacso-quienes-text p:not(:first-child) { display: none; }') !== false, 'la introducción institucional móvil es un resumen');
+home_v2_assert(strpos($css, '-webkit-line-clamp: 6') === false, 'la introducción institucional no se recorta');
+home_v2_assert(strpos($css, '.flacso-home-v2__section--quienes .flacso-quienes-text p + p { margin-top: 12px; }') !== false, 'los párrafos institucionales se mantienen visibles');
+home_v2_assert(strpos($css, '.flacso-home-v2__hero { min-height: 0; }') !== false, 'la portada móvil ajusta la altura del hero al contenido');
+home_v2_assert(strpos($css, '.flacso-home-v2__links a { min-height: 80px;') !== false, 'los accesos rápidos no ocupan altura innecesaria');
 
 foreach ([320, 360, 390, 768, 901, 1151, 1440, 1920] as $width) {
     $layout = home_v2_news_layout($css, $rendered_news, $width, 1100);
@@ -178,6 +181,46 @@ foreach ([1, 2, 4, 5, 8] as $count) {
 }
 unset($GLOBALS['featured_count']);
 
+function home_v2_mobile_rhythm(string $css): array {
+    $chrome = getenv('FLACSO_TEST_BROWSER') ?: trim((string) shell_exec('command -v google-chrome || command -v chromium || true'));
+    home_v2_assert($chrome !== '', 'la prueba de ritmo requiere Chrome o Chromium');
+    $html = '<!doctype html><html><head><meta charset="utf-8"><style>' . $css . '</style></head><body>'
+        . '<main class="flacso-home-v2">'
+        . '<section class="flacso-home-v2__hero"><div class="flacso-home-v2__inner"><h1 class="flacso-home-v2__title--slogan"><span>Formación que conecta,</span><span>conocimiento que transforma.</span></h1>'
+        . '<p class="flacso-home-v2__description">Conocé nuestra oferta de posgrados, especializaciones y seminarios.</p>'
+        . '<div class="flacso-home-v2__actions"><a class="flacso-home-v2__cta" href="#">Conocé nuestra propuesta académica</a></div></div></section>'
+        . '<nav class="flacso-home-v2__links"><a href="#"><svg></svg><strong>Formación</strong><span class="flacso-home-v2__link-arrow">→</span></a>'
+        . '<a href="#"><svg></svg><strong>Seminarios</strong><span class="flacso-home-v2__link-arrow">→</span></a>'
+        . '<a href="#"><svg></svg><strong>Consultas</strong><span class="flacso-home-v2__link-arrow">→</span></a></nav>'
+        . '<article class="flacso-home-v2__section"><section class="flacso-home-v2__featured-news">'
+        . '<div class="flacso-home-v2__section-heading"><h2>Novedades</h2></div><div class="flacso-home-v2__bento-heading"><h3>Destacados</h3></div></section></article>'
+        . '</main><pre id="result"></pre><script>'
+        . 'const hero=document.querySelector(".flacso-home-v2__hero").getBoundingClientRect();'
+        . 'const nav=document.querySelector(".flacso-home-v2__links").getBoundingClientRect();'
+        . 'const link=document.querySelector(".flacso-home-v2__links a").getBoundingClientRect();'
+        . 'const heading=document.querySelector(".flacso-home-v2__section-heading").getBoundingClientRect();'
+        . 'document.querySelector("#result").textContent=JSON.stringify({heroHeight:hero.height,linkHeight:link.height,'
+        . 'navBottomGap:heading.top-link.bottom,navPadding:getComputedStyle(document.querySelector(".flacso-home-v2__links")).paddingBottom,'
+        . 'overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth});</script></body></html>';
+    $html = home_v2_exact_viewport($html, 390, 844);
+    $tmp = tempnam(sys_get_temp_dir(), 'flacso-home-rhythm-');
+    home_v2_assert($tmp !== false, 'puede preparar prueba móvil');
+    $path = $tmp . '.html';
+    home_v2_assert(rename($tmp, $path) && file_put_contents($path, $html) !== false, 'puede escribir prueba móvil');
+    $cmd = escapeshellarg($chrome) . ' --headless=new --disable-gpu --no-sandbox --hide-scrollbars --window-size=390,844 --dump-dom '
+        . escapeshellarg('file:///' . str_replace('\\', '/', $path)) . ' 2>/dev/null';
+    $dump = (string) shell_exec($cmd);
+    unlink($path);
+    home_v2_assert(preg_match('/<pre id="result">(.*?)<\/pre>/s', $dump, $matches) === 1, 'Chromium mide la portada');
+    $layout = json_decode(html_entity_decode($matches[1], ENT_QUOTES | ENT_HTML5), true);
+    home_v2_assert(is_array($layout), 'las métricas móviles son válidas');
+    return $layout;
+}
+$rhythm = home_v2_mobile_rhythm($css);
+home_v2_assert($rhythm['heroHeight'] < 310, 'el hero no debe introducir espacio vacío');
+home_v2_assert($rhythm['linkHeight'] <= 88 && $rhythm['linkHeight'] >= 44, 'los accesos deben ser compactos pero táctiles');
+home_v2_assert($rhythm['navBottomGap'] < 54 && !$rhythm['overflow'], 'Novedades comienza cerca de los accesos sin overflow');
+
 function home_v2_quienes_layout(string $css, int $width, int $height): array {
     $chrome = getenv('FLACSO_TEST_BROWSER') ?: trim((string) shell_exec('command -v google-chrome || command -v chromium || true'));
     home_v2_assert($chrome !== '', 'la prueba visual requiere Chrome o Chromium');
@@ -199,7 +242,7 @@ function home_v2_quienes_layout(string $css, int $width, int $height): array {
         . 'cardHeight:Math.round(card.getBoundingClientRect().height),cardWidth:Math.round(card.getBoundingClientRect().width),'
         . 'sectionWidth:Math.round(document.querySelector(".flacso-home-v2__section").getBoundingClientRect().width),'
         . 'copyFont:parseFloat(getComputedStyle(text).fontSize),brandWidth:Math.round(brand.getBoundingClientRect().width),'
-        . 'copyWidth:Math.round(copy.getBoundingClientRect().width)});</script></body></html>';
+        . 'copyWidth:Math.round(copy.getBoundingClientRect().width),paragraphs:Array.from(text.querySelectorAll("p")).map(p=>({display:getComputedStyle(p).display,clamp:getComputedStyle(p).webkitLineClamp,overflow:getComputedStyle(p).overflow,height:p.getBoundingClientRect().height}))});</script></body></html>';
     $html = home_v2_exact_viewport($html, $width, $height);
     $temporary = tempnam(sys_get_temp_dir(), 'flacso-home-v2-quienes-');
     $path = $temporary === false ? false : $temporary . '.html';
@@ -224,6 +267,10 @@ home_v2_assert($quienes_mobile['brandBackground'] === 'rgb(23, 54, 93)', 'el log
 home_v2_assert($quienes_mobile['logoFilter'] !== 'none', 'el logotipo azul debe convertirse a blanco sobre el panel institucional');
 home_v2_assert($quienes_mobile['textAlign'] === 'left', 'el texto institucional móvil no debe justificarse');
 home_v2_assert($quienes_mobile['cardHeight'] < 700, 'la tarjeta institucional móvil no debe generar espacio muerto');
+home_v2_assert(count($quienes_mobile['paragraphs']) === 2, 'el bloque conserva los dos párrafos');
+foreach ($quienes_mobile['paragraphs'] as $paragraph) {
+    home_v2_assert($paragraph['display'] !== 'none' && $paragraph['clamp'] === 'none' && $paragraph['overflow'] === 'visible' && $paragraph['height'] > 0, 'la descripción institucional se muestra completa');
+}
 
 $quienes_desktop = home_v2_quienes_layout($css, 1440, 1000);
 home_v2_assert($quienes_desktop['cardWidth'] <= 1100 && $quienes_desktop['cardWidth'] < $quienes_desktop['sectionWidth'], 'la tarjeta institucional debe ser más contenida que el resto de la retícula');
