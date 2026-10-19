@@ -127,7 +127,6 @@ $inline_brand_styles = sprintf(
 $abreviacion      = trim((string) ($academic['abreviacion'] ?? ''));
 $cohorte_label    = trim((string) ($instance['label'] ?? ''));
 $anio             = !empty($instance['anio_inicio']) ? (string) $instance['anio_inicio'] : (!empty($instance['fecha_inicio']) ? substr((string) $instance['fecha_inicio'], 0, 4) : wp_date('Y'));
-$hero_badge_text  = trim((string) ($academic['carta_hero_etiqueta'] ?? ''));
 $mostrar_instancias_presenciales = !empty($academic['carta_instancias_presenciales']);
 
 $reconocido_mec     = !empty($academic['reconocido_mec']);
@@ -187,11 +186,7 @@ if (!empty($instance['modalidad_descripcion']) && empty($academic['modalidad_htm
     $academic['modalidad_html'] = $instance['modalidad_descripcion'];
 }
 
-// CTA global o por defecto
-$carta_cta_titulo_global = trim((string) get_option('flacso_carta_cta_titulo_default', ''));
-$carta_cta_titulo = $carta_cta_titulo_global !== ''
-    ? $carta_cta_titulo_global
-    : sprintf(__('Comenzá el año cursando un posgrado en FLACSO Uruguay', 'flacso-uruguay'));
+$carta_cta_titulo = __('Comenzá el año cursando un posgrado en FLACSO Uruguay', 'flacso-uruguay');
 
 // Tabla de precios
 $tabla_precio = $instance['tabla_precio'] ?? null;
@@ -278,7 +273,6 @@ if (empty($asistente_rol)) {
 // Bloques detallados de contenido
 $bloques_html = [
     'descripcion_html'            => __('Información General', 'flacso-uruguay'),
-    'objetivos_html'              => __('Objetivos del Programa', 'flacso-uruguay'),
     'modalidad_html'              => __('Modalidad de Cursada', 'flacso-uruguay'),
     'duracion_html'               => __('Duración y Carga Horaria', 'flacso-uruguay'),
     'perfil_ingreso_html'         => __('Perfil de Ingreso', 'flacso-uruguay'),
@@ -286,7 +280,6 @@ $bloques_html = [
     'perfil_egreso_html'          => __('Perfil del Egresado', 'flacso-uruguay'),
     'requisitos_egreso_html'      => __('Requisitos para Titulación', 'flacso-uruguay'),
     'titulos_certificaciones_html'=> __('Títulos y Certificaciones', 'flacso-uruguay'),
-    'acreditacion'                => __('Acreditaciones y Validez Oficial', 'flacso-uruguay'),
 ];
 
 $hay_bloques_detallados = false;
@@ -324,13 +317,6 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
         <section class="fc-hero" aria-labelledby="fc-carta-title">
             <div class="fc-hero-inner">
                 <div class="fc-hero-copy">
-                    <?php if ($hero_badge_text !== '') : ?>
-                        <div class="fc-hero-ribbon">
-                            <i class="bi bi-bookmark-star-fill" aria-hidden="true"></i>
-                            <span><?php echo esc_html($hero_badge_text); ?></span>
-                        </div>
-                    <?php endif; ?>
-
                     <div class="fc-eyebrow">
                         <i class="bi bi-stars" aria-hidden="true"></i>
                         <span><?php echo esc_html(flacso_theme_brand_slogan()); ?></span>
@@ -572,22 +558,6 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                         <?php endif; ?>
 
                         <?php
-                        $fc_objectives_html = !empty($academic['objetivos_html'])
-                            ? (string) $academic['objetivos_html']
-                            : (string) ($academic['objetivo_general'] ?? '');
-                        ?>
-                        <?php if (trim(wp_strip_all_tags($fc_objectives_html)) !== '') : ?>
-                            <article class="fc-content-panel fc-content-panel--objective" aria-labelledby="fc-panel-objetivos">
-                                <div class="fc-content-panel__content">
-                                    <h2 id="fc-panel-objetivos"><?php esc_html_e('Objetivo general', 'flacso-uruguay'); ?></h2>
-                                    <div class="fc-content-panel-body">
-                                        <?php echo wpautop(wp_kses_post($fc_objectives_html)); ?>
-                                    </div>
-                                </div>
-                            </article>
-                        <?php endif; ?>
-
-                        <?php
                         $fc_academic_details = [
                             'duracion_html'                => __('Duración y Carga Horaria', 'flacso-uruguay'),
                             'perfil_ingreso_html'          => __('Perfil de Ingreso', 'flacso-uruguay'),
@@ -595,7 +565,6 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                             'perfil_egreso_html'           => __('Perfil del Egresado', 'flacso-uruguay'),
                             'requisitos_egreso_html'       => __('Requisitos para Titulación', 'flacso-uruguay'),
                             'titulos_certificaciones_html' => __('Títulos y Certificaciones', 'flacso-uruguay'),
-                            'acreditacion'                 => __('Acreditaciones y Validez Oficial', 'flacso-uruguay'),
                         ];
                         $fc_has_academic_details = false;
                         foreach ($fc_academic_details as $fc_detail_key => $fc_detail_label) {
@@ -905,7 +874,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
             $carta_mas_info_gestion_title = trim((string) get_option('flacso_carta_mas_info_gestion_title', __('Gestión Académica', 'flacso-uruguay')));
             $carta_mas_info_gestion_html = (string) get_option('flacso_carta_mas_info_gestion_html', '<p>' . __('Nos distingue un sistema de <strong>gestión académica eficiente y cercano</strong>, que acompaña de forma <strong>personalizada</strong> a cada estudiante y garantiza <strong>altos niveles de egreso, superiores al 90%</strong>.', 'flacso-uruguay') . '</p>');
             $carta_mas_info_financiacion_title = trim((string) get_option('flacso_carta_mas_info_financiacion_title', __('Financiamiento Flexible', 'flacso-uruguay')));
-            $carta_mas_info_financiacion_html = (string) get_option('flacso_carta_mas_info_financiacion_html', '<p>' . __('Puedes abonar el posgrado en <strong>cuotas sin recargo</strong> a lo largo de la cursada. Contamos con <strong>múltiples convenios, descuentos de hasta el 25%</strong> y la posibilidad de acceder a <strong>becas</strong>.', 'flacso-uruguay') . '</p>');
+            $carta_mas_info_financiacion_html = (string) ($academic['financiacion_html'] ?? '');
             ?>
             <section class="fc-section fc-major-section fc-major-section--trust">
                 <header class="fc-major-heading">
@@ -929,11 +898,13 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                         <?php echo wp_kses_post($carta_mas_info_gestion_html); ?>
                     </article>
 
+                    <?php if (trim(wp_strip_all_tags($carta_mas_info_financiacion_html)) !== '') : ?>
                     <article class="fc-more-card">
                         <div class="fc-more-icon"><i class="bi bi-currency-dollar" aria-hidden="true"></i></div>
                         <h3><?php echo esc_html($carta_mas_info_financiacion_title); ?></h3>
                         <?php echo wp_kses_post($carta_mas_info_financiacion_html); ?>
                     </article>
+                    <?php endif; ?>
                 </div>
             </section>
 

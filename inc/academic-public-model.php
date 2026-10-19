@@ -209,7 +209,6 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "precision_fecha_inicio" => (string) ($current_cohort["precision_fecha_inicio"] ?? "dia"),
         "estado"                 => (string) ($current_cohort["estado"] ?? "planificada"),
         "calendario_academico"   => (string) ($current_cohort["calendario_academico"] ?? ""),
-        "calendario_descripcion" => (string) ($current_cohort["calendario_descripcion"] ?? ""),
         "tabla_precio_id"        => $table_id,
         "tabla_precio"           => $price_table,
         "valor_uyu"              => $price_table["valor_uyu"] ?? null,
@@ -234,11 +233,7 @@ function flacso_theme_get_offer_context(int $offer_id): array {
     $registration = [
         "is_open"        => $is_registration_open,
         "url"            => $link_preinscripcion,
-        "desde"          => $registration_data["desde"] ?? null,
-        "hasta"          => $registration_data["hasta"] ?? null,
         "instance_id"    => $instance["id"],
-        "open_message"   => (string) ($current_cohort["mensaje_preinscripcion_abierta"] ?? ""),
-        "closed_message" => (string) ($current_cohort["mensaje_preinscripcion_cerrada"] ?? ""),
     ];
 
     $documentos_raw = $data["documentos"] ?? get_post_meta($offer_id, "documentos", true);
@@ -264,16 +259,10 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "perfil_egreso_html"          => (string) ($data["perfil_egreso_html"] ?? get_post_meta($offer_id, "perfil_egreso_html", true)),
         "titulos_certificaciones_html"=> (string) ($data["titulos_certificaciones_html"] ?? get_post_meta($offer_id, "titulos_certificaciones_html", true)),
         "requisitos_egreso_html"      => (string) ($data["requisitos_egreso_html"] ?? get_post_meta($offer_id, "requisitos_egreso_html", true)),
-        "financiacion_html"           => (string) ($data["financiacion_html"] ?? get_post_meta($offer_id, "financiacion_html", true)),
-        "objetivo_general"            => (string) ($data["objetivo_general"] ?? get_post_meta($offer_id, "objetivo_general", true)),
-        "objetivos_html"              => (string) ($data["objetivos_html"] ?? get_post_meta($offer_id, "objetivos_html", true)),
-        "objetivos_especificos"       => is_array($data["objetivos_especificos"] ?? null) ? $data["objetivos_especificos"] : [],
+        "financiacion_html" => (string) get_option("flacso_financiacion_html", get_option("flacso_carta_mas_info_financiacion_html", "")),
         "composicion_academica"       => is_array($data["composicion_academica"] ?? null) ? $data["composicion_academica"] : [],
-        "forma_aprobacion"            => (string) ($data["forma_aprobacion"] ?? ""),
         "carga_horaria"               => $data["carga_horaria"] ?? "",
-        "carga_horaria_descripcion"   => (string) ($data["carga_horaria_descripcion"] ?? ""),
         "creditos"                    => $data["creditos"] ?? "",
-        "acreditacion"                => (string) ($data["acreditacion"] ?? ""),
         "correo"                      => (string) ($data["correo"] ?? get_post_meta($offer_id, "correo", true)),
         "abreviacion"                 => (string) ($data["abreviacion"] ?? get_post_meta($offer_id, "abreviacion", true)),
         "documentos"                  => $documentos_raw,
@@ -282,7 +271,6 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "calendario_pdf_url"          => $calendario_pdf,
         "equipos"                     => $data["equipos"] ?? get_post_meta($offer_id, "equipos", true),
         "coordinacion_academica"      => [],
-        "carta_hero_etiqueta"         => (string) ($current_cohort["etiqueta_preinscripcion"] ?? ($data["carta_hero_etiqueta"] ?? get_post_meta($offer_id, "carta_hero_etiqueta", true))),
         "carta_instancias_presenciales"=> !empty($current_cohort["instancias_presenciales"]) || !empty($data["carta_instancias_presenciales"]) || (bool) get_post_meta($offer_id, "carta_instancias_presenciales", true),
         "menciones"                   => (array) ($data["menciones"] ?? (get_post_meta($offer_id, "menciones", true) ?: [])),
         "orientaciones"               => (array) ($data["orientaciones"] ?? (get_post_meta($offer_id, "orientaciones", true) ?: [])),
@@ -434,11 +422,7 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
     $registration = [
         "is_open"        => $is_registration_open,
         "url"            => $link_preinscripcion,
-        "desde"          => $registration_data["desde"] ?? null,
-        "hasta"          => $registration_data["hasta"] ?? null,
         "instance_id"    => $instance["id"],
-        "open_message"   => (string) ($current_edition["mensaje_preinscripcion_abierta"] ?? ""),
-        "closed_message" => (string) ($current_edition["mensaje_preinscripcion_cerrada"] ?? ""),
     ];
 
     $academic = [
@@ -915,16 +899,6 @@ function flacso_theme_normalize_duration_html($html, $months_str = ''): string {
     return $html;
 }
 
-/**
- * Obtiene la cantidad de días permitidos para inscripciones post inicio de un seminario.
- */
-function flacso_theme_get_seminar_closing_days(int $edition_id = 0): int {
-    if ($edition_id > 0 && class_exists('FLACSO_Edicion')) {
-        return FLACSO_Edicion::get_days_after_start_limit($edition_id);
-    }
-    $val = get_option('flacso_seminarios_dias_cierre_post_inicio', 10);
-    return is_numeric($val) ? (int) $val : 10;
-}
 
 /**
  * Normaliza y capitaliza la modalidad académica (ej: 'virtual' -> 'Virtual').

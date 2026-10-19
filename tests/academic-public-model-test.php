@@ -599,7 +599,7 @@ assert_same("2027", flacso_theme_format_cohort_dates([
 
 // 7. Contexto para Carta de Presentación
 assert_same(true, array_key_exists("reconocido_mec", $offer_context["academic"]), "Contexto incluye reconocido_mec para carta");
-assert_same(true, array_key_exists("carta_hero_etiqueta", $offer_context["academic"]), "Contexto incluye carta_hero_etiqueta");
+assert_same(false, array_key_exists("carta_hero_etiqueta", $offer_context["academic"]), "Contexto omite la etiqueta de preinscripcion");
 assert_same(true, array_key_exists("menciones", $offer_context["academic"]), "Contexto incluye menciones");
 assert_same(true, array_key_exists("colores_presentacion", $offer_context["academic"]), "Contexto incluye colores_presentacion");
 assert_same("#0057a8", $offer_context["color_principal"], "Contexto expone color_principal en la raíz");

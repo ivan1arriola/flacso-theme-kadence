@@ -148,8 +148,7 @@
         linear-gradient(145deg, var(--fc-ui-navy-2), var(--fc-ui-navy-deep));
 }
 
-.flacso-carta-virtual .fc-eyebrow,
-.flacso-carta-virtual .fc-hero-ribbon {
+.flacso-carta-virtual .fc-eyebrow {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -174,10 +173,6 @@
     overflow-wrap: anywhere;
 }
 
-.flacso-carta-virtual .fc-hero-ribbon {
-    color: var(--fc-ui-navy-deep);
-    background: var(--fc-ui-yellow);
-}
 
 .flacso-carta-virtual .fc-hero-highlights {
     margin-bottom: 10px;

@@ -119,13 +119,9 @@ foreach ($catalog_raw as $item_context) {
     }
 
     $dias_hasta_inicio = $days_diff($hoy, $inicio_obj);
-    $dias_desde_inicio = $dias_hasta_inicio < 0 ? abs($dias_hasta_inicio) : 0;
-    $dias_limite_cierre = function_exists('flacso_theme_get_seminar_closing_days')
-        ? flacso_theme_get_seminar_closing_days((int) ($item_context['instance']['id'] ?? 0))
-        : 10;
 
     $is_upcoming = $dias_hasta_inicio >= 0;
-    $is_started_recent = $dias_hasta_inicio < 0 && $dias_hasta_inicio >= -$dias_limite_cierre;
+    $is_started_recent = $dias_hasta_inicio < 0 && !empty($item_context['registration']['is_open']);
     $is_visible = $is_upcoming || $is_started_recent;
 
     if (!$is_visible) {
@@ -192,7 +188,7 @@ foreach ($catalog_raw as $item_context) {
         'month_label'      => $month_label,
         'date_long'        => $fecha_larga,
         'days_left'        => $dias_hasta_inicio,
-        'days_since_start' => $dias_desde_inicio,
+        'days_since_start' => max(0, -$dias_hasta_inicio),
         'is_upcoming'      => $is_upcoming,
         'is_started_recent'=> $is_started_recent,
         'modality'         => $modalidad,

@@ -170,8 +170,7 @@
     margin-bottom: 14px;
 }
 
-.flacso-oa-program-hero__kicker,
-.flacso-oa-program-hero__custom-badge {
+.flacso-oa-program-hero__kicker {
     width: fit-content;
     margin: 0;
     padding: 6px 10px;
@@ -188,10 +187,6 @@
     color: #278c3b;
 }
 
-.flacso-oa-program-hero__custom-badge {
-    background: rgba(252, 209, 22, 0.22);
-    color: var(--flacso-blue);
-}
 
 .flacso-oa-program-hero__status-badge {
     display: inline-flex;
@@ -3120,8 +3115,7 @@
 }
 
 .flacso-oferta-responsive .flacso-oa-program-hero__kicker,
-.flacso-oferta-responsive .flacso-oa-program-hero__status-badge,
-.flacso-oferta-responsive .flacso-oa-program-hero__custom-badge {
+.flacso-oferta-responsive .flacso-oa-program-hero__status-badge {
     margin: 0;
     padding: 7px 11px;
     border-radius: 999px;
@@ -3137,8 +3131,7 @@
     color: #11284a;
 }
 
-.flacso-oferta-responsive .flacso-oa-program-hero__status-badge,
-.flacso-oferta-responsive .flacso-oa-program-hero__custom-badge {
+.flacso-oferta-responsive .flacso-oa-program-hero__status-badge {
     color: #fff;
     background: rgba(255,255,255,.12);
     border: 1px solid rgba(255,255,255,.2);
@@ -3830,8 +3823,7 @@
     color: #ffffff !important;
 }
 
-.flacso-oferta-responsive .flacso-oa-program-hero__status-badge,
-.flacso-oferta-responsive .flacso-oa-program-hero__custom-badge {
+.flacso-oferta-responsive .flacso-oa-program-hero__status-badge {
     color: #ffffff !important;
 }
 
@@ -4019,8 +4011,7 @@
     color: var(--campaign-navy-deep);
 }
 
-.flacso-oferta-responsive .flacso-oa-program-hero__status-badge,
-.flacso-oferta-responsive .flacso-oa-program-hero__custom-badge {
+.flacso-oferta-responsive .flacso-oa-program-hero__status-badge {
     color: #fff !important;
     background: rgba(255,255,255,.10);
     border-color: rgba(255,255,255,.25);
@@ -4451,8 +4442,7 @@
 
 .flacso-oferta-responsive .flacso-oa-program-hero__title,
 .flacso-oferta-responsive .flacso-oa-program-hero__excerpt,
-.flacso-oferta-responsive .flacso-oa-program-hero__status-badge,
-.flacso-oferta-responsive .flacso-oa-program-hero__custom-badge {
+.flacso-oferta-responsive .flacso-oa-program-hero__status-badge {
     color: var(--oa-brand-contrast) !important;
 }
 
@@ -4644,8 +4634,7 @@
 
 .flacso-oferta-responsive .flacso-oa-program-hero__title,
 .flacso-oferta-responsive .flacso-oa-program-hero__excerpt,
-.flacso-oferta-responsive .flacso-oa-program-hero__status-badge,
-.flacso-oferta-responsive .flacso-oa-program-hero__custom-badge {
+.flacso-oferta-responsive .flacso-oa-program-hero__status-badge {
     color: #fff !important;
 }
 
@@ -4795,8 +4784,7 @@
     }
 
     .flacso-oferta-responsive .flacso-oa-program-hero__kicker,
-    .flacso-oferta-responsive .flacso-oa-program-hero__status-badge,
-    .flacso-oferta-responsive .flacso-oa-program-hero__custom-badge {
+    .flacso-oferta-responsive .flacso-oa-program-hero__status-badge {
         padding: 5px 8px;
         font-size: .62rem;
     }

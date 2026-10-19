@@ -188,7 +188,6 @@ $hero_quick_items[] = [
     'value' => $modalidad_resumen,
 ];
 
-$hero_badge_text                 = trim((string) ($academic['carta_hero_etiqueta'] ?? ''));
 $instancias_presenciales_meta    = $academic['carta_instancias_presenciales'] ?? false;
 $mostrar_instancias_presenciales = $instancias_presenciales_meta === true
     || $instancias_presenciales_meta === 1
@@ -204,13 +203,6 @@ $cohorte_nombre_completo = $cohorte_label !== ''
     : sprintf(__('Convocatoria %s', 'flacso-uruguay'), $inscripciones_year);
 
 $cohorte_inicio_fecha = $fechas_hero;
-$cohorte_periodo_inscripcion = '';
-if (!empty($registration['hasta'])) {
-    $fecha_hasta_fmt = function_exists('flacso_theme_format_date_es')
-        ? flacso_theme_format_date_es((string) $registration['hasta'])
-        : (string) $registration['hasta'];
-    $cohorte_periodo_inscripcion = sprintf(__('Postulaciones hasta el %s', 'flacso-uruguay'), $fecha_hasta_fmt);
-}
 
 $cohorte_modalidad_raw    = !empty($instance['modalidad']) ? (string) $instance['modalidad'] : $modalidad_resumen;
 $cohorte_modalidad_titulo = function_exists('flacso_theme_format_modality')
@@ -598,9 +590,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                             <?php esc_html_e('Próxima apertura', 'flacso-uruguay'); ?>
                                         </span>
                                     <?php endif; ?>
-                                    <?php if ($hero_badge_text !== '') : ?>
-                                        <span class="flacso-oa-program-hero__custom-badge"><?php echo esc_html($hero_badge_text); ?></span>
-                                    <?php endif; ?>
                                 </div>
 
                                 <h1 id="flacso-oa-program-title" class="flacso-oa-program-hero__title"><?php echo esc_html($title); ?></h1>
@@ -707,18 +696,12 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                 <?php endif; ?>
                                             </div>
 
-                                            <?php if ($mostrar_instancias_presenciales || $calendario_doc_url !== '' || $cohorte_periodo_inscripcion !== '') : ?>
+                                            <?php if ($mostrar_instancias_presenciales || $calendario_doc_url !== '') : ?>
                                                 <div class="cohort__note">
                                                     <?php if ($mostrar_instancias_presenciales) : ?>
                                                         <p class="mb-1" style="color: #b45309; font-weight: 700;">
                                                             <i class="bi bi-geo-alt-fill me-1" aria-hidden="true"></i>
                                                             <?php esc_html_e('Esta propuesta incluye instancias presenciales programadas.', 'flacso-uruguay'); ?>
-                                                        </p>
-                                                    <?php endif; ?>
-                                                    <?php if ($cohorte_periodo_inscripcion !== '') : ?>
-                                                        <p class="mb-1">
-                                                            <i class="bi bi-calendar-check me-1" aria-hidden="true"></i>
-                                                            <?php echo esc_html($cohorte_periodo_inscripcion); ?>.
                                                         </p>
                                                     <?php endif; ?>
                                                     <?php if ($calendario_doc_url !== '') : ?>
@@ -747,21 +730,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                 <i class="bi bi-info-circle" aria-hidden="true"></i>
                                                 <?php esc_html_e('Información de presentación en proceso de actualización.', 'flacso-uruguay'); ?>
                                             </p>
-                                        </div>
-                                    <?php endif; ?>
-
-                                    <?php
-                                    $objetivo_text = trim((string) ($academic['objetivo_general'] ?? ''));
-                                    if ($objetivo_text === '' && !empty($academic['objetivos_html'])) {
-                                        $objetivo_text = trim((string) $academic['objetivos_html']);
-                                    }
-                                    ?>
-                                    <?php if ($objetivo_text !== '') : ?>
-                                        <div class="objectives">
-                                            <h3><?php esc_html_e('Objetivo general', 'flacso-uruguay'); ?></h3>
-                                            <div style="margin:10px 0 0">
-                                                <?php echo wpautop(wp_kses_post($objetivo_text)); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-                                            </div>
                                         </div>
                                     <?php endif; ?>
 
@@ -796,9 +764,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         <details>
                                             <summary><?php esc_html_e('Malla Curricular', 'flacso-uruguay'); ?></summary>
                                             <div class="detail-body">
-                                                <?php if (!empty($academic['forma_aprobacion'])) : ?>
-                                                    <p><?php echo esc_html($academic['forma_aprobacion']); ?></p>
-                                                <?php endif; ?>
                                                 <?php if ($malla_doc_url !== '') : ?>
                                                     <p style="margin-bottom:1rem">
                                                         <?php esc_html_e('Descargá el documento curricular oficial con el plan de estudios, materias y créditos.', 'flacso-uruguay'); ?>
@@ -807,7 +772,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                         <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
                                                         <?php esc_html_e('Descargar Malla Curricular (PDF)', 'flacso-uruguay'); ?>
                                                     </a>
-                                                <?php elseif (empty($academic['forma_aprobacion'])) : ?>
+                                                <?php else : ?>
                                                     <p class="flacso-oa-empty-field"><i class="bi bi-info-circle" aria-hidden="true"></i> <?php esc_html_e('Documentación de malla curricular no disponible para descarga por el momento.', 'flacso-uruguay'); ?></p>
                                                 <?php endif; ?>
                                             </div>
@@ -866,6 +831,13 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
 
                                     </div>
                                 </section>
+
+                                <?php if (trim(wp_strip_all_tags($academic['financiacion_html'] ?? '')) !== '') : ?>
+                                    <section class="section">
+                                        <h2><?php esc_html_e('Financiación', 'flacso-uruguay'); ?></h2>
+                                        <div class="prose"><?php echo wpautop(wp_kses_post($academic['financiacion_html'])); ?></div>
+                                    </section>
+                                <?php endif; ?>
 
                                 <!-- FINAL CTA -->
                                 <?php if ($has_preinscription_cta) : ?>
