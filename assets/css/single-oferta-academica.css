@@ -4145,15 +4145,8 @@
 }
 
 .flacso-oferta-responsive .cohort::after {
-    content: "";
-    position: absolute;
-    top: 20px;
-    right: 22px;
-    width: 13px;
-    height: 13px;
-    border-radius: 50%;
-    background: var(--campaign-cyan);
-    box-shadow: 19px 0 0 var(--campaign-blue);
+    display: none !important;
+    content: none !important;
 }
 
 .flacso-oferta-responsive .badge-open {
@@ -5175,16 +5168,8 @@
 }
 
 .flacso-oferta-responsive .flacso-oa-person-card--nivel-1::after {
-    content: "";
-    position: absolute;
-    right: -30px;
-    top: -30px;
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    background: var(--oa-brand-light);
-    opacity: .9;
-    pointer-events: none;
+    display: none !important;
+    content: none !important;
 }
 
 .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__media {
@@ -5894,51 +5879,89 @@
 
 
 /* ==========================================================================
-   FORMULARIO AMARILLO + SOPORTE LIMPIO 2026
-   El formulario usa siempre #fdd223. Información útil y contacto académico
-   quedan visualmente separados y con controles compactos.
+   FORMULARIO INSTITUCIONAL & SOPORTE LIMPIO 2026
+   Fondo blanco limpio, acento azul FLACSO, bordes sutiles y alta legibilidad.
    ========================================================================== */
 
 .flacso-oferta-responsive .contact {
-    border: 1px solid rgba(8,43,96,.10) !important;
-    border-top: 0 !important;
-    background: #fdd223 !important;
-    box-shadow: 0 16px 34px rgba(8,43,96,.10) !important;
+    border: 1px solid #e2e8f0 !important;
+    border-top: 5px solid var(--azul) !important;
+    border-radius: 20px !important;
+    background: #ffffff !important;
+    box-shadow: 0 16px 36px rgba(8,43,96,.08) !important;
+    overflow: hidden !important;
 }
 
 .flacso-oferta-responsive .contact__head,
 .flacso-oferta-responsive .contact__body {
-    background: #fdd223 !important;
+    background: #ffffff !important;
 }
 
 .flacso-oferta-responsive .contact__head {
-    padding-bottom: 10px !important;
+    padding: 22px 24px 14px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
 }
 
-.flacso-oferta-responsive .contact__head h3,
+.flacso-oferta-responsive .contact__head h3 {
+    color: #0f274a !important;
+    font-size: 1.22rem !important;
+    font-weight: 800 !important;
+    margin-bottom: 5px !important;
+}
+
 .flacso-oferta-responsive .contact__head p {
-    color: #082b60 !important;
+    color: #64748b !important;
+    font-size: 0.88rem !important;
+    line-height: 1.45 !important;
+    margin: 0 !important;
+}
+
+.flacso-oferta-responsive .contact__body {
+    padding: 18px 24px 22px !important;
 }
 
 .flacso-oferta-responsive .contact__body input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
 .flacso-oferta-responsive .contact__body textarea,
 .flacso-oferta-responsive .contact__body select {
-    background: #fff !important;
-    border-color: rgba(8,43,96,.12) !important;
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    color: #1e293b !important;
+    font-size: 0.92rem !important;
+    padding: 10px 14px !important;
     box-shadow: none !important;
+    transition: border-color .15s ease, box-shadow .15s ease !important;
+}
+
+.flacso-oferta-responsive .contact__body input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]):focus,
+.flacso-oferta-responsive .contact__body textarea:focus,
+.flacso-oferta-responsive .contact__body select:focus {
+    background: #ffffff !important;
+    border-color: var(--azul) !important;
+    box-shadow: 0 0 0 3px rgba(15, 39, 74, 0.12) !important;
+    outline: none !important;
 }
 
 .flacso-oferta-responsive .contact__body button,
 .flacso-oferta-responsive .contact__body .button,
 .flacso-oferta-responsive .contact__body input[type="submit"] {
-    background: #21873b !important;
-    color: #fff !important;
+    background: var(--azul) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 750 !important;
+    font-size: 0.95rem !important;
+    padding: 12px 20px !important;
+    width: 100% !important;
+    cursor: pointer !important;
+    transition: background-color .18s ease, transform .12s ease !important;
 }
 
 .flacso-oferta-responsive .contact__body button:hover,
 .flacso-oferta-responsive .contact__body .button:hover,
 .flacso-oferta-responsive .contact__body input[type="submit"]:hover {
-    background: #176b2d !important;
+    background: #0d213f !important;
+    transform: translateY(-1px) !important;
 }
 
 /* Tarjeta secundaria */
@@ -6284,11 +6307,8 @@
 }
 
 .flacso-oferta-responsive .flacso-oa-person-card--nivel-1::after {
-    right: -24px !important;
-    top: -24px !important;
-    width: 84px !important;
-    height: 84px !important;
-    opacity: .72 !important;
+    display: none !important;
+    content: none !important;
 }
 
 .flacso-oferta-responsive .flacso-oa-person-card--nivel-1 .flacso-oa-person-card__media {
@@ -6505,10 +6525,154 @@
     font-size: inherit !important;
 }
 
-/* La duración queda como único dato en la franja superior. */
-.flacso-oferta-responsive .facts-wrap .facts.facts--single {
-    width: min(100%, 320px);
-    grid-template-columns: minmax(0, 1fr);
+/* ==========================================================================
+   REFINAMIENTO VISUAL 2026: TIPOGRAFÍA, CONTRASTE, COHORTE Y ACORDEONES
+   ========================================================================== */
+
+/* Badge de duración en cabecera / hero */
+.flacso-oferta-responsive .flacso-oa-program-hero__status-badge--duration {
+    background: rgba(255, 255, 255, 0.16) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.32) !important;
+    backdrop-filter: blur(4px);
+}
+
+/* Grilla de cohorte adaptable con Duración integrada */
+.flacso-oferta-responsive .cohort__details {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)) !important;
+    gap: 0 !important;
+    border-top: 1px solid var(--borde) !important;
+}
+
+.flacso-oferta-responsive .cohort__row {
+    padding: 16px 18px 16px 0 !important;
+    border-bottom: 1px solid var(--borde) !important;
+    border-left: 0 !important;
+}
+
+.flacso-oferta-responsive .cohort__row:not(:first-child) {
+    border-left: 1px solid var(--borde) !important;
+    padding-left: 18px !important;
+}
+
+@media (max-width: 640px) {
+    .flacso-oferta-responsive .cohort__details {
+        grid-template-columns: 1fr !important;
+    }
+    .flacso-oferta-responsive .cohort__row,
+    .flacso-oferta-responsive .cohort__row:not(:first-child) {
+        padding: 14px 0 !important;
+        border-left: 0 !important;
+    }
+}
+
+/* Asegurar ausencia de elementos decorativos flotantes no deseados */
+.flacso-oferta-responsive .cohort::after,
+.flacso-oferta-responsive .flacso-oa-person-card--nivel-1::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Contraste y legibilidad del texto principal */
+.flacso-oferta-responsive .prose {
+    color: #1e293b;
+    font-size: 1.03rem;
+    line-height: 1.78;
+}
+
+.flacso-oferta-responsive .prose :where(p, li) {
+    color: #334155 !important;
+    line-height: 1.78 !important;
+}
+
+.flacso-oferta-responsive .prose :where(h2, h3) {
+    color: #0f274a !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.015em;
+}
+
+.flacso-oferta-responsive .prose :where(h4, h5) {
+    color: #1e293b !important;
+    font-weight: 750 !important;
+}
+
+.flacso-oferta-responsive .prose :where(b, strong) {
+    color: #0f274a !important;
+    font-weight: 750 !important;
+}
+
+.flacso-oferta-responsive .lead,
+.flacso-oferta-responsive .section--programa > .prose.lead {
+    color: #1e293b !important;
+    font-size: 1.12rem !important;
+    line-height: 1.75 !important;
+}
+
+.flacso-oferta-responsive .lead :where(p, li, span),
+.flacso-oferta-responsive .section--programa > .prose.lead :where(p, li, span) {
+    color: inherit !important;
+    line-height: inherit !important;
+}
+
+/* Acordeones / Desplegables limpios con tarjetas estructuradas */
+.flacso-oferta-responsive .details {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    border-top: 0 !important;
+    margin-top: 24px !important;
+}
+
+.flacso-oferta-responsive .details details {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+    background: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(8, 43, 96, 0.04) !important;
+    overflow: hidden !important;
+    transition: border-color .15s ease, box-shadow .15s ease !important;
+}
+
+.flacso-oferta-responsive .details details:hover {
+    border-color: #cbd5e1 !important;
+    box-shadow: 0 6px 20px rgba(8, 43, 96, 0.07) !important;
+}
+
+.flacso-oferta-responsive .details details[open] {
+    border-color: #94a3b8 !important;
+    box-shadow: 0 8px 24px rgba(8, 43, 96, 0.08) !important;
+}
+
+.flacso-oferta-responsive .details summary {
+    padding: 18px 22px !important;
+    font-size: 1.05rem !important;
+    font-weight: 800 !important;
+    color: #0f274a !important;
+    background: #ffffff !important;
+    cursor: pointer !important;
+}
+
+.flacso-oferta-responsive .details details[open] summary {
+    border-bottom: 1px solid #f1f5f9 !important;
+    background: #f8fafc !important;
+}
+
+.flacso-oferta-responsive .detail-body {
+    padding: 22px 24px !important;
+    color: #334155 !important;
+    font-size: 0.98rem !important;
+    line-height: 1.75 !important;
+    background: #ffffff !important;
+}
+
+.flacso-oferta-responsive .detail-body :where(p, li) {
+    color: #334155 !important;
+    line-height: 1.75 !important;
+}
+
+.flacso-oferta-responsive .detail-body :where(b, strong) {
+    color: #0f274a !important;
+    font-weight: 750 !important;
 }
 
 /* Normaliza el formato importado de financiación sin quitar el énfasis semántico. */

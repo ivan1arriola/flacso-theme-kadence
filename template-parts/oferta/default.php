@@ -650,6 +650,12 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                     <div class="cohort__label"><?php esc_html_e('Modalidad', 'flacso-uruguay'); ?></div>
                                                     <div class="cohort__value"><?php echo esc_html($cohorte_modalidad_titulo); ?></div>
                                                 </div>
+                                                <?php if ($duracion_text !== '' && $duracion_text !== __('A definir', 'flacso-uruguay')) : ?>
+                                                    <div class="cohort__row">
+                                                        <div class="cohort__label"><?php esc_html_e('Duración', 'flacso-uruguay'); ?></div>
+                                                        <div class="cohort__value"><?php echo esc_html($duracion_text); ?></div>
+                                                    </div>
+                                                <?php endif; ?>
                                                 <?php if ($cohorte_modalidad_desc !== '') : ?>
                                                     <div class="cohort__row" style="grid-column: 1 / -1; padding-left: 0; border-left: 0;">
                                                         <div class="cohort__label"><?php esc_html_e('Cursada y encuentros', 'flacso-uruguay'); ?></div>
