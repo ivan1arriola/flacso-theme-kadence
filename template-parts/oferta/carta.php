@@ -166,7 +166,7 @@ if ($proximo_inicio === '') {
 $duracion_meses_val = $academic['duracion_meses'] ?? '';
 $duracion = $duracion_meses_val !== '' && function_exists('flacso_theme_format_duration_months')
     ? flacso_theme_format_duration_months($duracion_meses_val)
-    : (!empty($academic['duracion_html']) ? wp_strip_all_tags($academic['duracion_html']) : __('A definir', 'flacso-uruguay'));
+    : __('A definir', 'flacso-uruguay');
 
 $raw_modalidad = trim((string) ($instance['modalidad'] ?? ''));
 if ($raw_modalidad === '') {
@@ -275,7 +275,6 @@ if (empty($asistente_rol)) {
 $bloques_html = [
     'descripcion_html'            => __('Información General', 'flacso-uruguay'),
     'modalidad_html'              => __('Modalidad de Cursada', 'flacso-uruguay'),
-    'duracion_html'               => __('Duración y Carga Horaria', 'flacso-uruguay'),
     'perfil_ingreso_html'         => __('Perfil de Ingreso', 'flacso-uruguay'),
     'requisitos_ingreso_html'     => __('Requisitos de Ingreso', 'flacso-uruguay'),
     'perfil_egreso_html'          => __('Perfil del Egresado', 'flacso-uruguay'),
@@ -567,7 +566,6 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
 
                         <?php
                         $fc_academic_details = [
-                            'duracion_html'                => __('Duración y Carga Horaria', 'flacso-uruguay'),
                             'perfil_ingreso_html'          => __('Perfil de Ingreso', 'flacso-uruguay'),
                             'requisitos_ingreso_html'      => __('Requisitos de Ingreso', 'flacso-uruguay'),
                             'perfil_egreso_html'           => __('Perfil del Egresado', 'flacso-uruguay'),

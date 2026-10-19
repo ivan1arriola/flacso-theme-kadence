@@ -561,6 +561,12 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                     <?php if ($tipo_oferta !== '') : ?>
                                         <p class="flacso-oa-program-hero__kicker"><?php echo esc_html($tipo_oferta); ?></p>
                                     <?php endif; ?>
+                                    <?php if ($duracion_text !== '' && $duracion_text !== __('A definir', 'flacso-uruguay')) : ?>
+                                        <span class="flacso-oa-program-hero__status-badge flacso-oa-program-hero__status-badge--duration">
+                                            <i class="bi bi-hourglass-split me-1" aria-hidden="true"></i>
+                                            <?php echo esc_html($duracion_text); ?>
+                                        </span>
+                                    <?php endif; ?>
                                     <?php if ($inscripciones_abiertas) : ?>
                                         <span class="flacso-oa-program-hero__status-badge flacso-oa-program-hero__status-badge--open">
                                             <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
@@ -598,18 +604,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                 </div>
                             </div>
                         </section>
-                    </div>
-
-                    <!-- ========================================== -->
-                    <!-- FRANJA HORIZONTAL: DATO CLAVE NO REPETIDO EN LA CONVOCATORIA -->
-                    <!-- ========================================== -->
-                    <div class="flacso-oa-container facts-wrap" aria-label="<?php esc_attr_e('Duración de la propuesta', 'flacso-uruguay'); ?>">
-                        <div class="facts facts--single">
-                            <div class="fact">
-                                <div class="fact__label"><?php esc_html_e('Duración', 'flacso-uruguay'); ?></div>
-                                <div class="fact__value"><?php echo esc_html($duracion_text); ?></div>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- ========================================== -->

@@ -252,7 +252,6 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "descripcion_html"            => (string) ($data["presentacion"] ?? get_post_meta($offer_id, "presentacion", true)),
         "resumen"                     => (string) ($data["resumen"] ?? get_post_meta($offer_id, "resumen", true)),
         "modalidad_html"              => (string) $instance["modalidad_descripcion"],
-        "duracion_html"               => (string) ($data["duracion_html"] ?? get_post_meta($offer_id, "duracion_html", true)),
         "duracion_meses"              => (string) ($data["duracion_meses"] ?? ""),
         "perfil_ingreso_html"         => (string) ($data["perfil_ingreso_html"] ?? get_post_meta($offer_id, "perfil_ingreso_html", true)),
         "requisitos_ingreso_html"     => (string) ($data["requisitos_ingreso_html"] ?? get_post_meta($offer_id, "requisitos_ingreso_html", true)),
