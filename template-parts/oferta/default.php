@@ -793,7 +793,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
 
                                         <!-- 5. REQUISITOS DE EGRESO Y TITULACIÓN -->
                                         <details id="titulacion">
-                                            <summary><?php esc_html_e('Requisitos de egreso y titulación', 'flacso-uruguay'); ?></summary>
+                                            <summary><?php esc_html_e('Requisitos de egreso y titulación.', 'flacso-uruguay'); ?></summary>
                                             <div class="detail-body">
                                                 <?php if (!empty($academic['requisitos_egreso_html'])) : ?>
                                                     <?php echo wpautop(wp_kses_post($academic['requisitos_egreso_html'])); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -897,7 +897,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         <nav class="contact-support__links" aria-label="<?php esc_attr_e('Enlaces de la oferta académica', 'flacso-uruguay'); ?>">
                                             <a href="#programa"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Ver propuesta académica', 'flacso-uruguay'); ?></a>
                                             <a href="#cohorte"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Información de la cohorte', 'flacso-uruguay'); ?></a>
-                                            <a href="#titulacion"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Requisitos de titulación', 'flacso-uruguay'); ?></a>
+                                            <a href="#titulacion"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Requisitos de egreso y titulación.', 'flacso-uruguay'); ?></a>
                                             <?php if ($malla_doc_url !== '') : ?>
                                                 <a href="<?php echo esc_url($malla_doc_url); ?>" target="_blank" rel="noopener noreferrer" class="flacso-meta-doc-link flacso-meta-doc-link--malla">
                                                     <i class="bi bi-file-earmark-pdf text-danger"></i> <?php esc_html_e('Malla Curricular (PDF)', 'flacso-uruguay'); ?>
