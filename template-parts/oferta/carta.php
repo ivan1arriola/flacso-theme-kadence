@@ -131,6 +131,7 @@ $mostrar_instancias_presenciales = !empty($academic['carta_instancias_presencial
 
 $reconocido_mec     = !empty($academic['reconocido_mec']);
 $reconocimiento_int = !empty($academic['reconocimiento_internacional']);
+$reconocimiento_red_flacso = !empty($academic['reconocimiento_red_flacso']);
 $mostrar_convenio_iin = !empty($academic['convenio_iin_oea']);
 $mostrar_costos_envio = !empty($academic['mostrar_costos_envio']);
 
@@ -351,7 +352,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                         <?php endif; ?>
                     </div>
 
-                    <?php if ($reconocido_mec || $reconocimiento_int) : ?>
+                    <?php if ($reconocido_mec || $reconocimiento_int || $reconocimiento_red_flacso) : ?>
                         <div class="fc-certifications">
                             <?php if ($reconocido_mec) : ?>
                                 <div class="fc-certification">
@@ -364,6 +365,13 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                                 <div class="fc-certification">
                                     <i class="bi bi-globe-americas" aria-hidden="true"></i>
                                     <span><?php esc_html_e('Apostillado de La Haya', 'flacso-uruguay'); ?></span>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if ($reconocimiento_red_flacso) : ?>
+                                <div class="fc-certification">
+                                    <i class="bi bi-globe" aria-hidden="true"></i>
+                                    <span><?php esc_html_e('Título con validez y reconocimiento en la red del Sistema Internacional FLACSO.', 'flacso-uruguay'); ?></span>
                                 </div>
                             <?php endif; ?>
                         </div>

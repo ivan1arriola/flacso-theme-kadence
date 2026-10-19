@@ -277,6 +277,7 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "titulos_intermedios"         => (array) ($data["titulos_intermedios"] ?? (get_post_meta($offer_id, "titulos_intermedios", true) ?: [])),
         "reconocido_mec"              => !empty($data["reconocido_mec"]) || (bool) get_post_meta($offer_id, "reconocido_mec", true),
         "reconocimiento_internacional"=> !empty($data["reconocimiento_internacional"]) || (bool) get_post_meta($offer_id, "reconocimiento_internacional", true),
+        "reconocimiento_red_flacso"   => !empty($data["reconocimiento_red_flacso"]) || (bool) get_post_meta($offer_id, "reconocimiento_red_flacso", true),
         "convenio_iin_oea"            => !empty($data["convenio_iin_oea"]) || (bool) get_post_meta($offer_id, "convenio_iin_oea", true),
         "mostrar_costos_envio"        => !empty($data["mostrar_costos_envio"]) || (bool) get_post_meta($offer_id, "mostrar_costos_envio", true),
         "mostrar_expedicion_titulo"   => !empty($data["mostrar_expedicion_titulo"]) || (bool) get_post_meta($offer_id, "mostrar_expedicion_titulo", true),

@@ -5,6 +5,18 @@
 
 define("ABSPATH", __DIR__ . "/");
 
+if (!function_exists("get_option")) {
+    function get_option($key, $default = false) { return $default; }
+}
+if (!function_exists("mb_strtoupper")) {
+    function mb_strtoupper($value, $encoding = null) { return strtoupper($value); }
+}
+if (!function_exists("mb_substr")) {
+    function mb_substr($value, $start, $length = null, $encoding = null) {
+        return $length === null ? substr($value, $start) : substr($value, $start, $length);
+    }
+}
+
 $GLOBALS["posts"] = [
     10 => (object) ["ID" => 10, "post_type" => "oferta-academica", "post_status" => "publish", "post_title" => "Maestría en Educación", "post_name" => "maestria-educacion"],
     100 => (object) ["ID" => 100, "post_type" => "cohorte", "post_status" => "publish", "post_title" => "Cohorte V", "post_name" => "cohorte-v"],
@@ -29,6 +41,8 @@ $GLOBALS["meta"] = [
         "presentacion" => "Presentación de la maestría",
         "carga_horaria" => 480,
         "creditos" => 60,
+        "reconocimiento_internacional" => 1,
+        "reconocimiento_red_flacso" => 1,
         "colores_presentacion" => ["principal" => "#0057a8", "secundarios" => []],
         "seminarios" => [
             ["seminario_id" => 20, "orden" => 1, "caracter" => "obligatorio", "creditos_reconocidos" => 4],
@@ -599,6 +613,8 @@ assert_same("2027", flacso_theme_format_cohort_dates([
 
 // 7. Contexto para Carta de Presentación
 assert_same(true, array_key_exists("reconocido_mec", $offer_context["academic"]), "Contexto incluye reconocido_mec para carta");
+assert_same(true, $offer_context["academic"]["reconocimiento_internacional"], "Contexto conserva el reconocimiento internacional/apostillado");
+assert_same(true, $offer_context["academic"]["reconocimiento_red_flacso"], "Contexto incluye el reconocimiento de la red FLACSO");
 assert_same(false, array_key_exists("carta_hero_etiqueta", $offer_context["academic"]), "Contexto omite la etiqueta de preinscripcion");
 assert_same(true, array_key_exists("menciones", $offer_context["academic"]), "Contexto incluye menciones");
 assert_same(true, array_key_exists("colores_presentacion", $offer_context["academic"]), "Contexto incluye colores_presentacion");
@@ -606,6 +622,11 @@ assert_same("#0057a8", $offer_context["color_principal"], "Contexto expone color
 assert_same("#0057a8", $offer_context["academic"]["color_principal"], "Contexto expone color_principal en academic");
 assert_same(true, file_exists(__DIR__ . "/../template-parts/oferta/carta.php"), "Template part de carta existe");
 assert_same(true, file_exists(__DIR__ . "/../assets/css/single-carta.css"), "Estilos de carta existen");
+$offer_template = file_get_contents(__DIR__ . "/../template-parts/oferta/default.php");
+$carta_template = file_get_contents(__DIR__ . "/../template-parts/oferta/carta.php");
+assert_same(true, strpos($offer_template, "reconocimiento_red_flacso") !== false, "La página pública usa la opción independiente de reconocimiento de red");
+assert_same(true, strpos($carta_template, "reconocimiento_red_flacso") !== false, "La carta usa la opción independiente de reconocimiento de red");
+assert_same(true, strpos($offer_template, "Apostillado de La Haya") !== false, "La página pública identifica por separado la titulación apostillada");
 
 exit($failures > 0 ? 1 : 0);
 

@@ -252,8 +252,9 @@ if ($asistente_correo === '') {
 
 $reconocido_mec               = !empty($academic['reconocido_mec']);
 $reconocimiento_internacional = !empty($academic['reconocimiento_internacional']);
+$reconocimiento_red_flacso    = !empty($academic['reconocimiento_red_flacso']);
 $convenio_iin_oea             = !empty($academic['convenio_iin_oea']);
-$has_aside_badges             = $reconocido_mec || $reconocimiento_internacional || $convenio_iin_oea;
+$has_aside_badges             = $reconocido_mec || $reconocimiento_internacional || $reconocimiento_red_flacso || $convenio_iin_oea;
 $has_aside_docs               = ($malla_doc_url !== '' || $calendario_doc_url !== '');
 
 $render_info_card = static function ($card_title, $body, $extra_class = '', array $attrs = []) use ($has_visible_html) {
@@ -815,6 +816,9 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                     $titulos_body .= '<p class="mt-2 text-primary fw-semibold"><i class="bi bi-patch-check-fill me-1" aria-hidden="true"></i> ' . esc_html__('Programa con Reconocimiento Oficial del Ministerio de Educación y Cultura (MEC).', 'flacso-uruguay') . '</p>';
                                                 }
                                                 if (!empty($academic['reconocimiento_internacional'])) {
+                                                    $titulos_body .= '<p class="mt-2"><i class="bi bi-globe me-1" aria-hidden="true"></i> ' . esc_html__('Apostillado de La Haya.', 'flacso-uruguay') . '</p>';
+                                                }
+                                                if (!empty($academic['reconocimiento_red_flacso'])) {
                                                     $titulos_body .= '<p class="mt-2"><i class="bi bi-globe me-1" aria-hidden="true"></i> ' . esc_html__('Título con validez y reconocimiento en la red del Sistema Internacional FLACSO.', 'flacso-uruguay') . '</p>';
                                                 }
                                                 if (!empty($academic['convenio_iin_oea'])) {
