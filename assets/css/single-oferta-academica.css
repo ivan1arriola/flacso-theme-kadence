@@ -6676,19 +6676,19 @@
 }
 
 /* Normaliza el formato importado de financiación sin quitar el énfasis semántico. */
-.flacso-oferta-responsive .section--financiacion > .prose {
+.flacso-oferta-responsive .detail-body--financiacion {
     color: #405268;
     font-size: 1rem;
     line-height: 1.75;
 }
 
-.flacso-oferta-responsive .section--financiacion > .prose :where(p, li, span) {
+.flacso-oferta-responsive .detail-body--financiacion :where(p, li, span) {
     color: inherit !important;
     font-family: inherit !important;
     font-size: inherit !important;
     font-weight: 400 !important;
 }
 
-.flacso-oferta-responsive .section--financiacion > .prose :where(b, strong) {
+.flacso-oferta-responsive .detail-body--financiacion :where(b, strong) {
     font-weight: 600 !important;
 }
