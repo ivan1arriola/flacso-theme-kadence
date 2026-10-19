@@ -30,21 +30,6 @@
     color: var(--flacso-text);
 }
 
-/* La presentación debe conservar lectura clara sobre el fondo texturado. */
-.flacso-oferta-responsive .section--programa > .prose.lead {
-    color: #26384d;
-}
-
-.flacso-oferta-responsive .section--programa > .prose.lead p:first-child {
-    color: #1c3150;
-}
-
-.flacso-oferta-responsive .section--programa > .prose.lead :where(p, li, span) {
-    color: inherit !important;
-    font-family: inherit !important;
-    font-size: inherit !important;
-}
-
 .flacso-oferta-responsive,
 .flacso-oferta-responsive * {
     box-sizing: border-box;
@@ -6507,4 +6492,39 @@
         padding-top: 7px !important;
         font-size: .72rem !important;
     }
+}
+
+/* Evita que los estilos incrustados en el HTML bajen el contraste de la propuesta. */
+.flacso-oferta-responsive .section--programa > .prose.lead {
+    color: #26384d !important;
+}
+
+.flacso-oferta-responsive .section--programa > .prose.lead :where(p, li, span) {
+    color: inherit !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+}
+
+/* La duración queda como único dato en la franja superior. */
+.flacso-oferta-responsive .facts-wrap .facts.facts--single {
+    width: min(100%, 320px);
+    grid-template-columns: minmax(0, 1fr);
+}
+
+/* Normaliza el formato importado de financiación sin quitar el énfasis semántico. */
+.flacso-oferta-responsive .section--financiacion > .prose {
+    color: #405268;
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.flacso-oferta-responsive .section--financiacion > .prose :where(p, li, span) {
+    color: inherit !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-weight: 400 !important;
+}
+
+.flacso-oferta-responsive .section--financiacion > .prose :where(b, strong) {
+    font-weight: 600 !important;
 }

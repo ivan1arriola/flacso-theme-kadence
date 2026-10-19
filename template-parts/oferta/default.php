@@ -135,7 +135,6 @@ $hero_primary_url = $has_preinscription_cta ? $preinscripcion_url : '#flacso-oa-
 
 $duracion_meses_val = $academic['duracion_meses'] ?? '';
 
-$hero_quick_items = [];
 $fechas_hero = trim((string) ($instance['fechas_formateadas'] ?? ''));
 if ($fechas_hero === '' && !empty($instance['fecha_inicio'])) {
     $fechas_hero = function_exists('flacso_theme_format_date_es')
@@ -153,24 +152,12 @@ if ($fechas_hero !== '') {
 } else {
     $fechas_hero = __('A confirmar', 'flacso-uruguay');
 }
-$hero_quick_items[] = [
-    'icon'  => 'bi-calendar3',
-    'label' => __('Próximo inicio', 'flacso-uruguay'),
-    'value' => $fechas_hero,
-];
-
 $duracion_text = $duracion_meses_val !== '' && function_exists('flacso_theme_format_duration_months')
     ? flacso_theme_format_duration_months($duracion_meses_val)
     : '';
 if ($duracion_text === '' || $duracion_text === '0 meses' || (is_numeric($duracion_meses_val) && (int) $duracion_meses_val <= 0)) {
     $duracion_text = __('A definir', 'flacso-uruguay');
 }
-$hero_quick_items[] = [
-    'icon'  => 'bi-clock',
-    'label' => __('Duración', 'flacso-uruguay'),
-    'value' => $duracion_text,
-];
-
 $modalidad_resumen = trim((string) ($academic['modalidad_resumen'] ?? ''));
 if ($modalidad_resumen === '') {
     $modalidad_resumen = trim((string) ($instance['modalidad'] ?? ''));
@@ -182,12 +169,6 @@ if ($modalidad_resumen === '') {
         ? flacso_theme_format_modality($modalidad_resumen)
         : mb_strtoupper(mb_substr($modalidad_resumen, 0, 1, 'UTF-8'), 'UTF-8') . mb_substr($modalidad_resumen, 1, null, 'UTF-8');
 }
-$hero_quick_items[] = [
-    'icon'  => 'bi-camera-video',
-    'label' => __('Modalidad', 'flacso-uruguay'),
-    'value' => $modalidad_resumen,
-];
-
 $instancias_presenciales_meta    = $academic['carta_instancias_presenciales'] ?? false;
 $mostrar_instancias_presenciales = $instancias_presenciales_meta === true
     || $instancias_presenciales_meta === 1
@@ -620,25 +601,13 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                     </div>
 
                     <!-- ========================================== -->
-                    <!-- FRANJA HORIZONTAL: 4 DATOS CLAVE -->
+                    <!-- FRANJA HORIZONTAL: DATO CLAVE NO REPETIDO EN LA CONVOCATORIA -->
                     <!-- ========================================== -->
-                    <div class="flacso-oa-container facts-wrap" aria-label="<?php esc_attr_e('Información principal', 'flacso-uruguay'); ?>">
-                        <div class="facts">
-                            <div class="fact">
-                                <div class="fact__label"><?php esc_html_e('Próximo inicio', 'flacso-uruguay'); ?></div>
-                                <div class="fact__value"><?php echo esc_html($fechas_hero); ?></div>
-                            </div>
+                    <div class="flacso-oa-container facts-wrap" aria-label="<?php esc_attr_e('Duración de la propuesta', 'flacso-uruguay'); ?>">
+                        <div class="facts facts--single">
                             <div class="fact">
                                 <div class="fact__label"><?php esc_html_e('Duración', 'flacso-uruguay'); ?></div>
                                 <div class="fact__value"><?php echo esc_html($duracion_text); ?></div>
-                            </div>
-                            <div class="fact">
-                                <div class="fact__label"><?php esc_html_e('Modalidad', 'flacso-uruguay'); ?></div>
-                                <div class="fact__value"><?php echo esc_html($modalidad_resumen); ?></div>
-                            </div>
-                            <div class="fact">
-                                <div class="fact__label"><?php esc_html_e('Edición', 'flacso-uruguay'); ?></div>
-                                <div class="fact__value"><?php echo esc_html($cohorte_label ?: sprintf(__('Cohorte %s', 'flacso-uruguay'), $inscripciones_year)); ?></div>
                             </div>
                         </div>
                     </div>
@@ -837,7 +806,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                 </section>
 
                                 <?php if (trim(wp_strip_all_tags($academic['financiacion_html'] ?? '')) !== '') : ?>
-                                    <section class="section">
+                                    <section class="section section--financiacion">
                                         <h2><?php esc_html_e('Financiación', 'flacso-uruguay'); ?></h2>
                                         <div class="prose"><?php echo wpautop(wp_kses_post($academic['financiacion_html'])); ?></div>
                                     </section>
