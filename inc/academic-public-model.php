@@ -332,7 +332,11 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "calendario_pdf_url"          => $calendario_pdf,
         "equipos"                     => $data["equipos"] ?? get_post_meta($offer_id, "equipos", true),
         "coordinacion_academica"      => [],
-        "carta_instancias_presenciales"=> !empty($current_cohort["instancias_presenciales"]) || !empty($data["carta_instancias_presenciales"]) || (bool) get_post_meta($offer_id, "carta_instancias_presenciales", true),
+        // El estado explícito de la cohorte pública prevalece sobre metadatos
+        // antiguos de la Oferta; "false" no debe volverse "true" por fallback.
+        "carta_instancias_presenciales"=> array_key_exists('instancias_presenciales', (array) $current_cohort)
+            ? !empty($current_cohort["instancias_presenciales"])
+            : (!empty($data["carta_instancias_presenciales"]) || (bool) get_post_meta($offer_id, "carta_instancias_presenciales", true)),
         "menciones"                   => (array) ($data["menciones"] ?? (get_post_meta($offer_id, "menciones", true) ?: [])),
         "orientaciones"               => (array) ($data["orientaciones"] ?? (get_post_meta($offer_id, "orientaciones", true) ?: [])),
         "titulos_intermedios"         => flacso_theme_resolve_intermediate_titles($offer_id, $data["titulos_intermedios"] ?? get_post_meta($offer_id, "titulos_intermedios", true)),
