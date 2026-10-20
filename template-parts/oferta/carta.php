@@ -441,7 +441,13 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                             <div class="fc-intermediate-content">
                                 <div class="fc-intermediate-copy">
                                     <div class="fc-intermediate-kicker"><?php esc_html_e('Título intermedio', 'flacso-uruguay'); ?></div>
-                                    <h3><?php echo esc_html($titulo_intermedio); ?></h3>
+                                    <h3><a href="<?php echo esc_url($titulo_intermedio['url']); ?>"><?php echo esc_html($titulo_intermedio['titulo']); ?></a></h3>
+                                    <?php if (!empty($titulo_intermedio['menciones'])) : ?>
+                                        <p class="fc-intermediate-mentions">
+                                            <strong><?php esc_html_e(count($titulo_intermedio['menciones']) === 1 ? 'Mención:' : 'Menciones:', 'flacso-uruguay'); ?></strong>
+                                            <?php echo esc_html(implode(' · ', $titulo_intermedio['menciones'])); ?>
+                                        </p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
