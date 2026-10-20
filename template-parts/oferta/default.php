@@ -395,146 +395,70 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
         return;
     }
 
-    $nivel = in_array((string) $nivel, ['1', '2', '3'], true) ? (string) $nivel : '3';
-
-    $nombre     = trim((string) get_post_meta($docente_id, 'nombre', true));
-    $apellido   = trim((string) get_post_meta($docente_id, 'apellido', true));
-    $pref_abrev = trim((string) get_post_meta($docente_id, 'prefijo_abrev', true));
-    $tit_acad   = trim((string) get_post_meta($docente_id, 'titulo_academico', true));
-    $cargo_meta = trim((string) get_post_meta($docente_id, 'cargo', true));
-
     $doc_titulo = function_exists('dp_nombre_completo')
         ? dp_nombre_completo($docente_id, false)
         : get_the_title($docente_id);
+    $nombre = trim((string) get_post_meta($docente_id, 'nombre', true));
+    $apellido = trim((string) get_post_meta($docente_id, 'apellido', true));
+    $tit_acad = trim((string) get_post_meta($docente_id, 'titulo_academico', true));
+    $cargo = trim((string) get_post_meta($docente_id, 'cargo', true));
+    $academic_label = $tit_acad ?: $cargo;
 
-    if ($pref_abrev && stripos($doc_titulo, $pref_abrev) === false) {
-        $doc_titulo = $pref_abrev . ' ' . $doc_titulo;
-    }
-
-    $academic_label = $tit_acad ? $tit_acad : ($cargo_meta ?: $pref_abrev);
+    // No mostrar el mismo título académico dos veces.
     if ($academic_label !== '' && stripos($doc_titulo, $academic_label) !== false) {
         $academic_label = '';
     }
 
-    $cv_raw = (string) get_post_meta($docente_id, 'cv', true);
-    $has_cv = trim(wp_strip_all_tags($cv_raw)) !== '';
-
-    $avatar_size = [
-        '1' => 260,
-        '2' => 120,
-        '3' => 88,
-    ][$nivel];
-
-    $avatar_class = $nivel === '1'
-        ? 'flacso-oa-person-card__avatar'
-        : 'flacso-oa-person-card__avatar-round';
-
-    $card_classes = sprintf(
-        'flacso-oa-person-card flacso-oa-person-card--nivel-%s%s',
-        esc_attr($nivel),
-        $has_cv ? ' flacso-oa-person-card--has-cv' : ' flacso-oa-person-card--no-cv'
-    );
-
-    $render_avatar_html = static function() use ($docente_id, $doc_titulo, $avatar_size, $avatar_class, $nombre, $apellido) {
-        if (function_exists('dp_avatar_markup')) {
-            $markup = dp_avatar_markup($docente_id, $doc_titulo, $avatar_size, $avatar_class);
-            if (!empty($markup)) {
-                return $markup;
-            }
-        }
-        if (has_post_thumbnail($docente_id)) {
-            return get_the_post_thumbnail($docente_id, $avatar_size > 150 ? 'medium_large' : 'thumbnail', [
-                'class'   => $avatar_class,
-                'alt'     => esc_attr($doc_titulo),
-                'loading' => 'lazy',
-            ]);
-        }
-        $initials = '';
-        if ($nombre || $apellido) {
-            $initials = mb_substr($nombre, 0, 1) . mb_substr($apellido, 0, 1);
-        } elseif ($doc_titulo) {
-            $initials = mb_substr($doc_titulo, 0, 2);
-        }
-        $initials = strtoupper($initials ?: 'FL');
-        $colors = ['#1d3a72', '#0070ba', '#2c5282', '#1a365d', '#0f2942'];
-        $bg_color = $colors[abs(crc32($doc_titulo ?: (string) $docente_id)) % count($colors)];
-
-        return sprintf(
-            '<div class="%s flacso-docente-card__initials" style="width:100%%;height:100%%;display:flex;align-items:center;justify-content:center;background:%s;color:#fff;font-weight:800;font-size:%dpx;border-radius:inherit;">%s</div>',
-            esc_attr($avatar_class),
-            esc_attr($bg_color),
-            max(14, (int) ($avatar_size * 0.35)),
-            esc_html($initials)
-        );
-    };
-
-    echo '<div class="flacso-oa-docente-item flacso-oa-docente-item--nivel-' . esc_attr($nivel) . '">';
-    echo '<article class="' . esc_attr($card_classes) . '" aria-label="' . esc_attr(sprintf(__('Docente: %s', 'flacso-uruguay'), $doc_titulo)) . '">';
-
-    if ($nivel === '1') {
-        echo '<div class="flacso-oa-person-card__media">';
-        echo '<div class="flacso-oa-person-card__avatar-wrap">';
-        echo $render_avatar_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-        echo '</div>';
-        echo '</div>';
-
-        echo '<div class="flacso-oa-person-card__content">';
-        if ($rol) {
-            echo '<div class="flacso-oa-person-card__meta-row">';
-            echo '<span class="flacso-oa-person-card__role-pill">' . esc_html($rol) . '</span>';
-            echo '</div>';
-        }
-
-        echo '<h4 class="flacso-oa-person-card__name">' . esc_html($doc_titulo) . '</h4>';
-
-        if ($academic_label) {
-            echo '<p class="flacso-oa-person-card__academic">' . esc_html($academic_label) . '</p>';
-        }
-
-        if ($has_cv) {
-            echo '<div class="flacso-oa-person-card__cv">' . wp_kses_post(wpautop($cv_raw)) . '</div>';
-        }
-
-        if ($has_cv) {
-            echo '<button type="button" class="flacso-oa-person-card__expand" aria-expanded="false">';
-            echo '<span class="flacso-oa-person-card__expand-label">' . esc_html__('Ampliar', 'flacso-uruguay') . '</span>';
-            echo '<i class="bi bi-plus-lg" aria-hidden="true"></i>';
-            echo '</button>';
-        }
-
-        echo '</div>';
-    } else {
-        echo '<div class="flacso-oa-person-card__header">';
-        echo '<div class="flacso-oa-person-card__avatar-circle">';
-        echo $render_avatar_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-        echo '</div>';
-
-        echo '<div class="flacso-oa-person-card__header-info">';
-        if ($rol) {
-            echo '<span class="flacso-oa-person-card__role-pill">' . esc_html($rol) . '</span>';
-        }
-        echo '<h4 class="flacso-oa-person-card__name">' . esc_html($doc_titulo) . '</h4>';
-        if ($academic_label) {
-            echo '<p class="flacso-oa-person-card__academic">' . esc_html($academic_label) . '</p>';
-        }
-        echo '</div>';
-        echo '</div>';
-
-        if ($nivel === '2' && $has_cv) {
-            echo '<div class="flacso-oa-person-card__content">';
-            echo '<div class="flacso-oa-person-card__cv">' . wp_kses_post(wpautop($cv_raw)) . '</div>';
-            echo '<button type="button" class="flacso-oa-person-card__expand" aria-expanded="false">';
-            echo '<span class="flacso-oa-person-card__expand-label">' . esc_html__('Ampliar', 'flacso-uruguay') . '</span>';
-            echo '<i class="bi bi-plus-lg" aria-hidden="true"></i>';
-            echo '</button>';
-            echo '</div>';
-        }
+    $cv = trim((string) get_post_meta($docente_id, 'cv', true));
+    $has_bio = trim(wp_strip_all_tags($cv)) !== '' || $academic_label !== '' || trim((string) $rol) !== '';
+    $avatar_html = '';
+    if (function_exists('dp_avatar_markup')) {
+        $avatar_html = (string) dp_avatar_markup($docente_id, $doc_titulo, 104, 'flacso-academic-person__avatar-image');
     }
-
-    echo '</article>';
-    echo '</div>';
+    if ($avatar_html === '' && has_post_thumbnail($docente_id)) {
+        $avatar_html = get_the_post_thumbnail($docente_id, 'thumbnail', [
+            'class' => 'flacso-academic-person__avatar-image',
+            'alt' => '',
+            'loading' => 'lazy',
+        ]);
+    }
+    if ($avatar_html === '') {
+        $initials = $nombre !== '' || $apellido !== ''
+            ? mb_substr($nombre, 0, 1) . mb_substr($apellido, 0, 1)
+            : mb_substr($doc_titulo, 0, 2);
+        $avatar_html = '<span class="flacso-academic-person__initials" aria-hidden="true">'
+            . esc_html(mb_strtoupper($initials ?: 'FL', 'UTF-8')) . '</span>';
+    }
+    ?>
+    <div class="flacso-academic-person">
+        <?php if ($has_bio) : ?>
+            <details class="flacso-academic-person__details">
+                <summary class="flacso-academic-person__summary">
+                    <span class="flacso-academic-person__avatar" aria-hidden="true"><?php echo $avatar_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+                    <span class="flacso-academic-person__name"><?php echo esc_html($doc_titulo); ?></span>
+                    <span class="flacso-academic-person__toggle" aria-hidden="true"></span>
+                </summary>
+                <div class="flacso-academic-person__body">
+                    <?php if (trim((string) $rol) !== '') : ?>
+                        <p class="flacso-academic-person__role"><?php echo esc_html($rol); ?></p>
+                    <?php endif; ?>
+                    <?php if ($academic_label !== '') : ?>
+                        <p class="flacso-academic-person__qualification"><?php echo esc_html($academic_label); ?></p>
+                    <?php endif; ?>
+                    <?php if (trim(wp_strip_all_tags($cv)) !== '') : ?>
+                        <div class="flacso-academic-person__bio"><?php echo wp_kses_post(wpautop($cv)); ?></div>
+                    <?php endif; ?>
+                </div>
+            </details>
+        <?php else : ?>
+            <article class="flacso-academic-person__static" aria-label="<?php echo esc_attr(sprintf(__('Docente: %s', 'flacso-uruguay'), $doc_titulo)); ?>">
+                <span class="flacso-academic-person__avatar" aria-hidden="true"><?php echo $avatar_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+                <span class="flacso-academic-person__name"><?php echo esc_html($doc_titulo); ?></span>
+            </article>
+        <?php endif; ?>
+    </div>
+    <?php
 };
-
 ?>
 
 <div id="inner-wrap" class="wrap kt-clear flacso-oferta-responsive" style="<?php echo esc_attr($offer_style_vars); ?>">
@@ -715,13 +639,21 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         </div>
                                     <?php endif; ?>
 
-                                    <!-- ACORDEÓN DE DETALLES ACADÉMICOS -->
-                                    <div class="details">
+                                    <!-- Acordeones informativos: componente accesible nativo, responsive. -->
+                                    <div class="details flacso-academic-accordions">
 
                                         <!-- 1. PERFIL DE INGRESO -->
-                                        <details open>
-                                            <summary><?php esc_html_e('Perfil de ingreso', 'flacso-uruguay'); ?></summary>
-                                            <div class="detail-body">
+                                        <details class="flacso-academic-accordion">
+                                            <summary>
+                                                <span class="flacso-academic-accordion__icon" aria-hidden="true">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 21v-2.5a7.5 7.5 0 0 1 15 0V21z"/></svg>
+                                                </span>
+                                                <span class="flacso-academic-accordion__label"><?php esc_html_e('Perfil de ingreso', 'flacso-uruguay'); ?></span>
+                                                <span class="flacso-academic-accordion__chevron" aria-hidden="true">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                                                </span>
+                                            </summary>
+                                            <div class="detail-body flacso-academic-accordion__body">
                                                 <?php if (!empty($academic['perfil_ingreso_html'])) : ?>
                                                     <?php echo wpautop(wp_kses_post($academic['perfil_ingreso_html'])); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                 <?php else : ?>
@@ -731,9 +663,17 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         </details>
 
                                         <!-- 2. REQUISITOS DE INGRESO -->
-                                        <details>
-                                            <summary><?php esc_html_e('Requisitos de ingreso', 'flacso-uruguay'); ?></summary>
-                                            <div class="detail-body">
+                                        <details class="flacso-academic-accordion">
+                                            <summary>
+                                                <span class="flacso-academic-accordion__icon" aria-hidden="true">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2.5h8l4 4V21H7z"/><path d="M15 2.5V7h4"/><path d="M10 12h6M10 16h6"/></svg>
+                                                </span>
+                                                <span class="flacso-academic-accordion__label"><?php esc_html_e('Requisitos de ingreso', 'flacso-uruguay'); ?></span>
+                                                <span class="flacso-academic-accordion__chevron" aria-hidden="true">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                                                </span>
+                                            </summary>
+                                            <div class="detail-body flacso-academic-accordion__body">
                                                 <?php if (!empty($academic['requisitos_ingreso_html'])) : ?>
                                                     <?php echo wpautop(wp_kses_post($academic['requisitos_ingreso_html'])); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                 <?php else : ?>
@@ -743,9 +683,17 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         </details>
 
                                         <!-- 4. PERFIL DE EGRESO -->
-                                        <details>
-                                            <summary><?php esc_html_e('Perfil de egreso', 'flacso-uruguay'); ?></summary>
-                                            <div class="detail-body">
+                                        <details class="flacso-academic-accordion">
+                                            <summary>
+                                                <span class="flacso-academic-accordion__icon" aria-hidden="true">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7h4v7M10 21V5h4v16M16 21v-11h4v11"/></svg>
+                                                </span>
+                                                <span class="flacso-academic-accordion__label"><?php esc_html_e('Perfil de egreso', 'flacso-uruguay'); ?></span>
+                                                <span class="flacso-academic-accordion__chevron" aria-hidden="true">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                                                </span>
+                                            </summary>
+                                            <div class="detail-body flacso-academic-accordion__body">
                                                 <?php if (!empty($academic['perfil_egreso_html'])) : ?>
                                                     <?php echo wpautop(wp_kses_post($academic['perfil_egreso_html'])); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                 <?php else : ?>
@@ -755,9 +703,17 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         </details>
 
                                         <!-- 5. REQUISITOS DE EGRESO Y TITULACIÓN -->
-                                        <details id="titulacion">
-                                            <summary><?php esc_html_e('Requisitos de egreso y titulación.', 'flacso-uruguay'); ?></summary>
-                                            <div class="detail-body">
+                                        <details class="flacso-academic-accordion" id="titulacion">
+                                            <summary>
+                                                <span class="flacso-academic-accordion__icon" aria-hidden="true">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m2.5 9.5 9.5-5 9.5 5-9.5 5z"/><path d="M6.5 12v5.5c3.5 2.3 7.5 2.3 11 0V12M21.5 10v7"/></svg>
+                                                </span>
+                                                <span class="flacso-academic-accordion__label"><?php esc_html_e('Requisitos de egreso y titulación.', 'flacso-uruguay'); ?></span>
+                                                <span class="flacso-academic-accordion__chevron" aria-hidden="true">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                                                </span>
+                                            </summary>
+                                            <div class="detail-body flacso-academic-accordion__body">
                                                 <?php if (!empty($academic['requisitos_egreso_html'])) : ?>
                                                     <?php echo wpautop(wp_kses_post($academic['requisitos_egreso_html'])); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
                                                 <?php else : ?>
@@ -767,9 +723,17 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         </details>
 
                                         <!-- 6. TÍTULO Y CERTIFICACIÓN -->
-                                        <details>
-                                            <summary><?php esc_html_e('Título y certificación', 'flacso-uruguay'); ?></summary>
-                                            <div class="detail-body">
+                                        <details class="flacso-academic-accordion">
+                                            <summary>
+                                                <span class="flacso-academic-accordion__icon" aria-hidden="true">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><circle cx="12" cy="8" r="2"/><path d="m8.5 12-2 9 5.5-2.8L17.5 21l-2-9"/></svg>
+                                                </span>
+                                                <span class="flacso-academic-accordion__label"><?php esc_html_e('Título y certificación', 'flacso-uruguay'); ?></span>
+                                                <span class="flacso-academic-accordion__chevron" aria-hidden="true">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                                                </span>
+                                            </summary>
+                                            <div class="detail-body flacso-academic-accordion__body">
                                                 <?php
                                                 $titulos_body = '';
                                                 if (!empty($academic['titulos_certificaciones_html'])) {
@@ -936,42 +900,35 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                     ?>
 
                     <?php if (!empty($merged_equipos)) : ?>
-                        <section class="flacso-oa-team-section">
-                            <div class="flacso-oa-container">
-                                <header class="flacso-oa-section-header">
-                                    <h2><?php esc_html_e('Equipo Académico', 'flacso-uruguay'); ?></h2>
+                        <section class="flacso-academic-team flacso-oa-team-section" aria-labelledby="flacso-academic-team-title">
+                            <div class="flacso-oa-container flacso-academic-team__container">
+                                <header class="flacso-academic-team__header">
+                                    <h2 id="flacso-academic-team-title"><?php esc_html_e('Equipo académico', 'flacso-uruguay'); ?></h2>
                                 </header>
 
-                                <div class="flacso-oa-team-subgroups">
+                                <div class="flacso-academic-team__groups">
                                     <?php foreach ($merged_equipos as $grupo) : ?>
                                         <?php
                                         $nivel = in_array((string) ($grupo['importancia'] ?? '3'), ['1', '2', '3'], true)
                                             ? (string) ($grupo['importancia'] ?? '3')
                                             : '3';
-                                        $docentes_grupo = array_values((array) $grupo['docentes']);
-                                        if (empty($docentes_grupo)) {
+                                        $docentes_grupo = array_values((array) ($grupo['docentes'] ?? []));
+                                        if (!$docentes_grupo) {
                                             continue;
                                         }
-
                                         ?>
-                                        <div class="flacso-oa-team-subgroup flacso-oa-team-subgroup--nivel-<?php echo esc_attr($nivel); ?>">
+                                        <div class="flacso-academic-team__group flacso-academic-team__group--level-<?php echo esc_attr($nivel); ?>">
                                             <?php if (!empty($grupo['nombre'])) : ?>
-                                                <h3 class="flacso-oa-team-subgroup__title">
-                                                    <?php echo esc_html($grupo['nombre']); ?>
-                                                </h3>
+                                                <h3 class="flacso-academic-team__group-title"><?php echo esc_html($grupo['nombre']); ?></h3>
                                             <?php endif; ?>
-
                                             <?php if (!empty($grupo['descripcion'])) : ?>
-                                                <div class="flacso-oa-team-subgroup__description">
-                                                    <?php echo wpautop(wp_kses_post($grupo['descripcion'])); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-                                                </div>
+                                                <div class="flacso-academic-team__group-description"><?php echo wp_kses_post(wpautop($grupo['descripcion'])); ?></div>
                                             <?php endif; ?>
-
-                                            <div class="flacso-oa-docentes-grid flacso-oa-docentes-grid--nivel-<?php echo esc_attr($nivel); ?>">
+                                            <div class="flacso-academic-team__grid">
                                                 <?php foreach ($docentes_grupo as $docente_item) : ?>
                                                     <?php
-                                                    $docente_id = is_array($docente_item) ? ($docente_item['id'] ?? 0) : $docente_item;
-                                                    $rol_especifico = is_array($docente_item) ? ($docente_item['rol'] ?? '') : '';
+                                                    $docente_id = is_array($docente_item) ? (int) ($docente_item['id'] ?? 0) : (int) $docente_item;
+                                                    $rol_especifico = is_array($docente_item) ? (string) ($docente_item['rol'] ?? '') : '';
                                                     $render_docente_item($docente_id, $rol_especifico, $nivel);
                                                     ?>
                                                 <?php endforeach; ?>
@@ -989,7 +946,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                 </header>
                                 <div class="flacso-oa-team-empty">
                                     <p class="flacso-oa-empty-field">
-                                        <i class="bi bi-info-circle" aria-hidden="true"></i>
                                         <?php esc_html_e('El equipo docente y coordinación se encuentra en proceso de confirmación.', 'flacso-uruguay'); ?>
                                     </p>
                                 </div>
@@ -1005,28 +961,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
 </div>
 
 <script>
-(function() {
-    document.addEventListener('click', function(event) {
-        var button = event.target.closest('.flacso-oa-person-card__expand');
-        if (!button) return;
 
-        var card = button.closest('.flacso-oa-person-card');
-        if (!card) return;
-
-        var expanded = card.classList.toggle('is-expanded');
-        button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-
-        var label = button.querySelector('.flacso-oa-person-card__expand-label');
-        var icon = button.querySelector('i');
-
-        if (label) {
-            label.textContent = expanded ? 'Reducir' : 'Ampliar';
-        }
-        if (icon) {
-            icon.className = expanded ? 'bi bi-dash-lg' : 'bi bi-plus-lg';
-        }
-    });
-})();
 
 (function() {
     if (typeof window.flacsoMetaTrack !== 'function') return;
