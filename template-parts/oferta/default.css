@@ -102,9 +102,12 @@
     box-shadow: 0 1px 3px rgba(8, 43, 96, .035);
 }
 
-.flacso-oferta-responsive .flacso-academic-hero__badge i {
+.flacso-oferta-responsive .flacso-academic-hero__badge .flacso-academic-hero__symbol {
+    display: inline-grid;
+    place-items: center;
     font-size: .87rem;
     line-height: 1;
+    font-weight: 900;
     color: var(--oa-brand);
 }
 
@@ -115,11 +118,11 @@
     box-shadow: 0 5px 12px rgba(var(--oa-brand-rgb), .14);
 }
 
-.flacso-oferta-responsive .flacso-academic-hero__badge--open i {
+.flacso-oferta-responsive .flacso-academic-hero__badge--open .flacso-academic-hero__symbol {
     color: #0c9967;
 }
 
-.flacso-oferta-responsive .flacso-academic-hero__badge--closed i {
+.flacso-oferta-responsive .flacso-academic-hero__badge--closed .flacso-academic-hero__symbol {
     color: #8f6a16;
 }
 
@@ -178,9 +181,11 @@
     outline-offset: 4px;
 }
 
-.flacso-oferta-responsive .flacso-academic-hero__cta i {
+.flacso-oferta-responsive .flacso-academic-hero__arrow {
+    display: inline-block;
     color: inherit;
-    font-size: 1.1rem;
+    font-size: 1.28rem;
+    font-weight: 700;
     line-height: 1;
 }
 
@@ -249,9 +254,17 @@
     text-align: center;
 }
 
-.flacso-oferta-responsive .flacso-academic-hero__placeholder i {
+.flacso-oferta-responsive .flacso-academic-hero__placeholder-mark {
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    border: 3px solid var(--oa-brand);
+    border-radius: 50%;
     color: var(--oa-brand);
-    font-size: 3.5rem;
+    font-size: 2.4rem;
+    line-height: 1;
+    font-weight: 900;
 }
 
 .flacso-oferta-responsive .flacso-academic-hero__media .flacso-academic-hero__placeholder[hidden] {
