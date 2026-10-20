@@ -578,7 +578,8 @@ assert_same(12000.0, $latest_context["instance"]["valor_uyu"], "Los aranceles co
 assert_same("https://preinscripciones.flacso.edu.uy/ofertas/42/cohortes/102/", $latest_context["registration"]["url"], "El link externo corresponde a la cohorte presentada");
 assert_same(false, $latest_context["registration"]["is_open"], "No se hereda apertura de inscripciones de la cohorte anterior");
 assert_same(102, $latest_context["registration"]["instance_id"], "El CTA está contextualizado en la cohorte nueva");
-assert_same(100, $latest_context["inquiry_cohort"]["has_cohort"] ? 100 : 0, "El contexto de consultas sigue independiente");
+assert_same("Cohorte V", $latest_context["inquiry_cohort"]["name"], "El contexto de consultas sigue independiente");
+assert_same(5, $latest_context["inquiry_cohort"]["number"], "El número de cohorte de consultas puede diferir del público");
 $unpublished_context = flacso_theme_get_offer_context(43);
 assert_same(0, $unpublished_context["instance_id"], "Si no hay cohorte publicada no se filtra una anterior");
 assert_same(false, $unpublished_context["registration"]["is_open"], "Sin cohorte publicada no se abre CTA");
