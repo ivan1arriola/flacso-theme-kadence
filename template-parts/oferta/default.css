@@ -961,3 +961,241 @@
         margin-top: 20px;
     }
 }
+
+
+/* =============================================================
+ * Más información — barra de acciones y panel inferior en móvil.
+ * El mismo aside/formulario de escritorio se convierte en bottom sheet.
+ * El modo sólo se activa con JS; sin JS el formulario sigue en su lugar.
+ * ============================================================= */
+
+.flacso-oferta-responsive .flacso-mobile-actions,
+.flacso-oferta-responsive .flacso-mobile-info-overlay,
+.flacso-oferta-responsive .flacso-mobile-info-sheet__header {
+    display: none;
+}
+
+@media (max-width: 760px) {
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready {
+        padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-actions {
+        box-sizing: border-box;
+        position: fixed;
+        z-index: 2147482000;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: grid;
+        grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        padding: 10px max(16px, env(safe-area-inset-left, 0px))
+                 calc(10px + env(safe-area-inset-bottom, 0px))
+                 max(16px, env(safe-area-inset-right, 0px));
+        border-top: 1px solid #e1e8f2;
+        background: rgba(255, 255, 255, .97);
+        box-shadow: 0 -8px 28px rgba(8, 43, 96, .12);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        transition: opacity .18s ease, visibility .18s ease;
+    }
+
+    .flacso-oferta-responsive .flacso-mobile-actions__info,
+    .flacso-oferta-responsive .flacso-mobile-actions__register {
+        box-sizing: border-box;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-width: 0;
+        min-height: 48px;
+        margin: 0;
+        padding: 10px 12px;
+        border: 2px solid var(--oa-brand);
+        border-radius: 999px;
+        font-size: clamp(.8rem, 3.4vw, .95rem);
+        font-weight: 800;
+        line-height: 1.25;
+        text-decoration: none !important;
+        text-align: center;
+        white-space: normal;
+        cursor: pointer;
+    }
+    .flacso-oferta-responsive .flacso-mobile-actions__info {
+        background: #fff;
+        color: #143962;
+    }
+    .flacso-oferta-responsive .flacso-mobile-actions__register,
+    .flacso-oferta-responsive .flacso-mobile-actions__register:visited {
+        background: var(--oa-brand);
+        color: var(--oa-hero-brand-ink, #fff) !important;
+    }
+    .flacso-oferta-responsive .flacso-mobile-actions__info:only-child {
+        grid-column: 1 / -1;
+    }
+    .flacso-oferta-responsive .flacso-mobile-actions__info-icon {
+        flex: none;
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+    .flacso-oferta-responsive .flacso-mobile-actions__info:focus-visible,
+    .flacso-oferta-responsive .flacso-mobile-actions__register:focus-visible,
+    .flacso-oferta-responsive .flacso-mobile-info-sheet__close:focus-visible {
+        outline: 3px solid #082b60;
+        outline-offset: 3px;
+    }
+
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-overlay {
+        box-sizing: border-box;
+        display: block;
+        position: fixed;
+        z-index: 2147482001;
+        inset: 0;
+        background: rgba(6, 26, 57, .57);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity .22s ease, visibility .22s ease;
+    }
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-overlay.is-visible {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready #flacso-oa-consulta.flacso-mobile-info-sheet {
+        box-sizing: border-box;
+        position: fixed !important;
+        z-index: 2147482002;
+        top: auto !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        height: auto !important;
+        max-height: min(92vh, 840px) !important;
+        max-height: min(92dvh, 840px) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0 !important;
+        margin: 0 !important;
+        padding: 0 0 env(safe-area-inset-bottom, 0px) !important;
+        border: 0 !important;
+        border-top: 3px solid var(--oa-brand) !important;
+        border-radius: 24px 24px 0 0 !important;
+        background: #fff !important;
+        box-shadow: 0 -15px 48px rgba(6, 26, 57, .24);
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translate3d(0, 104%, 0);
+        transition: transform .24s ease, visibility .24s ease;
+    }
+
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready #flacso-oa-consulta.flacso-mobile-info-sheet.is-open {
+        visibility: visible;
+        pointer-events: auto;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet__header {
+        box-sizing: border-box;
+        position: sticky;
+        z-index: 2;
+        top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 66px;
+        flex: none;
+        padding: 16px 18px 12px;
+        border-bottom: 1px solid #edf1f7;
+        background: #fff;
+    }
+    .flacso-oferta-responsive .flacso-mobile-info-sheet__grabber {
+        position: absolute;
+        top: 7px;
+        left: 50%;
+        width: 38px;
+        height: 4px;
+        border-radius: 99px;
+        background: #c8d1de;
+        transform: translateX(-50%);
+    }
+    .flacso-oferta-responsive .flacso-mobile-info-sheet__header h2 {
+        margin: 0 !important;
+        color: #082b60 !important;
+        font-size: 1.12rem !important;
+        font-weight: 830 !important;
+        line-height: 1.3;
+    }
+    .flacso-oferta-responsive .flacso-mobile-info-sheet__close {
+        box-sizing: border-box;
+        display: grid;
+        place-items: center;
+        flex: 0 0 42px;
+        width: 42px;
+        height: 42px;
+        padding: 0;
+        border: 1px solid #e0e8f1;
+        border-radius: 50%;
+        background: #f4f7fb;
+        color: #173b69;
+        font-size: 1.7rem;
+        font-weight: 500;
+        line-height: 1;
+        cursor: pointer;
+    }
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet .contact,
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet .contact-support {
+        box-sizing: border-box;
+        display: block;
+        flex: none;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet .contact__head {
+        padding: 14px 20px 4px !important;
+        background: #fff !important;
+    }
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet .contact__body {
+        padding: 12px 20px 22px !important;
+    }
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet .contact-support {
+        padding: 0 20px 22px;
+    }
+    .flacso-oferta-responsive.flacso-mobile-sheet-open .flacso-mobile-actions {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+}
+
+@media (max-width: 385px) {
+    .flacso-oferta-responsive .flacso-mobile-actions__info,
+    .flacso-oferta-responsive .flacso-mobile-actions__register {
+        padding-inline: 8px;
+        font-size: .79rem;
+        gap: 5px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-overlay,
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready #flacso-oa-consulta.flacso-mobile-info-sheet,
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-actions {
+        transition: none !important;
+    }
+}

@@ -810,7 +810,15 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                             </div>
 
                             <!-- SIDEBAR -->
-                            <aside id="flacso-oa-consulta" class="sidebar" aria-label="<?php esc_attr_e('Formulario de consulta', 'flacso-uruguay'); ?>">
+                            <aside id="flacso-oa-consulta" class="sidebar flacso-mobile-info-sheet" aria-label="<?php esc_attr_e('Formulario de consulta', 'flacso-uruguay'); ?>">
+                                <!-- Sólo en teléfonos: cabecera del mismo formulario, sin duplicarlo. -->
+                                <header class="flacso-mobile-info-sheet__header">
+                                    <span class="flacso-mobile-info-sheet__grabber" aria-hidden="true"></span>
+                                    <h2 id="flacso-mobile-info-sheet-title"><?php esc_html_e('Más información', 'flacso-uruguay'); ?></h2>
+                                    <button type="button" class="flacso-mobile-info-sheet__close" aria-label="<?php esc_attr_e('Cerrar más información', 'flacso-uruguay'); ?>">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </header>
                                 <div class="contact">
                                     <div class="contact__head">
                                         <h3><?php esc_html_e('Solicitá información', 'flacso-uruguay'); ?></h3>
@@ -984,6 +992,20 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                         </section>
                     <?php endif; ?>
 
+                    <!-- Barra inferior móvil y fondo del panel de consultas. -->
+                    <div class="flacso-mobile-info-overlay" aria-hidden="true"></div>
+                    <nav class="flacso-mobile-actions" aria-label="<?php esc_attr_e('Acciones de la Oferta Académica', 'flacso-uruguay'); ?>">
+                        <button type="button" class="flacso-mobile-actions__info" aria-expanded="false" aria-controls="flacso-oa-consulta">
+                            <span class="flacso-mobile-actions__info-icon" aria-hidden="true">ⓘ</span>
+                            <?php esc_html_e('Más información', 'flacso-uruguay'); ?>
+                        </button>
+                        <?php if ($has_preinscription_cta) : ?>
+                            <a class="flacso-mobile-actions__register" href="<?php echo esc_url($preinscripcion_url); ?>" data-flacso-preinscription-cta="1">
+                                <?php esc_html_e('Preinscribirme', 'flacso-uruguay'); ?>
+                                <span aria-hidden="true">→</span>
+                            </a>
+                        <?php endif; ?>
+                    </nav>
 
                 </article>
             </main>
@@ -992,6 +1014,155 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
 </div>
 
 <script>
+/* Panel móvil de "Más información": reutiliza el único formulario existente. */
+(function() {
+    var root = document.querySelector('.flacso-oferta-responsive');
+    if (!root || !window.matchMedia) return;
+
+    var aside = root.querySelector('#flacso-oa-consulta.flacso-mobile-info-sheet');
+    var openButton = root.querySelector('.flacso-mobile-actions__info');
+    var closeButton = aside ? aside.querySelector('.flacso-mobile-info-sheet__close') : null;
+    var overlay = root.querySelector('.flacso-mobile-info-overlay');
+    if (!aside || !openButton || !closeButton || !overlay) return;
+
+    var mobile = window.matchMedia('(max-width: 760px)');
+    var isOpen = false;
+    var returnFocus = null;
+    var savedScroll = 0;
+    var bodyBefore = {};
+
+    function isMobile() { return mobile.matches; }
+
+    function setClosedAccessibility() {
+        aside.inert = isMobile();
+        if (isMobile()) {
+            aside.setAttribute('aria-hidden', 'true');
+        } else {
+            aside.removeAttribute('aria-hidden');
+        }
+        aside.removeAttribute('role');
+        aside.removeAttribute('aria-modal');
+        aside.removeAttribute('aria-labelledby');
+        openButton.setAttribute('aria-expanded', 'false');
+    }
+
+    function restoreBody() {
+        document.body.style.position = bodyBefore.position || '';
+        document.body.style.top = bodyBefore.top || '';
+        document.body.style.left = bodyBefore.left || '';
+        document.body.style.right = bodyBefore.right || '';
+        document.body.style.width = bodyBefore.width || '';
+        document.body.style.overflow = bodyBefore.overflow || '';
+        window.scrollTo(0, savedScroll);
+    }
+
+    function closePanel(focusBack) {
+        if (!isOpen) return;
+        isOpen = false;
+        root.classList.remove('flacso-mobile-sheet-open');
+        aside.classList.remove('is-open');
+        overlay.classList.remove('is-visible');
+        setClosedAccessibility();
+        restoreBody();
+        if (focusBack !== false && returnFocus && returnFocus.isConnected) {
+            returnFocus.focus({preventScroll: true});
+        }
+    }
+
+    function openPanel(trigger) {
+        if (!isMobile() || isOpen) return;
+        returnFocus = trigger || document.activeElement;
+        savedScroll = window.scrollY || document.documentElement.scrollTop || 0;
+        bodyBefore = {
+            position: document.body.style.position,
+            top: document.body.style.top,
+            left: document.body.style.left,
+            right: document.body.style.right,
+            width: document.body.style.width,
+            overflow: document.body.style.overflow
+        };
+        document.body.style.position = 'fixed';
+        document.body.style.top = '-' + savedScroll + 'px';
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.body.style.width = '100%';
+        document.body.style.overflow = 'hidden';
+
+        isOpen = true;
+        aside.inert = false;
+        aside.removeAttribute('aria-hidden');
+        aside.setAttribute('role', 'dialog');
+        aside.setAttribute('aria-modal', 'true');
+        aside.setAttribute('aria-labelledby', 'flacso-mobile-info-sheet-title');
+        root.classList.add('flacso-mobile-sheet-open');
+        aside.classList.add('is-open');
+        overlay.classList.add('is-visible');
+        openButton.setAttribute('aria-expanded', 'true');
+        aside.scrollTop = 0;
+        closeButton.focus({preventScroll: true});
+    }
+
+    function syncMode() {
+        if (!isMobile() && isOpen) closePanel(false);
+        root.classList.toggle('flacso-mobile-sheet-ready', isMobile());
+        if (!isOpen) setClosedAccessibility();
+    }
+
+    openButton.addEventListener('click', function() { openPanel(openButton); });
+    closeButton.addEventListener('click', function() { closePanel(true); });
+    overlay.addEventListener('click', function() { closePanel(true); });
+
+    // Reutilizar también los CTA de solicitar información existentes.
+    root.addEventListener('click', function(event) {
+        if (!isMobile() || !(event.target instanceof Element)) return;
+        var link = event.target.closest('a[href="#flacso-oa-consulta"]');
+        if (!link) return;
+        event.preventDefault();
+        openPanel(link);
+    });
+
+    aside.addEventListener('click', function(event) {
+        if (!isOpen || !(event.target instanceof Element)) return;
+        var destination = event.target.closest('a[href^="#"]');
+        if (destination && destination.getAttribute('href') !== '#flacso-oa-consulta') {
+            closePanel(false);
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (!isOpen) return;
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            closePanel(true);
+            return;
+        }
+        if (event.key !== 'Tab') return;
+        var elements = Array.prototype.filter.call(
+            aside.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+            function(el) { return el.getClientRects().length && !el.closest('[hidden]'); }
+        );
+        if (!elements.length) {
+            event.preventDefault();
+            closeButton.focus();
+            return;
+        }
+        var first = elements[0], last = elements[elements.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    });
+
+    if (mobile.addEventListener) {
+        mobile.addEventListener('change', syncMode);
+    } else if (mobile.addListener) {
+        mobile.addListener(syncMode);
+    }
+    syncMode();
+})();
 
 
 (function() {
