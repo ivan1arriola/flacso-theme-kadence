@@ -437,10 +437,10 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                 <summary class="flacso-academic-person__summary">
                     <span class="flacso-academic-person__avatar" aria-hidden="true"><?php echo $avatar_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
                     <span class="flacso-academic-person__identity">
-                        <span class="flacso-academic-person__name"><?php echo esc_html($doc_titulo); ?></span>
                         <?php if (trim((string) $rol) !== '') : ?>
                             <span class="flacso-academic-person__role"><?php echo esc_html($rol); ?></span>
                         <?php endif; ?>
+                        <span class="flacso-academic-person__name"><?php echo esc_html($doc_titulo); ?></span>
                     </span>
                     <span class="flacso-academic-person__toggle" aria-hidden="true"></span>
                 </summary>
