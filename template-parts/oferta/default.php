@@ -192,18 +192,10 @@ $cohorte_modalidad_titulo = function_exists('flacso_theme_format_modality')
 $cohorte_modalidad_desc   = !empty($instance['modalidad_descripcion']) ? (string) $instance['modalidad_descripcion'] : '';
 
 $calendario_pdf_url = !empty($academic['calendario_pdf_url']) ? trim((string) $academic['calendario_pdf_url']) : '';
-$cartamalla_pdf_url = !empty($academic['cartamalla_pdf_url']) ? trim((string) $academic['cartamalla_pdf_url']) : '';
-$calendario_doc_url = $calendario_pdf_url ?: $cartamalla_pdf_url;
+$calendario_doc_url = $calendario_pdf_url;
 if ($calendario_doc_url && function_exists('flacso_get_pdf_proxy_url')) {
     $proxied = flacso_get_pdf_proxy_url($calendario_doc_url, 'Calendario Académico');
     if ($proxied) $calendario_doc_url = $proxied;
-}
-
-$malla_pdf_url = !empty($academic['malla_pdf_url']) ? trim((string) $academic['malla_pdf_url']) : '';
-$malla_doc_url = $malla_pdf_url ?: $cartamalla_pdf_url;
-if ($malla_doc_url && function_exists('flacso_get_pdf_proxy_url')) {
-    $proxied = flacso_get_pdf_proxy_url($malla_doc_url, 'Malla Curricular');
-    if ($proxied) $malla_doc_url = $proxied;
 }
 
 $correo_institucional = trim((string) ($academic['correo'] ?? ''));
@@ -236,7 +228,7 @@ $reconocimiento_internacional = !empty($academic['reconocimiento_internacional']
 $reconocimiento_red_flacso    = !empty($academic['reconocimiento_red_flacso']);
 $convenio_iin_oea             = !empty($academic['convenio_iin_oea']);
 $has_aside_badges             = $reconocido_mec || $reconocimiento_internacional || $reconocimiento_red_flacso || $convenio_iin_oea;
-$has_aside_docs               = ($malla_doc_url !== '' || $calendario_doc_url !== '');
+$has_aside_docs               = $calendario_doc_url !== '';
 
 $render_info_card = static function ($card_title, $body, $extra_class = '', array $attrs = []) use ($has_visible_html) {
     if (!$has_visible_html($body)) {
@@ -736,24 +728,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                             </div>
                                         </details>
 
-                                        <!-- 3. MALLA CURRICULAR -->
-                                        <details>
-                                            <summary><?php esc_html_e('Malla Curricular', 'flacso-uruguay'); ?></summary>
-                                            <div class="detail-body">
-                                                <?php if ($malla_doc_url !== '') : ?>
-                                                    <p style="margin-bottom:1rem">
-                                                        <?php esc_html_e('Descargá el documento curricular oficial con el plan de estudios, materias y créditos.', 'flacso-uruguay'); ?>
-                                                    </p>
-                                                    <a href="<?php echo esc_url($malla_doc_url); ?>" target="_blank" rel="noopener noreferrer" class="flacso-oa-link-btn flacso-meta-doc-link flacso-meta-doc-link--malla" data-flacso-meta-doc-section="MallaCurricularSectionView" data-flacso-meta-doc-layout="single_malla" style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--azul);color:#fff;padding:8px 18px;border-radius:999px;text-decoration:none;font-weight:700;font-size:0.9rem;">
-                                                        <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i>
-                                                        <?php esc_html_e('Descargar Malla Curricular (PDF)', 'flacso-uruguay'); ?>
-                                                    </a>
-                                                <?php else : ?>
-                                                    <p class="flacso-oa-empty-field"><i class="bi bi-info-circle" aria-hidden="true"></i> <?php esc_html_e('Documentación de malla curricular no disponible para descarga por el momento.', 'flacso-uruguay'); ?></p>
-                                                <?php endif; ?>
-                                            </div>
-                                        </details>
-
                                         <!-- 4. PERFIL DE EGRESO -->
                                         <details>
                                             <summary><?php esc_html_e('Perfil de egreso', 'flacso-uruguay'); ?></summary>
@@ -866,11 +840,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                             <a href="#programa"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Ver propuesta académica', 'flacso-uruguay'); ?></a>
                                             <a href="#cohorte"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Información de la cohorte', 'flacso-uruguay'); ?></a>
                                             <a href="#titulacion"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Requisitos de egreso y titulación.', 'flacso-uruguay'); ?></a>
-                                            <?php if ($malla_doc_url !== '') : ?>
-                                                <a href="<?php echo esc_url($malla_doc_url); ?>" target="_blank" rel="noopener noreferrer" class="flacso-meta-doc-link flacso-meta-doc-link--malla">
-                                                    <i class="bi bi-file-earmark-pdf text-danger"></i> <?php esc_html_e('Malla Curricular (PDF)', 'flacso-uruguay'); ?>
-                                                </a>
-                                            <?php endif; ?>
                                         </nav>
                                     </div>
 
@@ -1129,11 +1098,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
         var layout = section ? (section.getAttribute('data-flacso-meta-doc-layout') || '') : '';
         var eventName = '';
 
-        if (link.classList.contains('flacso-meta-doc-link--combined')) {
-            eventName = 'MallaCalendarioClick';
-        } else if (link.classList.contains('flacso-meta-doc-link--malla')) {
-            eventName = 'MallaCurricularClick';
-        } else if (link.classList.contains('flacso-meta-doc-link--calendario')) {
+        if (link.classList.contains('flacso-meta-doc-link--calendario')) {
             eventName = 'CalendarioAcademicoClick';
         }
 
