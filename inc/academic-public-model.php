@@ -367,7 +367,11 @@ function flacso_theme_get_offer_context(int $offer_id): array {
 
     $raw_seminars = is_array($data["seminarios"] ?? null) ? $data["seminarios"] : [];
 
-    $inquiry_cohort_data = $data['cohorte_consulta'] ?? null;
+    // El formulario público se refiere a la MISMA cohorte mostrada en la web
+    // y carta. Compatibilidad con plugins anteriores sin la nueva clave.
+    $inquiry_cohort_data = array_key_exists("cohorte_mas_reciente", $data)
+        ? $current_cohort
+        : ($data['cohorte_consulta'] ?? $current_cohort);
     $has_inquiry_cohort  = !empty($inquiry_cohort_data);
     $inquiry_is_open     = $has_inquiry_cohort && !empty($inquiry_cohort_data['preinscripcion']['abierta']);
     $inquiry_name        = $has_inquiry_cohort ? (string) ($inquiry_cohort_data['nombre'] ?? '') : '';
