@@ -796,3 +796,168 @@
         transition: none;
     }
 }
+
+
+/* =============================================================
+ * Reconocimientos — franja discreta inmediatamente debajo del hero.
+ * No se confunden con los títulos ni con convenios institucionales.
+ * ============================================================= */
+
+.flacso-oferta-responsive .flacso-academic-trust-strip,
+.flacso-oferta-responsive .flacso-academic-trust-strip *,
+.flacso-oferta-responsive .flacso-academic-convention,
+.flacso-oferta-responsive .flacso-academic-convention * {
+    box-sizing: border-box;
+}
+
+.flacso-oferta-responsive .flacso-academic-trust-strip {
+    width: 100%;
+    margin: 0;
+    padding: 15px clamp(18px, 4vw, 56px);
+    border-block: 1px solid #e6edf6;
+    background: #f9fbfd;
+    color: #1b3b64;
+}
+
+.flacso-oferta-responsive .flacso-academic-trust-strip__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px clamp(20px, 3vw, 36px);
+    max-width: 1260px;
+    margin: 0 auto;
+    min-width: 0;
+}
+
+.flacso-oferta-responsive .flacso-academic-trust-strip h2 {
+    flex: 0 0 auto;
+    margin: 0;
+    font-size: .7rem;
+    font-weight: 850;
+    line-height: 1.45;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: #547092;
+}
+
+.flacso-oferta-responsive .flacso-academic-trust-strip__list {
+    display: flex;
+    flex: 1 1 680px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 24px;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+    min-width: 0;
+}
+
+.flacso-oferta-responsive .flacso-academic-trust-strip__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex: 0 1 auto;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    color: #234267;
+    font-size: .88rem;
+    font-weight: 650;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.flacso-oferta-responsive .flacso-academic-trust-strip__icon {
+    flex: 0 0 30px;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--oa-brand-light, #ecf1f8);
+    color: var(--oa-brand-dark, #0a3470);
+}
+
+.flacso-oferta-responsive .flacso-academic-trust-strip__icon svg {
+    display: block;
+    width: 17px;
+    height: 17px;
+}
+
+/* Un convenio describe una relación institucional, no una acreditación. */
+.flacso-oferta-responsive .flacso-academic-convention {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    margin: 25px 0 0;
+    padding: 16px 18px;
+    border: 1px solid #e2eaf3;
+    border-left: 3px solid var(--oa-brand);
+    border-radius: 12px;
+    background: #f8fafc;
+    color: #304965;
+    box-shadow: none;
+}
+
+.flacso-oferta-responsive .flacso-academic-convention__symbol {
+    display: grid;
+    place-items: center;
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    color: var(--oa-brand-dark, #0a3470);
+    background: var(--oa-brand-light, #edf2f9);
+}
+.flacso-oferta-responsive .flacso-academic-convention__symbol svg {
+    width: 19px;
+    height: 19px;
+}
+.flacso-oferta-responsive .flacso-academic-convention__content {
+    min-width: 0;
+}
+.flacso-oferta-responsive .flacso-academic-convention h3 {
+    margin: 0 0 4px;
+    color: #113766;
+    font-size: .93rem;
+    font-weight: 790;
+    line-height: 1.35;
+}
+.flacso-oferta-responsive .flacso-academic-convention p {
+    margin: 0;
+    color: #3c546e;
+    font-size: .86rem;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 720px) {
+    .flacso-oferta-responsive .flacso-academic-trust-strip {
+        width: calc(100% - 32px);
+        margin: 0 16px;
+        padding: 16px 17px;
+        border: 1px solid #e6edf6;
+        border-radius: 14px;
+    }
+    .flacso-oferta-responsive .flacso-academic-trust-strip__inner {
+        display: block;
+    }
+    .flacso-oferta-responsive .flacso-academic-trust-strip h2 {
+        margin: 0 0 12px;
+    }
+    .flacso-oferta-responsive .flacso-academic-trust-strip__list {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 13px;
+    }
+    .flacso-oferta-responsive .flacso-academic-trust-strip__item {
+        width: 100%;
+        align-items: center;
+        font-size: .84rem;
+    }
+    .flacso-oferta-responsive .flacso-academic-convention {
+        padding: 14px;
+        margin-top: 20px;
+    }
+}
