@@ -81,8 +81,27 @@ $offer_light = sprintf(
 $offer_luminance = (0.299 * $offer_r + 0.587 * $offer_g + 0.114 * $offer_b) / 255;
 $offer_contrast = $offer_luminance > 0.64 ? '#082b60' : '#ffffff';
 
+// Contraste WCAG del botón/acento: elegir el texto que mejor contraste
+// con cualquier color configurado por la Oferta (incluidos claros y amarillos).
+$channel_luminance = static function (int $value): float {
+    $normalized = $value / 255;
+    return $normalized <= 0.04045
+        ? $normalized / 12.92
+        : pow(($normalized + 0.055) / 1.055, 2.4);
+};
+$brand_luminance = 0.2126 * $channel_luminance($offer_r)
+    + 0.7152 * $channel_luminance($offer_g)
+    + 0.0722 * $channel_luminance($offer_b);
+$navy_luminance = 0.2126 * $channel_luminance(8)
+    + 0.7152 * $channel_luminance(43)
+    + 0.0722 * $channel_luminance(96);
+$white_contrast_ratio = 1.05 / ($brand_luminance + 0.05);
+$navy_contrast_ratio = (max($brand_luminance, $navy_luminance) + 0.05)
+    / (min($brand_luminance, $navy_luminance) + 0.05);
+$hero_brand_ink = $white_contrast_ratio >= $navy_contrast_ratio ? '#ffffff' : '#082b60';
+
 $offer_style_vars = sprintf(
-    '--oa-brand:%s;--oa-brand-rgb:%d,%d,%d;--oa-brand-dark:%s;--oa-brand-deep:%s;--oa-brand-light:%s;--oa-brand-contrast:%s;',
+    '--oa-brand:%s;--oa-brand-rgb:%d,%d,%d;--oa-brand-dark:%s;--oa-brand-deep:%s;--oa-brand-light:%s;--oa-brand-contrast:%s;--oa-hero-brand-ink:%s;',
     esc_attr($offer_color),
     $offer_r,
     $offer_g,
@@ -90,7 +109,8 @@ $offer_style_vars = sprintf(
     esc_attr($offer_dark),
     esc_attr($offer_deep),
     esc_attr($offer_light),
-    esc_attr($offer_contrast)
+    esc_attr($offer_contrast),
+    esc_attr($hero_brand_ink)
 );
 
 $raw_content           = get_post_field('post_content', $post_id);
@@ -524,7 +544,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                 <article id="post-<?php echo esc_attr($post_id); ?>" <?php post_class('entry content-bg single-entry flacso-oa-article'); ?>>
 
                     <div class="flacso-oa-container flacso-oa-single-hero">
-                        <section class="flacso-oa-program-hero" aria-labelledby="flacso-oa-program-title">
+                        <section class="flacso-oa-program-hero flacso-oa-program-hero--editorial" aria-labelledby="flacso-oa-program-title">
                             <div class="flacso-oa-program-hero__media-wrap">
                                 <div class="flacso-oa-program-hero__media">
                                     <?php if (!empty($thumbnail_url)) : ?>
@@ -574,24 +594,10 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
 
                                 <h1 id="flacso-oa-program-title" class="flacso-oa-program-hero__title"><?php echo esc_html($title); ?></h1>
 
-                                <?php if (has_excerpt($post_id)) : ?>
-                                    <div class="flacso-oa-program-hero__excerpt"><?php echo esc_html(get_the_excerpt($post_id)); ?></div>
-                                <?php endif; ?>
-
-                                <?php if ($mostrar_instancias_presenciales) : ?>
-                                    <p class="flacso-oa-program-hero__notice">
-                                        <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
-                                        <?php esc_html_e('Incluye instancias exclusivamente presenciales', 'flacso-uruguay'); ?>
-                                    </p>
-                                <?php endif; ?>
-
                                 <div class="flacso-oa-program-hero__actions">
                                     <a href="<?php echo esc_url($hero_primary_url); ?>"<?php echo $has_preinscription_cta ? ' data-flacso-preinscription-cta="1"' : ''; ?> class="flacso-oa-program-hero__button flacso-oa-program-hero__button--primary">
                                         <?php echo esc_html($hero_primary_label); ?>
                                         <i class="bi bi-arrow-right" aria-hidden="true"></i>
-                                    </a>
-                                    <a href="#programa" class="flacso-oa-program-hero__button flacso-oa-program-hero__button--secondary">
-                                        <?php esc_html_e('Ver propuesta académica', 'flacso-uruguay'); ?>
                                     </a>
                                 </div>
                             </div>
@@ -837,7 +843,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                     <div class="contact-support__section">
                                         <span class="contact-support__eyebrow"><?php esc_html_e('Información útil', 'flacso-uruguay'); ?></span>
                                         <nav class="contact-support__links" aria-label="<?php esc_attr_e('Enlaces de la oferta académica', 'flacso-uruguay'); ?>">
-                                            <a href="#programa"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Ver propuesta académica', 'flacso-uruguay'); ?></a>
                                             <a href="#cohorte"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Información de la cohorte', 'flacso-uruguay'); ?></a>
                                             <a href="#titulacion"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Requisitos de egreso y titulación.', 'flacso-uruguay'); ?></a>
                                         </nav>
