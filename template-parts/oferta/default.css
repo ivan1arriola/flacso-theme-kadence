@@ -271,6 +271,22 @@
     display: none;
 }
 
+/* Escritorio: el hero ocupa como mínimo un viewport completo.
+ * El contenido se centra verticalmente, sin recortar títulos largos
+ * en pantallas de poca altura. En móviles se conserva altura natural. */
+@media (min-width: 981px) {
+    .flacso-oferta-responsive .flacso-academic-hero {
+        min-height: 100vh;
+        min-height: 100svh;
+        display: flex;
+        align-items: center;
+    }
+
+    .flacso-oferta-responsive .flacso-academic-hero__inner {
+        flex: 1 1 auto;
+    }
+}
+
 @media (max-width: 980px) {
     .flacso-oferta-responsive .flacso-academic-hero {
         padding: 22px clamp(16px, 4vw, 36px) 38px;
