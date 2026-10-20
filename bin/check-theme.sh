@@ -10,6 +10,7 @@ done < <(find "$theme_dir" -type f -name '*.php' -print0)
 php "$theme_dir/tests/academic-public-model-test.php"
 php "$theme_dir/tests/intermediate-titles-carta-test.php"
 php "$theme_dir/tests/academic-articulations-public-test.php"
+php "$theme_dir/tests/retired-generic-financing-test.php"
 php "$theme_dir/tests/faq-page-test.php"
 php "$theme_dir/tests/home-v2-contract-test.php"
 
