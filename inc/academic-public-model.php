@@ -278,8 +278,9 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "reconocimiento_internacional"=> !empty($data["reconocimiento_internacional"]) || (bool) get_post_meta($offer_id, "reconocimiento_internacional", true),
         "reconocimiento_red_flacso"   => !empty($data["reconocimiento_red_flacso"]) || (bool) get_post_meta($offer_id, "reconocimiento_red_flacso", true),
         "convenio_iin_oea"            => !empty($data["convenio_iin_oea"]) || (bool) get_post_meta($offer_id, "convenio_iin_oea", true),
-        "mostrar_costos_envio"        => !empty($data["mostrar_costos_envio"]) || (bool) get_post_meta($offer_id, "mostrar_costos_envio", true),
-        "mostrar_expedicion_titulo"   => !empty($data["mostrar_expedicion_titulo"]) || (bool) get_post_meta($offer_id, "mostrar_expedicion_titulo", true),
+        // Contenido informativo obligatorio en todas las cartas, incluso con metadatos históricos falsos.
+        "mostrar_costos_envio"        => true,
+        "mostrar_expedicion_titulo"   => true,
         "carta_presentacion_html"     => (string) ($data["carta_presentacion_html"] ?? get_post_meta($offer_id, "carta_presentacion_html", true)),
         "asistente_academica_docente_id" => absint($data["asistente_academica_docente_id"] ?? get_post_meta($offer_id, "asistente_academica_docente_id", true)),
         "asistente_academica_rol"     => (string) ($data["asistente_academica_rol"] ?? get_post_meta($offer_id, "asistente_academica_rol", true)),
