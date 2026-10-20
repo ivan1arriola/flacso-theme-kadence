@@ -431,6 +431,12 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
             </div>
         </section>
 
+        <?php if (!empty($academic['articulaciones'])) : ?>
+            <div class="fc-page-container">
+                <?php get_template_part('template-parts/oferta/articulaciones', null, ['planes' => $academic['articulaciones']]); ?>
+            </div>
+        <?php endif; ?>
+
         <!-- TÍTULOS INTERMEDIOS -->
         <?php if (!empty($arr_titulos_intermedios)) : ?>
             <div class="fc-intermediate-strip">
