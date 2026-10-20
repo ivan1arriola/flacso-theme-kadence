@@ -28,13 +28,15 @@ $GLOBALS["posts"] = [
     220 => (object) ["ID" => 220, "post_type" => "edicion", "post_status" => "publish", "post_title" => "Edición 2026 Integrada", "post_name" => "edicion-2026-integrada"],
     40 => (object) ["ID" => 40, "post_type" => "oferta-academica", "post_status" => "publish", "post_title" => "Doctorado en Ciencias Sociales", "post_name" => "doctorado"],
     41 => (object) ["ID" => 41, "post_type" => "oferta-academica", "post_status" => "publish", "post_title" => "Diploma Sin Cohorte", "post_name" => "diploma-sin-cohorte"],
+    42 => (object) ["ID" => 42, "post_type" => "oferta-academica", "post_status" => "publish", "post_title" => "Oferta con cohorte nueva", "post_name" => "oferta-nueva"],
+    43 => (object) ["ID" => 43, "post_type" => "oferta-academica", "post_status" => "publish", "post_title" => "Oferta sin cohorte publicada", "post_name" => "oferta-sin-publicada"],
     500 => (object) ["ID" => 500, "post_type" => "tabla-precio", "post_status" => "publish", "post_title" => "Aranceles Seminarios 2026", "post_name" => "tabla-seminarios-2026"],
     501 => (object) ["ID" => 501, "post_type" => "tabla-precio", "post_status" => "publish", "post_title" => "Aranceles Maestría 2026", "post_name" => "tabla-maestria-2026"],
     91 => (object) ["ID" => 91, "post_type" => "docente", "post_status" => "publish", "post_title" => "Dra. Ana Pérez", "post_name" => "ana-perez"],
     92 => (object) ["ID" => 92, "post_type" => "docente", "post_status" => "publish", "post_title" => "Dr. Juan Gómez", "post_name" => "juan-gomez"],
 ];
 
-$GLOBALS["types"] = [10 => "maestria", 40 => "doctorado", 41 => "diploma"];
+$GLOBALS["types"] = [10 => "maestria", 40 => "doctorado", 41 => "diploma", 42 => "maestria", 43 => "maestria"];
 $GLOBALS["meta"] = [
     10 => [
         "programa_academico_id" => 0,
@@ -261,6 +263,26 @@ final class FLACSO_Academic_Catalog {
                 "cohorte_vigente" => null,
                 "cohorte_consulta" => null,
             ];
+        }
+        if ($id === 42) {
+            $data = self::get_offer(10);
+            $data["id"] = 42;
+            $data["cohorte_mas_reciente"] = [
+                "id" => 102, "nombre" => "Cohorte VI", "numero" => 6, "numero_romano" => "VI",
+                "fecha_inicio" => "2027-08-15", "fecha_fin" => "2029-07-31",
+                "precision_fecha_inicio" => "dia", "estado" => "planificada",
+                "tabla_precio_id" => 500, "modalidad" => "virtual",
+                "calendario_academico" => "https://flacso.edu.uy/calendario-nuevo.pdf",
+                "link_preinscripcion" => "https://preinscripciones.flacso.edu.uy/ofertas/42/cohortes/102/",
+                "preinscripcion" => ["abierta" => false, "url" => "https://preinscripciones.flacso.edu.uy/ofertas/42/cohortes/102/"],
+            ];
+            return $data;
+        }
+        if ($id === 43) {
+            $data = self::get_offer(10);
+            $data["id"] = 43;
+            $data["cohorte_mas_reciente"] = null;
+            return $data;
         }
         if ($id !== 10) return [];
         return [
@@ -545,6 +567,22 @@ assert_same("2026-08-15", $offer_context["instance"]["fecha_inicio"], "Lee fecha
 assert_same("https://preinscripciones.flacso.edu.uy/ofertas/10/cohortes/100/", $offer_context["registration"]["url"], "URL de preinscripción apunta al portal externo");
 assert_same(true, $offer_context["registration"]["is_open"], "Preinscripción abierta");
 assert_same(180000.0, $offer_context["instance"]["valor_uyu"], "Lee arancel UYU desde TablaPrecio");
+
+// 2.a La cohorte pública de mayor número prima sobre otra anterior abierta.
+$latest_context = flacso_theme_get_offer_context(42);
+assert_same(102, $latest_context["instance_id"], "Web y carta usan la Cohorte VI en vez de la V abierta");
+assert_same("Cohorte VI", $latest_context["instance"]["label"], "El título visible pertenece a la nueva cohorte");
+assert_same("2027-08-15", $latest_context["instance"]["fecha_inicio"], "La fecha visible pertenece a la nueva cohorte");
+assert_same("https://flacso.edu.uy/calendario-nuevo.pdf", $latest_context["instance"]["calendario_academico"], "El calendario pertenece a la nueva cohorte");
+assert_same(12000.0, $latest_context["instance"]["valor_uyu"], "Los aranceles corresponden a la nueva cohorte");
+assert_same("https://preinscripciones.flacso.edu.uy/ofertas/42/cohortes/102/", $latest_context["registration"]["url"], "El link externo corresponde a la cohorte presentada");
+assert_same(false, $latest_context["registration"]["is_open"], "No se hereda apertura de inscripciones de la cohorte anterior");
+assert_same(102, $latest_context["registration"]["instance_id"], "El CTA está contextualizado en la cohorte nueva");
+assert_same("Cohorte V", $latest_context["inquiry_cohort"]["name"], "El contexto de consultas sigue independiente");
+assert_same(5, $latest_context["inquiry_cohort"]["number"], "El número de cohorte de consultas puede diferir del público");
+$unpublished_context = flacso_theme_get_offer_context(43);
+assert_same(0, $unpublished_context["instance_id"], "Si no hay cohorte publicada no se filtra una anterior");
+assert_same(false, $unpublished_context["registration"]["is_open"], "Sin cohorte publicada no se abre CTA");
 
 // 2.b Cohorte de Consulta (Inquiry Cohort View Model)
 assert_same(true, isset($offer_context["inquiry_cohort"]), "Contexto incluye inquiry_cohort");

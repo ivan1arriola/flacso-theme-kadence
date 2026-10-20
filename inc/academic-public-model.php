@@ -236,7 +236,14 @@ function flacso_theme_get_offer_context(int $offer_id): array {
 
     $type = (string) ($data["tipo"] ?? flacso_theme_get_offer_type($offer_id));
     $cohorts = $data["cohortes"] ?? [];
-    $current_cohort = $data["cohorte_vigente"] ?? (!empty($cohorts) ? $cohorts[0] : null);
+    // En la página pública y la carta se presenta SIEMPRE la última cohorte
+    // publicada (mayor número), aunque otra anterior tenga inscripción abierta.
+    // Mantener cohorte_vigente para integraciones operativas; las consultas usan
+    // su propio resolvedor cohorte_consulta, independiente de la presentación.
+    // array_key_exists conserva null si todavía no existe cohorte publicada.
+    $current_cohort = array_key_exists("cohorte_mas_reciente", $data)
+        ? $data["cohorte_mas_reciente"]
+        : ($data["cohorte_vigente"] ?? (!empty($cohorts) ? $cohorts[0] : null));
 
     $table_id = !empty($current_cohort["tabla_precio_id"]) ? absint($current_cohort["tabla_precio_id"]) : 0;
     $price_table = flacso_theme_get_price_table_data($table_id);
