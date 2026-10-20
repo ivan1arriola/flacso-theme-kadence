@@ -589,7 +589,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                 <?php if ($mostrar_instancias_presenciales) : ?>
                                     <p class="flacso-oa-program-hero__notice">
                                         <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
-                                        <?php esc_html_e('Con instancias presenciales', 'flacso-uruguay'); ?>
+                                        <?php esc_html_e('Incluye instancias exclusivamente presenciales', 'flacso-uruguay'); ?>
                                     </p>
                                 <?php endif; ?>
 
@@ -677,7 +677,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                     <?php if ($mostrar_instancias_presenciales) : ?>
                                                         <p class="mb-1" style="color: #b45309; font-weight: 700;">
                                                             <i class="bi bi-geo-alt-fill me-1" aria-hidden="true"></i>
-                                                            <?php esc_html_e('Esta propuesta incluye instancias presenciales programadas.', 'flacso-uruguay'); ?>
+                                                            <?php esc_html_e('Esta propuesta incluye actividades exclusivamente presenciales, sin alternativa de participación virtual.', 'flacso-uruguay'); ?>
                                                         </p>
                                                     <?php endif; ?>
                                                     <?php if ($calendario_doc_url !== '') : ?>
