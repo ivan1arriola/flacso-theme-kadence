@@ -595,8 +595,12 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         loading="eager"
                                         fetchpriority="high"
                                         decoding="async"
-                                        onerror="this.hidden=true;this.parentElement.classList.add('flacso-academic-hero__media--empty')"
+                                        onerror="this.hidden=true;this.nextElementSibling.hidden=false"
                                     >
+                                    <div class="flacso-academic-hero__placeholder" hidden>
+                                        <i class="bi bi-mortarboard" aria-hidden="true"></i>
+                                        <span><?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?></span>
+                                    </div>
                                 <?php else : ?>
                                     <div class="flacso-academic-hero__placeholder" aria-label="<?php esc_attr_e('Imagen institucional de FLACSO Uruguay', 'flacso-uruguay'); ?>">
                                         <i class="bi bi-mortarboard" aria-hidden="true"></i>
