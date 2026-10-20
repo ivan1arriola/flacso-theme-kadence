@@ -313,7 +313,14 @@
 
 @media (max-width: 560px) {
     .flacso-oferta-responsive .flacso-academic-hero {
-        padding: 16px 15px 30px;
+        /* Separación real respecto de los bordes del teléfono.
+         * El ancho se calcula respecto del contenedor (no del viewport)
+         * para evitar scroll horizontal dentro del tema WordPress. */
+        --oa-hero-mobile-gutter: clamp(16px, 5vw, 24px);
+        width: calc(100% - var(--oa-hero-mobile-gutter) - var(--oa-hero-mobile-gutter));
+        margin-inline: var(--oa-hero-mobile-gutter);
+        padding: 18px 12px 30px;
+        border-radius: 20px;
     }
 
     .flacso-oferta-responsive .flacso-academic-hero__inner {
