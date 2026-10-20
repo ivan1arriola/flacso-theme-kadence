@@ -166,11 +166,9 @@ if ($raw_modalidad === '') {
 }
 $modalidad_texto = trim(wp_strip_all_tags($raw_modalidad));
 if ($modalidad_texto === '' || mb_strlen($modalidad_texto) > 50) {
-    if ($mostrar_instancias_presenciales || stripos($modalidad_texto, 'presencial') !== false) {
-        $modalidad = __('Híbrida / Semipresencial', 'flacso-uruguay');
-    } else {
-        $modalidad = __('100% virtual', 'flacso-uruguay');
-    }
+    // La existencia de actividades solo presenciales no determina la
+    // modalidad general (puede ser virtual, presencial o semipresencial).
+    $modalidad = __('Modalidad a confirmar', 'flacso-uruguay');
 } else {
     $modalidad = $modalidad_texto;
 }
@@ -318,7 +316,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                         <div class="fc-hero-highlights fc-hero-highlights--top">
                             <span class="fc-hero-badge fc-hero-badge--accent">
                                 <i class="bi bi-geo-alt" aria-hidden="true"></i>
-                                <?php esc_html_e('Con instancias presenciales', 'flacso-uruguay'); ?>
+                                <?php esc_html_e('Incluye instancias exclusivamente presenciales', 'flacso-uruguay'); ?>
                             </span>
                         </div>
                     <?php endif; ?>
@@ -494,7 +492,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                     <article class="fc-feature-card">
                         <div class="fc-feature-icon"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i></div>
                         <h3><?php esc_html_e('Cursada', 'flacso-uruguay'); ?></h3>
-                        <p><?php esc_html_e('Con instancias presenciales', 'flacso-uruguay'); ?></p>
+                        <p><?php esc_html_e('Incluye instancias exclusivamente presenciales', 'flacso-uruguay'); ?></p>
                     </article>
                 <?php endif; ?>
             </section>
