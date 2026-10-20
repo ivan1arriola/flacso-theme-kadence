@@ -43,6 +43,9 @@ $GLOBALS["meta"] = [
         "creditos" => 60,
         "reconocimiento_internacional" => 1,
         "reconocimiento_red_flacso" => 1,
+        // Valores históricos desactivados: la carta debe ignorarlos.
+        "mostrar_costos_envio" => 0,
+        "mostrar_expedicion_titulo" => 0,
         "colores_presentacion" => ["principal" => "#0057a8", "secundarios" => []],
         "seminarios" => [
             ["seminario_id" => 20, "orden" => 1, "caracter" => "obligatorio", "creditos_reconocidos" => 4],
@@ -615,6 +618,10 @@ assert_same("2027", flacso_theme_format_cohort_dates([
 assert_same(true, array_key_exists("reconocido_mec", $offer_context["academic"]), "Contexto incluye reconocido_mec para carta");
 assert_same(true, $offer_context["academic"]["reconocimiento_internacional"], "Contexto conserva el reconocimiento internacional/apostillado");
 assert_same(true, $offer_context["academic"]["reconocimiento_red_flacso"], "Contexto incluye el reconocimiento de la red FLACSO");
+assert_same(true, $offer_context["academic"]["mostrar_costos_envio"], "Los costos de envío son obligatorios aunque el metadato sea 0");
+assert_same(true, $offer_context["academic"]["mostrar_expedicion_titulo"], "La expedición es obligatoria aunque el metadato sea 0");
+assert_same(true, $offer_41_context["academic"]["mostrar_costos_envio"], "Los costos de envío se incluyen sin metadatos anteriores");
+assert_same(true, $offer_41_context["academic"]["mostrar_expedicion_titulo"], "La expedición se incluye sin metadatos anteriores");
 assert_same(false, array_key_exists("carta_hero_etiqueta", $offer_context["academic"]), "Contexto omite la etiqueta de preinscripcion");
 assert_same(true, array_key_exists("menciones", $offer_context["academic"]), "Contexto incluye menciones");
 assert_same(true, array_key_exists("colores_presentacion", $offer_context["academic"]), "Contexto incluye colores_presentacion");
@@ -626,6 +633,10 @@ $offer_template = file_get_contents(__DIR__ . "/../template-parts/oferta/default
 $carta_template = file_get_contents(__DIR__ . "/../template-parts/oferta/carta.php");
 assert_same(true, strpos($offer_template, "reconocimiento_red_flacso") !== false, "La página pública usa la opción independiente de reconocimiento de red");
 assert_same(true, strpos($carta_template, "reconocimiento_red_flacso") !== false, "La carta usa la opción independiente de reconocimiento de red");
+assert_same(true, strpos($carta_template, "Los certificados tienen costos de envío al exterior:") !== false, "La carta conserva detalle de costos de envío");
+assert_same(true, strpos($carta_template, "El título se expide en el exterior") !== false, "La carta conserva la información de expedición");
+assert_same(false, strpos($carta_template, 'if ($mostrar_costos_envio)') !== false, "No puede condicionarse el envío a una opción");
+assert_same(false, strpos($carta_template, 'if ($mostrar_expedicion)') !== false, "No puede condicionarse la expedición a una opción");
 assert_same(true, strpos($offer_template, "Apostillado de La Haya") !== false, "La página pública identifica por separado la titulación apostillada");
 
 exit($failures > 0 ? 1 : 0);
