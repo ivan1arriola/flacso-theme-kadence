@@ -691,7 +691,7 @@ $carta_template = file_get_contents(__DIR__ . "/../template-parts/oferta/carta.p
 assert_same(true, strpos($offer_template, "reconocimiento_red_flacso") !== false, "La página pública usa la opción independiente de reconocimiento de red");
 assert_same(true, strpos($offer_template, "Incluye instancias exclusivamente presenciales") !== false, "La oferta explica el carácter exclusivo de las instancias");
 assert_same(true, strpos($carta_template, "Incluye instancias exclusivamente presenciales") !== false, "La carta explica el carácter exclusivo de las instancias");
-assert_same(false, strpos($carta_template, "if ($mostrar_instancias_presenciales ||") !== false, "La bandera no debe convertir una modalidad virtual en híbrida");
+assert_same(false, strpos($carta_template, 'if ($mostrar_instancias_presenciales ||') !== false, "La bandera no debe convertir una modalidad virtual en híbrida");
 assert_same(true, strpos($carta_template, "Modalidad a confirmar") !== false, "Sin modalidad clara no se inventa cursada híbrida ni virtual");
 assert_same(true, strpos($carta_template, "reconocimiento_red_flacso") !== false, "La carta usa la opción independiente de reconocimiento de red");
 assert_same(true, strpos($carta_template, "Los certificados tienen costos de envío al exterior:") !== false, "La carta conserva detalle de costos de envío");
