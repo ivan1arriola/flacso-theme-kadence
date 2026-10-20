@@ -808,16 +808,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                             </div>
                                         </details>
 
-                                        <?php if (trim(wp_strip_all_tags($academic['financiacion_html'] ?? '')) !== '') : ?>
-                                            <!-- 7. FINANCIACIÓN -->
-                                            <details>
-                                                <summary><?php esc_html_e('Financiación', 'flacso-uruguay'); ?></summary>
-                                                <div class="detail-body detail-body--financiacion">
-                                                    <?php echo wpautop(wp_kses_post($academic['financiacion_html'])); ?>
-                                                </div>
-                                            </details>
-                                        <?php endif; ?>
-
                                     </div>
                                 </section>
 

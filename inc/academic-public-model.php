@@ -320,7 +320,6 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "perfil_egreso_html"          => (string) ($data["perfil_egreso_html"] ?? get_post_meta($offer_id, "perfil_egreso_html", true)),
         "titulos_certificaciones_html"=> (string) ($data["titulos_certificaciones_html"] ?? get_post_meta($offer_id, "titulos_certificaciones_html", true)),
         "requisitos_egreso_html"      => (string) ($data["requisitos_egreso_html"] ?? get_post_meta($offer_id, "requisitos_egreso_html", true)),
-        "financiacion_html" => (string) get_option("flacso_financiacion_html", get_option("flacso_carta_mas_info_financiacion_html", "")),
         "composicion_academica"       => is_array($data["composicion_academica"] ?? null) ? $data["composicion_academica"] : [],
         "carga_horaria"               => $data["carga_horaria"] ?? "",
         "creditos"                    => $data["creditos"] ?? "",

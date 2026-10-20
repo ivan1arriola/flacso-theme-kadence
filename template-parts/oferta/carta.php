@@ -872,15 +872,13 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                 </div>
             </section>
 
-            <!-- MÁS INFORMACIÓN (TRAYECTORIA, GESTIÓN, FINANCIACIÓN) -->
+            <!-- MÁS INFORMACIÓN (TRAYECTORIA Y GESTIÓN) -->
             <?php
             $carta_mas_info_section_title = trim((string) get_option('flacso_carta_mas_info_section_title', __('Por qué estudiar en FLACSO Uruguay', 'flacso-uruguay')));
             $carta_mas_info_trayectoria_title = trim((string) get_option('flacso_carta_mas_info_trayectoria_title', __('Trayectoria Académica', 'flacso-uruguay')));
             $carta_mas_info_trayectoria_html = (string) get_option('flacso_carta_mas_info_trayectoria_html', '<p>' . __('Nuestra <strong>Facultad de Posgrados</strong> busca formar a sus estudiantes a nivel <strong>académico, profesional y laboral</strong>. Nos distinguen <strong>19 años de trayectoria</strong> a nivel nacional y más de <strong>65 años a nivel internacional</strong>. Además, más de <strong>7000 personas egresadas</strong> de FLACSO Uruguay trabajan en el ámbito público y privado.', 'flacso-uruguay') . '</p>');
             $carta_mas_info_gestion_title = trim((string) get_option('flacso_carta_mas_info_gestion_title', __('Gestión Académica', 'flacso-uruguay')));
             $carta_mas_info_gestion_html = (string) get_option('flacso_carta_mas_info_gestion_html', '<p>' . __('Nos distingue un sistema de <strong>gestión académica eficiente y cercano</strong>, que acompaña de forma <strong>personalizada</strong> a cada estudiante y garantiza <strong>altos niveles de egreso, superiores al 90%</strong>.', 'flacso-uruguay') . '</p>');
-            $carta_mas_info_financiacion_title = trim((string) get_option('flacso_carta_mas_info_financiacion_title', __('Financiamiento Flexible', 'flacso-uruguay')));
-            $carta_mas_info_financiacion_html = (string) ($academic['financiacion_html'] ?? '');
             ?>
             <section class="fc-section fc-major-section fc-major-section--trust">
                 <header class="fc-major-heading">
@@ -904,13 +902,6 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                         <?php echo wp_kses_post($carta_mas_info_gestion_html); ?>
                     </article>
 
-                    <?php if (trim(wp_strip_all_tags($carta_mas_info_financiacion_html)) !== '') : ?>
-                    <article class="fc-more-card">
-                        <div class="fc-more-icon"><i class="bi bi-currency-dollar" aria-hidden="true"></i></div>
-                        <h3><?php echo esc_html($carta_mas_info_financiacion_title); ?></h3>
-                        <?php echo wp_kses_post($carta_mas_info_financiacion_html); ?>
-                    </article>
-                    <?php endif; ?>
                 </div>
             </section>
 
