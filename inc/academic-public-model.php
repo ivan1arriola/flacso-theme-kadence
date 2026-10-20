@@ -35,6 +35,61 @@ function flacso_theme_get_offer_type(int $post_id): string {
 }
 
 /**
+ * Resuelve los títulos intermedios como otras Ofertas Académicas publicadas.
+ * La procedencia académica siempre es estrictamente descendente:
+ * Maestría > Especialización > Diplomado > Diploma.
+ *
+ * @return array<int,array{oferta_id:int,titulo:string,url:string,menciones:array<int,string>}>
+ */
+function flacso_theme_resolve_intermediate_titles(int $parent_id, $raw): array {
+    if (!is_array($raw)) {
+        return [];
+    }
+    $levels = ['maestria' => 4, 'especializacion' => 3, 'diplomado' => 2, 'diploma' => 1];
+    $parent_type = flacso_theme_get_offer_type($parent_id);
+    $parent_level = $levels[$parent_type] ?? 0;
+    if ($parent_level <= 1) {
+        return [];
+    }
+
+    $titles = [];
+    $seen = [];
+    foreach ($raw as $entry) {
+        if (!is_array($entry)) {
+            continue;
+        }
+        $target_id = absint($entry['oferta_id'] ?? 0);
+        if (!$target_id || $target_id === $parent_id || isset($seen[$target_id])) {
+            continue;
+        }
+        $target = get_post($target_id);
+        if (!$target || $target->post_type !== 'oferta-academica' || $target->post_status !== 'publish') {
+            continue;
+        }
+        $target_level = $levels[flacso_theme_get_offer_type($target_id)] ?? 0;
+        if (!$target_level || $target_level >= $parent_level) {
+            continue;
+        }
+        $permalink = get_permalink($target_id);
+        if (!$permalink) {
+            continue;
+        }
+        $available = get_post_meta($target_id, 'menciones', true);
+        $available = is_array($available) ? array_map('strval', $available) : [];
+        $requested = is_array($entry['menciones'] ?? null) ? array_map('strval', $entry['menciones']) : [];
+        $mentions = array_values(array_unique(array_intersect($requested, $available)));
+        $titles[] = [
+            'oferta_id' => $target_id,
+            'titulo' => (string) $target->post_title,
+            'url' => (string) $permalink,
+            'menciones' => $mentions,
+        ];
+        $seen[$target_id] = true;
+    }
+    return $titles;
+}
+
+/**
  * Determina si un post corresponde a un Seminario.
  */
 function flacso_theme_is_seminar(int $post_id): bool {
@@ -273,7 +328,7 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "carta_instancias_presenciales"=> !empty($current_cohort["instancias_presenciales"]) || !empty($data["carta_instancias_presenciales"]) || (bool) get_post_meta($offer_id, "carta_instancias_presenciales", true),
         "menciones"                   => (array) ($data["menciones"] ?? (get_post_meta($offer_id, "menciones", true) ?: [])),
         "orientaciones"               => (array) ($data["orientaciones"] ?? (get_post_meta($offer_id, "orientaciones", true) ?: [])),
-        "titulos_intermedios"         => (array) ($data["titulos_intermedios"] ?? (get_post_meta($offer_id, "titulos_intermedios", true) ?: [])),
+        "titulos_intermedios"         => flacso_theme_resolve_intermediate_titles($offer_id, $data["titulos_intermedios"] ?? get_post_meta($offer_id, "titulos_intermedios", true)),
         "reconocido_mec"              => !empty($data["reconocido_mec"]) || (bool) get_post_meta($offer_id, "reconocido_mec", true),
         "reconocimiento_internacional"=> !empty($data["reconocimiento_internacional"]) || (bool) get_post_meta($offer_id, "reconocimiento_internacional", true),
         "reconocimiento_red_flacso"   => !empty($data["reconocimiento_red_flacso"]) || (bool) get_post_meta($offer_id, "reconocimiento_red_flacso", true),
