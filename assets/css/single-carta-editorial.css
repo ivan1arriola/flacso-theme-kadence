@@ -376,6 +376,26 @@
     line-height: 1.28;
 }
 
+.flacso-carta-virtual .fc-intermediate-copy { min-width:0; }
+.flacso-carta-virtual .fc-intermediate-copy h3 a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: rgba(30, 78, 137, .28);
+    text-underline-offset: 3px;
+    overflow-wrap: anywhere;
+}
+.flacso-carta-virtual .fc-intermediate-copy h3 a:hover,
+.flacso-carta-virtual .fc-intermediate-copy h3 a:focus-visible {
+    text-decoration-color: currentColor;
+}
+.flacso-carta-virtual .fc-intermediate-mentions {
+    margin: 7px 0 0;
+    color: var(--fc-ui-muted);
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
 /* ==========================================================================
    03. DATOS CLAVE — UNA SOLA BANDA
    ========================================================================== */
