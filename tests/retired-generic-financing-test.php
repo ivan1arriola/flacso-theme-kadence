@@ -23,7 +23,7 @@ generic_financing_assert(strpos($model, '"financiacion_html"') === false, 'el mo
 generic_financing_assert(strpos($css, 'detail-body--financiacion') === false, 'no quedan estilos específicos del acordeón eliminado');
 
 // No eliminar precios, planes de cuotas reales, formas de pago ni enlaces.
-generic_financing_assert(strpos($offer, "tabla_precio") !== false || strpos($offer, 'valor_uyu') !== false, 'se mantiene información de costos en ofertas');
+generic_financing_assert(strpos($model, '"tabla_precio_id"') !== false && strpos($model, '"valor_uyu"') !== false, 'el modelo sigue entregando aranceles de la cohorte');
 generic_financing_assert(strpos($carta, 'fc-pricing-section') !== false, 'la carta conserva la sección de costos');
 generic_financing_assert(strpos($carta, 'precios_filas') !== false, 'se conservan filas de aranceles');
 generic_financing_assert(strpos($carta, 'formas-de-pago/') !== false, 'se conserva el enlace a formas de pago');
