@@ -562,18 +562,18 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                     <?php endif; ?>
                                     <?php if ($duracion_text !== '' && $duracion_text !== __('A definir', 'flacso-uruguay')) : ?>
                                         <span class="flacso-academic-hero__badge flacso-academic-hero__badge--duration">
-                                            <i class="bi bi-calendar3" aria-hidden="true"></i>
+                                            <span class="flacso-academic-hero__symbol" aria-hidden="true">◷</span>
                                             <?php echo esc_html($duracion_text); ?>
                                         </span>
                                     <?php endif; ?>
                                     <?php if ($inscripciones_abiertas) : ?>
                                         <span class="flacso-academic-hero__badge flacso-academic-hero__badge--open">
-                                            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                            <span class="flacso-academic-hero__symbol" aria-hidden="true">✓</span>
                                             <?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?>
                                         </span>
                                     <?php else : ?>
                                         <span class="flacso-academic-hero__badge flacso-academic-hero__badge--closed">
-                                            <i class="bi bi-clock" aria-hidden="true"></i>
+                                            <span class="flacso-academic-hero__symbol" aria-hidden="true">◷</span>
                                             <?php esc_html_e('Próxima apertura', 'flacso-uruguay'); ?>
                                         </span>
                                     <?php endif; ?>
@@ -582,7 +582,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                 <div class="flacso-academic-hero__actions">
                                     <a href="<?php echo esc_url($hero_primary_url); ?>"<?php echo $has_preinscription_cta ? ' data-flacso-preinscription-cta="1"' : ''; ?> class="flacso-academic-hero__cta">
                                         <span><?php echo esc_html($hero_primary_label); ?></span>
-                                        <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                                        <span class="flacso-academic-hero__arrow" aria-hidden="true">→</span>
                                     </a>
                                 </div>
                             </div>
@@ -598,12 +598,12 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         onerror="this.hidden=true;this.nextElementSibling.hidden=false"
                                     >
                                     <div class="flacso-academic-hero__placeholder" hidden>
-                                        <i class="bi bi-mortarboard" aria-hidden="true"></i>
+                                        <span class="flacso-academic-hero__placeholder-mark" aria-hidden="true">F</span>
                                         <span><?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?></span>
                                     </div>
                                 <?php else : ?>
                                     <div class="flacso-academic-hero__placeholder" aria-label="<?php esc_attr_e('Imagen institucional de FLACSO Uruguay', 'flacso-uruguay'); ?>">
-                                        <i class="bi bi-mortarboard" aria-hidden="true"></i>
+                                        <span class="flacso-academic-hero__placeholder-mark" aria-hidden="true">F</span>
                                         <span><?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?></span>
                                     </div>
                                 <?php endif; ?>
