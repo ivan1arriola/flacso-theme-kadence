@@ -30,13 +30,14 @@ $GLOBALS["posts"] = [
     41 => (object) ["ID" => 41, "post_type" => "oferta-academica", "post_status" => "publish", "post_title" => "Diploma Sin Cohorte", "post_name" => "diploma-sin-cohorte"],
     42 => (object) ["ID" => 42, "post_type" => "oferta-academica", "post_status" => "publish", "post_title" => "Oferta con cohorte nueva", "post_name" => "oferta-nueva"],
     43 => (object) ["ID" => 43, "post_type" => "oferta-academica", "post_status" => "publish", "post_title" => "Oferta sin cohorte publicada", "post_name" => "oferta-sin-publicada"],
+    44 => (object) ["ID" => 44, "post_type" => "oferta-academica", "post_status" => "publish", "post_title" => "Oferta con instancia exclusivamente presencial", "post_name" => "oferta-instancias-presenciales"],
     500 => (object) ["ID" => 500, "post_type" => "tabla-precio", "post_status" => "publish", "post_title" => "Aranceles Seminarios 2026", "post_name" => "tabla-seminarios-2026"],
     501 => (object) ["ID" => 501, "post_type" => "tabla-precio", "post_status" => "publish", "post_title" => "Aranceles Maestría 2026", "post_name" => "tabla-maestria-2026"],
     91 => (object) ["ID" => 91, "post_type" => "docente", "post_status" => "publish", "post_title" => "Dra. Ana Pérez", "post_name" => "ana-perez"],
     92 => (object) ["ID" => 92, "post_type" => "docente", "post_status" => "publish", "post_title" => "Dr. Juan Gómez", "post_name" => "juan-gomez"],
 ];
 
-$GLOBALS["types"] = [10 => "maestria", 40 => "doctorado", 41 => "diploma", 42 => "maestria", 43 => "maestria"];
+$GLOBALS["types"] = [10 => "maestria", 40 => "doctorado", 41 => "diploma", 42 => "maestria", 43 => "maestria", 44 => "maestria"];
 $GLOBALS["meta"] = [
     10 => [
         "programa_academico_id" => 0,
@@ -264,14 +265,24 @@ final class FLACSO_Academic_Catalog {
                 "cohorte_consulta" => null,
             ];
         }
+        if ($id === 44) {
+            $data = self::get_offer(42);
+            $data["id"] = 44;
+            $data["cohorte_mas_reciente"]["instancias_presenciales"] = true;
+            return $data;
+        }
         if ($id === 42) {
             $data = self::get_offer(10);
             $data["id"] = 42;
+            // Oferta con bandera heredada activada, pero cohorte actual
+            // desactivada: no debe aparecer el aviso.
+            $data["carta_instancias_presenciales"] = true;
             $data["cohorte_mas_reciente"] = [
                 "id" => 102, "nombre" => "Cohorte VI", "numero" => 6, "numero_romano" => "VI",
                 "fecha_inicio" => "2027-08-15", "fecha_fin" => "2029-07-31",
                 "precision_fecha_inicio" => "dia", "estado" => "planificada",
                 "tabla_precio_id" => 500, "modalidad" => "virtual",
+                "instancias_presenciales" => false,
                 "calendario_academico" => "https://flacso.edu.uy/calendario-nuevo.pdf",
                 "link_preinscripcion" => "https://preinscripciones.flacso.edu.uy/ofertas/42/cohortes/102/",
                 "preinscripcion" => ["abierta" => false, "url" => "https://preinscripciones.flacso.edu.uy/ofertas/42/cohortes/102/"],
@@ -582,6 +593,11 @@ assert_same("Cohorte VI", $latest_context["inquiry_cohort"]["name"], "Formulario
 assert_same(6, $latest_context["inquiry_cohort"]["number"], "El número del formulario coincide con el de la web");
 assert_same(false, $latest_context["inquiry_cohort"]["is_open"], "El formulario no hereda la inscripción abierta de V");
 assert_same("Próxima cohorte — Cohorte VI", $latest_context["inquiry_cohort"]["label"], "El texto del formulario coincide con VI");
+assert_same(false, $latest_context["academic"]["carta_instancias_presenciales"], "La cohorte nueva desmarcada prevalece sobre el antiguo ajuste de Oferta");
+$exclusively_present_context = flacso_theme_get_offer_context(44);
+assert_same(true, $exclusively_present_context["academic"]["carta_instancias_presenciales"], "La marca de actividades exclusivamente presenciales se conserva en la cohorte");
+assert_same("Virtual", $exclusively_present_context["instance"]["modalidad"], "La modalidad general sigue siendo virtual aunque haya sesiones solo presenciales");
+
 $unpublished_context = flacso_theme_get_offer_context(43);
 assert_same(0, $unpublished_context["instance_id"], "Si no hay cohorte publicada no se filtra una anterior");
 assert_same(false, $unpublished_context["registration"]["is_open"], "Sin cohorte publicada no se abre CTA");
@@ -673,6 +689,10 @@ assert_same(true, file_exists(__DIR__ . "/../assets/css/single-carta.css"), "Est
 $offer_template = file_get_contents(__DIR__ . "/../template-parts/oferta/default.php");
 $carta_template = file_get_contents(__DIR__ . "/../template-parts/oferta/carta.php");
 assert_same(true, strpos($offer_template, "reconocimiento_red_flacso") !== false, "La página pública usa la opción independiente de reconocimiento de red");
+assert_same(true, strpos($offer_template, "Incluye instancias exclusivamente presenciales") !== false, "La oferta explica el carácter exclusivo de las instancias");
+assert_same(true, strpos($carta_template, "Incluye instancias exclusivamente presenciales") !== false, "La carta explica el carácter exclusivo de las instancias");
+assert_same(false, strpos($carta_template, "if ($mostrar_instancias_presenciales ||") !== false, "La bandera no debe convertir una modalidad virtual en híbrida");
+assert_same(true, strpos($carta_template, "Modalidad a confirmar") !== false, "Sin modalidad clara no se inventa cursada híbrida ni virtual");
 assert_same(true, strpos($carta_template, "reconocimiento_red_flacso") !== false, "La carta usa la opción independiente de reconocimiento de red");
 assert_same(true, strpos($carta_template, "Los certificados tienen costos de envío al exterior:") !== false, "La carta conserva detalle de costos de envío");
 assert_same(true, strpos($carta_template, "El título se expide en el exterior") !== false, "La carta conserva la información de expedición");
