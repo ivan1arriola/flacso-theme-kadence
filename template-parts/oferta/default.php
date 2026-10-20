@@ -247,7 +247,7 @@ $reconocido_mec               = !empty($academic['reconocido_mec']);
 $reconocimiento_internacional = !empty($academic['reconocimiento_internacional']);
 $reconocimiento_red_flacso    = !empty($academic['reconocimiento_red_flacso']);
 $convenio_iin_oea             = !empty($academic['convenio_iin_oea']);
-$has_aside_badges             = $reconocido_mec || $reconocimiento_internacional || $reconocimiento_red_flacso || $convenio_iin_oea;
+$has_public_recognitions      = $reconocido_mec || $reconocimiento_internacional || $reconocimiento_red_flacso;
 $has_aside_docs               = $calendario_doc_url !== '';
 
 $render_info_card = static function ($card_title, $body, $extra_class = '', array $attrs = []) use ($has_visible_html) {
@@ -538,6 +538,41 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                         </div>
                     </section>
 
+                    <?php if ($has_public_recognitions) : ?>
+                        <!-- Reconocimientos siempre visibles; no son títulos ni convenios. -->
+                        <section class="flacso-academic-trust-strip" aria-labelledby="flacso-academic-trust-title">
+                            <div class="flacso-academic-trust-strip__inner">
+                                <h2 id="flacso-academic-trust-title"><?php esc_html_e('Reconocimientos', 'flacso-uruguay'); ?></h2>
+                                <ul class="flacso-academic-trust-strip__list">
+                                    <?php if ($reconocido_mec) : ?>
+                                        <li class="flacso-academic-trust-strip__item">
+                                            <span class="flacso-academic-trust-strip__icon" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 2.5 2 3.2.2 1 3 2.6 2-.8 3.1.8 3.1-2.6 2-1 3-3.2.2L12 22l-2.5-2-3.2-.2-1-3-2.6-2 .8-3.1-.8-3.1 2.6-2 1-3 3.2-.2z"/><path d="m8.5 12 2.4 2.4L15.8 9.5"/></svg>
+                                            </span>
+                                            <span><?php esc_html_e('Reconocimiento oficial MEC', 'flacso-uruguay'); ?></span>
+                                        </li>
+                                    <?php endif; ?>
+                                    <?php if ($reconocimiento_internacional) : ?>
+                                        <li class="flacso-academic-trust-strip__item">
+                                            <span class="flacso-academic-trust-strip__icon" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-5 5-5 13 0 18M12 3c5 5 5 13 0 18"/></svg>
+                                            </span>
+                                            <span><?php esc_html_e('Apostillado de La Haya', 'flacso-uruguay'); ?></span>
+                                        </li>
+                                    <?php endif; ?>
+                                    <?php if ($reconocimiento_red_flacso) : ?>
+                                        <li class="flacso-academic-trust-strip__item">
+                                            <span class="flacso-academic-trust-strip__icon" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="m7 11 10-5M7 13l10 5"/></svg>
+                                            </span>
+                                            <span><?php esc_html_e('Reconocimiento en la red FLACSO', 'flacso-uruguay'); ?></span>
+                                        </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </div>
+                        </section>
+                    <?php endif; ?>
+
                     <?php if (!empty($academic['articulaciones'])) : ?>
                         <div class="flacso-oa-container">
                             <?php get_template_part('template-parts/oferta/articulaciones', null, ['planes' => $academic['articulaciones']]); ?>
@@ -748,45 +783,16 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                     </div>
                                 </section>
 
-                                <?php if ($has_aside_badges) : ?>
-                                    <!-- Reconocimientos y convenios: independientes de los títulos. -->
-                                    <section class="flacso-academic-recognitions" aria-labelledby="flacso-academic-recognitions-title">
-                                        <h2 id="flacso-academic-recognitions-title"><?php esc_html_e('Reconocimientos y convenios', 'flacso-uruguay'); ?></h2>
-                                        <ul class="flacso-academic-recognitions__list">
-                                            <?php if ($reconocido_mec) : ?>
-                                                <li class="flacso-academic-recognitions__item">
-                                                    <span class="flacso-academic-recognitions__icon" aria-hidden="true">
-                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 2.5 2 3.2.2 1 3 2.6 2-.8 3.1.8 3.1-2.6 2-1 3-3.2.2L12 22l-2.5-2-3.2-.2-1-3-2.6-2 .8-3.1-.8-3.1 2.6-2 1-3 3.2-.2z"/><path d="m8.5 12 2.4 2.4L15.8 9.5"/></svg>
-                                                    </span>
-                                                    <span><?php esc_html_e('Programa con Reconocimiento Oficial del Ministerio de Educación y Cultura (MEC).', 'flacso-uruguay'); ?></span>
-                                                </li>
-                                            <?php endif; ?>
-                                            <?php if ($reconocimiento_internacional) : ?>
-                                                <li class="flacso-academic-recognitions__item">
-                                                    <span class="flacso-academic-recognitions__icon" aria-hidden="true">
-                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-5 5-5 13 0 18M12 3c5 5 5 13 0 18"/></svg>
-                                                    </span>
-                                                    <span><?php esc_html_e('Apostillado de La Haya.', 'flacso-uruguay'); ?></span>
-                                                </li>
-                                            <?php endif; ?>
-                                            <?php if ($reconocimiento_red_flacso) : ?>
-                                                <li class="flacso-academic-recognitions__item">
-                                                    <span class="flacso-academic-recognitions__icon" aria-hidden="true">
-                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="m7 11 10-5M7 13l10 5"/></svg>
-                                                    </span>
-                                                    <span><?php esc_html_e('Título con validez y reconocimiento en la red del Sistema Internacional FLACSO.', 'flacso-uruguay'); ?></span>
-                                                </li>
-                                            <?php endif; ?>
-                                            <?php if ($convenio_iin_oea) : ?>
-                                                <li class="flacso-academic-recognitions__item">
-                                                    <span class="flacso-academic-recognitions__icon" aria-hidden="true">
-                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5z"/><path d="m8 12 3 3 5-6"/></svg>
-                                                    </span>
-                                                    <span><?php esc_html_e('Convenio con el Instituto Interamericano del Niño, la Niña y Adolescentes (IIN - OEA).', 'flacso-uruguay'); ?></span>
-                                                </li>
-                                            <?php endif; ?>
-                                        </ul>
-                                    </section>
+                                <?php if ($convenio_iin_oea) : ?>
+                                    <aside class="flacso-academic-convention" aria-labelledby="flacso-academic-convention-title">
+                                        <span class="flacso-academic-convention__symbol" aria-hidden="true">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5z"/><path d="m8 12 3 3 5-6"/></svg>
+                                        </span>
+                                        <div class="flacso-academic-convention__content">
+                                            <h3 id="flacso-academic-convention-title"><?php esc_html_e('Convenio institucional', 'flacso-uruguay'); ?></h3>
+                                            <p><?php esc_html_e('Convenio con el Instituto Interamericano del Niño, la Niña y Adolescentes (IIN - OEA).', 'flacso-uruguay'); ?></p>
+                                        </div>
+                                    </aside>
                                 <?php endif; ?>
 
                                 <!-- FINAL CTA -->
