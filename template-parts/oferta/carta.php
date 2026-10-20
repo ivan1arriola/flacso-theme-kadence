@@ -133,14 +133,6 @@ $reconocido_mec     = !empty($academic['reconocido_mec']);
 $reconocimiento_int = !empty($academic['reconocimiento_internacional']);
 $reconocimiento_red_flacso = !empty($academic['reconocimiento_red_flacso']);
 $mostrar_convenio_iin = !empty($academic['convenio_iin_oea']);
-$mostrar_costos_envio = !empty($academic['mostrar_costos_envio']);
-
-$mostrar_expedicion = false;
-if (isset($academic['mostrar_expedicion_titulo']) && $academic['mostrar_expedicion_titulo'] !== '') {
-    $mostrar_expedicion = !empty($academic['mostrar_expedicion_titulo']);
-} else {
-    $mostrar_expedicion = ($is_maestria || $es_especializacion);
-}
 
 $arr_menciones           = array_values(array_filter((array) ($academic['menciones'] ?? [])));
 $arr_orientaciones       = array_values(array_filter((array) ($academic['orientaciones'] ?? [])));
@@ -822,15 +814,14 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                         <div><?php esc_html_e('Las cuotas vencen el día 15 de cada mes.', 'flacso-uruguay'); ?></div>
                     </div>
 
-                    <?php if ($mostrar_expedicion) : ?>
-                        <div class="fc-info-row">
+                    <!-- Expedición de título: información institucional obligatoria. -->
+                    <div class="fc-info-row">
                             <div class="fc-info-icon"><i class="bi bi-award" aria-hidden="true"></i></div>
                             <div><?php esc_html_e('El título se expide en el exterior y tiene un costo asociado de USD 150, que incluye el trámite de Apostilla de La Haya. El costo de envio dependerá del pais de destino.', 'flacso-uruguay'); ?></div>
-                        </div>
-                    <?php endif; ?>
+                    </div>
 
-                    <?php if ($mostrar_costos_envio) : ?>
-                        <div class="fc-info-row">
+                    <!-- Costos de envío: siempre visibles en todas las cartas. -->
+                    <div class="fc-info-row">
                             <div class="fc-info-icon"><i class="bi bi-truck" aria-hidden="true"></i></div>
                             <div>
                                 <strong><?php esc_html_e('Los certificados tienen costos de envío al exterior:', 'flacso-uruguay'); ?></strong>
@@ -840,8 +831,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                                     <li><span>USD 70</span> – <?php esc_html_e('envío a Europa', 'flacso-uruguay'); ?></li>
                                 </ul>
                             </div>
-                        </div>
-                    <?php endif; ?>
+                    </div>
 
                     <?php if ($mostrar_convenio_iin) : ?>
                         <div class="fc-info-row">
