@@ -47,8 +47,8 @@ check_intermediate($result[0] === [
 ], 'titulo y URL de la oferta, con menciones validas');
 check_intermediate($result[1]['menciones'] === [], 'titulo sin menciones es valido');
 check_intermediate($result[2]['titulo'] === 'Diploma en Educación', 'titulo oficial');
-check_intermediate(flasco_theme_resolve_intermediate_titles(13, $raw) === [], 'diploma no admite titulos intermedios');
-check_intermediate(flasco_theme_resolve_intermediate_titles(10, ['texto libre']) === [], 'texto libre no aceptado');
+check_intermediate(flacso_theme_resolve_intermediate_titles(13, $raw) === [], 'diploma no admite titulos intermedios');
+check_intermediate(flacso_theme_resolve_intermediate_titles(10, ['texto libre']) === [], 'texto libre no aceptado');
 
 $template = file_get_contents(dirname(__DIR__) . '/template-parts/oferta/carta.php');
 $stylesheet = file_get_contents(dirname(__DIR__) . '/assets/css/single-carta-editorial.css');
