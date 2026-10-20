@@ -292,9 +292,7 @@ if (!empty($academic['perfil_ingreso_html'])) {
     $fc_audience_summary = wp_trim_words(wp_strip_all_tags((string) $academic['perfil_ingreso_html']), 40, '…');
 }
 
-// Documentos adjuntos (malla y calendario)
-$cartamalla_url = !empty($academic['cartamalla_pdf_url']) ? $academic['cartamalla_pdf_url'] : '';
-$malla_url      = !empty($academic['malla_pdf_url']) ? $academic['malla_pdf_url'] : '';
+// Sólo el calendario independiente puede ofrecerse públicamente.
 $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendario_pdf_url'] : '';
 
 ?>
@@ -631,44 +629,19 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
 
                 <div class="fc-resource-grid">
 
-            <!-- DOCUMENTOS: MALLA Y CALENDARIO -->
-            <?php if ($cartamalla_url || $malla_url || $calendario_url) :
-                $fc_cards_count = $cartamalla_url ? 1 : (($malla_url ? 1 : 0) + ($calendario_url ? 1 : 0));
-            ?>
+            <!-- Calendario público: no publicar archivos curriculares internos. -->
+            <?php if ($calendario_url) : ?>
                 <section class="fc-section fc-documents-section">
-                    <h2 class="fc-section-title"><?php esc_html_e('Calendario y malla curricular', 'flacso-uruguay'); ?></h2>
-                    <div class="fc-more-grid" style="--fc-grid-cols: <?php echo esc_attr((string) $fc_cards_count); ?>;">
-                        <?php if ($cartamalla_url) : ?>
-                            <article class="fc-more-card">
-                                <div class="fc-more-icon"><i class="bi bi-journal-check" aria-hidden="true"></i></div>
-                                <h3><?php esc_html_e('Calendario y Malla', 'flacso-uruguay'); ?></h3>
-                                <p><?php esc_html_e('Incluye el calendario de cursada y la malla curricular completa.', 'flacso-uruguay'); ?></p>
-                                <a href="<?php echo esc_url($cartamalla_url); ?>" target="_blank" rel="noopener noreferrer" class="fc-card-button">
-                                    <i class="bi bi-file-earmark-pdf"></i> <?php esc_html_e('Ver Documento (PDF)', 'flacso-uruguay'); ?>
-                                </a>
-                            </article>
-                        <?php else : ?>
-                            <?php if ($calendario_url) : ?>
-                                <article class="fc-more-card">
-                                    <div class="fc-more-icon"><i class="bi bi-calendar2-check" aria-hidden="true"></i></div>
-                                    <h3><?php esc_html_e('Calendario Académico', 'flacso-uruguay'); ?></h3>
-                                    <p><?php esc_html_e('Fechas clave, inicios y recesos de la cursada.', 'flacso-uruguay'); ?></p>
-                                    <a href="<?php echo esc_url($calendario_url); ?>" target="_blank" rel="noopener noreferrer" class="fc-card-button">
-                                        <i class="bi bi-file-earmark-pdf"></i> <?php esc_html_e('Ver Calendario (PDF)', 'flacso-uruguay'); ?>
-                                    </a>
-                                </article>
-                            <?php endif; ?>
-                            <?php if ($malla_url) : ?>
-                                <article class="fc-more-card">
-                                    <div class="fc-more-icon"><i class="bi bi-journal-bookmark" aria-hidden="true"></i></div>
-                                    <h3><?php esc_html_e('Malla Curricular', 'flacso-uruguay'); ?></h3>
-                                    <p><?php esc_html_e('Programa completo y asignaturas del posgrado.', 'flacso-uruguay'); ?></p>
-                                    <a href="<?php echo esc_url($malla_url); ?>" target="_blank" rel="noopener noreferrer" class="fc-card-button">
-                                        <i class="bi bi-file-earmark-pdf"></i> <?php esc_html_e('Ver Malla (PDF)', 'flacso-uruguay'); ?>
-                                    </a>
-                                </article>
-                            <?php endif; ?>
-                        <?php endif; ?>
+                    <h2 class="fc-section-title"><?php esc_html_e('Calendario académico', 'flacso-uruguay'); ?></h2>
+                    <div class="fc-more-grid" style="--fc-grid-cols: 1;">
+                        <article class="fc-more-card">
+                            <div class="fc-more-icon"><i class="bi bi-calendar2-check" aria-hidden="true"></i></div>
+                            <h3><?php esc_html_e('Calendario académico', 'flacso-uruguay'); ?></h3>
+                            <p><?php esc_html_e('Fechas clave, inicios y recesos de la cursada.', 'flacso-uruguay'); ?></p>
+                            <a href="<?php echo esc_url($calendario_url); ?>" target="_blank" rel="noopener noreferrer" class="fc-card-button">
+                                <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i> <?php esc_html_e('Ver calendario (PDF)', 'flacso-uruguay'); ?>
+                            </a>
+                        </article>
                     </div>
                 </section>
             <?php endif; ?>
