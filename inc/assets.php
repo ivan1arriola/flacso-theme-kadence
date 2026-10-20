@@ -278,3 +278,21 @@ function flacso_child_enqueue_template_assets() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'flacso_child_enqueue_template_assets', 40 );
+
+/**
+ * Estilos de articulación compartidos por carta y página pública.
+ * Sin impacto en archivos, home ni en preinscripciones.
+ */
+function flacso_child_enqueue_articulation_styles() {
+    if (!is_singular('oferta-academica')) {
+        return;
+    }
+    $path = 'assets/css/academic-articulations.css';
+    wp_enqueue_style(
+        'flacso-academic-articulations',
+        get_stylesheet_directory_uri() . '/' . $path,
+        [],
+        flacso_child_asset_version($path)
+    );
+}
+add_action('wp_enqueue_scripts', 'flacso_child_enqueue_articulation_styles', 50);
