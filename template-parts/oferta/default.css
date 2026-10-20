@@ -600,6 +600,19 @@
 }
 .flacso-oferta-responsive .flacso-academic-person__summary {
     cursor: pointer;
+    /* Reset de flechas y tamaños generados por los details globales. */
+    padding: 12px 14px !important;
+    font-size: .94rem !important;
+    background: #fff !important;
+}
+.flacso-oferta-responsive .flacso-academic-person__summary::before,
+.flacso-oferta-responsive .flacso-academic-person__summary::after {
+    content: none !important;
+    display: none !important;
+}
+.flacso-oferta-responsive .flacso-academic-person__details[open] > summary {
+    background: #fff !important;
+    border-bottom: 0 !important;
 }
 .flacso-oferta-responsive .flacso-academic-person__static {
     grid-template-columns: 50px minmax(0, 1fr);
@@ -747,7 +760,7 @@
     .flacso-oferta-responsive .flacso-academic-person__summary,
     .flacso-oferta-responsive .flacso-academic-person__static {
         min-height: 72px;
-        padding: 10px 12px;
+        padding: 10px 12px !important;
         gap: 12px;
         grid-template-columns: 46px minmax(0, 1fr) 36px;
     }
