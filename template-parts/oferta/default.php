@@ -771,7 +771,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                     <section class="final-cta">
                                         <div class="final-cta__text">
                                             <h3><?php esc_html_e('¿Querés postularte a la próxima cohorte?', 'flacso-uruguay'); ?></h3>
-                                            <p><?php esc_html_e('La preinscripción se realiza en la plataforma de FLACSO Uruguay.', 'flacso-uruguay'); ?></p>
                                         </div>
                                         <a class="btn btn--primary" href="<?php echo esc_url($preinscripcion_url); ?>" data-flacso-preinscription-cta="1" style="background:var(--azul) !important;color:#fff !important;white-space:nowrap;" onclick="if(typeof window.flacsoMetaTrack === 'function'){ window.flacsoMetaTrack('InitiateCheckout', { content_name: <?php echo wp_json_encode($title); ?>, content_category: 'oferta_academica' }); }">
                                             <?php esc_html_e('Iniciar preinscripción →', 'flacso-uruguay'); ?>
