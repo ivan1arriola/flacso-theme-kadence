@@ -410,7 +410,9 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
     }
 
     $cv = trim((string) get_post_meta($docente_id, 'cv', true));
-    $has_bio = trim(wp_strip_all_tags($cv)) !== '' || $academic_label !== '' || trim((string) $rol) !== '';
+    $role_label = trim((string) $rol);
+    // El rol siempre se ve; no habilita un desplegable vacío por sí solo.
+    $has_bio = trim(wp_strip_all_tags($cv)) !== '' || $academic_label !== '';
     // No utilizar dp_avatar_markup() en estas tarjetas: devuelve un div e
     // imagen de 104px que se recortan dentro de un avatar de 56px.
     // "medium" obtiene la fotografía sin el recorte cuadrado de "thumbnail".
@@ -436,13 +438,15 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
             <details class="flacso-academic-person__details">
                 <summary class="flacso-academic-person__summary">
                     <span class="flacso-academic-person__avatar" aria-hidden="true"><?php echo $avatar_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-                    <span class="flacso-academic-person__name"><?php echo esc_html($doc_titulo); ?></span>
+                    <span class="flacso-academic-person__identity">
+                        <?php if ($role_label !== '') : ?>
+                            <span class="flacso-academic-person__role"><?php echo esc_html($role_label); ?></span>
+                        <?php endif; ?>
+                        <span class="flacso-academic-person__name"><?php echo esc_html($doc_titulo); ?></span>
+                    </span>
                     <span class="flacso-academic-person__toggle" aria-hidden="true"></span>
                 </summary>
                 <div class="flacso-academic-person__body">
-                    <?php if (trim((string) $rol) !== '') : ?>
-                        <p class="flacso-academic-person__role"><?php echo esc_html($rol); ?></p>
-                    <?php endif; ?>
                     <?php if ($academic_label !== '') : ?>
                         <p class="flacso-academic-person__qualification"><?php echo esc_html($academic_label); ?></p>
                     <?php endif; ?>
@@ -454,7 +458,12 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
         <?php else : ?>
             <article class="flacso-academic-person__static" aria-label="<?php echo esc_attr(sprintf(__('Docente: %s', 'flacso-uruguay'), $doc_titulo)); ?>">
                 <span class="flacso-academic-person__avatar" aria-hidden="true"><?php echo $avatar_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-                <span class="flacso-academic-person__name"><?php echo esc_html($doc_titulo); ?></span>
+                <span class="flacso-academic-person__identity">
+                    <?php if ($role_label !== '') : ?>
+                        <span class="flacso-academic-person__role"><?php echo esc_html($role_label); ?></span>
+                    <?php endif; ?>
+                    <span class="flacso-academic-person__name"><?php echo esc_html($doc_titulo); ?></span>
+                </span>
             </article>
         <?php endif; ?>
     </div>
