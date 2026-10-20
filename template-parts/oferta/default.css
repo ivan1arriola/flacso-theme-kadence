@@ -649,7 +649,16 @@
     font-size: .85rem;
     font-weight: 800;
 }
+.flacso-oferta-responsive .flacso-academic-person__identity {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 5px;
+    min-width: 0;
+}
 .flacso-oferta-responsive .flacso-academic-person__name {
+    display: block;
     min-width: 0;
     color: #0a2d61;
     font-size: .94rem;
@@ -702,12 +711,17 @@
 }
 .flacso-oferta-responsive .flacso-academic-person__role {
     display: inline-block;
+    width: auto;
+    max-width: 100%;
     border-radius: 999px;
     background: var(--oa-brand-light, #e7eef8);
     color: var(--oa-brand-dark, #113c73);
-    padding: 3px 10px;
-    font-size: .76rem;
-    font-weight: 760;
+    padding: 3px 9px;
+    font-size: .69rem;
+    font-weight: 770;
+    line-height: 1.35;
+    letter-spacing: .02em;
+    overflow-wrap: anywhere;
 }
 .flacso-oferta-responsive .flacso-academic-person__qualification {
     font-weight: 700;
@@ -772,6 +786,13 @@
     .flacso-oferta-responsive .flacso-academic-person__avatar {
         width: 58px;
         height: 58px;
+    }
+    .flacso-oferta-responsive .flacso-academic-person__identity {
+        gap: 4px;
+    }
+    .flacso-oferta-responsive .flacso-academic-person__role {
+        font-size: .66rem;
+        padding: 3px 8px;
     }
     .flacso-oferta-responsive .flacso-academic-person__name {
         font-size: .94rem;
