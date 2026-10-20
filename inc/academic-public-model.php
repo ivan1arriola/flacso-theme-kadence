@@ -329,6 +329,9 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "menciones"                   => (array) ($data["menciones"] ?? (get_post_meta($offer_id, "menciones", true) ?: [])),
         "orientaciones"               => (array) ($data["orientaciones"] ?? (get_post_meta($offer_id, "orientaciones", true) ?: [])),
         "titulos_intermedios"         => flacso_theme_resolve_intermediate_titles($offer_id, $data["titulos_intermedios"] ?? get_post_meta($offer_id, "titulos_intermedios", true)),
+        "articulaciones"              => class_exists('FLACSO_Academic_Articulations')
+            ? FLACSO_Academic_Articulations::for_offer($offer_id)
+            : [],
         "reconocido_mec"              => !empty($data["reconocido_mec"]) || (bool) get_post_meta($offer_id, "reconocido_mec", true),
         "reconocimiento_internacional"=> !empty($data["reconocimiento_internacional"]) || (bool) get_post_meta($offer_id, "reconocimiento_internacional", true),
         "reconocimiento_red_flacso"   => !empty($data["reconocimiento_red_flacso"]) || (bool) get_post_meta($offer_id, "reconocimiento_red_flacso", true),
