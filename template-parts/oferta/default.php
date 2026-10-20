@@ -411,15 +411,16 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
 
     $cv = trim((string) get_post_meta($docente_id, 'cv', true));
     $has_bio = trim(wp_strip_all_tags($cv)) !== '' || $academic_label !== '' || trim((string) $rol) !== '';
+    // No utilizar dp_avatar_markup() en estas tarjetas: devuelve un div e
+    // imagen de 104px que se recortan dentro de un avatar de 56px.
+    // "medium" obtiene la fotografía sin el recorte cuadrado de "thumbnail".
     $avatar_html = '';
-    if (function_exists('dp_avatar_markup')) {
-        $avatar_html = (string) dp_avatar_markup($docente_id, $doc_titulo, 104, 'flacso-academic-person__avatar-image');
-    }
-    if ($avatar_html === '' && has_post_thumbnail($docente_id)) {
-        $avatar_html = get_the_post_thumbnail($docente_id, 'thumbnail', [
+    if (has_post_thumbnail($docente_id)) {
+        $avatar_html = (string) get_the_post_thumbnail($docente_id, 'medium', [
             'class' => 'flacso-academic-person__avatar-image',
             'alt' => '',
             'loading' => 'lazy',
+            'decoding' => 'async',
         ]);
     }
     if ($avatar_html === '') {
