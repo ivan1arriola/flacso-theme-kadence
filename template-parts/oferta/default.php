@@ -81,8 +81,27 @@ $offer_light = sprintf(
 $offer_luminance = (0.299 * $offer_r + 0.587 * $offer_g + 0.114 * $offer_b) / 255;
 $offer_contrast = $offer_luminance > 0.64 ? '#082b60' : '#ffffff';
 
+// Contraste WCAG del botón/acento: elegir el texto que mejor contraste
+// con cualquier color configurado por la Oferta (incluidos claros y amarillos).
+$channel_luminance = static function (int $value): float {
+    $normalized = $value / 255;
+    return $normalized <= 0.04045
+        ? $normalized / 12.92
+        : pow(($normalized + 0.055) / 1.055, 2.4);
+};
+$brand_luminance = 0.2126 * $channel_luminance($offer_r)
+    + 0.7152 * $channel_luminance($offer_g)
+    + 0.0722 * $channel_luminance($offer_b);
+$navy_luminance = 0.2126 * $channel_luminance(8)
+    + 0.7152 * $channel_luminance(43)
+    + 0.0722 * $channel_luminance(96);
+$white_contrast_ratio = 1.05 / ($brand_luminance + 0.05);
+$navy_contrast_ratio = (max($brand_luminance, $navy_luminance) + 0.05)
+    / (min($brand_luminance, $navy_luminance) + 0.05);
+$hero_brand_ink = $white_contrast_ratio >= $navy_contrast_ratio ? '#ffffff' : '#082b60';
+
 $offer_style_vars = sprintf(
-    '--oa-brand:%s;--oa-brand-rgb:%d,%d,%d;--oa-brand-dark:%s;--oa-brand-deep:%s;--oa-brand-light:%s;--oa-brand-contrast:%s;',
+    '--oa-brand:%s;--oa-brand-rgb:%d,%d,%d;--oa-brand-dark:%s;--oa-brand-deep:%s;--oa-brand-light:%s;--oa-brand-contrast:%s;--oa-hero-brand-ink:%s;',
     esc_attr($offer_color),
     $offer_r,
     $offer_g,
@@ -90,7 +109,8 @@ $offer_style_vars = sprintf(
     esc_attr($offer_dark),
     esc_attr($offer_deep),
     esc_attr($offer_light),
-    esc_attr($offer_contrast)
+    esc_attr($offer_contrast),
+    esc_attr($hero_brand_ink)
 );
 
 $raw_content           = get_post_field('post_content', $post_id);
@@ -523,80 +543,73 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
             <main id="main" class="site-main">
                 <article id="post-<?php echo esc_attr($post_id); ?>" <?php post_class('entry content-bg single-entry flacso-oa-article'); ?>>
 
-                    <div class="flacso-oa-container flacso-oa-single-hero">
-                        <section class="flacso-oa-program-hero" aria-labelledby="flacso-oa-program-title">
-                            <div class="flacso-oa-program-hero__media-wrap">
-                                <div class="flacso-oa-program-hero__media">
-                                    <?php if (!empty($thumbnail_url)) : ?>
-                                        <img
-                                            src="<?php echo esc_url($thumbnail_url); ?>"
-                                            alt="<?php echo esc_attr($title); ?>"
-                                            loading="eager"
-                                            fetchpriority="high"
-                                            onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';"
-                                        >
-                                        <div class="flacso-oa-program-hero__placeholder" style="display:none;">
-                                            <i class="bi bi-mortarboard" aria-hidden="true"></i>
-                                            <span><?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?></span>
-                                        </div>
-                                    <?php else : ?>
-                                        <div class="flacso-oa-program-hero__placeholder">
-                                            <i class="bi bi-mortarboard" aria-hidden="true"></i>
-                                            <span><?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?></span>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
+                    <?php
+                    // Esta plantilla posee su hoja de estilos específica.
+                    // Se incorpora aquí porque default.php se renderiza luego de wp_head().
+                    // No depende de los CSS/JS antiguos del hero ni del cargador global.
+                    $default_css_file = __DIR__ . '/default.css';
+                    if (is_readable($default_css_file)) :
+                    ?>
+                        <style id="flacso-academic-offer-default-css"><?php readfile($default_css_file); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile ?></style>
+                    <?php endif; ?>
 
-                            <div class="flacso-oa-program-hero__content">
-                                <div class="flacso-oa-program-hero__badges">
+                    <section class="flacso-academic-hero" aria-labelledby="flacso-oa-program-title">
+                        <div class="flacso-academic-hero__inner">
+                            <div class="flacso-academic-hero__content">
+                                <div class="flacso-academic-hero__badges">
                                     <?php if ($tipo_oferta !== '') : ?>
-                                        <p class="flacso-oa-program-hero__kicker"><?php echo esc_html($tipo_oferta); ?></p>
+                                        <span class="flacso-academic-hero__badge flacso-academic-hero__badge--type"><?php echo esc_html($tipo_oferta); ?></span>
                                     <?php endif; ?>
                                     <?php if ($duracion_text !== '' && $duracion_text !== __('A definir', 'flacso-uruguay')) : ?>
-                                        <span class="flacso-oa-program-hero__status-badge flacso-oa-program-hero__status-badge--duration">
-                                            <i class="bi bi-hourglass-split me-1" aria-hidden="true"></i>
+                                        <span class="flacso-academic-hero__badge flacso-academic-hero__badge--duration">
+                                            <span class="flacso-academic-hero__symbol" aria-hidden="true">◷</span>
                                             <?php echo esc_html($duracion_text); ?>
                                         </span>
                                     <?php endif; ?>
                                     <?php if ($inscripciones_abiertas) : ?>
-                                        <span class="flacso-oa-program-hero__status-badge flacso-oa-program-hero__status-badge--open">
-                                            <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+                                        <span class="flacso-academic-hero__badge flacso-academic-hero__badge--open">
+                                            <span class="flacso-academic-hero__symbol" aria-hidden="true">✓</span>
                                             <?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?>
                                         </span>
                                     <?php else : ?>
-                                        <span class="flacso-oa-program-hero__status-badge flacso-oa-program-hero__status-badge--soon">
-                                            <i class="bi bi-clock" aria-hidden="true"></i>
+                                        <span class="flacso-academic-hero__badge flacso-academic-hero__badge--closed">
+                                            <span class="flacso-academic-hero__symbol" aria-hidden="true">◷</span>
                                             <?php esc_html_e('Próxima apertura', 'flacso-uruguay'); ?>
                                         </span>
                                     <?php endif; ?>
                                 </div>
-
-                                <h1 id="flacso-oa-program-title" class="flacso-oa-program-hero__title"><?php echo esc_html($title); ?></h1>
-
-                                <?php if (has_excerpt($post_id)) : ?>
-                                    <div class="flacso-oa-program-hero__excerpt"><?php echo esc_html(get_the_excerpt($post_id)); ?></div>
-                                <?php endif; ?>
-
-                                <?php if ($mostrar_instancias_presenciales) : ?>
-                                    <p class="flacso-oa-program-hero__notice">
-                                        <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
-                                        <?php esc_html_e('Incluye instancias exclusivamente presenciales', 'flacso-uruguay'); ?>
-                                    </p>
-                                <?php endif; ?>
-
-                                <div class="flacso-oa-program-hero__actions">
-                                    <a href="<?php echo esc_url($hero_primary_url); ?>"<?php echo $has_preinscription_cta ? ' data-flacso-preinscription-cta="1"' : ''; ?> class="flacso-oa-program-hero__button flacso-oa-program-hero__button--primary">
-                                        <?php echo esc_html($hero_primary_label); ?>
-                                        <i class="bi bi-arrow-right" aria-hidden="true"></i>
-                                    </a>
-                                    <a href="#programa" class="flacso-oa-program-hero__button flacso-oa-program-hero__button--secondary">
-                                        <?php esc_html_e('Ver propuesta académica', 'flacso-uruguay'); ?>
+                                <h1 id="flacso-oa-program-title" class="flacso-academic-hero__title"><?php echo esc_html($title); ?></h1>
+                                <div class="flacso-academic-hero__actions">
+                                    <a href="<?php echo esc_url($hero_primary_url); ?>"<?php echo $has_preinscription_cta ? ' data-flacso-preinscription-cta="1"' : ''; ?> class="flacso-academic-hero__cta">
+                                        <span><?php echo esc_html($hero_primary_label); ?></span>
+                                        <span class="flacso-academic-hero__arrow" aria-hidden="true">→</span>
                                     </a>
                                 </div>
                             </div>
-                        </section>
-                    </div>
+                            <div class="flacso-academic-hero__media">
+                                <?php if ($thumbnail_url !== '') : ?>
+                                    <img
+                                        class="flacso-academic-hero__image"
+                                        src="<?php echo esc_url($thumbnail_url); ?>"
+                                        alt="<?php echo esc_attr($title); ?>"
+                                        loading="eager"
+                                        fetchpriority="high"
+                                        decoding="async"
+                                        onerror="this.hidden=true;this.nextElementSibling.hidden=false"
+                                    >
+                                    <div class="flacso-academic-hero__placeholder" hidden>
+                                        <span class="flacso-academic-hero__placeholder-mark" aria-hidden="true">F</span>
+                                        <span><?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?></span>
+                                    </div>
+                                <?php else : ?>
+                                    <div class="flacso-academic-hero__placeholder" aria-label="<?php esc_attr_e('Imagen institucional de FLACSO Uruguay', 'flacso-uruguay'); ?>">
+                                        <span class="flacso-academic-hero__placeholder-mark" aria-hidden="true">F</span>
+                                        <span><?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?></span>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </section>
 
                     <?php if (!empty($academic['articulaciones'])) : ?>
                         <div class="flacso-oa-container">
@@ -669,7 +682,8 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                     <?php if ($mostrar_instancias_presenciales) : ?>
                                                         <p class="mb-1" style="color: #b45309; font-weight: 700;">
                                                             <i class="bi bi-geo-alt-fill me-1" aria-hidden="true"></i>
-                                                            <?php esc_html_e('Esta propuesta incluye actividades exclusivamente presenciales, sin alternativa de participación virtual.', 'flacso-uruguay'); ?>
+                                                            <strong><?php esc_html_e('Incluye instancias exclusivamente presenciales', 'flacso-uruguay'); ?>.</strong>
+                                                            <?php esc_html_e('Estas actividades no ofrecen alternativa de participación virtual.', 'flacso-uruguay'); ?>
                                                         </p>
                                                     <?php endif; ?>
                                                     <?php if ($calendario_doc_url !== '') : ?>
@@ -837,7 +851,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                     <div class="contact-support__section">
                                         <span class="contact-support__eyebrow"><?php esc_html_e('Información útil', 'flacso-uruguay'); ?></span>
                                         <nav class="contact-support__links" aria-label="<?php esc_attr_e('Enlaces de la oferta académica', 'flacso-uruguay'); ?>">
-                                            <a href="#programa"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Ver propuesta académica', 'flacso-uruguay'); ?></a>
                                             <a href="#cohorte"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Información de la cohorte', 'flacso-uruguay'); ?></a>
                                             <a href="#titulacion"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Requisitos de egreso y titulación.', 'flacso-uruguay'); ?></a>
                                         </nav>
