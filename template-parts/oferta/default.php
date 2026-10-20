@@ -606,6 +606,12 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                         </section>
                     </div>
 
+                    <?php if (!empty($academic['articulaciones'])) : ?>
+                        <div class="flacso-oa-container">
+                            <?php get_template_part('template-parts/oferta/articulaciones', null, ['planes' => $academic['articulaciones']]); ?>
+                        </div>
+                    <?php endif; ?>
+
                     <!-- ========================================== -->
                     <!-- CONTENIDO PRINCIPAL + SIDEBAR DE CONTACTO -->
                     <!-- ========================================== -->
