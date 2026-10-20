@@ -298,15 +298,7 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "instance_id"    => $instance["id"],
     ];
 
-    $documentos_raw = $data["documentos"] ?? get_post_meta($offer_id, "documentos", true);
-    $documentos = !empty($documentos_raw) && is_string($documentos_raw) ? json_decode($documentos_raw, true) : (is_array($documentos_raw) ? $documentos_raw : []);
-
-    $cartamalla_pdf = !empty($documentos['cartamalla']['link']) ? trim((string) $documentos['cartamalla']['link']) : (string) get_post_meta($offer_id, "cartamalla_pdf_url", true);
-    $malla_pdf = !empty($data['malla_curricular'])
-    ? trim((string) $data['malla_curricular'])
-    : (!empty($documentos['malla']['link'])
-        ? trim((string) $documentos['malla']['link'])
-        : (string) get_post_meta($offer_id, "malla_pdf_url", true));
+    // El modelo público solo entrega el calendario de la cohorte.
     $calendario_pdf = trim((string) $instance["calendario_academico"]);
 
     $academic = [
@@ -325,9 +317,6 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "creditos"                    => $data["creditos"] ?? "",
         "correo"                      => (string) ($data["correo"] ?? get_post_meta($offer_id, "correo", true)),
         "abreviacion"                 => (string) ($data["abreviacion"] ?? get_post_meta($offer_id, "abreviacion", true)),
-        "documentos"                  => $documentos_raw,
-        "cartamalla_pdf_url"          => $cartamalla_pdf,
-        "malla_pdf_url"               => $malla_pdf,
         "calendario_pdf_url"          => $calendario_pdf,
         "equipos"                     => $data["equipos"] ?? get_post_meta($offer_id, "equipos", true),
         "coordinacion_academica"      => [],
