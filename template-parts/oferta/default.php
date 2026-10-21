@@ -600,17 +600,10 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                         <?php esc_html_e('Información y fechas de cursada de la convocatoria vigente.', 'flacso-uruguay'); ?>
                                                     </div>
                                                 </div>
-                                                <?php if ($inscripciones_abiertas) : ?>
-                                                    <span class="badge-open">
-                                                        <i class="bi bi-check-circle-fill me-1" aria-hidden="true"></i>
-                                                        <?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?>
-                                                    </span>
-                                                <?php else : ?>
-                                                    <span class="badge-open badge-open--soon">
-                                                        <i class="bi bi-clock me-1" aria-hidden="true"></i>
-                                                        <?php esc_html_e('Próxima apertura', 'flacso-uruguay'); ?>
-                                                    </span>
-                                                <?php endif; ?>
+                                                <span class="badge-open">
+                                                    <i class="bi bi-check-circle-fill me-1" aria-hidden="true"></i>
+                                                    <?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?>
+                                                </span>
                                             </div>
 
                                             <div class="cohort__details">
