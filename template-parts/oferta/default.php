@@ -140,6 +140,10 @@ $inscripciones_abiertas = !empty($registration['is_open']);
 $preinscripcion_url      = (string) ($registration['url'] ?? '');
 $has_preinscription_cta = $inscripciones_abiertas && $preinscripcion_url !== '';
 
+// La última cohorte solo se anuncia si existe y acepta preinscripciones.
+// Evita presentar cohortes cerradas (o inexistentes) como convocatorias vigentes.
+$show_cohort_section = !empty($instance['id']) && $inscripciones_abiertas;
+
 $inscripciones_year = !empty($instance['anio_inicio'])
     ? (string) $instance['anio_inicio']
     : (!empty($instance['fecha_inicio']) ? substr((string) $instance['fecha_inicio'], 0, 4) : wp_date('Y'));
@@ -498,11 +502,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                             <span class="flacso-academic-hero__symbol" aria-hidden="true">✓</span>
                                             <?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?>
                                         </span>
-                                    <?php else : ?>
-                                        <span class="flacso-academic-hero__badge flacso-academic-hero__badge--closed">
-                                            <span class="flacso-academic-hero__symbol" aria-hidden="true">◷</span>
-                                            <?php esc_html_e('Próxima apertura', 'flacso-uruguay'); ?>
-                                        </span>
                                     <?php endif; ?>
                                 </div>
                                 <h1 id="flacso-oa-program-title" class="flacso-academic-hero__title"><?php echo esc_html($title); ?></h1>
@@ -588,7 +587,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                             <div class="content">
 
                                 <!-- SECCIÓN: CONVOCATORIA VIGENTE (UNA SOLA PIEZA, SIN CAMPUS INVENTADO) -->
-                                <?php if ($cohorte_label !== '' || $cohorte_inicio_fecha !== '') : ?>
+                                <?php if ($show_cohort_section) : ?>
                                     <section class="section" id="cohorte">
                                         <div class="kicker"><?php esc_html_e('Convocatoria vigente', 'flacso-uruguay'); ?></div>
                                         <h2><?php echo esc_html($cohorte_nombre_completo); ?></h2>
@@ -601,17 +600,10 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                         <?php esc_html_e('Información y fechas de cursada de la convocatoria vigente.', 'flacso-uruguay'); ?>
                                                     </div>
                                                 </div>
-                                                <?php if ($inscripciones_abiertas) : ?>
-                                                    <span class="badge-open">
-                                                        <i class="bi bi-check-circle-fill me-1" aria-hidden="true"></i>
-                                                        <?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?>
-                                                    </span>
-                                                <?php else : ?>
-                                                    <span class="badge-open badge-open--soon">
-                                                        <i class="bi bi-clock me-1" aria-hidden="true"></i>
-                                                        <?php esc_html_e('Próxima apertura', 'flacso-uruguay'); ?>
-                                                    </span>
-                                                <?php endif; ?>
+                                                <span class="badge-open">
+                                                    <i class="bi bi-check-circle-fill me-1" aria-hidden="true"></i>
+                                                    <?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?>
+                                                </span>
                                             </div>
 
                                             <div class="cohort__details">
@@ -838,7 +830,9 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                     <div class="contact-support__section">
                                         <span class="contact-support__eyebrow"><?php esc_html_e('Información útil', 'flacso-uruguay'); ?></span>
                                         <nav class="contact-support__links" aria-label="<?php esc_attr_e('Enlaces de la oferta académica', 'flacso-uruguay'); ?>">
-                                            <a href="#cohorte"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Información de la cohorte', 'flacso-uruguay'); ?></a>
+                                            <?php if ($show_cohort_section) : ?>
+                                                <a href="#cohorte"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Información de la cohorte', 'flacso-uruguay'); ?></a>
+                                            <?php endif; ?>
                                             <a href="#titulacion"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Requisitos de egreso y titulación.', 'flacso-uruguay'); ?></a>
                                         </nav>
                                     </div>
