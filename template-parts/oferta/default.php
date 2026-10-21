@@ -811,9 +811,8 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
 
                             <!-- SIDEBAR -->
                             <aside id="flacso-oa-consulta" class="sidebar flacso-mobile-info-sheet" aria-label="<?php esc_attr_e('Formulario de consulta', 'flacso-uruguay'); ?>">
-                                <!-- Sólo en teléfonos: cabecera del mismo formulario, sin duplicarlo. -->
+                                <!-- Cabecera móvil del panel lateral; se reutiliza el único formulario. -->
                                 <header class="flacso-mobile-info-sheet__header">
-                                    <span class="flacso-mobile-info-sheet__grabber" aria-hidden="true"></span>
                                     <h2 id="flacso-mobile-info-sheet-title"><?php esc_html_e('Más información', 'flacso-uruguay'); ?></h2>
                                     <button type="button" class="flacso-mobile-info-sheet__close" aria-label="<?php esc_attr_e('Cerrar más información', 'flacso-uruguay'); ?>">
                                         <span aria-hidden="true">×</span>
@@ -992,7 +991,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                         </section>
                     <?php endif; ?>
 
-                    <!-- Barra inferior móvil y fondo del panel de consultas. -->
+                    <!-- Barra inferior móvil y fondo del panel lateral de consultas. -->
                     <div class="flacso-mobile-info-overlay" aria-hidden="true"></div>
                     <nav class="flacso-mobile-actions" aria-label="<?php esc_attr_e('Acciones de la Oferta Académica', 'flacso-uruguay'); ?>">
                         <button type="button" class="flacso-mobile-actions__info" aria-expanded="false" aria-controls="flacso-oa-consulta">
@@ -1014,7 +1013,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
 </div>
 
 <script>
-/* Panel móvil de "Más información": reutiliza el único formulario existente. */
+/* Panel lateral derecho de "Más información": reutiliza el único formulario existente. */
 (function() {
     var root = document.querySelector('.flacso-oferta-responsive');
     if (!root || !window.matchMedia) return;
@@ -1111,6 +1110,36 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
     openButton.addEventListener('click', function() { openPanel(openButton); });
     closeButton.addEventListener('click', function() { closePanel(true); });
     overlay.addEventListener('click', function() { closePanel(true); });
+
+    // Cerrar deslizando hacia la derecha sin interferir con los campos del formulario.
+    // Un desplazamiento vertical no debe activar el gesto de cierre.
+    var touchStart = null;
+    aside.addEventListener('touchstart', function(event) {
+        if (!isOpen || event.touches.length !== 1) {
+            touchStart = null;
+            return;
+        }
+        var target = event.target;
+        if (target instanceof Element && target.closest('input, textarea, select, button, a, label, [contenteditable="true"]')) {
+            touchStart = null;
+            return;
+        }
+        touchStart = {
+            x: event.touches[0].clientX,
+            y: event.touches[0].clientY
+        };
+    }, {passive: true});
+
+    aside.addEventListener('touchend', function(event) {
+        if (!touchStart || !isOpen || !event.changedTouches.length) return;
+        var deltaX = event.changedTouches[0].clientX - touchStart.x;
+        var deltaY = event.changedTouches[0].clientY - touchStart.y;
+        touchStart = null;
+        if (deltaX > 80 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+            closePanel(true);
+        }
+    }, {passive: true});
+    aside.addEventListener('touchcancel', function() { touchStart = null; }, {passive: true});
 
     // Reutilizar también los CTA de solicitar información existentes.
     root.addEventListener('click', function(event) {
