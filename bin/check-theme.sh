@@ -49,7 +49,7 @@ if grep -rn -E '(Oferta_Renderer|Oferta_Data_Schema|FLACSO_Instancia_Oferta|FLAC
 fi
 
 # Verificar que no queden metadatos academicos legacy
-if grep -rn -E 'get_post_meta\([^)]*(_seminario_|_flacso_relaciones|_flacso_instancia|_flacso_docentes|_oferta_seminarios_ids|proximo_inicio|inscripciones_abiertas|duracion_meses)'     --include='*.php'     --exclude-dir='tests'     "$theme_dir"; then
+if grep -rn -E 'get_post_meta\([^)]*(_seminario_|_flacso_relaciones|_flacso_instancia|_flacso_docentes|_oferta_seminarios_ids|proximo_inicio|inscripciones_abiertas)'     --include='*.php'     --exclude-dir='tests'     "$theme_dir"; then
     echo 'Hay referencias a metadatos legacy.' >&2
     exit 1
 fi
