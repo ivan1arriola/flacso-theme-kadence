@@ -688,7 +688,9 @@ function flacso_theme_get_seminars_catalog(array $args = []): array {
         $end = (string) ($instance["fecha_fin"] ?? "");
         $today = function_exists("current_time") ? current_time("Y-m-d") : date("Y-m-d");
         $inactive = in_array($state, ["cerrada", "cerrado", "finalizada", "finalizado", "cancelada", "cancelado"], true);
-        $upcoming = $start !== "" && $start >= $today;
+        // Una fecha futura no reactiva ediciones canceladas ni otros estados.
+        // La vigencia se decide por edición, no por el seminario completo.
+        $upcoming = $state === "planificada" && $start !== "" && $start >= $today;
         $ongoing = $state === "en_curso" && $end !== "" && $end >= $today;
         if (!$edition_id || $inactive || (!$upcoming && !$ongoing)) {
             continue;
