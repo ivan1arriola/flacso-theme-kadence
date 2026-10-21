@@ -210,6 +210,12 @@ $cohorte_nombre_completo = $cohorte_label !== ''
     : sprintf(__('Convocatoria %s', 'flacso-uruguay'), $inscripciones_year);
 
 $cohorte_inicio_fecha = $fechas_hero;
+$oferta_creditos = trim((string) ($academic['creditos'] ?? ''));
+$oferta_horas = trim((string) ($academic['carga_horaria'] ?? ''));
+$cohorte_numero = trim((string) ($instance['numero_romano'] ?? ''));
+if ($cohorte_numero === '' && !empty($instance['numero'])) {
+    $cohorte_numero = (string) (int) $instance['numero'];
+}
 
 $cohorte_modalidad_raw    = !empty($instance['modalidad']) ? (string) $instance['modalidad'] : $modalidad_resumen;
 $cohorte_modalidad_titulo = function_exists('flacso_theme_format_modality')
@@ -219,6 +225,7 @@ $cohorte_modalidad_desc   = !empty($instance['modalidad_descripcion']) ? (string
 
 $calendario_pdf_url = !empty($academic['calendario_pdf_url']) ? trim((string) $academic['calendario_pdf_url']) : '';
 $calendario_doc_url = $calendario_pdf_url;
+$malla_doc_url = trim((string) ($academic['malla_curricular_url'] ?? ''));
 if ($calendario_doc_url && function_exists('flacso_get_pdf_proxy_url')) {
     $proxied = flacso_get_pdf_proxy_url($calendario_doc_url, 'Calendario Académico');
     if ($proxied) $calendario_doc_url = $proxied;
@@ -254,7 +261,7 @@ $reconocimiento_internacional = !empty($academic['reconocimiento_internacional']
 $reconocimiento_red_flacso    = !empty($academic['reconocimiento_red_flacso']);
 $convenio_iin_oea             = !empty($academic['convenio_iin_oea']);
 $has_public_recognitions      = $reconocido_mec || $reconocimiento_internacional || $reconocimiento_red_flacso;
-$has_aside_docs               = $calendario_doc_url !== '';
+$has_aside_docs               = $calendario_doc_url !== '' || $malla_doc_url !== '';
 
 $render_info_card = static function ($card_title, $body, $extra_class = '', array $attrs = []) use ($has_visible_html) {
     if (!$has_visible_html($body)) {
@@ -610,6 +617,9 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                             </div>
 
                                             <div class="cohort__details">
+                                                <?php if ($cohorte_numero !== '') : ?>
+                                                    <div class="cohort__row"><div class="cohort__label"><?php esc_html_e('Número de cohorte', 'flacso-uruguay'); ?></div><div class="cohort__value"><?php echo esc_html($cohorte_numero); ?></div></div>
+                                                <?php endif; ?>
                                                 <div class="cohort__row">
                                                     <div class="cohort__label"><?php esc_html_e('Fecha de inicio', 'flacso-uruguay'); ?></div>
                                                     <div class="cohort__value"><?php echo esc_html($cohorte_inicio_fecha); ?></div>
@@ -624,6 +634,12 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                         <div class="cohort__value"><?php echo esc_html($duracion_text); ?></div>
                                                     </div>
                                                 <?php endif; ?>
+                                                <?php if ($oferta_creditos !== '') : ?>
+                                                    <div class="cohort__row"><div class="cohort__label"><?php esc_html_e('Créditos', 'flacso-uruguay'); ?></div><div class="cohort__value"><?php echo esc_html($oferta_creditos); ?></div></div>
+                                                <?php endif; ?>
+                                                <?php if ($oferta_horas !== '') : ?>
+                                                    <div class="cohort__row"><div class="cohort__label"><?php esc_html_e('Horas de trabajo académico', 'flacso-uruguay'); ?></div><div class="cohort__value"><?php echo esc_html($oferta_horas); ?></div></div>
+                                                <?php endif; ?>
                                                 <?php if ($cohorte_modalidad_desc !== '') : ?>
                                                     <div class="cohort__row" style="grid-column: 1 / -1; padding-left: 0; border-left: 0;">
                                                         <div class="cohort__label"><?php esc_html_e('Cursada y encuentros', 'flacso-uruguay'); ?></div>
@@ -634,7 +650,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                 <?php endif; ?>
                                             </div>
 
-                                            <?php if ($mostrar_instancias_presenciales || $calendario_doc_url !== '') : ?>
+                                            <?php if ($mostrar_instancias_presenciales || $calendario_doc_url !== '' || $malla_doc_url !== '') : ?>
                                                 <div class="cohort__note">
                                                     <?php if ($mostrar_instancias_presenciales) : ?>
                                                         <p class="mb-1" style="color: #b45309; font-weight: 700;">
@@ -642,6 +658,9 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                             <strong><?php esc_html_e('Incluye instancias exclusivamente presenciales', 'flacso-uruguay'); ?>.</strong>
                                                             <?php esc_html_e('Estas actividades no ofrecen alternativa de participación virtual.', 'flacso-uruguay'); ?>
                                                         </p>
+                                                    <?php endif; ?>
+                                                    <?php if ($malla_doc_url !== '') : ?>
+                                                        <p class="mb-0 mt-2"><a href="<?php echo esc_url($malla_doc_url); ?>" target="_blank" rel="noopener noreferrer" class="flacso-meta-doc-link flacso-meta-doc-link--malla" style="color:var(--azul);font-weight:750;text-decoration:none;"><i class="bi bi-file-earmark-pdf text-danger me-1" aria-hidden="true"></i><?php esc_html_e('Descargar malla curricular', 'flacso-uruguay'); ?></a></p>
                                                     <?php endif; ?>
                                                     <?php if ($calendario_doc_url !== '') : ?>
                                                         <p class="mb-0 mt-2">
