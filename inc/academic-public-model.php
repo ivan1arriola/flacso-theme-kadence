@@ -438,7 +438,11 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
     }
 
     $editions = $data["ediciones"] ?? [];
-    $current_edition = $data["edicion_vigente"] ?? (!empty($editions) ? $editions[0] : null);
+    // Respetar null explícito: el catálogo indica que no hay edición vigente.
+    // Nunca elegir una edición histórica por la posición en la lista.
+    $current_edition = array_key_exists("edicion_vigente", $data)
+        ? $data["edicion_vigente"]
+        : null;
 
     $table_id = !empty($current_edition["tabla_precio_id"]) ? absint($current_edition["tabla_precio_id"]) : 0;
     $price_table = flacso_theme_get_price_table_data($table_id);
