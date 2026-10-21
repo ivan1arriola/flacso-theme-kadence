@@ -318,6 +318,7 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "correo"                      => (string) ($data["correo"] ?? get_post_meta($offer_id, "correo", true)),
         "abreviacion"                 => (string) ($data["abreviacion"] ?? get_post_meta($offer_id, "abreviacion", true)),
         "calendario_pdf_url"          => $calendario_pdf,
+        "malla_curricular_url"        => trim((string) ($data["malla_curricular"] ?? get_post_meta($offer_id, "malla_curricular", true))),
         "equipos"                     => $data["equipos"] ?? get_post_meta($offer_id, "equipos", true),
         "coordinacion_academica"      => [],
         // El estado explícito de la cohorte pública prevalece sobre metadatos
