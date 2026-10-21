@@ -1158,14 +1158,51 @@
         box-shadow: none !important;
     }
     .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet .contact__head {
-        padding: 14px 20px 4px !important;
+        padding: 16px 20px 4px !important;
         background: #fff !important;
+    }
+
+    /* Evitar tres títulos en una sola ventana: conservar un encabezado visible.
+     * El título semántico del formulario sigue disponible para lectores de pantalla. */
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet .contact__head h3 {
+        display: none !important;
+    }
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet .contact__head p {
+        margin: 0 !important;
+        color: #405674 !important;
+        font-size: .88rem !important;
+        line-height: 1.45 !important;
+    }
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet #consultas-title {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        border: 0 !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+    }
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet .flacso-consultas-formulario > p.text-muted {
+        display: none !important;
     }
     .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet .contact__body {
         padding: 12px 20px 22px !important;
     }
+    /* Navegación y contactos institucionales permanecen en la página, no en
+       el diálogo cuyo único objetivo es enviar una consulta. */
     .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet .contact-support {
-        padding: 0 20px 22px;
+        display: none !important;
+    }
+
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet #form-consultas-mensaje {
+        box-sizing: border-box;
+        max-width: 100%;
+        padding: 12px 14px !important;
+        font-size: .85rem !important;
+        line-height: 1.5 !important;
+        overflow-wrap: anywhere;
     }
     .flacso-oferta-responsive.flacso-mobile-sheet-open .flacso-mobile-actions {
         opacity: 0;
