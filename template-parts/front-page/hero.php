@@ -117,11 +117,15 @@ if ( ! function_exists( 'flacso_section_hero_render' ) ) {
 					<?php endif; ?>
 				</div>
 
-				<div class="flacso-front-hero__art" aria-hidden="true">
+				<div class="flacso-front-hero__art<?php echo $image ? ' flacso-front-hero__art--photo' : ''; ?>" aria-hidden="true">
+					<?php if ( $image ) : ?>
+						<img class="flacso-front-hero__photo" src="<?php echo esc_url( $image ); ?>" alt="" loading="eager" fetchpriority="high" decoding="async">
+					<?php else : ?>
 					<div class="flacso-front-hero__orbit"></div>
 					<div class="flacso-front-hero__globe">
 						<img class="flacso-front-hero__world" src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/img/flacso-world-uruguay.svg' ); ?>" alt="" width="1000" height="1000">
 					</div>
+					<?php endif; ?>
 					<?php if ( $year ) : ?>
 						<div class="flacso-front-hero__year"><strong><?php echo esc_html( $year ); ?></strong><span><?php esc_html_e( 'Inscripciones', 'kadence-child-flacso' ); ?></span></div>
 					<?php endif; ?>
