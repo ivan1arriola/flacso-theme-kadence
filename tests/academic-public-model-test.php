@@ -649,7 +649,7 @@ assert_same(1, count($integrated_context["instance"]["encuentros"]), "Hereda tra
 // 4. Catálogo de Seminarios
 $catalog = flacso_theme_get_seminars_catalog();
 $catalog_ids = array_map(static function ($item) { return $item["offer_id"]; }, $catalog);
-assert_same([20, 22, 21], $catalog_ids, "Catálogo lista todos los seminarios ordenados por fecha de inicio");
+assert_same([], $catalog_ids, "Catálogo excluye seminarios sin edición vigente aunque conserve registros históricos");
 
 // 5. Relaciones de programa
 $program_seminars = flacso_theme_get_program_seminars_catalog(10);
