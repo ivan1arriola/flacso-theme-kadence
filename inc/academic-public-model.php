@@ -673,9 +673,22 @@ function flacso_theme_get_seminars_catalog(array $args = []): array {
     $catalog = [];
     foreach ($posts as $post) {
         $context = flacso_theme_get_seminar_context((int) $post->ID);
-        if (!empty($context)) {
-            $catalog[] = $context;
+        if (empty($context)) {
+            continue;
         }
+        $instance = $context["instance"] ?? [];
+        $edition_id = absint($instance["id"] ?? 0);
+        $state = sanitize_key((string) ($instance["estado"] ?? ""));
+        $start = (string) ($instance["fecha_inicio"] ?? "");
+        $end = (string) ($instance["fecha_fin"] ?? "");
+        $today = function_exists("current_time") ? current_time("Y-m-d") : date("Y-m-d");
+        $inactive = in_array($state, ["cerrada", "cerrado", "finalizada", "finalizado", "cancelada", "cancelado"], true);
+        $upcoming = $start !== "" && $start >= $today;
+        $ongoing = $state === "en_curso" && $end !== "" && $end >= $today;
+        if (!$edition_id || $inactive || (!$upcoming && !$ongoing)) {
+            continue;
+        }
+        $catalog[] = $context;
     }
 
     $hoy = function_exists('current_time') ? current_time('Y-m-d') : date('Y-m-d');
