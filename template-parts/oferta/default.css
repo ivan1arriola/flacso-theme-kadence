@@ -983,7 +983,7 @@
     .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-actions {
         box-sizing: border-box;
         position: fixed;
-        z-index: 2147482000;
+        z-index: 2147483645;
         bottom: 0;
         left: 0;
         right: 0;
@@ -1052,7 +1052,7 @@
         box-sizing: border-box;
         display: block;
         position: fixed;
-        z-index: 2147482001;
+        z-index: 2147483646;
         inset: 0;
         background: rgba(6, 26, 57, .57);
         opacity: 0;
@@ -1069,7 +1069,7 @@
     .flacso-oferta-responsive.flacso-mobile-sheet-ready #flacso-oa-consulta.flacso-mobile-info-sheet {
         box-sizing: border-box;
         position: fixed !important;
-        z-index: 2147482002;
+        z-index: 2147483647;
         top: 0 !important;
         right: 0 !important;
         bottom: 0 !important;
@@ -1160,6 +1160,18 @@
     .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet .contact__head {
         padding: 14px 20px 4px !important;
         background: #fff !important;
+    }
+    /* El panel ya tiene el título «Más información»: evitar otro título redundante. */
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet .contact__head h3 {
+        display: none !important;
+    }
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet .contact__head p {
+        margin-top: 0 !important;
+    }
+    /* Conservar legible el estado del formulario dentro del panel desplazable. */
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet #form-consultas-mensaje {
+        scroll-margin-top: 80px;
+        overflow-wrap: anywhere;
     }
     .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-info-sheet .contact__body {
         padding: 12px 20px 22px !important;
