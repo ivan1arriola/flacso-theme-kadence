@@ -19,7 +19,16 @@ function flacso_home_v2_get_data(): array {
         ? ['label' => trim(wp_strip_all_tags((string) $primary['label'])), 'url' => (string) $primary['url']]
         : ['label' => 'Explorar oferta académica', 'url' => '#oferta'];
     $image_id = absint($campaign['desktop_image_id'] ?? 0);
-    $hero_image = $image_id ? wp_get_attachment_image_url($image_id, 'large') : '';
+    $hero_image = $image_id ? wp_get_attachment_image_url($image_id, 'full') : '';
+    // Reutilizar la fotografía editorial configurada para la portada clásica.
+    // El logo institucional queda reservado al caso sin imagen disponible.
+    if (!$hero_image && class_exists('Flacso_Main_Page_Settings')) {
+        $hero_settings = Flacso_Main_Page_Settings::get_section('hero');
+        if (is_array($hero_settings) && !empty($hero_settings['background_image'])) {
+            $hero_image = esc_url_raw((string) $hero_settings['background_image']);
+        }
+    }
+    $has_hero_photo = $hero_image !== '';
     $mobile_image_id = absint($campaign['mobile_image_id'] ?? 0);
     $hero_mobile_image = $mobile_image_id ? wp_get_attachment_image_url($mobile_image_id, 'large') : '';
     // Identidad institucional cuando no hay una imagen de campaña activa.
@@ -77,9 +86,9 @@ function flacso_home_v2_get_data(): array {
     $institution = class_exists('Flacso_Main_Page_Settings') ? Flacso_Main_Page_Settings::get_section('quienes') : [];
     return [
         'hero_image' => $hero_image,
-        'hero_is_logo' => !$image_id,
+        'hero_is_logo' => !$has_hero_photo,
         'hero_mobile_image' => $hero_mobile_image,
-        'hero_image_alt' => $image_id ? 'Imagen de la campaña de FLACSO Uruguay' : 'Logo de FLACSO Uruguay',
+        'hero_image_alt' => $has_hero_photo ? 'Imagen institucional de FLACSO Uruguay' : 'Logo de FLACSO Uruguay',
         'hero_title' => $hero_title,
         'hero_kicker' => $hero_kicker,
         'hero_cta' => $hero_cta,
