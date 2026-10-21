@@ -140,9 +140,11 @@ $inscripciones_abiertas = !empty($registration['is_open']);
 $preinscripcion_url      = (string) ($registration['url'] ?? '');
 $has_preinscription_cta = $inscripciones_abiertas && $preinscripcion_url !== '';
 
-// La última cohorte solo se anuncia si existe y acepta preinscripciones.
-// Evita presentar cohortes cerradas (o inexistentes) como convocatorias vigentes.
-$show_cohort_section = !empty($instance['id']) && $inscripciones_abiertas;
+// Las cohortes planificadas también se comunican públicamente, aunque la
+// preinscripción todavía no esté habilitada. Las cerradas se mantienen ocultas.
+$cohort_state = sanitize_key((string) ($instance['estado'] ?? ''));
+$is_planned_cohort = in_array($cohort_state, ['planificada', 'planificado'], true);
+$show_cohort_section = !empty($instance['id']) && ($is_planned_cohort || ($inscripciones_abiertas && !in_array($cohort_state, ['cerrada', 'cerrado', 'finalizada', 'finalizado', 'cancelada', 'cancelado'], true)));
 
 $inscripciones_year = !empty($instance['anio_inicio'])
     ? (string) $instance['anio_inicio']
@@ -589,7 +591,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                 <!-- SECCIÓN: CONVOCATORIA VIGENTE (UNA SOLA PIEZA, SIN CAMPUS INVENTADO) -->
                                 <?php if ($show_cohort_section) : ?>
                                     <section class="section" id="cohorte">
-                                        <div class="kicker"><?php esc_html_e('Convocatoria vigente', 'flacso-uruguay'); ?></div>
+                                        <div class="kicker"><?php echo esc_html($is_planned_cohort && !$inscripciones_abiertas ? __('Próxima cohorte', 'flacso-uruguay') : __('Convocatoria vigente', 'flacso-uruguay')); ?></div>
                                         <h2><?php echo esc_html($cohorte_nombre_completo); ?></h2>
 
                                         <div class="cohort" id="flacso-oa-convocatoria">
@@ -597,13 +599,14 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                 <div>
                                                     <div class="cohort__title"><?php esc_html_e('Información de cursada', 'flacso-uruguay'); ?></div>
                                                     <div style="color:var(--muted);margin-top:4px;font-size:0.9rem;">
-                                                        <?php esc_html_e('Información y fechas de cursada de la convocatoria vigente.', 'flacso-uruguay'); ?>
+                                                        <?php echo esc_html($is_planned_cohort && !$inscripciones_abiertas ? __('Información de la próxima cohorte. Las inscripciones aún no están abiertas.', 'flacso-uruguay') : __('Información y fechas de cursada de la convocatoria vigente.', 'flacso-uruguay')); ?>
                                                     </div>
                                                 </div>
-                                                <span class="badge-open">
-                                                    <i class="bi bi-check-circle-fill me-1" aria-hidden="true"></i>
-                                                    <?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?>
-                                                </span>
+                                                <?php if ($inscripciones_abiertas) : ?>
+                                                    <span class="badge-open"><i class="bi bi-check-circle-fill me-1" aria-hidden="true"></i><?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?></span>
+                                                <?php else : ?>
+                                                    <span class="badge-open" style="background:#edf2f8;color:#173968;border-color:#d5e0ed;"><i class="bi bi-calendar3 me-1" aria-hidden="true"></i><?php esc_html_e('Planificada', 'flacso-uruguay'); ?></span>
+                                                <?php endif; ?>
                                             </div>
 
                                             <div class="cohort__details">
