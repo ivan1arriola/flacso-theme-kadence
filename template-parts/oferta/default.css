@@ -458,6 +458,15 @@
     content: none !important;
 }
 
+/* Evita el botón +/− heredado del CSS global: esta ficha ya utiliza
+ * su propio chevron SVG. La especificidad vence las reglas globales
+ * con !important, incluso cuando se cargan después. */
+.flacso-oferta-responsive .flacso-academic-accordions.details > details.flacso-academic-accordion > summary::before,
+.flacso-oferta-responsive .flacso-academic-accordions.details > details.flacso-academic-accordion > summary::after {
+    content: none !important;
+    display: none !important;
+}
+
 .flacso-oferta-responsive .flacso-academic-accordion > summary:focus-visible,
 .flacso-oferta-responsive .flacso-academic-person__summary:focus-visible {
     outline: 3px solid var(--oa-brand);
