@@ -1029,8 +1029,40 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
     var returnFocus = null;
     var savedScroll = 0;
     var bodyBefore = {};
+    var topLayerActive = false;
 
     function isMobile() { return mobile.matches; }
+
+    // Los widgets de accesibilidad y traducción pueden estar por encima de
+    // cualquier z-index normal. La top layer nativa evita solapamientos.
+    function showInTopLayer() {
+        if (typeof aside.showPopover !== 'function' || typeof overlay.showPopover !== 'function') {
+            return;
+        }
+
+        overlay.setAttribute('popover', 'manual');
+        aside.setAttribute('popover', 'manual');
+        try {
+            overlay.showPopover();
+            aside.showPopover();
+            topLayerActive = true;
+        } catch (error) {
+            if (aside.matches(':popover-open')) aside.hidePopover();
+            if (overlay.matches(':popover-open')) overlay.hidePopover();
+            aside.removeAttribute('popover');
+            overlay.removeAttribute('popover');
+            topLayerActive = false;
+        }
+    }
+
+    function hideFromTopLayer() {
+        if (!topLayerActive) return;
+        if (aside.matches(':popover-open')) aside.hidePopover();
+        if (overlay.matches(':popover-open')) overlay.hidePopover();
+        aside.removeAttribute('popover');
+        overlay.removeAttribute('popover');
+        topLayerActive = false;
+    }
 
     function setClosedAccessibility() {
         aside.inert = isMobile();
@@ -1061,6 +1093,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
         root.classList.remove('flacso-mobile-sheet-open');
         aside.classList.remove('is-open');
         overlay.classList.remove('is-visible');
+        hideFromTopLayer();
         setClosedAccessibility();
         restoreBody();
         if (focusBack !== false && returnFocus && returnFocus.isConnected) {
@@ -1096,6 +1129,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
         root.classList.add('flacso-mobile-sheet-open');
         aside.classList.add('is-open');
         overlay.classList.add('is-visible');
+        showInTopLayer();
         openButton.setAttribute('aria-expanded', 'true');
         aside.scrollTop = 0;
         closeButton.focus({preventScroll: true});
