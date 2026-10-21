@@ -821,16 +821,8 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                 <div class="contact">
                                     <div class="contact__head">
                                         <h3><?php esc_html_e('Solicitá información', 'flacso-uruguay'); ?></h3>
-                                        <p><?php esc_html_e('Recibí orientación sobre cursada, requisitos e inscripción.', 'flacso-uruguay'); ?></p>
                                     </div>
                                     <div class="contact__body">
-                                        <?php
-                                        $inquiry_cohort = $context['inquiry_cohort'] ?? [];
-                                        if (!empty($inquiry_cohort['has_cohort'])) : ?>
-                                            <div class="flacso-inquiry-cohort-context">
-                                                <span><?php echo esc_html($inquiry_cohort['label']); ?></span>
-                                            </div>
-                                        <?php endif; ?>
                                         <?php
                                         if (function_exists('flacso_consultas_render_form')) {
                                             echo flacso_consultas_render_form(['mostrar_preinscripcion' => false]);
