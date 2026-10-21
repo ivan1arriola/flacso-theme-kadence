@@ -1227,3 +1227,22 @@
         transition: none !important;
     }
 }
+
+
+/* La propuesta académica admite HTML editorial importado (p. ej. listas con
+ * tipografía inline). Unificar las listas con los párrafos contiguos sin
+ * modificar los textos, el énfasis semántico ni los demás componentes. */
+.flacso-oferta-responsive .section--programa > .prose.lead :is(ul, ol, li) {
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-weight: 400 !important;
+    line-height: inherit !important;
+    letter-spacing: normal !important;
+    color: inherit !important;
+}
+.flacso-oferta-responsive .section--programa > .prose.lead :is(ul, ol) :is(span, font, small, p, div, a) {
+    font-family: inherit !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    letter-spacing: inherit !important;
+}
