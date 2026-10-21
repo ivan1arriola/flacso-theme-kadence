@@ -171,10 +171,6 @@ if ($fechas_hero !== '') {
     if (($instance['precision_fecha_inicio'] ?? '') === 'anio' && !str_starts_with(mb_strtolower($fechas_hero), 'en ')) {
         $fechas_hero = sprintf(__('en %s', 'flacso-uruguay'), $fechas_hero);
     }
-    $cohorte_hero = trim((string) ($instance['label'] ?? ''));
-    if ($cohorte_hero !== '') {
-        $fechas_hero .= ' · ' . $cohorte_hero;
-    }
 } else {
     $fechas_hero = __('A confirmar', 'flacso-uruguay');
 }
@@ -212,10 +208,6 @@ $cohorte_nombre_completo = $cohorte_label !== ''
 $cohorte_inicio_fecha = $fechas_hero;
 $oferta_creditos = trim((string) ($academic['creditos'] ?? ''));
 $oferta_horas = trim((string) ($academic['carga_horaria'] ?? ''));
-$cohorte_numero = trim((string) ($instance['numero_romano'] ?? ''));
-if ($cohorte_numero === '' && !empty($instance['numero'])) {
-    $cohorte_numero = (string) (int) $instance['numero'];
-}
 
 $cohorte_modalidad_raw    = !empty($instance['modalidad']) ? (string) $instance['modalidad'] : $modalidad_resumen;
 $cohorte_modalidad_titulo = function_exists('flacso_theme_format_modality')
@@ -617,9 +609,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                             </div>
 
                                             <div class="cohort__details">
-                                                <?php if ($cohorte_numero !== '') : ?>
-                                                    <div class="cohort__row"><div class="cohort__label"><?php esc_html_e('Número de cohorte', 'flacso-uruguay'); ?></div><div class="cohort__value"><?php echo esc_html($cohorte_numero); ?></div></div>
-                                                <?php endif; ?>
                                                 <div class="cohort__row">
                                                     <div class="cohort__label"><?php esc_html_e('Fecha de inicio', 'flacso-uruguay'); ?></div>
                                                     <div class="cohort__value"><?php echo esc_html($cohorte_inicio_fecha); ?></div>
