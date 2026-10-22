@@ -1,6 +1,6 @@
 .flacso-home-v2{--navy:#2a4676;--deep:#0a2145;--gold:#ffc725;--soft:#f4f7fa;color:var(--deep);font-family:Roboto,Arial,sans-serif}
 .flacso-home-v2 *{box-sizing:border-box}
-.flacso-home-v2 .home-container{width:min(100% - 48px,1400px);margin-inline:auto}
+.flacso-home-v2 .home-container{width:min(var(--flacso-chrome-width,1180px),calc(100% - 40px));margin-inline:auto}
 .flacso-home-v2 a{text-decoration:none}
 .flacso-home-v2 h1,.flacso-home-v2 h2,.flacso-home-v2 h3,.flacso-home-v2 p{font-family:inherit}
 .flacso-home-v2 .home-eyebrow{margin:0 0 16px;color:#466080;font-size:.82rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
@@ -78,7 +78,7 @@
 .flacso-home-v2 .home-impact span,.flacso-home-v2 .home-impact p{font-size:.85rem}
 .flacso-home-v2 .home-impact p{max-width:38ch;margin:0;color:#d1dce9}
 @media(max-width:1100px){.flacso-home-v2 .home-offer-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.flacso-home-v2 .home-featured-grid{grid-template-columns:1fr 1fr}.flacso-home-v2 .home-news-card--featured{grid-template-columns:1fr;min-height:0}.flacso-home-v2 .home-news-card--featured .home-news-media{aspect-ratio:4/3}}
-@media(max-width:760px){.flacso-home-v2 .home-container{width:min(100% - 32px,560px)}.flacso-home-v2 .home-hero-layout{grid-template-columns:1fr;min-height:0;padding-block:32px;gap:28px;text-align:center}.flacso-home-v2 .home-hero-copy{order:2}.flacso-home-v2 .home-hero-photo{order:1}.flacso-home-v2 .home-hero .home-eyebrow{justify-content:center}.flacso-home-v2 .home-hero h1{max-width:16ch;margin-inline:auto;font-size:clamp(2.1rem,8vw,3.2rem)}.flacso-home-v2 .home-hero-photo{width:min(100%,460px);margin-inline:auto}.flacso-home-v2 .home-section-heading{align-items:start}.flacso-home-v2 .home-offer-grid,.flacso-home-v2 .home-events-grid,.flacso-home-v2 .home-featured-grid,.flacso-home-v2 .home-recent-grid,.flacso-home-v2 .home-about-grid{grid-template-columns:1fr}.flacso-home-v2 .home-offer-card{min-height:110px;padding:18px}.flacso-home-v2 .home-offer-card h3{margin:10px 0 0}.flacso-home-v2 .home-offer-bottom{margin-top:10px}.flacso-home-v2 .home-about-logo img{width:min(100%,320px)}.flacso-home-v2 .home-impact-inner{flex-direction:column;text-align:center}.flacso-home-v2 .home-news-card--featured .home-news-media{aspect-ratio:4/5}.flacso-home-v2 .home-news-card--recent{grid-template-columns:95px 1fr}.flacso-home-v2 .home-event-card{grid-template-columns:95px 1fr;padding:12px}}
+@media(max-width:760px){.flacso-home-v2 .home-container{width:min(var(--flacso-chrome-width,1180px),calc(100% - 28px))}.flacso-home-v2 .home-hero-layout{grid-template-columns:1fr;min-height:0;padding-block:32px;gap:28px;text-align:center}.flacso-home-v2 .home-hero-copy{order:2}.flacso-home-v2 .home-hero-photo{order:1}.flacso-home-v2 .home-hero .home-eyebrow{justify-content:center}.flacso-home-v2 .home-hero h1{max-width:16ch;margin-inline:auto;font-size:clamp(2.1rem,8vw,3.2rem)}.flacso-home-v2 .home-hero-photo{width:min(100%,460px);margin-inline:auto}.flacso-home-v2 .home-section-heading{align-items:start}.flacso-home-v2 .home-offer-grid,.flacso-home-v2 .home-events-grid,.flacso-home-v2 .home-featured-grid,.flacso-home-v2 .home-recent-grid,.flacso-home-v2 .home-about-grid{grid-template-columns:1fr}.flacso-home-v2 .home-offer-card{min-height:110px;padding:18px}.flacso-home-v2 .home-offer-card h3{margin:10px 0 0}.flacso-home-v2 .home-offer-bottom{margin-top:10px}.flacso-home-v2 .home-about-logo img{width:min(100%,320px)}.flacso-home-v2 .home-impact-inner{flex-direction:column;text-align:center}.flacso-home-v2 .home-news-card--featured .home-news-media{aspect-ratio:4/5}.flacso-home-v2 .home-news-card--recent{grid-template-columns:95px 1fr}.flacso-home-v2 .home-event-card{grid-template-columns:95px 1fr;padding:12px}}
 @media(max-width:480px){.flacso-home-v2 .home-section-heading{flex-wrap:wrap;gap:12px}.flacso-home-v2 .home-heading-link{font-size:.85rem}.flacso-home-v2 .home-hero h1{font-size:clamp(2rem,10vw,2.6rem)}.flacso-home-v2 .home-hero .home-button{margin-inline:auto}.flacso-home-v2 .home-news-card--recent h3{font-size:.9rem}.flacso-home-v2 .home-news-card--recent .home-news-copy{padding:12px}.flacso-home-v2 .home-recent-heading span{display:none}}
 @media(max-width:480px){.flacso-home-v2 .home-hero h1{max-width:100%;font-size:clamp(1.9rem,8.5vw,2.25rem);overflow-wrap:normal}.flacso-home-v2 .home-section-heading{display:block}.flacso-home-v2 .home-section-heading .home-heading-link{display:inline-block;margin-top:16px;white-space:normal}}
 @media(max-width:600px){.flacso-home-v2 .home-hero h1{font-size:clamp(1.9rem,7vw,2.25rem)}.flacso-home-v2 .home-section-heading{display:block}.flacso-home-v2 .home-section-heading .home-heading-link{display:inline-block;margin-top:16px}}
@@ -102,8 +102,8 @@
     background-size: 28px 28px;
 }
 .flacso-home-v2 .home-hero > .home-hero-layout.home-container {
-    width: min(calc(100% - 48px), var(--global-content-width, 1400px));
-    max-width: var(--global-content-width, 1400px);
+    width: min(var(--flacso-chrome-width, 1180px), calc(100% - 40px));
+    max-width: var(--flacso-chrome-width, 1180px);
     margin-inline: auto;
 }
 .flacso-home-v2 .home-hero-layout {
@@ -163,7 +163,7 @@
     isolation: isolate;
     align-self: stretch;
     justify-self: end;
-    width: calc(100% + max(24px, (100vw - var(--global-content-width, 1400px)) / 2));
+    width: calc(100% + max(20px, (100vw - var(--flacso-chrome-width, 1180px)) / 2));
     max-width: none;
     min-width: 0;
     height: 100%;
@@ -200,7 +200,7 @@
 .flacso-home-v2 .home-hero-photo:not(.home-hero-photo--logo)::after { display: none; }
 @media (max-width: 760px) {
     .flacso-home-v2 .home-hero > .home-hero-layout.home-container {
-        width: min(calc(100% - 32px), var(--global-content-width, 1400px));
+        width: min(var(--flacso-chrome-width, 1180px), calc(100% - 28px));
     }
     .flacso-home-v2 .home-hero-layout {
         grid-template-columns: minmax(0, 1fr);
@@ -210,8 +210,8 @@
     }
     .flacso-home-v2 .home-hero-photo:not(.home-hero-photo--logo) {
         order: 1;
-        width: calc(100% + 32px);
-        margin-left: -16px;
+        width: calc(100% + 28px);
+        margin-left: -14px;
         height: clamp(260px, 70vw, 400px);
         min-height: 0;
     }
