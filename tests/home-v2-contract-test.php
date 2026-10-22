@@ -79,7 +79,9 @@ check(strpos($front, "return;") !== false, 'CSS antiguo no se carga en portada n
 check(strpos($css, 'aspect-ratio:4/5') !== false, 'imágenes de actividades y noticias 4:5');
 check(strpos($css, 'object-position:center center !important') !== false, 'hero logo centrado verticalmente');
 check(strpos($css, '@media(max-width:760px)') !== false, 'diseño móvil');
-check(strpos($css, 'grid-template-columns: minmax(0, 55fr) minmax(0, 45fr)') !== false, 'hero editorial mantiene distribución en escritorio');
+check(strpos($css, 'grid-template-columns: minmax(0, 58fr) minmax(0, 42fr)') !== false, 'hero editorial mantiene distribución en escritorio');
+check(strpos($css, '.home-hero > .home-hero-layout.home-container') !== false, 'hero aplica ancho Kadence sin alterar otros contenedores');
+check(strpos($css, 'clamp(18px, 1.8vw, 28px)') !== false, 'hero reserva margen izquierdo para contenido');
 check(strpos($css, 'clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%)') !== false, 'fotografía utiliza separación diagonal');
 check(strpos($css, 'clip-path: none') !== false, 'móvil elimina el corte diagonal');
 check(strpos($css, 'prefers-reduced-motion: reduce') !== false, 'hero respeta reducción de movimiento');
