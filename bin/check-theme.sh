@@ -8,6 +8,7 @@ while IFS= read -r -d '' php_file; do
 done < <(find "$theme_dir" -type f -name '*.php' -print0)
 
 php "$theme_dir/tests/academic-public-model-test.php"
+php "$theme_dir/tests/academic-team-scope-test.php"
 php "$theme_dir/tests/intermediate-titles-carta-test.php"
 php "$theme_dir/tests/academic-articulations-public-test.php"
 php "$theme_dir/tests/retired-generic-financing-test.php"
