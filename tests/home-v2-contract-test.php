@@ -81,9 +81,10 @@ check(strpos($css, 'object-position:center center !important') !== false, 'hero 
 check(strpos($css, '@media(max-width:760px)') !== false, 'diseño móvil');
 check(strpos($css, 'grid-template-columns: minmax(0, 52fr) minmax(0, 48fr)') !== false, 'hero editorial mantiene distribución en escritorio');
 check(strpos($css, '.home-hero > .home-hero-layout.home-container') !== false, 'hero aplica ancho Kadence sin alterar otros contenedores');
-check(strpos($css, 'clamp(18px, 1.8vw, 28px)') !== false, 'hero reserva margen izquierdo para contenido');
-check(strpos($css, 'width: clamp(120px, 12vw, 200px)') !== false, 'gradiente horizontal en fotografía');
-check(strpos($css, 'background: linear-gradient(180deg, transparent 0%') !== false, 'gradiente móvil vertical');
+check(strpos($css, 'padding: clamp(38px, 4vw, 70px)') !== false, 'hero reserva espaciado vertical equilibrado');
+check(strpos($css, 'width: calc(100% + max(24px, (100vw - var(--global-content-width, 1400px)) / 2))') !== false, 'fotografía llega al borde de la ventana');
+check(strpos($css, 'width: clamp(72px, 7vw, 120px)') !== false, 'gradiente horizontal estrecho');
+check(strpos($css, 'background: linear-gradient(180deg, transparent, #092c52)') !== false, 'gradiente móvil vertical');
 check(strpos($css, 'clip-path: polygon(10%') === false, 'fotografía no usa corte diagonal');
 check(strpos($css, 'clip-path: none') !== false, 'móvil elimina el corte diagonal');
 check(strpos($css, 'prefers-reduced-motion: reduce') !== false, 'hero respeta reducción de movimiento');
