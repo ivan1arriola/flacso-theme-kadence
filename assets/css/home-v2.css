@@ -244,6 +244,15 @@
     .flacso-home-v2 .home-hero .home-button { transition: none; }
 }
 
+/* Mostrar el archivo completo, sin zoom ni corte de bordes. */
+.flacso-home-v2 .home-hero-photo:not(.home-hero-photo--logo) {
+    background: #092c52;
+}
+.flacso-home-v2 .home-hero-photo:not(.home-hero-photo--logo) img {
+    object-fit: contain;
+    object-position: center center;
+}
+
 /* Refinamiento editorial: altura contenida, texto separado de la fotografía. */
 @media (min-width: 761px) {
     .flacso-home-v2 .home-hero-layout {
