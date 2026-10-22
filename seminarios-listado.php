@@ -422,9 +422,16 @@ $seminarios_total = count($seminarios_catalogo);
 
                     <?php if (!empty($seminarios_agrupados)) : ?>
                         <div class="seminarios-groups" data-seminarios-groups>
-                            <?php $seminarios_group_index = 0; ?>
+                            <?php
+                            $seminarios_group_index = 0;
+                            // Abrir el mes en curso y el siguiente; si no hay ninguno, abrir el primer mes disponible.
+                            $mes_actual_key = $hoy->format('Y-m');
+                            $mes_siguiente_key = $hoy->modify('first day of next month')->format('Y-m');
+                            $hay_meses_proximos = isset($seminarios_agrupados[$mes_actual_key]) || isset($seminarios_agrupados[$mes_siguiente_key]);
+                            ?>
                             <?php foreach ($seminarios_agrupados as $month_key => $grupo) : ?>
-                                <details class="seminarios-group" data-month-group="<?php echo esc_attr($month_key); ?>"<?php echo $seminarios_group_index === 0 ? ' open' : ''; ?>>
+                                <?php $mes_abierto = $month_key === $mes_actual_key || $month_key === $mes_siguiente_key || (!$hay_meses_proximos && $seminarios_group_index === 0); ?>
+                                <details class="seminarios-group" data-month-group="<?php echo esc_attr($month_key); ?>"<?php echo $mes_abierto ? ' open' : ''; ?>>
                                     <summary class="seminarios-group__header">
                                         <span id="grupo-<?php echo esc_attr($month_key); ?>" class="seminarios-group__title"><?php echo esc_html($grupo['month_label']); ?></span>
                                         <span class="seminarios-group__header-meta">
