@@ -89,113 +89,91 @@
 .flacso-home-v2 .home-hero-photo--logo img{display:block;width:auto;height:auto;max-width:min(100%,340px);max-height:min(100%,260px);object-fit:contain;object-position:center center !important;margin:auto}
 
 
-/* Ajuste de alineación del contenido del hero con el ancho del sitio Kadence.
- * El fondo de la sección continúa a ancho completo. */
+/* Portada editorial: texto dentro del ancho Kadence, fotografía hasta el borde
+ * de la ventana. No envolver la fotografía en un segundo contenedor limitado. */
+.flacso-home-v2 .home-hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(105deg, #041731 0%, #092c52 67%, #0c3158 100%);
+}
+.flacso-home-v2 .home-hero::before {
+    opacity: .1;
+    background-image: radial-gradient(rgba(103, 176, 225, .5) 1px, transparent 1px);
+    background-size: 28px 28px;
+}
 .flacso-home-v2 .home-hero > .home-hero-layout.home-container {
     width: min(calc(100% - 48px), var(--global-content-width, 1400px));
     max-width: var(--global-content-width, 1400px);
     margin-inline: auto;
 }
-@media (max-width: 760px) {
-    .flacso-home-v2 .home-hero > .home-hero-layout.home-container {
-        width: min(calc(100% - 32px), var(--global-content-width, 1400px));
-    }
-}
-
-/* Hero editorial activo: composición fotográfica con contenido HTML editable.
- * Este bloque sustituye las reglas antiguas sin afectar al hero fallback. */
-.flacso-home-v2 .home-hero {
-    background: radial-gradient(ellipse at 48% 28%, #124879 0%, transparent 62%), linear-gradient(120deg, #04152e, #062b57);
-}
-.flacso-home-v2 .home-hero::before {
-    opacity: .15;
-    background-image: radial-gradient(rgba(103, 176, 225, .55) 1px, transparent 1px);
-    background-size: 28px 28px;
-}
 .flacso-home-v2 .home-hero-layout {
+    display: grid;
     grid-template-columns: minmax(0, 52fr) minmax(0, 48fr);
-    gap: 0;
     align-items: stretch;
-    min-height: clamp(520px, 65svh, 690px);
+    gap: 0;
     padding-block: 0;
+    min-height: clamp(510px, 62svh, 660px);
 }
 .flacso-home-v2 .home-hero-copy {
     position: relative;
     z-index: 2;
-    align-self: center;
     min-width: 0;
-    padding: clamp(42px, 5vw, 78px) clamp(30px, 3vw, 54px) clamp(42px, 5vw, 78px) clamp(18px, 1.8vw, 28px);
+    align-self: center;
     text-align: left;
+    padding: clamp(38px, 4vw, 70px) clamp(25px, 3vw, 52px) clamp(38px, 4vw, 70px) 0;
 }
 .flacso-home-v2 .home-hero .home-eyebrow {
     justify-content: flex-start;
-    margin-bottom: 28px;
-    color: #e5ecf6;
-    font-size: .85rem;
-    font-weight: 600;
-    letter-spacing: .13em;
+    margin-bottom: 24px;
+    color: #f2f5fa;
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .12em;
 }
 .flacso-home-v2 .home-hero h1 {
-    max-width: 16ch;
-    margin: 0 0 40px;
-    color: #fff;
-    font-size: clamp(2.4rem, 4.15vw, 4.4rem);
+    max-width: 17ch;
+    margin: 0 0 36px;
+    font-size: clamp(2.4rem, 3.6vw, 4rem);
+    line-height: 1.13;
     font-weight: 850;
-    line-height: 1.12;
-    letter-spacing: -.045em;
+    letter-spacing: -.04em;
     text-wrap: balance;
+    color: #fff;
 }
-.flacso-home-v2 .home-hero h1 em { font-style: normal; color: #ffd223; }
+.flacso-home-v2 .home-hero h1 em { color: #ffd223; font-style: normal; }
 .flacso-home-v2 .home-hero .home-button {
-    min-height: 62px;
-    padding: 18px 34px;
+    min-height: 58px;
+    padding: 16px 30px;
+    border-radius: 999px;
     background: #ffd223;
     color: #071b35;
-    border-radius: 999px;
     font-size: 1rem;
     font-weight: 800;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, .19);
-    transition: transform .2s ease, background-color .2s ease;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .15);
+    transition: background-color .2s ease, transform .2s ease;
 }
-.flacso-home-v2 .home-hero .home-button:hover,
-.flacso-home-v2 .home-hero .home-button:focus-visible {
+.flacso-home-v2 .home-hero .home-button:is(:hover, :focus-visible) {
     background: #ffe16b;
     color: #071b35;
     transform: translateY(-2px);
 }
-.flacso-home-v2 .home-hero .home-button:focus-visible {
-    outline: 3px solid #fff;
-    outline-offset: 4px;
-}
+.flacso-home-v2 .home-hero .home-button:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
 .flacso-home-v2 .home-hero-photo:not(.home-hero-photo--logo) {
     position: relative;
+    isolation: isolate;
     align-self: stretch;
-    width: 100%;
+    width: calc(100% + max(24px, (100vw - var(--global-content-width, 1400px)) / 2));
     max-width: none;
-    height: auto;
+    min-width: 0;
+    height: 100%;
     min-height: 100%;
     aspect-ratio: auto;
+    overflow: hidden;
     margin: 0;
     border: 0;
     border-radius: 0;
     box-shadow: none;
-    overflow: hidden;
     clip-path: none;
-}
-.flacso-home-v2 .home-hero-photo:not(.home-hero-photo--logo)::before {
-    content: "";
-    position: absolute;
-    inset: 0 auto 0 0;
-    z-index: 2;
-    width: clamp(120px, 12vw, 200px);
-    pointer-events: none;
-    background: linear-gradient(90deg,
-        #062b57 0%,
-        rgba(6, 43, 87, .96) 18%,
-        rgba(6, 43, 87, .78) 35%,
-        rgba(6, 43, 87, .48) 55%,
-        rgba(6, 43, 87, .16) 78%,
-        transparent 100%);
 }
 .flacso-home-v2 .home-hero-photo:not(.home-hero-photo--logo) picture {
     display: block;
@@ -207,45 +185,55 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center center;
+    object-position: center 45%;
+}
+.flacso-home-v2 .home-hero-photo:not(.home-hero-photo--logo)::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: 2;
+    width: clamp(72px, 7vw, 120px);
+    pointer-events: none;
+    background: linear-gradient(90deg, #092c52 0%, rgba(9, 44, 82, .68) 26%, rgba(9, 44, 82, .18) 68%, transparent 100%);
 }
 .flacso-home-v2 .home-hero-photo:not(.home-hero-photo--logo)::after { display: none; }
 @media (max-width: 760px) {
+    .flacso-home-v2 .home-hero > .home-hero-layout.home-container {
+        width: min(calc(100% - 32px), var(--global-content-width, 1400px));
+    }
     .flacso-home-v2 .home-hero-layout {
         grid-template-columns: minmax(0, 1fr);
         min-height: 0;
+        padding-block: 0 32px;
         gap: 0;
-        padding-block: 0 36px;
     }
     .flacso-home-v2 .home-hero-photo:not(.home-hero-photo--logo) {
         order: 1;
-        height: clamp(260px, 70vw, 420px);
+        width: calc(100% + 32px);
+        margin-left: -16px;
+        height: clamp(260px, 70vw, 400px);
         min-height: 0;
-        clip-path: none;
-        border-radius: 0;
     }
     .flacso-home-v2 .home-hero-photo:not(.home-hero-photo--logo)::before {
         inset: auto 0 0;
         width: 100%;
-        height: 90px;
-        background: linear-gradient(180deg, transparent 0%, rgba(6, 43, 87, .35) 45%, #062b57 100%);
+        height: 75px;
+        background: linear-gradient(180deg, transparent, #092c52);
     }
-    .flacso-home-v2 .home-hero-photo:not(.home-hero-photo--logo)::after { display: none; }
     .flacso-home-v2 .home-hero-copy {
         order: 2;
-        padding: 35px 0 0;
-        text-align: left;
+        padding: 32px 0 0;
     }
     .flacso-home-v2 .home-hero .home-eyebrow { justify-content: flex-start; }
     .flacso-home-v2 .home-hero h1 {
         max-width: 100%;
-        margin: 0 0 30px;
-        font-size: clamp(2rem, 8vw, 3rem);
+        margin: 0 0 28px;
+        font-size: clamp(2rem, 7.5vw, 3rem);
     }
     .flacso-home-v2 .home-hero .home-button {
         width: 100%;
-        min-height: 58px;
         margin: 0;
+        min-height: 56px;
         padding: 15px 20px;
         font-size: .95rem;
     }
