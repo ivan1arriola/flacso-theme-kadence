@@ -28,3 +28,21 @@ function flacso_theme_brand_slogan_replace_legacy( $value ): string {
         : $text;
 }
 
+/**
+ * Título público del archivo de seminarios (pestaña y SEO).
+ *
+ * El archivo del CPT no debe heredar el valor predeterminado "Seminarios Archive".
+ * Cubrimos el título nativo de WordPress y los plugins SEO más habituales.
+ */
+function flacso_theme_seminars_archive_document_title( $title ) {
+    if ( ! is_post_type_archive( 'seminario' ) ) {
+        return $title;
+    }
+
+    return 'Seminarios | ' . get_bloginfo( 'name' );
+}
+
+add_filter( 'pre_get_document_title', 'flacso_theme_seminars_archive_document_title', 99 );
+add_filter( 'rank_math/frontend/title', 'flacso_theme_seminars_archive_document_title', 99 );
+add_filter( 'wpseo_title', 'flacso_theme_seminars_archive_document_title', 99 );
+add_filter( 'aioseo_title', 'flacso_theme_seminars_archive_document_title', 99 );
