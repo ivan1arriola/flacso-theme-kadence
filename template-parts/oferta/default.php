@@ -644,8 +644,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                     <?php if ($mostrar_instancias_presenciales) : ?>
                                                         <p class="mb-1" style="color: #b45309; font-weight: 700;">
                                                             <i class="bi bi-geo-alt-fill me-1" aria-hidden="true"></i>
-                                                            <strong><?php esc_html_e('Incluye instancias exclusivamente presenciales', 'flacso-uruguay'); ?>.</strong>
-                                                            <?php esc_html_e('Estas actividades no ofrecen alternativa de participación virtual.', 'flacso-uruguay'); ?>
+                                                            <strong><?php esc_html_e('Incluye instancias exclusivamente presenciales.', 'flacso-uruguay'); ?></strong>
                                                         </p>
                                                     <?php endif; ?>
                                                     <?php if ($malla_doc_url !== '') : ?>
@@ -935,8 +934,24 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                 </header>
 
                                 <div class="flacso-academic-team__groups">
+                                    <?php
+                                    // El identificador se obtiene de la cohorte publicada que alimenta esta página.
+                                    $cohorte_equipo_label = absint($instance['id'] ?? 0) > 0
+                                        ? trim((string) ($instance['label'] ?? ''))
+                                        : '';
+                                    ?>
                                     <?php foreach ($merged_equipos as $grupo) : ?>
                                         <?php
+                                        $grupo_nombre = trim((string) ($grupo['nombre'] ?? ''));
+                                        if ($grupo_nombre !== '' && ($grupo['alcance'] ?? '') === 'cohorte'
+                                            && $cohorte_equipo_label !== ''
+                                            && stripos($grupo_nombre, $cohorte_equipo_label) === false) {
+                                            $grupo_nombre = sprintf(
+                                                __('%1$s - %2$s', 'flacso-uruguay'),
+                                                $grupo_nombre,
+                                                $cohorte_equipo_label
+                                            );
+                                        }
                                         $nivel = in_array((string) ($grupo['importancia'] ?? '3'), ['1', '2', '3'], true)
                                             ? (string) ($grupo['importancia'] ?? '3')
                                             : '3';
@@ -946,8 +961,8 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         }
                                         ?>
                                         <div class="flacso-academic-team__group flacso-academic-team__group--level-<?php echo esc_attr($nivel); ?>">
-                                            <?php if (!empty($grupo['nombre'])) : ?>
-                                                <h3 class="flacso-academic-team__group-title"><?php echo esc_html($grupo['nombre']); ?></h3>
+                                            <?php if ($grupo_nombre !== '') : ?>
+                                                <h3 class="flacso-academic-team__group-title"><?php echo esc_html($grupo_nombre); ?></h3>
                                             <?php endif; ?>
                                             <?php if (!empty($grupo['descripcion'])) : ?>
                                                 <div class="flacso-academic-team__group-description"><?php echo wp_kses_post(wpautop($grupo['descripcion'])); ?></div>
