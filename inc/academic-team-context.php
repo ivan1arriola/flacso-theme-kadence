@@ -107,7 +107,18 @@ function flacso_theme_apply_scoped_teams(array $context, int $offer_id): array {
         $cohort_teams = $legacy_cohort;
     }
 
-    $display_teams = array_values(array_merge($academic_team, $cohort_teams));
+    // Distinguir los equipos permanentes de la Oferta de los propios de una Cohorte.
+    // El marcador se usa solo al presentar el encabezado; no modifica los metadatos.
+    $display_teams = array_values(array_merge(
+        array_map(static function (array $group): array {
+            $group['alcance'] = 'oferta';
+            return $group;
+        }, $academic_team),
+        array_map(static function (array $group): array {
+            $group['alcance'] = 'cohorte';
+            return $group;
+        }, $cohort_teams)
+    ));
 
     if (!isset($context['academic']) || !is_array($context['academic'])) {
         $context['academic'] = [];
