@@ -103,7 +103,9 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
 
     <section class="flacso-formacion-hero">
         <div class="flacso-formacion-hero__inner">
-            <span class="flacso-formacion-hero__kicker">
+            <div class="flacso-formacion-hero__intro">
+                <div class="flacso-formacion-hero__copy">
+                    <span class="flacso-formacion-hero__kicker">
                 <i class="bi bi-mortarboard-fill" aria-hidden="true"></i>
                 <?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?>
             </span>
@@ -111,22 +113,44 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
             <p class="flacso-formacion-hero__lead">
                 <?php esc_html_e('Propuestas de posgrado y formación continua en ciencias sociales, educación, género y políticas públicas.', 'flacso-uruguay'); ?>
             </p>
-
-            <?php if (!empty($flacso_formacion_palette)) : ?>
-                <div class="flacso-formacion-hero__palette" aria-hidden="true">
-                    <?php foreach (array_slice($flacso_formacion_palette, 0, 8) as $color) : ?>
-                        <span style="--offer-accent: <?php echo esc_attr($color); ?>;"></span>
-                    <?php endforeach; ?>
                 </div>
-            <?php endif; ?>
+
+                <?php if (!empty($flacso_formacion_palette)) : ?>
+                    <div class="flacso-formacion-hero__palette" aria-hidden="true">
+                        <?php foreach (array_slice($flacso_formacion_palette, 0, 8) as $color) : ?>
+                            <span style="--offer-accent: <?php echo esc_attr($color); ?>;"></span>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
 
             <nav class="flacso-formacion-nav" aria-label="<?php esc_attr_e('Tipos de formación', 'flacso-uruguay'); ?>">
                 <?php foreach ($tipos_oferta as $slug => $info) : ?>
                     <?php if (!empty($ofertas_por_tipo[$slug])) : ?>
-                        <a href="#<?php echo esc_attr($slug); ?>" class="flacso-formacion-nav__link"><?php echo esc_html($info['label']); ?></a>
+                        <a href="#<?php echo esc_attr($slug); ?>" class="flacso-formacion-nav__link">
+                            <span class="flacso-formacion-nav__name"><?php echo esc_html($info['label']); ?></span>
+                            <span class="flacso-formacion-nav__count"><?php echo esc_html(sprintf(_n('%d propuesta', '%d propuestas', count($ofertas_por_tipo[$slug]), 'flacso-uruguay'), count($ofertas_por_tipo[$slug]))); ?></span>
+                            <span class="flacso-formacion-nav__colors" aria-hidden="true">
+                                <?php
+                                $nav_colors = [];
+                                foreach ($ofertas_por_tipo[$slug] as $offer) {
+                                    $color = $flacso_formacion_offer_accent($offer);
+                                    if ($color !== '' && !in_array($color, $nav_colors, true)) {
+                                        $nav_colors[] = $color;
+                                    }
+                                }
+                                ?>
+                                <?php foreach (array_slice($nav_colors, 0, 4) as $color) : ?>
+                                    <i style="--offer-accent: <?php echo esc_attr($color); ?>;"></i>
+                                <?php endforeach; ?>
+                            </span>
+                        </a>
                     <?php endif; ?>
                 <?php endforeach; ?>
-                <a href="<?php echo esc_url(home_url('/formacion/seminarios/')); ?>" class="flacso-formacion-nav__link"><?php esc_html_e('Seminarios', 'flacso-uruguay'); ?></a>
+                <a href="<?php echo esc_url(home_url('/formacion/seminarios/')); ?>" class="flacso-formacion-nav__link flacso-formacion-nav__link--seminars">
+                    <span class="flacso-formacion-nav__name"><?php esc_html_e('Seminarios', 'flacso-uruguay'); ?></span>
+                    <span class="flacso-formacion-nav__count"><?php esc_html_e('Formación continua', 'flacso-uruguay'); ?></span>
+                </a>
             </nav>
         </div>
     </section>
@@ -170,7 +194,7 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
                             <?php echo esc_html($fechas_card); ?>
                         </span>
                     <?php endif; ?>
-                    <?php if ($carga_horaria !== '') : ?>
+                    <?php if ($carga_horaria !== '' && is_numeric($carga_horaria) && (float) $carga_horaria > 0) : ?>
                         <span class="flacso-formacion-card__meta-item">
                             <i class="bi bi-clock" aria-hidden="true"></i>
                             <?php echo esc_html($carga_horaria); ?> hs.
@@ -230,6 +254,7 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
                     <header class="flacso-formacion-group__header">
                         <div class="flacso-formacion-group__heading">
                             <h2 id="heading-<?php echo esc_attr($slug); ?>" class="flacso-formacion-group__title"><?php echo esc_html($info['label']); ?></h2>
+                            <p class="flacso-formacion-group__description"><?php echo esc_html($info['description']); ?></p>
                             <?php if ($group_palette) : ?>
                                 <div class="flacso-formacion-group__palette" aria-hidden="true">
                                     <?php foreach (array_slice($group_palette, 0, 6) as $color) : ?>
@@ -239,7 +264,13 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
                             <?php endif; ?>
                         </div>
                         <a href="<?php echo esc_url($info['url']); ?>" class="flacso-formacion-group__more">
-                            <?php printf(esc_html__('Ver todas las %s →', 'flacso-uruguay'), esc_html(mb_strtolower($info['label']))); ?>
+                            <?php
+                            $label_lower = mb_strtolower((string) $info['label']);
+                            $link_label = in_array($slug, ['diplomado', 'doctorado'], true)
+                                ? sprintf(__('Ver todos los %s', 'flacso-uruguay'), $label_lower)
+                                : sprintf(__('Ver todas las %s', 'flacso-uruguay'), $label_lower);
+                            echo esc_html($link_label);
+                            ?> <span aria-hidden="true">↗</span>
                         </a>
                     </header>
 
@@ -332,7 +363,7 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
                                             <?php echo esc_html(flacso_theme_format_date_es($fecha_inicio, false)); ?>
                                         </span>
                                     <?php endif; ?>
-                                    <?php if ($carga_horaria !== '') : ?>
+                                    <?php if ($carga_horaria !== '' && is_numeric($carga_horaria) && (float) $carga_horaria > 0) : ?>
                                         <span class="flacso-formacion-card__meta-item">
                                             <i class="bi bi-clock" aria-hidden="true"></i>
                                             <?php echo esc_html($carga_horaria); ?> hs.
