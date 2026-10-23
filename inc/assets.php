@@ -213,21 +213,20 @@ function flacso_child_enqueue_template_assets() {
         'page-contacto.php'                   => 'page-contacto',
         'page-preguntas-frecuentes.php'       => 'page-faq',
         'consulta-seminario.php'              => 'consulta-seminario',
-        'page-formacion.php'                  => 'page-formacion',
+        'page-formacion.php'                  => 'formacion-page',
+        'formacion-page.php'                  => 'formacion-page',
         'seminarios-listado.php'              => 'seminarios-listado',
     );
 
     $active_template = is_string( $template ) ? basename( $template ) : '';
 
-    // /formacion/ es una ruta virtual resuelta por el plugin antes de que
-    // WordPress establezca el template global. Detectarla explícitamente
-    // permite cargar los recursos de la plantilla incluida por esa ruta.
-    if ( '' === $active_template ) {
-        $request_uri  = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) );
-        $request_path = trim( (string) wp_parse_url( $request_uri, PHP_URL_PATH ), '/' );
-        if ( 'formacion' === $request_path ) {
-            $active_template = 'page-formacion.php';
-        }
+    // /formacion/ es una ruta virtual servida por el plugin mediante
+    // page-formacion.php. WordPress puede tener otra plantilla global aquí,
+    // así que esta ruta debe prevalecer para cargar formacion-page.css.
+    $request_uri  = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) );
+    $request_path = trim( (string) wp_parse_url( $request_uri, PHP_URL_PATH ), '/' );
+    if ( 'formacion' === $request_path ) {
+        $active_template = 'page-formacion.php';
     }
 
     foreach ( $template_assets as $template_file => $asset ) {
