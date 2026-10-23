@@ -243,7 +243,7 @@ $seminarios_total = count($seminarios_catalogo);
                 <div class="seminarios-hero__poster">
                     <div class="seminarios-hero__content">
                         <div class="seminarios-hero__dots" aria-hidden="true">
-                            <span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span><span></span>
                         </div>
 
                         <p class="seminarios-hero__kicker"><?php esc_html_e('Formación de posgrado', 'flacso-uruguay'); ?></p>
