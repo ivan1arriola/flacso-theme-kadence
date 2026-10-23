@@ -15,6 +15,7 @@ php "$theme_dir/tests/retired-generic-financing-test.php"
 php "$theme_dir/tests/no-public-curricular-plans-test.php"
 php "$theme_dir/tests/faq-page-test.php"
 php "$theme_dir/tests/home-v2-contract-test.php"
+php "$theme_dir/tests/archive-four-five-contract-test.php"
 
 if grep -rn -P 'target="_blank"(?![^>]*\brel=)' --include='*.php' "$theme_dir"; then
     echo 'Hay enlaces target="_blank" sin rel="noopener noreferrer".' >&2
