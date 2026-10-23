@@ -27,6 +27,15 @@ Las plantillas que WordPress detecta por nombre permanecen en la raíz. Las secc
 
 No agregar bloques `<style>` o dependencias después de `get_header()`. Mantener los recursos de página dentro del registro condicional existente.
 
+## Catálogo de formación
+
+La página virtual `/formacion/` se implementa en sólo dos archivos de presentación:
+
+- `formacion-page.php`: consultas mediante el adaptador académico y marcado HTML de ofertas y seminarios.
+- `assets/css/formacion-page.css`: composición responsive, gestos cromáticos y marcos fotográficos 4:5 con `object-fit: cover` (se permite recorte, no deformación).
+
+`page-formacion.php` es exclusivamente un puente de compatibilidad: WordPress lo selecciona por nombre y el plugin también lo incluye directamente. No introducir lógica ni estilos en ese puente. `inc/assets.php` carga la hoja de estilos únicamente para la ruta de formación, aunque ésta se resuelva como página virtual. No se necesita JavaScript propio para el recorte.
+
 ## Adaptador académico
 
 `inc/academic-public-model.php` es la frontera del tema con las clases canónicas del plugin. Produce View Models estables para las plantillas; no contiene datos académicos legacy, no escribe información del catálogo y no calcula la apertura de preinscripciones. Los CTA usan el destino provisto por el plugin y apuntan al portal externo centralizado.
