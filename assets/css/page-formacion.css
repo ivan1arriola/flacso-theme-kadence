@@ -329,3 +329,96 @@
     border: 1px solid rgba(100, 116, 139, 0.25);
 }
 
+
+/* Gestos cromáticos derivados de cada Oferta Académica.
+   Usar color como señal decorativa: títulos, estados y llamadas a la
+   acción mantienen colores legibles aunque el acento sea muy claro. */
+.flacso-formacion-hero__palette,
+.flacso-formacion-group__palette {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    pointer-events: none;
+}
+
+.flacso-formacion-hero__palette {
+    justify-content: center;
+    min-height: 5px;
+    margin: -0.75rem auto 1.5rem;
+}
+
+.flacso-formacion-hero__palette span,
+.flacso-formacion-group__palette span {
+    display: block;
+    flex: 0 0 auto;
+    height: 5px;
+    width: 27px;
+    background-color: var(--offer-accent, #0a3470);
+    border-radius: 2px;
+}
+
+.flacso-formacion-hero__palette span {
+    height: 6px;
+    width: 36px;
+}
+
+.flacso-formacion-group__heading {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    min-width: 0;
+}
+
+.flacso-formacion-card--accented .flacso-formacion-card__media {
+    border-bottom: 4px solid var(--offer-accent);
+}
+
+.flacso-formacion-card--accented .flacso-formacion-card__badge {
+    box-shadow: inset 4px 0 0 var(--offer-accent);
+    padding-left: 0.85rem;
+}
+
+.flacso-formacion-card--accented .flacso-formacion-card__title {
+    border-left: 3px solid var(--offer-accent);
+    padding-left: 0.75rem;
+}
+
+.flacso-formacion-card--accented .flacso-formacion-card__action {
+    text-decoration: underline;
+    text-decoration-color: var(--offer-accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.3em;
+}
+
+.flacso-formacion-card:focus-visible {
+    outline: 3px solid #0a3470;
+    outline-offset: 3px;
+}
+
+@media (max-width: 720px) {
+    .flacso-formacion-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.25rem;
+    }
+
+    .flacso-formacion-hero__palette span {
+        width: 25px;
+    }
+
+    .flacso-formacion-group__header {
+        align-items: flex-start;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flacso-formacion-card,
+    .flacso-formacion-card__media img {
+        transition: none;
+    }
+
+    .flacso-formacion-card:hover,
+    .flacso-formacion-card:hover .flacso-formacion-card__media img {
+        transform: none;
+    }
+}
