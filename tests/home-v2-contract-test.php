@@ -88,6 +88,12 @@ check(strpos($css, 'width: clamp(56px, 6vw, 92px)') !== false, 'gradiente horizo
 check(strpos($css, 'background: linear-gradient(180deg, transparent, #092c52)') !== false, 'gradiente móvil vertical');
 check(strpos($css, 'clip-path: polygon(10%') === false, 'fotografía no usa corte diagonal');
 check(strpos($css, 'clip-path: none') !== false, 'móvil elimina el corte diagonal');
+check(strpos($css, 'Mobile first: foto a sangre, proporción original y contenido compacto') !== false, 'reglas móviles del hero definidas al final');
+check(strpos($css, 'height: 40px;') !== false, 'transición inferior móvil discreta');
+check(strpos($css, 'font-size: clamp(1.75rem, 6.6vw, 2.1rem)') !== false, 'eslogan compacto en móvil');
+check(strpos($css, 'aspect-ratio: auto;') !== false, 'imagen móvil sin proporción 16:9 forzada');
+check(strpos($css, 'padding: 18px 0 32px') !== false, 'espacio equilibrado bajo fotografía en móvil');
+check(strpos($css, 'font-size: clamp(1.65rem, 6.2vw, 2rem)') !== false, 'títulos de secciones legibles sin desbordes');
 check(strpos($css, 'prefers-reduced-motion: reduce') !== false, 'hero respeta reducción de movimiento');
 $hero_template = file_get_contents($root . '/template-parts/home/hero.php');
 check(strpos($hero_template, '<picture>') !== false && strpos($hero_template, 'hero_mobile_image') !== false, 'fotografía responsive editable desde campaña');
