@@ -422,3 +422,484 @@
         transform: none;
     }
 }
+
+
+/* === Identidad editorial del catálogo /formacion/ ===
+   Los tonos se derivan de las ofertas; el azul FLACSO sigue siendo el
+   color estructural. Las imágenes académicas son 4:5 sin recortes. */
+.flacso-formacion-page {
+    background: #f7f9fc;
+}
+
+.flacso-formacion-hero {
+    background: linear-gradient(120deg, #0e294c 0%, #183e70 59%, #224b75 100%);
+    padding: clamp(2.5rem, 5vw, 4rem) clamp(1rem, 4vw, 2.5rem) clamp(1.5rem, 4vw, 2.75rem);
+    text-align: left;
+}
+
+.flacso-formacion-hero::before {
+    border-radius: 0;
+    width: min(48vw, 520px);
+    height: 100%;
+    right: -10%;
+    top: 0;
+    background: linear-gradient(130deg, transparent 30%, rgba(255, 255, 255, 0.055));
+    transform: skewX(-15deg);
+}
+
+.flacso-formacion-hero__inner {
+    max-width: 1240px;
+}
+
+.flacso-formacion-hero__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(230px, 330px);
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 4.5rem);
+    margin-bottom: clamp(1.4rem, 3vw, 2.4rem);
+}
+
+.flacso-formacion-hero__copy {
+    min-width: 0;
+}
+
+.flacso-formacion-hero__title {
+    max-width: 700px;
+    font-size: clamp(2.5rem, 4.8vw, 4.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+}
+
+.flacso-formacion-hero__lead {
+    margin: 0;
+    max-width: 640px;
+    line-height: 1.7;
+}
+
+.flacso-formacion-hero__palette {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    align-items: end;
+    justify-content: stretch;
+    gap: 7px;
+    height: clamp(130px, 17vw, 195px);
+    min-height: 0;
+    margin: 0;
+    transform: skewX(-7deg);
+}
+
+.flacso-formacion-hero__palette span {
+    height: 100%;
+    width: auto;
+    min-width: 0;
+    border-radius: 0;
+    background-color: var(--offer-accent);
+    box-shadow: 6px 7px 0 rgba(4, 23, 48, 0.15);
+    opacity: 0.97;
+}
+
+.flacso-formacion-hero__palette span:nth-child(3n + 1) {
+    height: 75%;
+}
+
+.flacso-formacion-hero__palette span:nth-child(3n + 2) {
+    height: 92%;
+}
+
+.flacso-formacion-hero__palette span:nth-child(4n + 1) {
+    height: 58%;
+}
+
+.flacso-formacion-nav {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.6rem;
+    margin: 0;
+}
+
+.flacso-formacion-nav__link {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.15rem;
+    min-width: 0;
+    min-height: 75px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.085);
+    padding: 0.8rem 0.95rem;
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.09);
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.flacso-formacion-nav__name {
+    font-size: 0.92rem;
+    line-height: 1.2;
+    font-weight: 750;
+}
+
+.flacso-formacion-nav__count {
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 0.73rem;
+    font-weight: 500;
+    line-height: 1.35;
+}
+
+.flacso-formacion-nav__colors {
+    display: flex;
+    width: 100%;
+    gap: 3px;
+    align-items: center;
+    min-height: 4px;
+    margin-top: 0.45rem;
+}
+
+.flacso-formacion-nav__colors i {
+    flex: 1 1 0;
+    max-width: 40px;
+    min-width: 5px;
+    height: 4px;
+    background: var(--offer-accent);
+    display: block;
+}
+
+.flacso-formacion-nav__link--seminars {
+    border-style: dashed;
+}
+
+.flacso-formacion-nav__link:hover,
+.flacso-formacion-nav__link:focus-visible {
+    background: rgba(255, 255, 255, 0.19);
+    color: #fff;
+    border-color: #fed222;
+}
+
+.flacso-formacion-nav__link:focus-visible {
+    outline: 2px solid #fed222;
+    outline-offset: 3px;
+}
+
+.flacso-formacion-catalog {
+    max-width: 1280px;
+    padding-top: clamp(2rem, 4vw, 3.2rem);
+    padding-bottom: 2rem;
+}
+
+.flacso-formacion-group {
+    margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+    scroll-margin-top: 110px;
+}
+
+.flacso-formacion-group__header {
+    border-bottom: 1px solid #d9e1ed;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.flacso-formacion-group__title {
+    font-size: clamp(1.65rem, 2.5vw, 2.15rem);
+    letter-spacing: -0.025em;
+    color: #18355e;
+}
+
+.flacso-formacion-group__heading {
+    gap: 0.45rem;
+}
+
+.flacso-formacion-group__description {
+    margin: 0;
+    max-width: 680px;
+    color: #556479;
+    font-size: 0.91rem;
+    line-height: 1.5;
+}
+
+.flacso-formacion-group__palette {
+    margin-top: 0.2rem;
+}
+
+.flacso-formacion-group__palette span {
+    height: 4px;
+    width: 26px;
+    border-radius: 0;
+}
+
+.flacso-formacion-group__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid #a8bacf;
+    padding: 0.35rem 0;
+    white-space: normal;
+    text-align: right;
+}
+
+.flacso-formacion-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.flacso-formacion-card {
+    display: grid;
+    grid-template-columns: minmax(0, 39%) minmax(0, 61%);
+    position: relative;
+    border-radius: 5px;
+    border: 1px solid #dfe6ef;
+    box-shadow: 0 5px 19px rgba(16, 37, 66, 0.055);
+    min-width: 0;
+    min-height: 0;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.flacso-formacion-card:hover {
+    transform: translateY(-2px);
+    border-color: #aebfd3;
+    box-shadow: 0 15px 31px rgba(16, 37, 66, 0.12);
+}
+
+.flacso-formacion-card__media {
+    aspect-ratio: 4 / 5;
+    width: 100%;
+    min-width: 0;
+    background: #e9edf2;
+    overflow: hidden;
+    border-bottom: 0;
+    align-self: start;
+}
+
+.flacso-formacion-card__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    transition: none;
+}
+
+.flacso-formacion-card:hover .flacso-formacion-card__media img {
+    transform: none;
+}
+
+.flacso-formacion-card--accented .flacso-formacion-card__media {
+    border-bottom: 0;
+    border-left: 5px solid var(--offer-accent);
+}
+
+.flacso-formacion-card__placeholder {
+    background: linear-gradient(135deg, #e8eef5, #d9e5f1);
+    color: #2a5485;
+}
+
+.flacso-formacion-card__badge {
+    top: 0.65rem;
+    left: 0.65rem;
+    border-radius: 2px;
+    font-size: 0.67rem;
+    line-height: 1.4;
+    background: rgba(19, 42, 73, 0.92);
+}
+
+.flacso-formacion-card__body {
+    padding: clamp(0.9rem, 1.8vw, 1.4rem);
+    min-width: 0;
+    gap: 0;
+}
+
+.flacso-formacion-card__title {
+    color: #19385d;
+    font-size: clamp(1.01rem, 1.6vw, 1.26rem);
+    letter-spacing: -0.012em;
+    line-height: 1.35;
+    margin-bottom: 0.65rem;
+    overflow-wrap: anywhere;
+}
+
+.flacso-formacion-card--accented .flacso-formacion-card__title {
+    border-left-width: 4px;
+    padding-left: 0.7rem;
+}
+
+.flacso-formacion-card__excerpt {
+    line-height: 1.6;
+    font-size: 0.87rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.flacso-formacion-card__meta {
+    gap: 0.4rem 0.8rem;
+    padding-top: 0.65rem;
+    margin-bottom: 0.85rem;
+    color: #57667b;
+}
+
+.flacso-formacion-card__footer {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: flex-end;
+}
+
+.flacso-formacion-card__status {
+    font-size: 0.71rem;
+    background: #edf3fa;
+    color: #314b6a;
+}
+
+.flacso-formacion-card__status.is-open {
+    background: #e3f5e9;
+    color: #155e37;
+}
+
+.flacso-formacion-card__action {
+    margin-left: auto;
+    color: #183c6a;
+    font-size: 0.84rem;
+}
+
+.flacso-formacion-card:hover .flacso-formacion-card__action {
+    color: #183c6a;
+}
+
+@media (max-width: 1120px) {
+    .flacso-formacion-hero__intro {
+        grid-template-columns: minmax(0, 1fr) minmax(160px, 245px);
+    }
+
+    .flacso-formacion-nav {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .flacso-formacion-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .flacso-formacion-card {
+        grid-template-columns: minmax(0, 36%) minmax(0, 64%);
+    }
+}
+
+@media (max-width: 720px) {
+    .flacso-formacion-hero {
+        padding: 2.2rem 1rem 1.5rem;
+    }
+
+    .flacso-formacion-hero__intro {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.2rem;
+    }
+
+    .flacso-formacion-hero__title {
+        font-size: clamp(2.2rem, 9vw, 3.2rem);
+    }
+
+    .flacso-formacion-hero__palette {
+        height: 18px;
+        display: flex;
+        gap: 4px;
+        transform: none;
+        justify-content: stretch;
+    }
+
+    .flacso-formacion-hero__palette span,
+    .flacso-formacion-hero__palette span:nth-child(n) {
+        flex: 1 1 0;
+        width: 0;
+        height: 9px;
+        max-width: 54px;
+        box-shadow: none;
+    }
+
+    .flacso-formacion-nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.45rem;
+    }
+
+    .flacso-formacion-nav__link {
+        padding: 0.7rem 0.8rem;
+        min-height: 64px;
+    }
+
+    .flacso-formacion-nav__link--seminars {
+        grid-column: 1 / -1;
+    }
+
+    .flacso-formacion-catalog {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .flacso-formacion-group__header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .flacso-formacion-group__more {
+        text-align: left;
+    }
+
+    .flacso-formacion-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.85rem;
+    }
+
+    .flacso-formacion-card {
+        grid-template-columns: minmax(0, 42%) minmax(0, 58%);
+    }
+
+    .flacso-formacion-card__body {
+        padding: 0.85rem;
+    }
+
+    .flacso-formacion-card__title {
+        font-size: 1.02rem;
+        line-height: 1.3;
+    }
+
+    .flacso-formacion-card__excerpt {
+        display: none;
+    }
+
+    .flacso-formacion-card__status,
+    .flacso-formacion-card__action {
+        font-size: 0.71rem;
+    }
+
+    .flacso-formacion-card__action {
+        margin-left: 0;
+    }
+
+    .flacso-formacion-card__meta {
+        font-size: 0.74rem;
+    }
+}
+
+@media (max-width: 370px) {
+    .flacso-formacion-card {
+        grid-template-columns: minmax(0, 39%) minmax(0, 61%);
+    }
+
+    .flacso-formacion-card__badge {
+        font-size: 0.61rem;
+        padding: 0.2rem 0.4rem;
+        left: 0.35rem;
+        top: 0.35rem;
+    }
+
+    .flacso-formacion-card__body {
+        padding: 0.65rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flacso-formacion-nav__link,
+    .flacso-formacion-card {
+        transition: none;
+    }
+}
