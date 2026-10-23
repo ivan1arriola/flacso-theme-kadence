@@ -320,6 +320,10 @@
 /* Mobile first: foto a sangre, proporción original y contenido compacto.
  * Se conserva el ancho Kadence únicamente para el texto. */
 @media (max-width: 760px) {
+    /* Igualar el color de llegada del fundido con el panel editorial. */
+    .flacso-home-v2 .home-hero {
+        background: #092c52;
+    }
     .flacso-home-v2 .home-hero > .home-hero-layout.home-container {
         width: 100%;
         max-width: none;
@@ -362,14 +366,20 @@
     .flacso-home-v2 .home-hero-photo:not(.home-hero-photo--logo)::before {
         inset: auto 0 0;
         width: 100%;
-        height: 40px;
-        background: linear-gradient(180deg, transparent, #092c52);
+        height: clamp(110px, 30vw, 170px);
+        background: linear-gradient(180deg,
+            rgba(9, 44, 82, 0) 0%,
+            rgba(9, 44, 82, .04) 18%,
+            rgba(9, 44, 82, .20) 40%,
+            rgba(9, 44, 82, .53) 67%,
+            rgba(9, 44, 82, .84) 85%,
+            #092c52 100%);
     }
     .flacso-home-v2 .home-hero-copy {
         order: 2;
         width: min(var(--flacso-chrome-width, 1180px), calc(100% - 28px));
         margin-inline: auto;
-        padding: 18px 0 32px;
+        padding: 14px 0 32px;
         text-align: left;
     }
     .flacso-home-v2 .home-hero .home-eyebrow {
