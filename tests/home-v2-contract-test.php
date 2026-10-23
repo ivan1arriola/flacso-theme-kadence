@@ -43,6 +43,10 @@ check(substr_count($html, '<h1') === 1, 'un solo H1');
 check(strpos($html, 'No hay actividades próximas para mostrar.') !== false, 'actividades visibles vacías');
 check(strpos($html, 'agenda.flacso.edu.uy') === false, 'actividades no enlazan reservas');
 check(substr_count($html, 'home-offer-card') === 5, 'cinco categorías de oferta');
+check(substr_count($html, 'class="home-offer-card offer--') === 5, 'cinco tarjetas con identificador visual sin duplicados');
+foreach (['maestrias', 'especializaciones', 'diplomados', 'diplomas', 'seminarios'] as $category) {
+    check(strpos($html, 'offer--' . $category) !== false, 'identidad visual para la categoría ' . $category);
+}
 check(substr_count($html, 'home-news-card--featured') === 2, 'dos noticias destacadas');
 check(substr_count($html, 'home-news-card--recent') === 4, 'cuatro noticias recientes');
 preg_match('/<div class="home-recent-grid">(.*?)<\/div><\/div><\/section>/s', $html, $recent_markup);
@@ -97,6 +101,11 @@ check(strpos($css, 'font-size: clamp(1.75rem, 6.6vw, 2.1rem)') !== false, 'eslog
 check(strpos($css, 'aspect-ratio: auto;') !== false, 'imagen móvil sin proporción 16:9 forzada');
 check(strpos($mobile_css, 'padding: 14px 0 32px') !== false, 'espacio equilibrado bajo fotografía en móvil');
 check(strpos($css, 'font-size: clamp(1.65rem, 6.2vw, 2rem)') !== false, 'títulos de secciones legibles sin desbordes');
+check(strpos($css, '/* Oferta académica: sistema visual editorial por categoría.') !== false, 'estilos específicos para oferta académica');
+check(strpos($css, 'grid-template-columns: 48px minmax(0, 1fr)') !== false, 'oferta móvil compacta en dos columnas internas');
+check(strpos($css, 'min-height: 100px;') !== false, 'oferta móvil sin tarjetas sobredimensionadas');
+check(strpos($css, '.offer--seminarios') !== false && strpos($css, '.offer--maestrias') !== false, 'paleta sobria por categoría');
+check(strpos($css, 'outline: 3px solid #f4bc17') !== false, 'foco teclado visible en tarjetas');
 check(strpos($css, 'prefers-reduced-motion: reduce') !== false, 'hero respeta reducción de movimiento');
 $hero_template = file_get_contents($root . '/template-parts/home/hero.php');
 check(strpos($hero_template, '<picture>') !== false && strpos($hero_template, 'hero_mobile_image') !== false, 'fotografía responsive editable desde campaña');

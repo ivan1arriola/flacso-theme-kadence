@@ -438,3 +438,160 @@
         gap: 12px;
     }
 }
+
+
+/* Oferta académica: sistema visual editorial por categoría.
+ * Los colores identifican las tarjetas sin añadir ruido al resto de la portada. */
+.flacso-home-v2 .home-offer .home-section-heading .home-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: #345780;
+    letter-spacing: .11em;
+}
+.flacso-home-v2 .home-offer .home-section-heading .home-eyebrow::before {
+    content: "";
+    flex: 0 0 26px;
+    height: 3px;
+    background: #f4bc17;
+}
+.flacso-home-v2 .home-offer-card {
+    --offer-accent: #214c79;
+    --offer-tint: #edf4fa;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    min-height: 160px;
+    padding: 19px 19px 17px;
+    border: 1px solid #dbe5ee;
+    border-radius: 15px;
+    background: linear-gradient(155deg, var(--offer-tint), #fff 80%);
+    color: #102a4b;
+    box-shadow: 0 3px 12px rgba(17, 47, 82, .045);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.flacso-home-v2 .home-offer-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 4px;
+    background: var(--offer-accent);
+}
+.flacso-home-v2 .offer--maestrias {
+    --offer-accent: #1d4c80;
+    --offer-tint: #e9f1fa;
+}
+.flacso-home-v2 .offer--especializaciones {
+    --offer-accent: #2c6977;
+    --offer-tint: #eaf4f4;
+}
+.flacso-home-v2 .offer--diplomados {
+    --offer-accent: #5f568e;
+    --offer-tint: #f0eef9;
+}
+.flacso-home-v2 .offer--diplomas {
+    --offer-accent: #94612e;
+    --offer-tint: #f9f1e5;
+}
+.flacso-home-v2 .offer--seminarios {
+    --offer-accent: #236382;
+    --offer-tint: #eaf4f8;
+}
+.flacso-home-v2 .home-offer-card .home-offer-icon {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--offer-tint);
+    color: var(--offer-accent);
+}
+.flacso-home-v2 .home-offer-card .home-offer-icon svg {
+    width: 25px;
+    height: 25px;
+}
+.flacso-home-v2 .home-offer-card h3 {
+    margin: 17px 0 auto;
+    color: #102a4b;
+    font-size: 1.08rem;
+    line-height: 1.25;
+    font-weight: 800;
+}
+.flacso-home-v2 .home-offer-card .home-offer-bottom {
+    align-items: center;
+    margin-top: 15px;
+    color: var(--offer-accent);
+    font-size: .84rem;
+    font-weight: 750;
+}
+.flacso-home-v2 .home-offer-card .home-offer-bottom span {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+.flacso-home-v2 .home-offer-card:is(:hover, :focus-visible) {
+    border-color: var(--offer-accent);
+    box-shadow: 0 10px 26px rgba(17, 47, 82, .12);
+    transform: translateY(-2px);
+}
+.flacso-home-v2 .home-offer-card:focus-visible {
+    outline: 3px solid #f4bc17;
+    outline-offset: 3px;
+}
+
+/* En móvil, tarjetas horizontales para reducir desplazamiento y mejorar lectura. */
+@media (max-width: 760px) {
+    .flacso-home-v2 .home-offer-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 11px;
+    }
+    .flacso-home-v2 .home-offer-card {
+        display: grid;
+        grid-template-columns: 48px minmax(0, 1fr);
+        grid-template-rows: auto auto;
+        align-content: center;
+        align-items: center;
+        column-gap: 14px;
+        row-gap: 5px;
+        min-height: 100px;
+        padding: 15px 17px 15px 20px;
+        border-radius: 14px;
+        background: linear-gradient(100deg, var(--offer-tint), #fff 85%);
+    }
+    .flacso-home-v2 .home-offer-card::before {
+        inset: 0 auto 0 0;
+        width: 4px;
+        height: auto;
+    }
+    .flacso-home-v2 .home-offer-card .home-offer-icon {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+        width: 46px;
+        height: 46px;
+        margin: 0;
+    }
+    .flacso-home-v2 .home-offer-card h3 {
+        grid-column: 2;
+        grid-row: 1;
+        min-width: 0;
+        margin: 0;
+        font-size: clamp(1.02rem, 4.4vw, 1.19rem);
+        line-height: 1.2;
+    }
+    .flacso-home-v2 .home-offer-card .home-offer-bottom {
+        grid-column: 2;
+        grid-row: 2;
+        width: 100%;
+        min-width: 0;
+        margin: 0;
+        font-size: .83rem;
+        line-height: 1.25;
+    }
+    .flacso-home-v2 .home-offer-card .home-offer-bottom span {
+        font-size: 1.25rem;
+        margin-left: 10px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .flacso-home-v2 .home-offer-card { transition: none; }
+}
