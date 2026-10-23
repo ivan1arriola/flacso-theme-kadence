@@ -62,7 +62,7 @@ if ($ofertas_query->have_posts()) {
 
             $thumbnail_url = '';
             if ($image_id > 0) {
-                $cropped = wp_get_attachment_image_url($image_id, 'flacso-oferta-4x5');
+                $cropped = wp_get_attachment_image_url($image_id, 'large');
                 if ($cropped) {
                     $thumbnail_url = (string) $cropped;
                 }
@@ -142,14 +142,14 @@ $render_offer_card = static function (array $item): void {
                     if (!empty($item['image_id'])) {
                         echo wp_get_attachment_image(
                             (int) $item['image_id'],
-                            'flacso-oferta-4x5',
+                            'large',
                             false,
                             [
                                 'class'    => 'flacso-premium-card__img',
                                 'alt'      => (string) $item['title'],
                                 'loading'  => 'lazy',
                                 'decoding' => 'async',
-                                'sizes'    => '(max-width: 767px) 118px, (max-width: 1200px) 33vw, 340px',
+                                'sizes'    => '(max-width: 767px) 42vw, (max-width: 1200px) 33vw, 340px',
                             ]
                         );
                     } else {
