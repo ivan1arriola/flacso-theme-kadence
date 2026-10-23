@@ -40,6 +40,6 @@ check_formacion_color(strpos($styles, 'grid-template-columns: minmax(0, 42%) min
 check_formacion_color(strpos(file_get_contents($root . '/page-formacion.php'), "require get_stylesheet_directory() . '/formacion-page.php';") !== false, 'entrada WordPress y plugin delega a la plantilla única');
 $assets = file_get_contents($root . '/inc/assets.php');
 check_formacion_color(strpos($assets, "'page-formacion.php'                  => 'formacion-page'") !== false, 'se carga el CSS nuevo para la ruta virtual');
-check_formacion_color(strpos($assets, "if ( 'formacion' === $request_path )") !== false, 'detección incondicional de la ruta virtual');
+check_formacion_color(strpos($assets, 'if ( \'formacion\' === $request_path )') !== false, 'detección incondicional de la ruta virtual');
 
 echo "Formación: archivos centralizados, imágenes 4:5 con cover, acentos dinámicos y mobile verificados.\n";
