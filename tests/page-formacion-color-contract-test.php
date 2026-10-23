@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 $root = dirname(__DIR__);
-$template = file_get_contents($root . '/page-formacion.php');
-$styles = file_get_contents($root . '/assets/css/page-formacion.css');
+$template = file_get_contents($root . '/formacion-page.php');
+$styles = file_get_contents($root . '/assets/css/formacion-page.css');
 
 function check_formacion_color(bool $ok, string $message): void {
     if (!$ok) {
@@ -32,8 +32,14 @@ check_formacion_color(strpos($template, 'flacso-formacion-nav__count') !== false
 check_formacion_color(strpos($template, 'flacso-formacion-group__description') !== false, 'descripción académica por grupo');
 check_formacion_color(strpos($template, '(float) $carga_horaria > 0') !== false, 'no presenta horas en cero');
 check_formacion_color(strpos($styles, 'aspect-ratio: 4 / 5;') !== false, 'imágenes académicas 4:5');
-check_formacion_color(strpos($styles, 'object-fit: contain;') !== false, 'imágenes sin recortes');
+check_formacion_color(strpos($styles, 'object-fit: cover;') !== false, 'imágenes llenan marco 4:5 con recorte');
+check_formacion_color(strpos($styles, 'object-fit: contain;') === false, 'ninguna regla de contención deja márgenes vacíos');
 check_formacion_color(strpos($styles, 'repeat(2, minmax(0, 1fr))') !== false, 'mosaico en escritorio');
 check_formacion_color(strpos($styles, 'grid-template-columns: minmax(0, 42%) minmax(0, 58%)') !== false, 'tarjetas móviles con imagen y texto');
 
-echo "Formación: acentos dinámicos por oferta, accesibilidad y mobile verificados.\n";
+check_formacion_color(strpos(file_get_contents($root . '/page-formacion.php'), "require get_stylesheet_directory() . '/formacion-page.php';") !== false, 'entrada WordPress y plugin delega a la plantilla única');
+$assets = file_get_contents($root . '/inc/assets.php');
+check_formacion_color(strpos($assets, "'page-formacion.php'                  => 'formacion-page'") !== false, 'se carga el CSS nuevo para la ruta virtual');
+check_formacion_color(strpos($assets, "if ( 'formacion' === $request_path )") !== false, 'detección incondicional de la ruta virtual');
+
+echo "Formación: archivos centralizados, imágenes 4:5 con cover, acentos dinámicos y mobile verificados.\n";
