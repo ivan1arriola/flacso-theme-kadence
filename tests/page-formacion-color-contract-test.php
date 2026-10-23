@@ -27,4 +27,13 @@ check_formacion_color(strpos($styles, '.flacso-formacion-card:focus-visible') !=
 check_formacion_color(strpos($styles, 'grid-template-columns: minmax(0, 1fr);') !== false, 'rejilla móvil sin desborde');
 check_formacion_color(strpos($styles, 'prefers-reduced-motion: reduce') !== false, 'respeto por movimiento reducido');
 
+check_formacion_color(strpos($template, 'flacso-formacion-hero__intro') !== false, 'hero editorial adaptativo');
+check_formacion_color(strpos($template, 'flacso-formacion-nav__count') !== false, 'navegación con cantidad de propuestas');
+check_formacion_color(strpos($template, 'flacso-formacion-group__description') !== false, 'descripción académica por grupo');
+check_formacion_color(strpos($template, '(float) $carga_horaria > 0') !== false, 'no presenta horas en cero');
+check_formacion_color(strpos($styles, 'aspect-ratio: 4 / 5;') !== false, 'imágenes académicas 4:5');
+check_formacion_color(strpos($styles, 'object-fit: contain;') !== false, 'imágenes sin recortes');
+check_formacion_color(strpos($styles, 'repeat(2, minmax(0, 1fr))') !== false, 'mosaico en escritorio');
+check_formacion_color(strpos($styles, 'grid-template-columns: minmax(0, 42%) minmax(0, 58%)') !== false, 'tarjetas móviles con imagen y texto');
+
 echo "Formación: acentos dinámicos por oferta, accesibilidad y mobile verificados.\n";
