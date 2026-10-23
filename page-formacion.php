@@ -69,6 +69,30 @@ foreach ($ofertas_posts as $post_obj) {
     $ofertas_por_tipo[$tipo][] = $context;
 }
 
+// Extraer exclusivamente el color principal validado de cada Oferta Académica.
+// Las tonalidades vienen del modelo canónico, no de colores fijos por categoría.
+$flacso_formacion_offer_accent = static function (array $item): string {
+    $raw = $item['color_principal']
+        ?? ($item['academic']['color_principal']
+        ?? ($item['academic']['colores_presentacion']['principal'] ?? ''));
+    if (!is_string($raw)) {
+        return '';
+    }
+    $color = trim($raw);
+    return preg_match('/^#[0-9a-fA-F]{6}$/', $color) ? strtolower($color) : '';
+};
+
+// Una muestra representativa de los colores de las ofertas publicadas.
+$flacso_formacion_palette = [];
+foreach ($ofertas_por_tipo as $offers_by_type) {
+    foreach ($offers_by_type as $offer) {
+        $color = $flacso_formacion_offer_accent($offer);
+        if ($color !== '' && !in_array($color, $flacso_formacion_palette, true)) {
+            $flacso_formacion_palette[] = $color;
+        }
+    }
+}
+
 // Seminarios destacados
 $seminarios = function_exists('flacso_theme_get_seminars_catalog')
     ? flacso_theme_get_seminars_catalog()
@@ -88,6 +112,14 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
                 <?php esc_html_e('Propuestas de posgrado y formación continua en ciencias sociales, educación, género y políticas públicas.', 'flacso-uruguay'); ?>
             </p>
 
+            <?php if (!empty($flacso_formacion_palette)) : ?>
+                <div class="flacso-formacion-hero__palette" aria-hidden="true">
+                    <?php foreach (array_slice($flacso_formacion_palette, 0, 8) as $color) : ?>
+                        <span style="--offer-accent: <?php echo esc_attr($color); ?>;"></span>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
             <nav class="flacso-formacion-nav" aria-label="<?php esc_attr_e('Tipos de formación', 'flacso-uruguay'); ?>">
                 <?php foreach ($tipos_oferta as $slug => $info) : ?>
                     <?php if (!empty($ofertas_por_tipo[$slug])) : ?>
@@ -100,13 +132,16 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
     </section>
 
     <?php
-    $render_formacion_card = static function (array $item): void {
+    $render_formacion_card = static function (array $item) use ($flacso_formacion_offer_accent): void {
+        $accent = $flacso_formacion_offer_accent($item);
         $is_open = !empty($item['registration']['is_open']);
         $fecha_inicio = (string) ($item['instance']['fecha_inicio'] ?? '');
         $carga_horaria = (string) ($item['academic']['carga_horaria'] ?? '');
         $fechas_card = !empty($item['instance']['fechas_formateadas']) ? $item['instance']['fechas_formateadas'] : ($fecha_inicio !== '' ? flacso_theme_format_date_es($fecha_inicio, false) : '');
         ?>
-        <a href="<?php echo esc_url($item['permalink']); ?>" class="flacso-formacion-card">
+        <a href="<?php echo esc_url($item['permalink']); ?>"
+           class="flacso-formacion-card<?php echo $accent !== '' ? ' flacso-formacion-card--accented' : ''; ?>"
+           <?php if ($accent !== '') : ?>style="--offer-accent: <?php echo esc_attr($accent); ?>;"<?php endif; ?>>
             <div class="flacso-formacion-card__media">
                 <?php if (!empty($item['thumbnail_url'])) : ?>
                     <img src="<?php echo esc_url($item['thumbnail_url']); ?>" alt="<?php echo esc_attr($item['title']); ?>" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
@@ -182,10 +217,27 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
                 };
                 usort($group_open, $sort_formacion);
                 usort($group_closed, $sort_formacion);
+
+                $group_palette = [];
+                foreach ($ofertas_por_tipo[$slug] as $offer) {
+                    $color = $flacso_formacion_offer_accent($offer);
+                    if ($color !== '' && !in_array($color, $group_palette, true)) {
+                        $group_palette[] = $color;
+                    }
+                }
             ?>
                 <section id="<?php echo esc_attr($slug); ?>" class="flacso-formacion-group" aria-labelledby="heading-<?php echo esc_attr($slug); ?>">
                     <header class="flacso-formacion-group__header">
-                        <h2 id="heading-<?php echo esc_attr($slug); ?>" class="flacso-formacion-group__title"><?php echo esc_html($info['label']); ?></h2>
+                        <div class="flacso-formacion-group__heading">
+                            <h2 id="heading-<?php echo esc_attr($slug); ?>" class="flacso-formacion-group__title"><?php echo esc_html($info['label']); ?></h2>
+                            <?php if ($group_palette) : ?>
+                                <div class="flacso-formacion-group__palette" aria-hidden="true">
+                                    <?php foreach (array_slice($group_palette, 0, 6) as $color) : ?>
+                                        <span style="--offer-accent: <?php echo esc_attr($color); ?>;"></span>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                         <a href="<?php echo esc_url($info['url']); ?>" class="flacso-formacion-group__more">
                             <?php printf(esc_html__('Ver todas las %s →', 'flacso-uruguay'), esc_html(mb_strtolower($info['label']))); ?>
                         </a>
