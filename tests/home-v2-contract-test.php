@@ -89,10 +89,13 @@ check(strpos($css, 'background: linear-gradient(180deg, transparent, #092c52)') 
 check(strpos($css, 'clip-path: polygon(10%') === false, 'fotografía no usa corte diagonal');
 check(strpos($css, 'clip-path: none') !== false, 'móvil elimina el corte diagonal');
 check(strpos($css, 'Mobile first: foto a sangre, proporción original y contenido compacto') !== false, 'reglas móviles del hero definidas al final');
-check(strpos($css, 'height: 40px;') !== false, 'transición inferior móvil discreta');
+$mobile_css = substr($css, (int) strrpos($css, '/* Mobile first: foto a sangre, proporción original y contenido compacto.'));
+check(strpos($mobile_css, 'background: #092c52;') !== false, 'color de fondo móvil unifica el fundido con el texto');
+check(strpos($mobile_css, 'height: clamp(110px, 30vw, 170px);') !== false, 'transición móvil prolongada y responsiva');
+check(strpos($mobile_css, 'rgba(9, 44, 82, .04) 18%') !== false && strpos($mobile_css, 'rgba(9, 44, 82, .84) 85%') !== false, 'fundido móvil progresivo, sin salto brusco');
 check(strpos($css, 'font-size: clamp(1.75rem, 6.6vw, 2.1rem)') !== false, 'eslogan compacto en móvil');
 check(strpos($css, 'aspect-ratio: auto;') !== false, 'imagen móvil sin proporción 16:9 forzada');
-check(strpos($css, 'padding: 18px 0 32px') !== false, 'espacio equilibrado bajo fotografía en móvil');
+check(strpos($mobile_css, 'padding: 14px 0 32px') !== false, 'espacio equilibrado bajo fotografía en móvil');
 check(strpos($css, 'font-size: clamp(1.65rem, 6.2vw, 2rem)') !== false, 'títulos de secciones legibles sin desbordes');
 check(strpos($css, 'prefers-reduced-motion: reduce') !== false, 'hero respeta reducción de movimiento');
 $hero_template = file_get_contents($root . '/template-parts/home/hero.php');
