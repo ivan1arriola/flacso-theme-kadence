@@ -477,23 +477,23 @@
     height: 4px;
     background: var(--offer-accent);
 }
-.flacso-home-v2 .home-offer-card--maestrias {
+.flacso-home-v2 .offer--maestrias {
     --offer-accent: #1d4c80;
     --offer-tint: #e9f1fa;
 }
-.flacso-home-v2 .home-offer-card--especializaciones {
+.flacso-home-v2 .offer--especializaciones {
     --offer-accent: #2c6977;
     --offer-tint: #eaf4f4;
 }
-.flacso-home-v2 .home-offer-card--diplomados {
+.flacso-home-v2 .offer--diplomados {
     --offer-accent: #5f568e;
     --offer-tint: #f0eef9;
 }
-.flacso-home-v2 .home-offer-card--diplomas {
+.flacso-home-v2 .offer--diplomas {
     --offer-accent: #94612e;
     --offer-tint: #f9f1e5;
 }
-.flacso-home-v2 .home-offer-card--seminarios {
+.flacso-home-v2 .offer--seminarios {
     --offer-accent: #236382;
     --offer-tint: #eaf4f8;
 }
