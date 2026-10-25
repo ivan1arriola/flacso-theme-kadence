@@ -1,0 +1,104 @@
+<?php
+/**
+ * Regresión: un único documento académico cuando calendario y malla
+ * señalan la misma fuente, sin ocultar PDFs diferentes.
+ */
+declare(strict_types=1);
+
+define('ABSPATH', dirname(__DIR__) . '/');
+
+function add_filter(...$args): void {}
+require_once dirname(__DIR__) . '/inc/theme-setup.php';
+
+function check_shared_document(bool $ok, string $message): void {
+    if (!$ok) {
+        fwrite(STDERR, "FAIL: {$message}\n");
+        exit(1);
+    }
+}
+
+$drive = 'https://drive.google.com/uc?export=download&id=china-2026';
+$other = 'https://drive.google.com/uc?export=download&id=otra-cohorte';
+$proxy = static function (string $document, string $label): string {
+    return 'https://flacso.edu.uy/wp-admin/admin-ajax.php?action=flacso_view_pdf'
+        . '&fn=' . rawurlencode(base64_encode($label))
+        . '&src=' . rawurlencode(base64_encode($document));
+};
+
+check_shared_document(
+    flacso_theme_calendar_and_curriculum_share_document($drive, $drive),
+    'dos URLs idénticas deben unificarse'
+);
+check_shared_document(
+    flacso_theme_calendar_and_curriculum_share_document(' ' . $drive . ' ', $drive),
+    'espacios de guardado no deben generar documentos duplicados'
+);
+check_shared_document(
+    flacso_theme_calendar_and_curriculum_share_document(
+        $proxy($drive, 'Calendario Académico'),
+        $proxy($drive, 'Malla Curricular')
+    ),
+    'dos enlaces del proxy con fn diferentes deben resolverse al mismo PDF'
+);
+check_shared_document(
+    flacso_theme_calendar_and_curriculum_share_document($drive, $proxy($drive, 'Malla Curricular')),
+    'una URL original y una del proxy al mismo PDF deben unificarse'
+);
+check_shared_document(
+    flacso_theme_calendar_and_curriculum_share_document(
+        'https://drive.google.com/uc?export=download&amp;id=china-2026',
+        $drive
+    ),
+    'los ampersands HTML no deben alterar la identidad del documento'
+);
+check_shared_document(
+    !flacso_theme_calendar_and_curriculum_share_document($drive, $other),
+    'dos archivos distintos deben seguir publicados por separado'
+);
+check_shared_document(
+    !flacso_theme_calendar_and_curriculum_share_document('', $drive)
+        && !flacso_theme_calendar_and_curriculum_share_document($drive, '')
+        && !flacso_theme_calendar_and_curriculum_share_document('', ''),
+    'se requieren ambos enlaces no vacíos'
+);
+check_shared_document(
+    !flacso_theme_calendar_and_curriculum_share_document(
+        $proxy($drive, 'Calendario Académico'),
+        $proxy($other, 'Malla Curricular')
+    ),
+    'el proxy no debe confundir archivos distintos'
+);
+
+$root = dirname(__DIR__);
+$page = (string) file_get_contents($root . '/oferta-academica/page.php');
+$carta = (string) file_get_contents($root . '/template-parts/oferta/carta.php');
+$both = 'Calendario y malla académica';
+
+check_shared_document(
+    strpos($page, 'flacso_theme_calendar_and_curriculum_share_document(') !== false
+        && strpos($page, 'if ($calendario_y_malla_compartidos)') !== false
+        && strpos($page, 'else :') !== false,
+    'la oferta debe presentar un único documento solo cuando coinciden'
+);
+check_shared_document(
+    strpos($page, 'Descargar calendario y malla académica (PDF)') !== false
+        && strpos($page, 'Descargar malla curricular') !== false
+        && strpos($page, 'Descargar Calendario Académico (PDF)') !== false,
+    'la oferta conserva los textos y enlaces independientes cuando no coinciden'
+);
+check_shared_document(
+    strpos($page, 'data-flacso-meta-doc-section="CalendarioAcademicoSectionView"') !== false,
+    'el documento combinado conserva el marcador del calendario'
+);
+check_shared_document(
+    strpos($carta, 'flacso_theme_calendar_and_curriculum_share_document(') !== false
+        && strpos($carta, $both) !== false
+        && strpos($carta, "__('Calendario académico'") !== false,
+    'la carta solo cambia el nombre cuando el archivo está compartido'
+);
+check_shared_document(
+    strpos($carta, 'href="<?php echo esc_url($calendario_url); ?>"') !== false,
+    'la carta mantiene un solo enlace hacia el calendario público'
+);
+
+echo "OK: calendario y malla académica unidos solo al compartir fuente.\n";
