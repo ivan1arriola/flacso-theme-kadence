@@ -383,6 +383,13 @@ $calendario_y_malla_compartidos = flacso_theme_calendar_and_curriculum_share_doc
                         </div>
                     <?php endif; ?>
 
+                    <?php if ($mostrar_convenio_iin) : ?>
+                        <div class="fc-convenio-pill">
+                            <i class="bi bi-shield-check" aria-hidden="true"></i>
+                            <span><?php esc_html_e('Convenio IIN-OEA', 'flacso-uruguay'); ?></span>
+                        </div>
+                    <?php endif; ?>
+
                     <div class="fc-hero-actions">
                         <?php if ($inscripciones_abiertas) : ?>
                             <a data-flacso-preinscription-cta="1" href="<?php echo esc_url($url_inscripcion); ?>" class="fc-primary-button">
@@ -434,13 +441,6 @@ $calendario_y_malla_compartidos = flacso_theme_calendar_and_curriculum_share_doc
                 </section>
 
                 <div class="fc-hero-visual">
-                    <?php if ($mostrar_convenio_iin) : ?>
-                        <div class="fc-convenio-pill">
-                            <i class="bi bi-shield-check" aria-hidden="true"></i>
-                            <span><?php esc_html_e('Convenio IIN-OEA', 'flacso-uruguay'); ?></span>
-                        </div>
-                    <?php endif; ?>
-
                     <?php if ($thumbnail_url !== '') : ?>
                         <div class="fc-cover-card">
                             <img src="<?php echo esc_url($thumbnail_url); ?>" alt="" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
