@@ -495,6 +495,20 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                 <?php endif; ?>
             </section>
 
+            <!-- Índice editorial: enlaces únicamente a secciones presentes en la carta. -->
+            <nav class="fc-jump-nav" aria-label="<?php esc_attr_e('Navegación por la carta', 'flacso-uruguay'); ?>">
+                <span class="fc-jump-nav__label"><?php esc_html_e('En esta carta', 'flacso-uruguay'); ?></span>
+                <div class="fc-jump-nav__links">
+                    <?php if ($hay_bloques_detallados) : ?>
+                        <a href="#fc-overview-title"><?php esc_html_e('Propuesta', 'flacso-uruguay'); ?></a>
+                        <a href="#fc-experience-title"><?php esc_html_e('Experiencia académica', 'flacso-uruguay'); ?></a>
+                    <?php endif; ?>
+                    <a href="#fc-planificacion"><?php esc_html_e('Calendario y costos', 'flacso-uruguay'); ?></a>
+                    <a href="#fc-practica"><?php esc_html_e('Información práctica', 'flacso-uruguay'); ?></a>
+                    <a href="#fc-contact-title"><?php esc_html_e('Contacto', 'flacso-uruguay'); ?></a>
+                </div>
+            </nav>
+
             <!-- CONTENIDO DETALLADO -->
             <section class="fc-content-sections" aria-label="<?php esc_attr_e('Información detallada del programa', 'flacso-uruguay'); ?>">
                 <?php
@@ -517,10 +531,10 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                             </header>
                             <?php if (!empty($academic['descripcion_html'])) : ?>
                             <article class="fc-content-panel fc-content-panel--primary fc-editorial-intro" aria-labelledby="fc-panel-descripcion">
-                                <div class="fc-general-grid">
+                                <div class="fc-general-grid<?php echo $fc_audience_summary !== '' ? ' fc-general-grid--with-audience' : ''; ?>">
                                     <div class="fc-general-copy">
                                         <span class="fc-editorial-dots" aria-hidden="true"><i></i><i></i></span>
-                                        <h2 id="fc-panel-descripcion"><?php esc_html_e('Información general', 'flacso-uruguay'); ?></h2>
+                                        <h3 id="fc-panel-descripcion"><?php esc_html_e('Información general', 'flacso-uruguay'); ?></h3>
                                         <div class="fc-content-panel-body">
                                             <?php echo wp_kses_post($academic['descripcion_html']); ?>
                                         </div>
@@ -618,7 +632,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                 <?php endif; ?>
             </section>
 
-            <section class="fc-major-section fc-major-section--planning" aria-labelledby="fc-planning-title">
+            <section id="fc-planificacion" class="fc-major-section fc-major-section--planning" aria-labelledby="fc-planning-title">
                 <header class="fc-major-heading">
                     <span class="fc-major-heading__kicker" aria-hidden="true">03</span>
                     <div>
@@ -770,7 +784,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
             </section>
 
             <!-- INFORMACIÓN PRÁCTICA -->
-            <section class="fc-section fc-info-important fc-major-section fc-major-section--practical">
+            <section id="fc-practica" class="fc-section fc-info-important fc-major-section fc-major-section--practical">
                 <header class="fc-major-heading">
                     <span class="fc-major-heading__kicker" aria-hidden="true">04</span>
                     <div>
