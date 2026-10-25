@@ -6805,12 +6805,15 @@
     border: 0;
     background: transparent;
     color: #082b60 !important;
-    font-size: clamp(2.8rem, 5.1vw, 5.25rem);
+    font-size: clamp(2.25rem, 3.5vw, 3.25rem);
     font-weight: 850;
     letter-spacing: -.055em;
     line-height: .99;
     text-wrap: balance;
-    overflow-wrap: break-word;
+    overflow-wrap: normal;
+    word-wrap: normal;
+    word-break: normal;
+    hyphens: none;
 }
 
 .flacso-oferta-responsive .flacso-academic-hero__actions {
@@ -7036,7 +7039,7 @@
     }
 
     .flacso-oferta-responsive .flacso-academic-hero__title {
-        font-size: clamp(2.25rem, 9.2vw, 3.45rem);
+        font-size: clamp(1.75rem, 8vw, 3.2rem);
         line-height: 1.03;
         letter-spacing: -.045em;
     }
