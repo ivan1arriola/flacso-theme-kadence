@@ -216,10 +216,16 @@ $cohorte_modalidad_titulo = function_exists('flacso_theme_format_modality')
 $cohorte_modalidad_desc   = !empty($instance['modalidad_descripcion']) ? (string) $instance['modalidad_descripcion'] : '';
 
 $calendario_pdf_url = !empty($academic['calendario_pdf_url']) ? trim((string) $academic['calendario_pdf_url']) : '';
-$calendario_doc_url = $calendario_pdf_url;
 $malla_doc_url = trim((string) ($academic['malla_curricular_url'] ?? ''));
+$calendario_y_malla_compartidos = flacso_theme_calendar_and_curriculum_share_document(
+    $calendario_pdf_url,
+    $malla_doc_url
+);
+// Comparar las fuentes ANTES de que el proxy genere URLs con distintos nombres.
+$calendario_doc_url = $calendario_pdf_url;
 if ($calendario_doc_url && function_exists('flacso_get_pdf_proxy_url')) {
-    $proxied = flacso_get_pdf_proxy_url($calendario_doc_url, 'Calendario Académico');
+    $documento_titulo = $calendario_y_malla_compartidos ? 'Calendario y malla académica' : 'Calendario Académico';
+    $proxied = flacso_get_pdf_proxy_url($calendario_doc_url, $documento_titulo);
     if ($proxied) $calendario_doc_url = $proxied;
 }
 
@@ -637,16 +643,25 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                             <strong><?php esc_html_e('Incluye instancias exclusivamente presenciales.', 'flacso-uruguay'); ?></strong>
                                                         </p>
                                                     <?php endif; ?>
-                                                    <?php if ($malla_doc_url !== '') : ?>
-                                                        <p class="mb-0 mt-2"><a href="<?php echo esc_url($malla_doc_url); ?>" target="_blank" rel="noopener noreferrer" class="flacso-meta-doc-link flacso-meta-doc-link--malla" style="color:var(--azul);font-weight:750;text-decoration:none;"><i class="bi bi-file-earmark-pdf text-danger me-1" aria-hidden="true"></i><?php esc_html_e('Descargar malla curricular', 'flacso-uruguay'); ?></a></p>
-                                                    <?php endif; ?>
-                                                    <?php if ($calendario_doc_url !== '') : ?>
+                                                    <?php if ($calendario_y_malla_compartidos) : ?>
                                                         <p class="mb-0 mt-2">
-                                                            <a href="<?php echo esc_url($calendario_doc_url); ?>" target="_blank" rel="noopener noreferrer" class="flacso-meta-doc-link flacso-meta-doc-link--calendario" data-flacso-meta-doc-section="CalendarioAcademicoSectionView" style="color:var(--azul);font-weight:750;text-decoration:none;">
+                                                            <a href="<?php echo esc_url($calendario_doc_url); ?>" target="_blank" rel="noopener noreferrer" class="flacso-meta-doc-link flacso-meta-doc-link--calendario flacso-meta-doc-link--malla" data-flacso-meta-doc-section="CalendarioAcademicoSectionView" style="color:var(--azul);font-weight:750;text-decoration:none;">
                                                                 <i class="bi bi-file-earmark-pdf text-danger me-1" aria-hidden="true"></i>
-                                                                <?php esc_html_e('Descargar Calendario Académico (PDF)', 'flacso-uruguay'); ?>
+                                                                <?php esc_html_e('Descargar calendario y malla académica (PDF)', 'flacso-uruguay'); ?>
                                                             </a>
                                                         </p>
+                                                    <?php else : ?>
+                                                        <?php if ($malla_doc_url !== '') : ?>
+                                                            <p class="mb-0 mt-2"><a href="<?php echo esc_url($malla_doc_url); ?>" target="_blank" rel="noopener noreferrer" class="flacso-meta-doc-link flacso-meta-doc-link--malla" style="color:var(--azul);font-weight:750;text-decoration:none;"><i class="bi bi-file-earmark-pdf text-danger me-1" aria-hidden="true"></i><?php esc_html_e('Descargar malla curricular', 'flacso-uruguay'); ?></a></p>
+                                                        <?php endif; ?>
+                                                        <?php if ($calendario_doc_url !== '') : ?>
+                                                            <p class="mb-0 mt-2">
+                                                                <a href="<?php echo esc_url($calendario_doc_url); ?>" target="_blank" rel="noopener noreferrer" class="flacso-meta-doc-link flacso-meta-doc-link--calendario" data-flacso-meta-doc-section="CalendarioAcademicoSectionView" style="color:var(--azul);font-weight:750;text-decoration:none;">
+                                                                    <i class="bi bi-file-earmark-pdf text-danger me-1" aria-hidden="true"></i>
+                                                                    <?php esc_html_e('Descargar Calendario Académico (PDF)', 'flacso-uruguay'); ?>
+                                                                </a>
+                                                            </p>
+                                                        <?php endif; ?>
                                                     <?php endif; ?>
                                                 </div>
                                             <?php endif; ?>
