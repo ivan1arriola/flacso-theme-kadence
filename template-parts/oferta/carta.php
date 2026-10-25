@@ -294,7 +294,9 @@ if (!empty($academic['perfil_ingreso_html'])) {
 
 // El diseño a dos columnas solo se aplica a descripciones extensas; la lectura
 // de propuestas breves permanece lineal y sin columnas artificialmente vacías.
-$fc_long_description = mb_strlen(trim(wp_strip_all_tags((string) ($academic['descripcion_html'] ?? '')))) >= 800;
+$fc_description_html = (string) ($academic['descripcion_html'] ?? '');
+$fc_long_description = mb_strlen(trim(wp_strip_all_tags($fc_description_html))) >= 800
+    && !preg_match('/<(?:table|img|iframe|video|figure|pre|ul|ol|h[1-6])\b/i', $fc_description_html);
 
 // Sólo el calendario independiente puede ofrecerse públicamente.
 $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendario_pdf_url'] : '';
