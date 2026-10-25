@@ -505,17 +505,17 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
             <div class="fc-reading-layout">
                 <aside class="fc-reading-sidebar">
                     <nav class="fc-jump-nav" aria-label="<?php esc_attr_e('Navegación por la carta', 'flacso-uruguay'); ?>">
-                <span class="fc-jump-nav__label"><?php esc_html_e('Explorá la carta', 'flacso-uruguay'); ?></span>
-                <div class="fc-jump-nav__links">
-                    <?php if ($hay_bloques_detallados) : ?>
-                        <a href="#fc-overview-title"><?php esc_html_e('Propuesta', 'flacso-uruguay'); ?></a>
-                        <a href="#fc-experience-title"><?php esc_html_e('Experiencia académica', 'flacso-uruguay'); ?></a>
-                    <?php endif; ?>
-                    <a href="#fc-planificacion"><?php esc_html_e('Calendario y costos', 'flacso-uruguay'); ?></a>
-                    <a href="#fc-practica"><?php esc_html_e('Información práctica', 'flacso-uruguay'); ?></a>
-                    <a href="#fc-trust"><?php esc_html_e('Por qué FLACSO', 'flacso-uruguay'); ?></a>
-                    <a href="#fc-contact-title"><?php esc_html_e('Contacto', 'flacso-uruguay'); ?></a>
-                </div>
+                    <span class="fc-jump-nav__label"><?php esc_html_e('Explorá la carta', 'flacso-uruguay'); ?></span>
+                    <div class="fc-jump-nav__links">
+                        <?php if ($hay_bloques_detallados) : ?>
+                            <a href="#fc-overview-title"><?php esc_html_e('Propuesta', 'flacso-uruguay'); ?></a>
+                            <a href="#fc-experience-title"><?php esc_html_e('Experiencia académica', 'flacso-uruguay'); ?></a>
+                        <?php endif; ?>
+                        <a href="#fc-planificacion"><?php esc_html_e('Calendario y costos', 'flacso-uruguay'); ?></a>
+                        <a href="#fc-practica"><?php esc_html_e('Información práctica', 'flacso-uruguay'); ?></a>
+                        <a href="#fc-trust"><?php esc_html_e('Por qué FLACSO', 'flacso-uruguay'); ?></a>
+                        <a href="#fc-contact-title"><?php esc_html_e('Contacto', 'flacso-uruguay'); ?></a>
+                    </div>
                     </nav>
                     <div class="fc-reading-help">
                         <i class="bi bi-chat-dots" aria-hidden="true"></i>
