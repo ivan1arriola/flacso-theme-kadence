@@ -2304,10 +2304,9 @@
         grid-column: 1 / -1;
     }
 
-    .flacso-carta-virtual .fc-resource-grid {
-        grid-template-columns: minmax(0,.92fr) minmax(0,1.08fr);
+    .flacso-carta-virtual .fc-major-section--planning .fc-resource-grid {
+        grid-template-columns: minmax(0, 1fr);
         gap: 18px;
-        align-items: stretch;
     }
 
     .flacso-carta-virtual .fc-documents-section .fc-more-grid {
@@ -2315,9 +2314,20 @@
         gap: 12px;
     }
 
-    .flacso-carta-virtual .fc-documents-section .fc-more-card {
-        grid-template-columns: 42px minmax(0,1fr);
+    .flacso-carta-virtual .fc-documents-section.fc-section > .fc-more-grid .fc-more-card {
+        grid-template-columns: 42px minmax(0,1fr) auto;
+        align-items: center;
         min-width: 0;
+    }
+
+    .flacso-carta-virtual .fc-documents-section .fc-more-icon {
+        grid-row: 1 / span 2;
+    }
+
+    .flacso-carta-virtual .fc-documents-section .fc-card-button {
+        grid-column: 3;
+        grid-row: 1 / span 2;
+        white-space: nowrap;
     }
 
     .flacso-carta-virtual .fc-info-list {

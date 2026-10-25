@@ -23,6 +23,10 @@ check_carta_planning(
     'calendario conserva una columna flexible'
 );
 check_carta_planning(
+    preg_match('/\.fc-major-section--planning \.fc-resource-grid\s*\{\s*grid-template-columns:\s*minmax\(0,\s*1fr\);/', $styles) === 1,
+    'calendario y precios se apilan para evitar paneles vacíos'
+);
+check_carta_planning(
     strpos($template, "esc_html(\$modalidad)") !== false
         && strpos($template, "esc_html_e('Formación 100% a distancia'") === false,
     'el CTA final no contradice la modalidad publicada'
