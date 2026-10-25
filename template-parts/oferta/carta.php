@@ -36,6 +36,14 @@ wp_enqueue_style(
     flacso_child_asset_version('assets/css/single-carta-editorial.css')
 );
 
+// Capa final de presentación del prototipo editorial; no toca datos académicos.
+wp_enqueue_style(
+    'flacso-single-carta-reference',
+    get_stylesheet_directory_uri() . '/assets/css/single-carta-reference.css',
+    ['flacso-single-carta-editorial'],
+    flacso_child_asset_version('assets/css/single-carta-reference.css')
+);
+
 if (!wp_style_is('bootstrap-icons', 'enqueued')) {
     wp_enqueue_style(
         'bootstrap-icons',
