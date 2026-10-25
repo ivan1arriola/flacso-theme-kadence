@@ -947,6 +947,12 @@
     gap: 10px;
 }
 
+/* El calendario suele tener un solo recurso: nunca hereda la rejilla de
+   tres tarjetas usada por "Más información". */
+.flacso-carta-virtual .fc-documents-section .fc-more-grid {
+    grid-template-columns: minmax(0, 1fr);
+}
+
 .flacso-carta-virtual .fc-more-card {
     display: grid;
     grid-template-columns: 42px minmax(0,1fr);
@@ -1234,7 +1240,7 @@
    12. POR QUÉ FLACSO / MÁS INFORMACIÓN
    ========================================================================== */
 
-.flacso-carta-virtual .fc-section > .fc-more-grid {
+.flacso-carta-virtual .fc-section:not(.fc-documents-section) > .fc-more-grid {
     grid-template-columns: 1fr;
     gap: 12px;
 }
@@ -1684,7 +1690,7 @@
         font-size: 14.5px;
     }
 
-    .flacso-carta-virtual .fc-section > .fc-more-grid {
+    .flacso-carta-virtual .fc-section:not(.fc-documents-section) > .fc-more-grid {
         grid-template-columns: repeat(3, minmax(0,1fr));
         gap: 16px;
     }
@@ -2122,7 +2128,7 @@
         height: 30px;
     }
 
-    .flacso-carta-virtual .fc-section > .fc-more-grid {
+    .flacso-carta-virtual .fc-section:not(.fc-documents-section) > .fc-more-grid {
         gap: 10px;
     }
 
@@ -2197,14 +2203,14 @@
     }
 
     .flacso-carta-virtual .fc-documents-section .fc-more-grid {
-        grid-template-columns: repeat(2, minmax(0,1fr));
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .flacso-carta-virtual .fc-info-list {
         grid-template-columns: repeat(2, minmax(0,1fr));
     }
 
-    .flacso-carta-virtual .fc-section > .fc-more-grid {
+    .flacso-carta-virtual .fc-section:not(.fc-documents-section) > .fc-more-grid {
         grid-template-columns: repeat(2, minmax(0,1fr));
     }
 
@@ -2305,7 +2311,7 @@
     }
 
     .flacso-carta-virtual .fc-documents-section .fc-more-grid {
-        grid-template-columns: repeat(2, minmax(0,1fr));
+        grid-template-columns: minmax(0, 1fr);
         gap: 12px;
     }
 
@@ -2319,7 +2325,7 @@
         gap: 12px;
     }
 
-    .flacso-carta-virtual .fc-section > .fc-more-grid {
+    .flacso-carta-virtual .fc-section:not(.fc-documents-section) > .fc-more-grid {
         grid-template-columns: repeat(3, minmax(0,1fr));
         gap: 14px;
     }

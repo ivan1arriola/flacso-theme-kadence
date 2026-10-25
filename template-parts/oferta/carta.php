@@ -633,10 +633,10 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
             <?php if ($calendario_url) : ?>
                 <section class="fc-section fc-documents-section">
                     <h2 class="fc-section-title"><?php esc_html_e('Calendario académico', 'flacso-uruguay'); ?></h2>
-                    <div class="fc-more-grid" style="--fc-grid-cols: 1;">
+                    <div class="fc-more-grid">
                         <article class="fc-more-card">
                             <div class="fc-more-icon"><i class="bi bi-calendar2-check" aria-hidden="true"></i></div>
-                            <h3><?php esc_html_e('Calendario académico', 'flacso-uruguay'); ?></h3>
+                            <h3><?php esc_html_e('Cronograma de cursada', 'flacso-uruguay'); ?></h3>
                             <p><?php esc_html_e('Fechas clave, inicios y recesos de la cursada.', 'flacso-uruguay'); ?></p>
                             <a href="<?php echo esc_url($calendario_url); ?>" target="_blank" rel="noopener noreferrer" class="fc-card-button">
                                 <i class="bi bi-file-earmark-pdf" aria-hidden="true"></i> <?php esc_html_e('Ver calendario (PDF)', 'flacso-uruguay'); ?>
@@ -931,7 +931,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                 <div>
                     <span><?php echo esc_html(flacso_theme_brand_slogan()); ?></span>
                     <h2><?php echo esc_html($carta_cta_titulo); ?></h2>
-                    <p><strong><?php esc_html_e('Formación 100% a distancia', 'flacso-uruguay'); ?></strong></p>
+                    <p><strong><?php echo esc_html($modalidad); ?></strong></p>
                 </div>
 
                 <?php if ($inscripciones_abiertas) : ?>
