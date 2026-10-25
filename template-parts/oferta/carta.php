@@ -292,6 +292,12 @@ if (!empty($academic['perfil_ingreso_html'])) {
     $fc_audience_summary = wp_trim_words(wp_strip_all_tags((string) $academic['perfil_ingreso_html']), 40, '…');
 }
 
+// El diseño a dos columnas solo se aplica a descripciones extensas; la lectura
+// de propuestas breves permanece lineal y sin columnas artificialmente vacías.
+$fc_description_html = (string) ($academic['descripcion_html'] ?? '');
+$fc_long_description = mb_strlen(trim(wp_strip_all_tags($fc_description_html))) >= 800
+    && !preg_match('/<(?:table|img|iframe|video|figure|pre|ul|ol|h[1-6])\b/i', $fc_description_html);
+
 // Sólo el calendario independiente puede ofrecerse públicamente.
 $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendario_pdf_url'] : '';
 
@@ -495,19 +501,30 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                 <?php endif; ?>
             </section>
 
-            <!-- Índice editorial: enlaces únicamente a secciones presentes en la carta. -->
-            <nav class="fc-jump-nav" aria-label="<?php esc_attr_e('Navegación por la carta', 'flacso-uruguay'); ?>">
-                <span class="fc-jump-nav__label"><?php esc_html_e('En esta carta', 'flacso-uruguay'); ?></span>
-                <div class="fc-jump-nav__links">
-                    <?php if ($hay_bloques_detallados) : ?>
-                        <a href="#fc-overview-title"><?php esc_html_e('Propuesta', 'flacso-uruguay'); ?></a>
-                        <a href="#fc-experience-title"><?php esc_html_e('Experiencia académica', 'flacso-uruguay'); ?></a>
-                    <?php endif; ?>
-                    <a href="#fc-planificacion"><?php esc_html_e('Calendario y costos', 'flacso-uruguay'); ?></a>
-                    <a href="#fc-practica"><?php esc_html_e('Información práctica', 'flacso-uruguay'); ?></a>
-                    <a href="#fc-contact-title"><?php esc_html_e('Contacto', 'flacso-uruguay'); ?></a>
-                </div>
-            </nav>
+            <!-- Lectura editorial: índice lateral en escritorio, horizontal en móvil. -->
+            <div class="fc-reading-layout">
+                <aside class="fc-reading-sidebar">
+                    <nav class="fc-jump-nav" aria-label="<?php esc_attr_e('Navegación por la carta', 'flacso-uruguay'); ?>">
+                    <span class="fc-jump-nav__label"><?php esc_html_e('Explorá la carta', 'flacso-uruguay'); ?></span>
+                    <div class="fc-jump-nav__links">
+                        <?php if ($hay_bloques_detallados) : ?>
+                            <a href="#fc-overview-title"><?php esc_html_e('Propuesta', 'flacso-uruguay'); ?></a>
+                            <a href="#fc-experience-title"><?php esc_html_e('Experiencia académica', 'flacso-uruguay'); ?></a>
+                        <?php endif; ?>
+                        <a href="#fc-planificacion"><?php esc_html_e('Calendario y costos', 'flacso-uruguay'); ?></a>
+                        <a href="#fc-practica"><?php esc_html_e('Información práctica', 'flacso-uruguay'); ?></a>
+                        <a href="#fc-trust"><?php esc_html_e('Por qué FLACSO', 'flacso-uruguay'); ?></a>
+                        <a href="#fc-contact-title"><?php esc_html_e('Contacto', 'flacso-uruguay'); ?></a>
+                    </div>
+                    </nav>
+                    <div class="fc-reading-help">
+                        <i class="bi bi-chat-dots" aria-hidden="true"></i>
+                        <strong><?php esc_html_e('¿Tenés consultas?', 'flacso-uruguay'); ?></strong>
+                        <p><?php esc_html_e('Nuestro equipo académico puede orientarte.', 'flacso-uruguay'); ?></p>
+                        <a href="#fc-contact-title"><?php esc_html_e('Ver contacto académico', 'flacso-uruguay'); ?> <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                    </div>
+                </aside>
+                <div class="fc-reading-main">
 
             <!-- CONTENIDO DETALLADO -->
             <section class="fc-content-sections" aria-label="<?php esc_attr_e('Información detallada del programa', 'flacso-uruguay'); ?>">
@@ -531,7 +548,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                             </header>
                             <?php if (!empty($academic['descripcion_html'])) : ?>
                             <article class="fc-content-panel fc-content-panel--primary fc-editorial-intro" aria-labelledby="fc-panel-descripcion">
-                                <div class="fc-general-grid<?php echo $fc_audience_summary !== '' ? ' fc-general-grid--with-audience' : ''; ?>">
+                                <div class="fc-general-grid<?php echo $fc_long_description ? ' fc-general-grid--long' : ($fc_audience_summary !== '' ? ' fc-general-grid--with-audience' : ''); ?>">
                                     <div class="fc-general-copy">
                                         <span class="fc-editorial-dots" aria-hidden="true"><i></i><i></i></span>
                                         <h3 id="fc-panel-descripcion"><?php esc_html_e('Información general', 'flacso-uruguay'); ?></h3>
@@ -867,7 +884,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
             $carta_mas_info_gestion_title = trim((string) get_option('flacso_carta_mas_info_gestion_title', __('Gestión Académica', 'flacso-uruguay')));
             $carta_mas_info_gestion_html = (string) get_option('flacso_carta_mas_info_gestion_html', '<p>' . __('Nos distingue un sistema de <strong>gestión académica eficiente y cercano</strong>, que acompaña de forma <strong>personalizada</strong> a cada estudiante y garantiza <strong>altos niveles de egreso, superiores al 90%</strong>.', 'flacso-uruguay') . '</p>');
             ?>
-            <section class="fc-section fc-major-section fc-major-section--trust">
+            <section id="fc-trust" class="fc-section fc-major-section fc-major-section--trust">
                 <header class="fc-major-heading">
                     <span class="fc-major-heading__kicker" aria-hidden="true">05</span>
                     <div>
@@ -961,6 +978,9 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                 <?php endif; ?>
             </section>
 
+                </div><!-- /.fc-reading-main -->
+            </div><!-- /.fc-reading-layout -->
+
             <?php if ($inscripciones_abiertas) : ?>
                 <a class="fc-floating-preinscripcion is-hidden" data-flacso-preinscription-cta="1" href="<?php echo esc_url($url_inscripcion); ?>" aria-label="<?php echo esc_attr(sprintf(__('Abrir formulario de preinscripción para %s', 'flacso-uruguay'), $titulo)); ?>" aria-hidden="true" tabindex="-1">
                     <i class="bi bi-pencil-square" aria-hidden="true"></i>
@@ -990,6 +1010,56 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
             });
         });
     });
+}());
+
+</script>
+
+<script>
+/* El índice resalta la sección que se está leyendo, también con teclado. */
+(function () {
+    const nav = document.querySelector('.fc-jump-nav');
+    if (!nav) return;
+
+    const items = Array.from(nav.querySelectorAll('a[href^="#"]'))
+        .map((link) => ({ link, target: document.getElementById(link.hash.slice(1)) }))
+        .filter((item) => item.target);
+
+    if (!items.length) return;
+    let scheduled = false;
+
+    const update = () => {
+        scheduled = false;
+        const threshold = Math.min(170, window.innerHeight * .28);
+        let current = items[0];
+
+        for (const item of items) {
+            if (item.target.getBoundingClientRect().top <= threshold) {
+                current = item;
+            }
+        }
+
+        if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 24) {
+            current = items[items.length - 1];
+        }
+
+        for (const item of items) {
+            if (item === current) {
+                item.link.setAttribute('aria-current', 'location');
+            } else {
+                item.link.removeAttribute('aria-current');
+            }
+        }
+    };
+
+    const scheduleUpdate = () => {
+        if (scheduled) return;
+        scheduled = true;
+        requestAnimationFrame(update);
+    };
+
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate);
+    update();
 }());
 </script>
 
