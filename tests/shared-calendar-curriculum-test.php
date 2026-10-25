@@ -94,7 +94,7 @@ check_shared_document(
 check_shared_document(
     strpos($carta, 'flacso_theme_calendar_and_curriculum_share_document(') !== false
         && strpos($carta, $both) !== false
-        && strpos($carta, "__('Calendario académico'") !== false,
+        && strpos($carta, "esc_html_e('Calendario académico'") !== false,
     'la carta solo cambia el nombre cuando el archivo está compartido'
 );
 check_shared_document(
