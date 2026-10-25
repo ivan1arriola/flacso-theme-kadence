@@ -330,12 +330,6 @@ $calendario_y_malla_compartidos = flacso_theme_calendar_and_curriculum_share_doc
                         </div>
                     <?php endif; ?>
 
-                    <h1 id="fc-carta-title"><?php echo esc_html($titulo); ?></h1>
-
-                    <?php if ($fc_hero_summary !== '') : ?>
-                        <p class="fc-hero-summary"><?php echo esc_html($fc_hero_summary); ?></p>
-                    <?php endif; ?>
-
                     <div class="fc-hero-meta">
                         <?php if (!empty($tipo_oferta)) : ?>
                             <span><i class="bi bi-mortarboard" aria-hidden="true"></i> <?php echo esc_html($tipo_oferta); ?></span>
@@ -349,6 +343,12 @@ $calendario_y_malla_compartidos = flacso_theme_calendar_and_curriculum_share_doc
                             <span><?php echo esc_html($cohorte_label); ?></span>
                         <?php endif; ?>
                     </div>
+
+                    <h1 id="fc-carta-title"><?php echo esc_html($titulo); ?></h1>
+
+                    <?php if ($fc_hero_summary !== '') : ?>
+                        <p class="fc-hero-summary"><?php echo esc_html($fc_hero_summary); ?></p>
+                    <?php endif; ?>
 
                     <?php if ($reconocido_mec || $reconocimiento_int || $reconocimiento_red_flacso) : ?>
                         <div class="fc-certifications">
