@@ -7,8 +7,8 @@ declare(strict_types=1);
 
 define('ABSPATH', dirname(__DIR__) . '/');
 
-function add_filter(...$args): void {}
-require_once dirname(__DIR__) . '/inc/theme-setup.php';
+// Se prueba la decisión de PRESENTACIÓN, sin cargar ni modificar el modelo.
+require_once dirname(__DIR__) . '/inc/academic-document-presentation.php';
 
 function check_shared_document(bool $ok, string $message): void {
     if (!$ok) {
@@ -72,6 +72,7 @@ check_shared_document(
 $root = dirname(__DIR__);
 $page = (string) file_get_contents($root . '/oferta-academica/page.php');
 $carta = (string) file_get_contents($root . '/template-parts/oferta/carta.php');
+$model = (string) file_get_contents($root . '/inc/academic-public-model.php');
 $both = 'Calendario y malla académica';
 
 check_shared_document(
@@ -97,8 +98,16 @@ check_shared_document(
     'la carta solo cambia el nombre cuando el archivo está compartido'
 );
 check_shared_document(
-    strpos($carta, 'href="<?php echo esc_url($calendario_url); ?>"') !== false,
-    'la carta mantiene un solo enlace hacia el calendario público'
+    strpos($carta, 'href="<?php echo esc_url($calendario_url); ?>"') !== false
+        && strpos($carta, 'href="<?php echo esc_url($malla_curricular_document); ?>"') !== false
+        && strpos($carta, '&& !$calendario_y_malla_compartidos') !== false,
+    'la carta presenta un solo botón cuando coinciden y dos botones cuando son diferentes'
+);
+check_shared_document(
+    strpos($model, '"calendario_pdf_url"') !== false
+        && strpos($model, '"malla_curricular_url"') !== false
+        && strpos($model, 'calendario_y_malla_compartidos') === false,
+    'calendario y malla siguen siendo independientes en el backend'
 );
 
 echo "OK: calendario y malla académica unidos solo al compartir fuente.\n";
