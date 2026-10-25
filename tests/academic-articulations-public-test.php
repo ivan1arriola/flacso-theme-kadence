@@ -4,7 +4,7 @@
  */
 $root = dirname(__DIR__);
 $model = file_get_contents($root . '/inc/academic-public-model.php');
-$default = file_get_contents($root . '/template-parts/oferta/default.php');
+$default = file_get_contents($root . '/oferta-academica/page.php');
 $carta = file_get_contents($root . '/template-parts/oferta/carta.php');
 $partial = file_get_contents($root . '/template-parts/oferta/articulaciones.php');
 $assets = file_get_contents($root . '/inc/assets.php');

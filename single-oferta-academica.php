@@ -2,7 +2,7 @@
 /**
  * Template principal para la página individual de una Oferta Académica.
  *
- * Consume el View Model canónico y despacha a template-parts/oferta/default.
+ * Consume el View Model canónico y despacha a oferta-academica/page.
  *
  * @package kadence-child-flacso
  */
@@ -38,7 +38,7 @@ while (have_posts()) :
     if ($is_carta) {
         get_template_part('template-parts/oferta/carta', null, ['context' => $context]);
     } else {
-        get_template_part('template-parts/oferta/default', null, ['context' => $context]);
+        get_template_part('oferta-academica/page', null, ['context' => $context]);
     }
 
 endwhile;

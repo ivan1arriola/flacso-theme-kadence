@@ -18,6 +18,8 @@ El tema hijo contiene presentación, plantillas y compatibilidad con Kadence. Lo
 
 Las plantillas que WordPress detecta por nombre permanecen en la raíz. Las secciones reutilizables se colocan en `template-parts/<dominio>/` y reciben sus datos por `context` de `get_template_part()`.
 
+La ficha pública de una Oferta Académica se mantiene en `oferta-academica/`: `page.php` genera el marcado, `style.css` reúne sus estilos y `script.js` sus interacciones. `single-oferta-academica.php` permanece en la raíz como entrada exigida por la jerarquía de plantillas de WordPress y despacha a `page.php`; `inc/assets.php` carga los dos recursos de la carpeta. La subpágina Carta conserva su plantilla independiente.
+
 ## Recursos
 
 - `style.css` contiene metadatos del tema, tokens visuales y reglas globales.

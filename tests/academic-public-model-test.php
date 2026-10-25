@@ -686,7 +686,7 @@ assert_same("#0057a8", $offer_context["color_principal"], "Contexto expone color
 assert_same("#0057a8", $offer_context["academic"]["color_principal"], "Contexto expone color_principal en academic");
 assert_same(true, file_exists(__DIR__ . "/../template-parts/oferta/carta.php"), "Template part de carta existe");
 assert_same(true, file_exists(__DIR__ . "/../assets/css/single-carta.css"), "Estilos de carta existen");
-$offer_template = file_get_contents(__DIR__ . "/../template-parts/oferta/default.php");
+$offer_template = file_get_contents(__DIR__ . "/../oferta-academica/page.php");
 $carta_template = file_get_contents(__DIR__ . "/../template-parts/oferta/carta.php");
 assert_same(true, strpos($offer_template, "reconocimiento_red_flacso") !== false, "La página pública usa la opción independiente de reconocimiento de red");
 assert_same(true, strpos($offer_template, "Incluye instancias exclusivamente presenciales") !== false, "La oferta explica el carácter exclusivo de las instancias");

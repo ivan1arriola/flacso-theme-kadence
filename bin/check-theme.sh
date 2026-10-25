@@ -28,19 +28,19 @@ if grep -rn -E '^<style>|^</style>' --include='*.php' "$theme_dir"; then
     exit 1
 fi
 
-if grep -rn -E 'trailingslashit\(get_permalink\([^)]*\)\).*preinscripcion'     "$theme_dir/single-oferta-academica.php"     "$theme_dir/single-seminario.php"     "$theme_dir/template-parts/oferta/default.php"     "$theme_dir/template-parts/oferta/seminario.php"; then
+if grep -rn -E 'trailingslashit\(get_permalink\([^)]*\)\).*preinscripcion'     "$theme_dir/single-oferta-academica.php"     "$theme_dir/single-seminario.php"     "$theme_dir/oferta-academica/page.php"     "$theme_dir/template-parts/oferta/seminario.php"; then
     echo 'El tema no debe construir URLs de preinscripción; debe usar el resolver del plugin.' >&2
     exit 1
 fi
 
-if ! grep -q 'data-flacso-preinscription-cta' "$theme_dir/template-parts/oferta/default.php" ||    ! grep -q 'data-flacso-preinscription-cta' "$theme_dir/template-parts/oferta/seminario.php"; then
+if ! grep -q 'data-flacso-preinscription-cta' "$theme_dir/oferta-academica/page.php" ||    ! grep -q 'data-flacso-preinscription-cta' "$theme_dir/template-parts/oferta/seminario.php"; then
     echo 'Los CTA deben conservar el marcador semántico usado por analytics.' >&2
     exit 1
 fi
 
 if grep -q -E '(flacso-oa-team-directory|docentes_visibles|docentes_restantes)' \
-    "$theme_dir/template-parts/oferta/default.php" \
-    "$theme_dir/assets/css/single-oferta-academica.css"; then
+    "$theme_dir/oferta-academica/page.php" \
+    "$theme_dir/oferta-academica/style.css"; then
     echo 'Cada grupo docente debe mostrar a todos sus integrantes con una única jerarquía visual.' >&2
     exit 1
 fi

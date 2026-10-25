@@ -243,8 +243,8 @@ function flacso_child_enqueue_template_assets() {
             }
         }
 
-        $css_path = 'assets/css/' . $asset . '.css';
-        $js_path  = 'assets/js/' . $asset . '.js';
+        $css_path = 'single-oferta-academica' === $asset ? 'oferta-academica/style.css' : 'assets/css/' . $asset . '.css';
+        $js_path  = 'single-oferta-academica' === $asset ? 'oferta-academica/script.js' : 'assets/js/' . $asset . '.js';
 
         if ( is_readable( get_stylesheet_directory() . '/' . $css_path ) ) {
             wp_enqueue_style(

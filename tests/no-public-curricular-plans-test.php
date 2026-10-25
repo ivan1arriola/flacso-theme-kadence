@@ -5,7 +5,7 @@
  */
 $root = dirname(__DIR__);
 $model = file_get_contents($root . '/inc/academic-public-model.php');
-$page = file_get_contents($root . '/template-parts/oferta/default.php');
+$page = file_get_contents($root . '/oferta-academica/page.php');
 $carta = file_get_contents($root . '/template-parts/oferta/carta.php');
 function assert_public_docs(bool $ok, string $msg): void {
     if (!$ok) { fwrite(STDERR, "FAIL: " . $msg . "\n"); exit(1); }

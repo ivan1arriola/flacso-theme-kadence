@@ -3,7 +3,7 @@
 $root = dirname(__DIR__);
 $helper_file = $root . '/inc/academic-team-context.php';
 $single_file = $root . '/single-oferta-academica.php';
-$default_file = $root . '/template-parts/oferta/default.php';
+$default_file = $root . '/oferta-academica/page.php';
 
 function theme_team_assert(bool $condition, string $message): void {
     if (!$condition) {
