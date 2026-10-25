@@ -1,0 +1,1237 @@
+/**
+ * FLACSO Uruguay — Carta editorial inspirada en maqueta Maestría en Género.
+ *
+ * Solo presentación. Los textos, aranceles, estados, fechas, colores, fotos,
+ * PDF y relaciones se siguen obteniendo del view model de la Oferta/Cohorte.
+ * Carga DESPUÉS de single-carta-editorial.css.
+ */
+
+.flacso-carta-virtual {
+    --fc-ref-navy: #12264d;
+    --fc-ref-blue: #163970;
+    --fc-ref-midblue: #1d3a72;
+    --fc-ref-ink: #252a35;
+    --fc-ref-muted: #596879;
+    --fc-ref-line: #dbe2ec;
+    --fc-ref-soft: #f1f4f9;
+    --fc-ref-yellow: #fdd223;
+    background: #fff;
+    color: var(--fc-ref-ink);
+    padding: 0 0 60px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.flacso-carta-virtual,
+.flacso-carta-virtual * {
+    box-sizing: border-box;
+}
+
+.flacso-carta-virtual .fc-page-container,
+.flacso-carta-virtual .fc-intermediate-strip {
+    width: min(calc(100% - 48px), 1200px);
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 01 — Portada institucional: título dominante y ficha de datos integrada. */
+.flacso-carta-virtual .fc-hero {
+    width: 100%;
+    margin: 0;
+    background: var(--fc-ref-navy);
+}
+
+.flacso-carta-virtual .fc-hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(280px, .86fr);
+    align-items: end;
+    column-gap: clamp(30px, 4vw, 64px);
+    width: min(calc(100% - 48px), 1200px);
+    max-width: 1200px;
+    min-height: 0;
+    margin: 0 auto;
+    padding: clamp(52px, 6vw, 86px) 0 68px;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.flacso-carta-virtual .fc-hero-inner::before,
+.flacso-carta-virtual .fc-hero-inner::after {
+    content: none;
+}
+
+.flacso-carta-virtual .fc-hero-copy {
+    position: relative;
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+.flacso-carta-virtual .fc-eyebrow {
+    max-width: none;
+    margin: 0 0 14px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    color: #becde6;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: .025em;
+}
+
+.flacso-carta-virtual .fc-eyebrow i {
+    color: var(--fc-ref-yellow);
+}
+
+.flacso-carta-virtual .fc-hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 15px;
+    margin: 0 0 22px;
+}
+
+.flacso-carta-virtual .fc-hero-meta span {
+    display: inline-flex;
+    padding: 0;
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+    color: var(--fc-ref-yellow);
+    background: transparent;
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.flacso-carta-virtual .fc-hero-meta span + span::before {
+    content: "·";
+    margin-right: 12px;
+    color: rgba(255,255,255,.5);
+}
+
+.flacso-carta-virtual .fc-hero h1 {
+    width: auto;
+    max-width: 13ch;
+    margin: 0;
+    color: #fff;
+    font-size: clamp(44px, 5.5vw, 76px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -.035em;
+    overflow-wrap: break-word;
+    text-wrap: balance;
+}
+
+.flacso-carta-virtual .fc-hero-summary {
+    max-width: 34em;
+    margin: 25px 0 0;
+    color: #dee7f6;
+    font-size: clamp(17px, 1.6vw, 20px);
+    font-weight: 400;
+    line-height: 1.56;
+}
+
+.flacso-carta-virtual .fc-hero-highlights {
+    margin: 0 0 12px;
+}
+
+.flacso-carta-virtual .fc-hero-badge {
+    padding: 6px 9px;
+    font-size: 12px;
+}
+
+.flacso-carta-virtual .fc-hero-actions {
+    display: flex;
+    gap: 12px;
+    margin: 30px 0 0;
+}
+
+.flacso-carta-virtual .fc-primary-button,
+.flacso-carta-virtual .fc-secondary-button {
+    min-height: 50px;
+    padding: 13px 22px;
+    border-radius: 6px;
+    font-size: 15px;
+    line-height: 1.32;
+    font-weight: 750;
+}
+
+.flacso-carta-virtual .fc-primary-button {
+    color: var(--fc-ref-navy);
+    background: var(--fc-ref-yellow);
+    box-shadow: none;
+}
+
+.flacso-carta-virtual .fc-secondary-button {
+    color: #fff;
+    border: 1px solid #7993bf;
+    background: transparent;
+}
+
+.flacso-carta-virtual .fc-certifications {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 22px 0 0;
+}
+
+.flacso-carta-virtual .fc-certification {
+    padding: 7px 12px;
+    border: 1px solid #54709c;
+    border-radius: 999px;
+    color: #dfe8f7;
+    background: transparent;
+    font-size: 12.5px;
+    font-weight: 550;
+}
+
+/* Conservamos la imagen como metadato de la oferta, pero en esta versión
+   no competirá con la portada tipográfica (como en la maqueta adjunta). */
+.flacso-carta-virtual .fc-hero-visual {
+    display: none;
+}
+
+/* El destino de las anclas de datos está dentro de la portada, a la derecha. */
+.flacso-carta-virtual .fc-hero .fc-feature-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-column: 2;
+    grid-row: 1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    align-items: start;
+    gap: 0;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    padding: 26px 27px;
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 12px;
+    background: var(--fc-ref-midblue);
+    box-shadow: none;
+}
+
+.flacso-carta-virtual .fc-hero .fc-feature-card,
+.flacso-carta-virtual .fc-hero .fc-feature-card:nth-child(2n),
+.flacso-carta-virtual .fc-hero .fc-feature-card:nth-last-child(-n+2) {
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 13px 8px;
+    border: 0;
+    border-top: 1px solid rgba(255,255,255,.12);
+    background: transparent;
+}
+
+.flacso-carta-virtual .fc-hero .fc-feature-card:first-child {
+    grid-column: 1 / -1;
+    padding: 0 8px 22px;
+    border-top: 0;
+}
+
+.flacso-carta-virtual .fc-hero .fc-feature-icon {
+    display: none;
+}
+
+.flacso-carta-virtual .fc-hero .fc-feature-card h3 {
+    margin: 0 0 6px;
+    color: #bfcfe8;
+    font-size: 11px;
+    line-height: 1.3;
+    font-weight: 750;
+    letter-spacing: .10em;
+    text-transform: uppercase;
+}
+
+.flacso-carta-virtual .fc-hero .fc-feature-card p {
+    margin: 0;
+    color: #fff;
+    font-size: clamp(16px, 1.3vw, 19px);
+    font-weight: 650;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.flacso-carta-virtual .fc-hero .fc-feature-card:first-child p {
+    font-size: clamp(25px, 2.6vw, 34px);
+    font-weight: 750;
+    letter-spacing: -.025em;
+}
+
+/* Menciones: banda tipográfica en lugar de microchips sobre la foto. */
+.flacso-carta-virtual .fc-specializations {
+    background: var(--fc-ref-soft);
+    border-bottom: 1px solid var(--fc-ref-line);
+}
+
+.flacso-carta-virtual .fc-specializations__inner {
+    width: min(calc(100% - 48px), 1200px);
+    margin: 0 auto;
+    padding: 25px 0;
+}
+
+.flacso-carta-virtual .fc-specializations .fc-chip-block {
+    display: flex;
+    align-items: baseline;
+    gap: 22px;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+.flacso-carta-virtual .fc-specializations .fc-chip-block + .fc-chip-block {
+    margin-top: 16px;
+}
+
+.flacso-carta-virtual .fc-specializations .fc-chip-block > p {
+    flex: 0 0 auto;
+    margin: 0;
+    color: var(--fc-ref-blue);
+    font-size: 12px;
+    font-weight: 850;
+    line-height: 1.4;
+    letter-spacing: .10em;
+    text-transform: uppercase;
+}
+
+.flacso-carta-virtual .fc-specializations .fc-chip-grid {
+    flex: 1 1 550px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 26px;
+}
+
+.flacso-carta-virtual .fc-specializations .fc-chip-grid span {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    color: var(--fc-ref-navy);
+    background: transparent;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* Índice horizontal, sin duplicar cabecera/pie WordPress. */
+.flacso-carta-virtual .fc-reading-layout {
+    display: block;
+    min-width: 0;
+}
+
+.flacso-carta-virtual .fc-reading-sidebar {
+    position: static;
+    display: block;
+    width: 100%;
+    margin: 30px 0 0;
+    padding: 11px 16px;
+    border: 0;
+    border-radius: 7px;
+    background: var(--fc-ref-blue);
+    box-shadow: none;
+}
+
+.flacso-carta-virtual .fc-jump-nav {
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+.flacso-carta-virtual .fc-jump-nav__label,
+.flacso-carta-virtual .fc-reading-help {
+    display: none;
+}
+
+.flacso-carta-virtual .fc-jump-nav__links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px 12px;
+    overflow: visible;
+    min-width: 0;
+    padding: 0;
+    counter-reset: none;
+}
+
+.flacso-carta-virtual .fc-jump-nav__links a {
+    display: inline-flex;
+    grid-template-columns: none;
+    align-items: center;
+    justify-content: center;
+    flex: 0 1 auto;
+    width: auto;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 5px;
+    color: #e5edfa;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0;
+    text-align: center;
+    white-space: normal;
+}
+
+.flacso-carta-virtual .fc-jump-nav__links a::before {
+    content: none;
+}
+
+.flacso-carta-virtual .fc-jump-nav__links a:hover,
+.flacso-carta-virtual .fc-jump-nav__links a[aria-current="location"] {
+    color: #fff;
+    border: 0;
+    background: rgba(255,255,255,.16);
+}
+
+.flacso-carta-virtual .fc-jump-nav__links a:focus-visible {
+    outline: 3px solid var(--fc-ref-yellow);
+    outline-offset: 2px;
+}
+
+/* Títulos con numeración editorial y cuerpo legible en una sola columna. */
+.flacso-carta-virtual .fc-reading-main {
+    min-width: 0;
+}
+
+.flacso-carta-virtual .fc-content-sections,
+.flacso-carta-virtual .fc-academic-layout {
+    display: block;
+    margin: 0;
+}
+
+.flacso-carta-virtual .fc-major-section--overview,
+.flacso-carta-virtual .fc-major-section--experience,
+.flacso-carta-virtual .fc-major-section--planning,
+.flacso-carta-virtual .fc-major-section--practical,
+.flacso-carta-virtual .fc-major-section--trust,
+.flacso-carta-virtual .fc-major-section--contact {
+    margin: 0;
+    border-top: 0;
+    padding: clamp(50px, 7vw, 90px) 0 30px;
+}
+
+.flacso-carta-virtual .fc-major-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0;
+    min-width: 0;
+    margin: 0;
+}
+
+.flacso-carta-virtual .fc-major-heading__kicker {
+    display: block;
+    width: auto;
+    height: auto;
+    margin: 0 0 10px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    color: var(--fc-brand);
+    background: none;
+    font-size: clamp(46px, 5vw, 64px);
+    line-height: 1;
+    font-weight: 650;
+    letter-spacing: -.045em;
+}
+
+.flacso-carta-virtual .fc-major-heading h2 {
+    margin: 0;
+    color: var(--fc-ref-navy);
+    font-size: clamp(29px, 3.1vw, 40px);
+    line-height: 1.12;
+    font-weight: 750;
+    letter-spacing: -.025em;
+    text-wrap: balance;
+}
+
+.flacso-carta-virtual .fc-major-heading__rule {
+    display: none;
+}
+
+.flacso-carta-virtual .fc-section-eyebrow {
+    margin: 11px 0 0;
+    color: var(--fc-ref-muted);
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.flacso-carta-virtual .fc-major-section--overview .fc-editorial-intro,
+.flacso-carta-virtual .fc-experience-grid,
+.flacso-carta-virtual .fc-major-section--planning .fc-resource-grid,
+.flacso-carta-virtual .fc-major-section--practical .fc-info-list,
+.flacso-carta-virtual .fc-major-section--practical .fc-action-buttons,
+.flacso-carta-virtual .fc-major-section--trust > .fc-more-grid,
+.flacso-carta-virtual .fc-major-section--contact .fc-assistant-card {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.flacso-carta-virtual .fc-editorial-dots {
+    display: none;
+}
+
+.flacso-carta-virtual .fc-editorial-intro h3#fc-panel-descripcion {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    white-space: nowrap;
+    clip-path: inset(50%);
+    border: 0;
+}
+
+.flacso-carta-virtual .fc-general-grid,
+.flacso-carta-virtual .fc-general-grid--with-audience,
+.flacso-carta-virtual .fc-general-grid--long {
+    display: block;
+}
+
+.flacso-carta-virtual .fc-general-copy .fc-content-panel-body,
+.flacso-carta-virtual .fc-general-grid--long .fc-general-copy .fc-content-panel-body {
+    max-width: none;
+    column-count: 1;
+    column-rule: 0;
+}
+
+.flacso-carta-virtual .fc-content-panel-body,
+.flacso-carta-virtual .fc-content-panel-body p,
+.flacso-carta-virtual .fc-content-panel-body li {
+    color: var(--fc-ref-ink);
+    font-size: 17px;
+    line-height: 1.74;
+}
+
+.flacso-carta-virtual .fc-general-copy .fc-content-panel-body p {
+    margin: 0 0 18px;
+}
+
+.flacso-carta-virtual .fc-general-copy .fc-content-panel-body > p:first-child {
+    color: var(--fc-ref-navy);
+    font-size: 20px;
+    line-height: 1.54;
+}
+
+.flacso-carta-virtual .fc-audience-panel,
+.flacso-carta-virtual .fc-general-grid--long .fc-audience-panel,
+.flacso-carta-virtual .fc-general-grid--with-audience .fc-audience-panel {
+    max-width: none;
+    margin: 35px 0 0;
+    border: 0;
+    border-radius: 10px;
+    color: #fff;
+    background: var(--fc-ref-navy);
+    box-shadow: none;
+}
+
+.flacso-carta-virtual .fc-audience-panel__copy,
+.flacso-carta-virtual .fc-general-grid--with-audience .fc-audience-panel__copy {
+    display: flex;
+    grid-template-columns: none;
+    gap: 24px;
+    align-items: center;
+    padding: 26px 30px;
+}
+
+.flacso-carta-virtual .fc-audience-panel__icon {
+    display: none;
+}
+
+.flacso-carta-virtual .fc-audience-panel__copy h3 {
+    margin: 0 0 8px;
+    color: var(--fc-ref-yellow);
+    font-size: 12px;
+    line-height: 1.35;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.flacso-carta-virtual .fc-audience-panel__copy p {
+    color: #e8effb;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Experiencia: detalles alineados, líneas divisorias, sin tarjetas grises. */
+.flacso-carta-virtual .fc-experience-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.flacso-carta-virtual .fc-content-panel--modality {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+    padding: 16px 0 18px;
+    border-top: 3px solid var(--fc-brand);
+    border-radius: 0;
+    background: transparent;
+}
+
+.flacso-carta-virtual .fc-content-panel--modality .fc-content-panel__icon {
+    display: none;
+}
+
+.flacso-carta-virtual .fc-content-panel--modality h2 {
+    color: var(--fc-ref-navy);
+    font-size: 21px;
+    line-height: 1.25;
+}
+
+.flacso-carta-virtual .fc-academic-details {
+    display: block;
+    grid-column: auto;
+    padding: 0;
+    border: 0;
+    border-top: 1px solid var(--fc-ref-line);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.flacso-carta-virtual .fc-academic-details__heading {
+    display: none;
+}
+
+.flacso-carta-virtual details.fc-academic-detail {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid var(--fc-ref-line);
+    border-radius: 0;
+    background: transparent;
+}
+
+.flacso-carta-virtual details.fc-academic-detail[open] {
+    background: transparent;
+}
+
+.flacso-carta-virtual details.fc-academic-detail > summary {
+    min-height: 66px;
+    padding: 20px 3px;
+    border: 0;
+    color: var(--fc-ref-navy);
+    background: transparent;
+    font-size: 19px;
+    font-weight: 650;
+    line-height: 1.35;
+    cursor: pointer;
+}
+
+.flacso-carta-virtual details.fc-academic-detail > summary i {
+    width: 29px;
+    height: 29px;
+    flex: 0 0 29px;
+    border-radius: 0;
+    color: var(--fc-brand);
+    background: none;
+    font-size: 18px;
+}
+
+.flacso-carta-virtual details.fc-academic-detail[open] > summary i {
+    color: var(--fc-brand);
+    background: none;
+}
+
+.flacso-carta-virtual .fc-academic-detail__body {
+    padding: 0 4px 25px;
+}
+
+.flacso-carta-virtual .fc-academic-detail__body,
+.flacso-carta-virtual .fc-academic-detail__body p,
+.flacso-carta-virtual .fc-academic-detail__body li {
+    color: var(--fc-ref-ink);
+    font-size: 16px;
+    line-height: 1.72;
+}
+
+/* Calendario y costos: ancho completo de la sección sobre fondo suave. */
+.flacso-carta-virtual .fc-major-section--planning {
+    padding: 60px clamp(20px, 3vw, 42px) 75px;
+    margin-top: 35px;
+    background: var(--fc-ref-soft);
+}
+
+.flacso-carta-virtual .fc-major-section--planning .fc-resource-grid {
+    display: grid;
+    grid-template-columns: minmax(0,1fr);
+    gap: 18px;
+    margin: 30px 0 0;
+}
+
+.flacso-carta-virtual .fc-resource-grid > .fc-section {
+    min-height: 0;
+    margin: 0;
+}
+
+.flacso-carta-virtual .fc-documents-section,
+.flacso-carta-virtual .fc-pricing-section {
+    min-height: 0;
+    padding: 25px;
+    border: 1px solid var(--fc-ref-line);
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: none;
+}
+
+.flacso-carta-virtual .fc-documents-section .fc-section-title,
+.flacso-carta-virtual .fc-pricing-section .fc-section-title {
+    margin: 0 0 20px;
+    color: var(--fc-ref-navy);
+    font-size: 23px;
+    font-weight: 750;
+}
+
+.flacso-carta-virtual .fc-section-title::before {
+    background: var(--fc-brand);
+}
+
+.flacso-carta-virtual .fc-documents-section .fc-more-grid {
+    display: grid;
+    grid-template-columns: minmax(0,1fr);
+    gap: 12px;
+}
+
+.flacso-carta-virtual .fc-documents-section .fc-more-card {
+    border: 0;
+    background: #f9fbfe;
+    box-shadow: none;
+}
+
+.flacso-carta-virtual .fc-documents-section .fc-more-card h3 {
+    color: var(--fc-ref-navy);
+    font-size: 16px;
+}
+
+.flacso-carta-virtual .fc-table-wrap {
+    border: 1px solid var(--fc-ref-line);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.flacso-carta-virtual .fc-pricing-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.flacso-carta-virtual .fc-pricing-table thead th {
+    padding: 15px 18px;
+    color: #fff;
+    background: var(--fc-ref-navy);
+    border-color: var(--fc-ref-navy);
+    font-size: 12px;
+    line-height: 1.4;
+    letter-spacing: .045em;
+    text-transform: uppercase;
+}
+
+.flacso-carta-virtual .fc-pricing-table thead th span {
+    margin-top: 4px;
+    color: #cfdbed;
+    font-size: 11px;
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+.flacso-carta-virtual .fc-pricing-table tbody td {
+    padding: 18px;
+    border-bottom: 1px solid var(--fc-ref-line);
+    color: var(--fc-ref-ink);
+    font-size: 16px;
+    line-height: 1.48;
+    vertical-align: top;
+}
+
+.flacso-carta-virtual .fc-pricing-table tbody td:first-child {
+    color: var(--fc-ref-navy);
+    font-size: 16px;
+    font-weight: 650;
+}
+
+.flacso-carta-virtual .fc-pricing-table tbody td:not(:first-child) {
+    font-weight: 600;
+}
+
+.flacso-carta-virtual .fc-pricing-table tbody tr.is-highlighted {
+    background: #ebe5f2;
+    background: rgba(var(--fc-brand-rgb), .09);
+}
+
+.flacso-carta-virtual .fc-pricing-cta {
+    padding: 25px;
+    border-radius: 8px;
+    background: var(--fc-ref-navy);
+}
+
+.flacso-carta-virtual .fc-pricing-cta strong {
+    font-size: 18px;
+}
+
+.flacso-carta-virtual .fc-pricing-cta a {
+    min-height: 46px;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.flacso-carta-virtual .fc-card-button {
+    border-radius: 6px;
+}
+
+/* Información práctica: bloques de lectura con una regla de acento. */
+.flacso-carta-virtual .fc-info-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 26px;
+}
+
+.flacso-carta-virtual .fc-info-row,
+.flacso-carta-virtual .fc-info-row:first-child,
+.flacso-carta-virtual .fc-info-row:last-child {
+    display: block;
+    min-height: 0;
+    padding: 16px 0 0;
+    border: 0;
+    border-top: 3px solid var(--fc-brand);
+    border-radius: 0;
+    background: transparent;
+    color: var(--fc-ref-ink);
+    font-size: 15px;
+    line-height: 1.62;
+}
+
+.flacso-carta-virtual .fc-info-icon {
+    display: none;
+}
+
+.flacso-carta-virtual .fc-info-row strong {
+    color: var(--fc-ref-navy);
+}
+
+.flacso-carta-virtual .fc-action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 13px;
+    margin: 24px 0 0;
+}
+
+.flacso-carta-virtual .fc-action-buttons a,
+.flacso-carta-virtual .fc-assistant-action {
+    min-height: 43px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* Trayectoria se conserva íntegra sin indicadores estadísticos inventados. */
+.flacso-carta-virtual .fc-major-section--trust > .fc-more-grid {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 20px;
+}
+
+.flacso-carta-virtual .fc-major-section--trust > .fc-more-grid .fc-more-card {
+    padding: 26px;
+    border: 1px solid var(--fc-ref-line);
+    border-top: 3px solid var(--fc-brand);
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: none;
+}
+
+.flacso-carta-virtual .fc-more-card h3 {
+    color: var(--fc-ref-navy);
+}
+
+/* Contacto: cierre institucional oscuro, igual al espíritu del prototipo. */
+.flacso-carta-virtual .fc-major-section--contact {
+    padding: 44px;
+    background: var(--fc-ref-navy);
+    border: 0;
+    border-radius: 0;
+    color: #fff;
+}
+
+.flacso-carta-virtual .fc-major-section--contact .fc-major-heading__kicker {
+    color: var(--fc-ref-yellow);
+}
+
+.flacso-carta-virtual .fc-major-section--contact .fc-major-heading h2 {
+    color: #fff;
+}
+
+.flacso-carta-virtual .fc-major-section--contact .fc-assistant-card {
+    display: grid;
+    grid-template-columns: 64px minmax(0,1fr);
+    gap: 12px 17px;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 25px;
+    border: 0;
+    border-radius: 9px;
+    background: var(--fc-ref-midblue);
+    box-shadow: none;
+}
+
+.flacso-carta-virtual .fc-assistant-copy h2,
+.flacso-carta-virtual .fc-assistant-label {
+    color: #fff;
+}
+
+.flacso-carta-virtual .fc-assistant-copy p,
+.flacso-carta-virtual .fc-assistant-meta a {
+    color: #d9e5f5;
+    font-size: 15px;
+}
+
+.flacso-carta-virtual .fc-assistant-meta {
+    display: grid;
+    grid-column: 1 / -1;
+    gap: 8px;
+    padding: 12px 0 0;
+    border-top: 1px solid rgba(255,255,255,.18);
+}
+
+.flacso-carta-virtual .fc-assistant-action {
+    grid-column: 1 / -1;
+    width: fit-content;
+    color: var(--fc-ref-navy);
+    border: 0;
+    background: var(--fc-ref-yellow);
+}
+
+.flacso-carta-virtual .fc-final-cta {
+    margin-top: 30px;
+    padding: 28px 32px;
+    border: 1px solid var(--fc-ref-line);
+    border-radius: 8px;
+    color: var(--fc-ref-navy);
+    background: var(--fc-ref-soft);
+    box-shadow: none;
+}
+
+.flacso-carta-virtual .fc-final-cta h2 {
+    color: var(--fc-ref-navy);
+    font-size: clamp(23px, 2.5vw, 30px);
+}
+
+.flacso-carta-virtual .fc-final-cta span {
+    color: var(--fc-ref-midblue);
+}
+
+.flacso-carta-virtual .fc-final-cta p {
+    color: var(--fc-ref-muted);
+}
+
+.flacso-carta-virtual .fc-final-cta a {
+    border-radius: 6px;
+}
+
+.flacso-carta-virtual .fc-floating-preinscripcion {
+    border-radius: 9px;
+}
+
+/* Grandes pantallas: retícula editorial idéntica a la maqueta adjunta. */
+@media (min-width: 1024px) {
+    .flacso-carta-virtual .fc-reading-layout {
+        display: block;
+        grid-template-columns: none;
+    }
+    .flacso-carta-virtual .fc-reading-sidebar {
+        position: static;
+        top: auto;
+    }
+    .flacso-carta-virtual .fc-major-section--overview,
+    .flacso-carta-virtual .fc-major-section--experience,
+    .flacso-carta-virtual .fc-major-section--practical,
+    .flacso-carta-virtual .fc-major-section--trust,
+    .flacso-carta-virtual .fc-major-section--contact {
+        display: grid;
+        grid-template-columns: minmax(220px, 285px) minmax(0,1fr);
+        align-items: start;
+        gap: 42px;
+    }
+    .flacso-carta-virtual .fc-major-section > .fc-major-heading {
+        grid-column: 1;
+        grid-row: 1 / span 3;
+    }
+    .flacso-carta-virtual .fc-major-section > :not(.fc-major-heading) {
+        grid-column: 2;
+        min-width: 0;
+    }
+    .flacso-carta-virtual .fc-major-section--overview .fc-editorial-intro {
+        padding-left: 0;
+    }
+    .flacso-carta-virtual .fc-experience-grid {
+        display: flex;
+        flex-direction: column;
+        grid-template-columns: none;
+    }
+    .flacso-carta-virtual .fc-general-grid--with-audience {
+        display: block;
+        grid-template-columns: none;
+    }
+    .flacso-carta-virtual .fc-major-section--planning {
+        display: block;
+    }
+    .flacso-carta-virtual .fc-major-section--planning > .fc-major-heading {
+        display: flex;
+        grid-column: auto;
+        grid-row: auto;
+    }
+    .flacso-carta-virtual .fc-major-section--planning > .fc-resource-grid {
+        grid-column: auto;
+        width: 100%;
+    }
+    .flacso-carta-virtual .fc-major-section--contact .fc-assistant-card {
+        grid-template-columns: 70px minmax(0,1fr);
+    }
+    .flacso-carta-virtual .fc-major-section--contact .fc-assistant-meta,
+    .flacso-carta-virtual .fc-major-section--contact .fc-assistant-action {
+        grid-column: 2;
+    }
+}
+
+@media (max-width: 1023px) {
+    .flacso-carta-virtual .fc-page-container,
+    .flacso-carta-virtual .fc-intermediate-strip {
+        width: min(calc(100% - 36px), 920px);
+    }
+    .flacso-carta-virtual .fc-hero-inner,
+    .flacso-carta-virtual .fc-specializations__inner {
+        width: min(calc(100% - 36px), 920px);
+    }
+    .flacso-carta-virtual .fc-hero-inner {
+        grid-template-columns: minmax(0,1fr) minmax(245px,.72fr);
+        column-gap: 22px;
+        padding: 55px 0;
+    }
+    .flacso-carta-virtual .fc-hero h1 {
+        font-size: clamp(40px, 5.4vw, 54px);
+    }
+    .flacso-carta-virtual .fc-reading-sidebar {
+        position: static;
+        top: auto;
+    }
+    .flacso-carta-virtual .fc-major-section--overview,
+    .flacso-carta-virtual .fc-major-section--experience,
+    .flacso-carta-virtual .fc-major-section--practical,
+    .flacso-carta-virtual .fc-major-section--trust,
+    .flacso-carta-virtual .fc-major-section--contact {
+        display: block;
+    }
+    .flacso-carta-virtual .fc-major-heading {
+        margin-bottom: 27px;
+    }
+    .flacso-carta-virtual .fc-info-list {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+    }
+}
+
+/* Teléfono: retrato simple, sin navegación en varias filas ni desbordes. */
+@media (max-width: 767px) {
+    .flacso-carta-virtual .fc-page-container,
+    .flacso-carta-virtual .fc-intermediate-strip,
+    .flacso-carta-virtual .fc-hero-inner,
+    .flacso-carta-virtual .fc-specializations__inner {
+        width: min(calc(100% - 32px), 100%);
+    }
+    .flacso-carta-virtual .fc-hero-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 26px;
+        padding: 37px 0 40px;
+    }
+    .flacso-carta-virtual .fc-hero-copy {
+        padding: 0;
+        margin: 0;
+        border-radius: 0;
+    }
+    .flacso-carta-virtual .fc-hero h1 {
+        max-width: 14ch;
+        font-size: clamp(35px, 9.6vw, 52px);
+        line-height: 1.06;
+    }
+    .flacso-carta-virtual .fc-hero-summary {
+        font-size: 16px;
+    }
+    .flacso-carta-virtual .fc-hero-actions {
+        flex-direction: column;
+    }
+    .flacso-carta-virtual .fc-primary-button,
+    .flacso-carta-virtual .fc-secondary-button {
+        min-height: 48px;
+        width: 100%;
+        font-size: 14px;
+    }
+    .flacso-carta-virtual .fc-hero .fc-feature-grid {
+        display: grid;
+        grid-template-columns: repeat(2,minmax(0,1fr));
+        width: 100%;
+        margin: 0;
+        padding: 16px;
+    }
+    .flacso-carta-virtual .fc-hero .fc-feature-card,
+    .flacso-carta-virtual .fc-hero .fc-feature-card:nth-child(2n),
+    .flacso-carta-virtual .fc-hero .fc-feature-card:nth-last-child(-n+2) {
+        min-height: 0;
+        padding: 13px 8px;
+    }
+    .flacso-carta-virtual .fc-hero .fc-feature-card:first-child {
+        padding: 0 8px 16px;
+    }
+    .flacso-carta-virtual .fc-hero .fc-feature-card:first-child p {
+        font-size: 26px;
+    }
+    .flacso-carta-virtual .fc-specializations .fc-chip-grid {
+        flex-basis: 100%;
+        gap: 8px 16px;
+    }
+    .flacso-carta-virtual .fc-specializations__inner {
+        padding: 22px 0;
+    }
+    .flacso-carta-virtual .fc-reading-sidebar {
+        margin: 20px 0 0;
+        padding: 7px 8px;
+        border-radius: 5px;
+    }
+    .flacso-carta-virtual .fc-jump-nav__links {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 3px;
+        justify-content: start;
+        padding: 0 0 4px;
+        overflow-x: auto;
+        scrollbar-width: thin;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x proximity;
+        -webkit-overflow-scrolling: touch;
+    }
+    .flacso-carta-virtual .fc-jump-nav__links a {
+        display: inline-flex;
+        flex: 0 0 auto;
+        min-height: 43px;
+        width: auto;
+        padding: 9px 13px;
+        color: #fff;
+        font-size: 12.5px;
+        scroll-snap-align: start;
+        white-space: nowrap;
+    }
+    .flacso-carta-virtual .fc-major-section--overview,
+    .flacso-carta-virtual .fc-major-section--experience,
+    .flacso-carta-virtual .fc-major-section--planning,
+    .flacso-carta-virtual .fc-major-section--practical,
+    .flacso-carta-virtual .fc-major-section--trust,
+    .flacso-carta-virtual .fc-major-section--contact {
+        padding-top: 46px;
+        padding-bottom: 20px;
+        margin-bottom: 0;
+    }
+    .flacso-carta-virtual .fc-major-heading {
+        display: flex;
+        margin-bottom: 26px;
+    }
+    .flacso-carta-virtual .fc-major-heading__kicker {
+        width: auto;
+        height: auto;
+        font-size: 48px;
+    }
+    .flacso-carta-virtual .fc-major-heading h2 {
+        font-size: 29px;
+    }
+    .flacso-carta-virtual .fc-content-panel-body,
+    .flacso-carta-virtual .fc-content-panel-body p,
+    .flacso-carta-virtual .fc-content-panel-body li {
+        font-size: 16px;
+        line-height: 1.68;
+    }
+    .flacso-carta-virtual .fc-general-copy .fc-content-panel-body > p:first-child {
+        font-size: 18px;
+    }
+    .flacso-carta-virtual .fc-audience-panel__copy {
+        padding: 23px;
+    }
+    .flacso-carta-virtual .fc-pricing-table thead {
+        display: none;
+    }
+    .flacso-carta-virtual .fc-pricing-table tbody td {
+        font-size: 15px;
+    }
+    .flacso-carta-virtual .fc-pricing-table tbody td:first-child {
+        display: block;
+        padding: 8px 10px 13px;
+    }
+    .flacso-carta-virtual .fc-pricing-table tbody td:first-child::before {
+        display: none;
+    }
+    .flacso-carta-virtual .fc-pricing-table tbody td:not(:first-child) {
+        display: grid;
+        grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr);
+        gap: 8px;
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+    .flacso-carta-virtual .fc-major-section--planning {
+        margin: 20px -12px 0;
+        padding: 46px 16px;
+        border-radius: 0;
+    }
+    .flacso-carta-virtual .fc-documents-section,
+    .flacso-carta-virtual .fc-pricing-section {
+        padding: 15px;
+    }
+    .flacso-carta-virtual .fc-info-list,
+    .flacso-carta-virtual .fc-major-section--trust > .fc-more-grid {
+        grid-template-columns: minmax(0,1fr);
+        gap: 16px;
+    }
+    .flacso-carta-virtual .fc-major-section--contact {
+        margin: 24px -12px 0;
+        padding: 42px 22px;
+    }
+    .flacso-carta-virtual .fc-final-cta {
+        padding: 24px;
+    }
+}
+
+@media print {
+    .flacso-carta-virtual .fc-hero {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    .flacso-carta-virtual .fc-reading-sidebar,
+    .flacso-carta-virtual .fc-floating-preinscripcion {
+        display: none !important;
+    }
+    .flacso-carta-virtual .fc-major-section--overview,
+    .flacso-carta-virtual .fc-major-section--experience,
+    .flacso-carta-virtual .fc-major-section--practical,
+    .flacso-carta-virtual .fc-major-section--trust,
+    .flacso-carta-virtual .fc-major-section--contact {
+        display: block;
+    }
+}
