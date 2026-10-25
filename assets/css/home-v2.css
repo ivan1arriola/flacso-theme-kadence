@@ -595,3 +595,17 @@
 @media (prefers-reduced-motion: reduce) {
     .flacso-home-v2 .home-offer-card { transition: none; }
 }
+
+/* Revisión de portada (oct 2026): lectura institucional, áreas táctiles y noticias fijadas compactas. */
+.flacso-home-v2 .home-about-copy,
+.flacso-home-v2 .home-about-copy p { text-align: left; }
+.flacso-home-v2 .home-about-copy strong { font-weight: 700; }
+.flacso-home-v2 .home-offer + .home-events,
+.flacso-home-v2 .home-offer + .home-news { padding-top: clamp(24px, 3vw, 48px); }
+@media (max-width: 760px) {
+    .flacso-home-v2 .home-text-link,
+    .flacso-home-v2 .home-heading-link { display: inline-flex; align-items: center; min-height: 44px; }
+    .flacso-home-v2 .home-news-card--featured .home-news-media { aspect-ratio: 16 / 9; }
+    .flacso-home-v2 .home-news-card--featured .home-news-media img { aspect-ratio: 16 / 9; }
+    .flacso-home-v2 .home-about-logo { display: none; }
+}

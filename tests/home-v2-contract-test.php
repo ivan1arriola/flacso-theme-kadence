@@ -34,13 +34,13 @@ class Flacso_Main_Page_Settings { public static function get_section($key) { ret
 require $root . '/inc/home-v2.php';
 
 $html = flacso_home_v2_render();
-$headings = ['Formación que','Encontrá tu próxima formación','Próximas actividades','Noticias','¿Qué es FLACSO Uruguay?','+20 países'];
+$headings = ['Formación que','Encontrá tu próxima formación','Noticias','¿Qué es FLACSO Uruguay?','+20 países'];
 $positions = array_map(static fn($text) => strpos($html, $text), $headings);
 check(!in_array(false, $positions, true) && $positions === array_values(array_filter($positions, static fn($pos) => true)), 'están todas las secciones');
 $sorted = $positions; sort($sorted);
 check($positions === $sorted, 'orden de secciones hero, oferta, actividades, noticias, institución e impacto');
 check(substr_count($html, '<h1') === 1, 'un solo H1');
-check(strpos($html, 'No hay actividades próximas para mostrar.') !== false, 'actividades visibles vacías');
+check(strpos($html, 'Próximas actividades') === false && strpos($html, 'No hay actividades próximas') === false, 'sin actividades la sección se oculta');
 check(strpos($html, 'agenda.flacso.edu.uy') === false, 'actividades no enlazan reservas');
 check(substr_count($html, 'home-offer-card') === 5, 'cinco categorías de oferta');
 check(substr_count($html, 'class="home-offer-card offer--') === 5, 'cinco tarjetas con identificador visual sin duplicados');
@@ -59,7 +59,7 @@ check(strpos($html, 'Formación de posgrado, investigación rigurosa') === false
 $GLOBALS['events'] = [['id'=>301,'link'=>'https://example.test/evento-301','title'=>'Actividad abierta','day'=>'18','month'=>'Octubre']];
 $with_event = flacso_home_v2_render();
 check(strpos($with_event, 'Actividad abierta') !== false && strpos($with_event, 'evento-301') !== false, 'actividad dinámica enlaza detalle');
-check(strpos($with_event, 'No hay actividades próximas para mostrar.') === false, 'sin estado vacío si hay actividad');
+check(strpos($with_event, 'Próximas actividades') !== false, 'con actividad se muestra la sección');
 check(strpos($with_event, 'home-event-date-art') !== false, 'actividad sin imagen tiene respaldo');
 
 $GLOBALS['pinned'] = [(object)['ID'=>101],(object)['ID'=>102],(object)['ID'=>103]];

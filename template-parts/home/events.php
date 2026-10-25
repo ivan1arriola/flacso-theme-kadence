@@ -1,8 +1,10 @@
-<?php if (!defined('ABSPATH')) { exit; } ?>
+<?php if (!defined('ABSPATH')) { exit; }
+// Sin actividades próximas no se muestra la sección (ni su título).
+if (empty($data['events'])) { return; }
+?>
 <section class="home-section home-events" id="actividades" aria-labelledby="home-events-title"><div class="home-container">
   <div class="home-section-heading"><h2 id="home-events-title">Próximas actividades</h2></div>
   <div class="home-events-grid">
-    <?php if (!$data['events']) : ?><p class="home-events-empty">No hay actividades próximas para mostrar.</p><?php endif; ?>
     <?php foreach ($data['events'] as $event) :
       $id = absint($event['id'] ?? 0);
       $url = trim((string) ($event['link'] ?? ''));
