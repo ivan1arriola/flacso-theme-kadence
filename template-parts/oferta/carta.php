@@ -375,6 +375,85 @@ $calendario_y_malla_compartidos = flacso_theme_calendar_and_curriculum_share_doc
                         </div>
                     <?php endif; ?>
 
+                    <div class="fc-hero-actions">
+                        <?php if ($inscripciones_abiertas) : ?>
+                            <a data-flacso-preinscription-cta="1" href="<?php echo esc_url($url_inscripcion); ?>" class="fc-primary-button">
+                                <i class="bi bi-pencil-square" aria-hidden="true"></i>
+                                <?php esc_html_e('Formulario de Preinscripción', 'flacso-uruguay'); ?>
+                            </a>
+                        <?php endif; ?>
+
+                        <a href="<?php echo $hay_bloques_detallados ? '#fc-overview-title' : '#fc-planificacion'; ?>" class="fc-secondary-button">
+                            <i class="bi bi-info-circle" aria-hidden="true"></i>
+                            <?php esc_html_e('Conocer más', 'flacso-uruguay'); ?>
+                        </a>
+                    </div>
+                </div>
+
+                    <!-- DATOS CLAVE: en la portada editorial -->
+                <section id="fc-info-clave" class="fc-feature-grid">
+                    <article class="fc-feature-card">
+                        <div class="fc-feature-icon"><i class="bi bi-calendar-event" aria-hidden="true"></i></div>
+                        <h3><?php esc_html_e('Próximo inicio', 'flacso-uruguay'); ?></h3>
+                        <p><?php echo esc_html($proximo_inicio); ?></p>
+                    </article>
+
+                    <article class="fc-feature-card">
+                        <div class="fc-feature-icon"><i class="bi bi-clock-history" aria-hidden="true"></i></div>
+                        <h3><?php esc_html_e('Duración', 'flacso-uruguay'); ?></h3>
+                        <p><?php echo esc_html($duracion); ?></p>
+                    </article>
+
+                    <article class="fc-feature-card">
+                        <div class="fc-feature-icon"><i class="bi bi-laptop" aria-hidden="true"></i></div>
+                        <h3><?php esc_html_e('Modalidad', 'flacso-uruguay'); ?></h3>
+                        <p><?php echo esc_html($modalidad); ?></p>
+                    </article>
+
+                    <article class="fc-feature-card">
+                        <div class="fc-feature-icon"><i class="bi bi-layers" aria-hidden="true"></i></div>
+                        <h3><?php esc_html_e('Edición', 'flacso-uruguay'); ?></h3>
+                        <p><?php echo esc_html($cohorte_label !== '' ? $cohorte_label : $anio); ?></p>
+                    </article>
+
+                    <?php if ($mostrar_instancias_presenciales) : ?>
+                        <article class="fc-feature-card">
+                            <div class="fc-feature-icon"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i></div>
+                            <h3><?php esc_html_e('Cursada', 'flacso-uruguay'); ?></h3>
+                            <p><?php esc_html_e('Incluye instancias exclusivamente presenciales', 'flacso-uruguay'); ?></p>
+                        </article>
+                    <?php endif; ?>
+                </section>
+
+                <div class="fc-hero-visual">
+                    <?php if ($mostrar_convenio_iin) : ?>
+                        <div class="fc-convenio-pill">
+                            <i class="bi bi-shield-check" aria-hidden="true"></i>
+                            <span><?php esc_html_e('Convenio IIN-OEA', 'flacso-uruguay'); ?></span>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($thumbnail_url !== '') : ?>
+                        <div class="fc-cover-card">
+                            <img src="<?php echo esc_url($thumbnail_url); ?>" alt="" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                            <div class="fc-cover-card fc-cover-placeholder" style="display:none;">
+                                <i class="bi bi-mortarboard-fill" aria-hidden="true"></i>
+                                <span><?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?></span>
+                            </div>
+                        </div>
+                    <?php else : ?>
+                        <div class="fc-cover-card fc-cover-placeholder">
+                            <i class="bi bi-mortarboard-fill" aria-hidden="true"></i>
+                            <span><?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?></span>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </section>
+
+        <?php if (!empty($arr_menciones) || !empty($arr_orientaciones)) : ?>
+            <section class="fc-specializations" aria-label="<?php esc_attr_e('Menciones y orientaciones de la propuesta', 'flacso-uruguay'); ?>">
+                <div class="fc-specializations__inner">
                     <?php if (!empty($arr_menciones)) : ?>
                         <div class="fc-chip-block">
                             <p><?php esc_html_e('Con mención en:', 'flacso-uruguay'); ?></p>
@@ -397,46 +476,9 @@ $calendario_y_malla_compartidos = flacso_theme_calendar_and_curriculum_share_doc
                         </div>
                     <?php endif; ?>
 
-                    <div class="fc-hero-actions">
-                        <?php if ($inscripciones_abiertas) : ?>
-                            <a data-flacso-preinscription-cta="1" href="<?php echo esc_url($url_inscripcion); ?>" class="fc-primary-button">
-                                <i class="bi bi-pencil-square" aria-hidden="true"></i>
-                                <?php esc_html_e('Formulario de Preinscripción', 'flacso-uruguay'); ?>
-                            </a>
-                        <?php endif; ?>
-
-                        <a href="#fc-info-clave" class="fc-secondary-button">
-                            <i class="bi bi-info-circle" aria-hidden="true"></i>
-                            <?php esc_html_e('Conocer más', 'flacso-uruguay'); ?>
-                        </a>
-                    </div>
                 </div>
-
-                <div class="fc-hero-visual">
-                    <?php if ($mostrar_convenio_iin) : ?>
-                        <div class="fc-convenio-pill">
-                            <i class="bi bi-shield-check" aria-hidden="true"></i>
-                            <span><?php esc_html_e('Convenio IIN-OEA', 'flacso-uruguay'); ?></span>
-                        </div>
-                    <?php endif; ?>
-
-                    <?php if ($thumbnail_url !== '') : ?>
-                        <div class="fc-cover-card">
-                            <img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php echo esc_attr($titulo); ?>" loading="eager" fetchpriority="high" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
-                            <div class="fc-cover-card fc-cover-placeholder" style="display:none;">
-                                <i class="bi bi-mortarboard-fill" aria-hidden="true"></i>
-                                <span><?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?></span>
-                            </div>
-                        </div>
-                    <?php else : ?>
-                        <div class="fc-cover-card fc-cover-placeholder">
-                            <i class="bi bi-mortarboard-fill" aria-hidden="true"></i>
-                            <span><?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?></span>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </section>
+            </section>
+        <?php endif; ?>
 
         <?php if (!empty($academic['articulaciones'])) : ?>
             <div class="fc-page-container">
@@ -471,42 +513,7 @@ $calendario_y_malla_compartidos = flacso_theme_calendar_and_curriculum_share_doc
 
         <div class="fc-page-container">
 
-            <!-- DATOS CLAVE -->
-            <section id="fc-info-clave" class="fc-feature-grid">
-                <article class="fc-feature-card">
-                    <div class="fc-feature-icon"><i class="bi bi-calendar-event" aria-hidden="true"></i></div>
-                    <h3><?php esc_html_e('Próximo inicio', 'flacso-uruguay'); ?></h3>
-                    <p><?php echo esc_html($proximo_inicio); ?></p>
-                </article>
-
-                <article class="fc-feature-card">
-                    <div class="fc-feature-icon"><i class="bi bi-clock-history" aria-hidden="true"></i></div>
-                    <h3><?php esc_html_e('Duración', 'flacso-uruguay'); ?></h3>
-                    <p><?php echo esc_html($duracion); ?></p>
-                </article>
-
-                <article class="fc-feature-card">
-                    <div class="fc-feature-icon"><i class="bi bi-laptop" aria-hidden="true"></i></div>
-                    <h3><?php esc_html_e('Modalidad', 'flacso-uruguay'); ?></h3>
-                    <p><?php echo esc_html($modalidad); ?></p>
-                </article>
-
-                <article class="fc-feature-card">
-                    <div class="fc-feature-icon"><i class="bi bi-layers" aria-hidden="true"></i></div>
-                    <h3><?php esc_html_e('Edición', 'flacso-uruguay'); ?></h3>
-                    <p><?php echo esc_html($cohorte_label !== '' ? $cohorte_label : $anio); ?></p>
-                </article>
-
-                <?php if ($mostrar_instancias_presenciales) : ?>
-                    <article class="fc-feature-card">
-                        <div class="fc-feature-icon"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i></div>
-                        <h3><?php esc_html_e('Cursada', 'flacso-uruguay'); ?></h3>
-                        <p><?php esc_html_e('Incluye instancias exclusivamente presenciales', 'flacso-uruguay'); ?></p>
-                    </article>
-                <?php endif; ?>
-            </section>
-
-            <!-- Lectura editorial: índice lateral en escritorio, horizontal en móvil. -->
+            <!-- Índice de secciones. Mantiene anclas y estado activo sin duplicar el menú del sitio. -->
             <div class="fc-reading-layout">
                 <aside class="fc-reading-sidebar">
                     <nav class="fc-jump-nav" aria-label="<?php esc_attr_e('Navegación por la carta', 'flacso-uruguay'); ?>">
@@ -548,6 +555,7 @@ $calendario_y_malla_compartidos = flacso_theme_calendar_and_curriculum_share_doc
                                 <span class="fc-major-heading__kicker" aria-hidden="true">01</span>
                                 <div>
                                     <h2 id="fc-overview-title"><?php esc_html_e('Sobre la propuesta', 'flacso-uruguay'); ?></h2>
+                                    <p class="fc-section-eyebrow"><?php esc_html_e('Información general', 'flacso-uruguay'); ?></p>
                                     <span class="fc-major-heading__rule" aria-hidden="true"></span>
                                 </div>
                             </header>
@@ -583,6 +591,7 @@ $calendario_y_malla_compartidos = flacso_theme_calendar_and_curriculum_share_doc
                                 <span class="fc-major-heading__kicker" aria-hidden="true">02</span>
                                 <div>
                                     <h2 id="fc-experience-title"><?php esc_html_e('Experiencia académica', 'flacso-uruguay'); ?></h2>
+                                    <p class="fc-section-eyebrow"><?php esc_html_e('Contenidos y estructura académica', 'flacso-uruguay'); ?></p>
                                     <span class="fc-major-heading__rule" aria-hidden="true"></span>
                                 </div>
                             </header>
@@ -658,7 +667,8 @@ $calendario_y_malla_compartidos = flacso_theme_calendar_and_curriculum_share_doc
                 <header class="fc-major-heading">
                     <span class="fc-major-heading__kicker" aria-hidden="true">03</span>
                     <div>
-                        <h2 id="fc-planning-title"><?php esc_html_e('Planificación e inversión', 'flacso-uruguay'); ?></h2>
+                        <h2 id="fc-planning-title"><?php esc_html_e('Calendario y costos', 'flacso-uruguay'); ?></h2>
+                        <p class="fc-section-eyebrow"><?php esc_html_e('Planificación e inversión', 'flacso-uruguay'); ?></p>
                         <span class="fc-major-heading__rule" aria-hidden="true"></span>
                     </div>
                 </header>
