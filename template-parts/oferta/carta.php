@@ -292,6 +292,10 @@ if (!empty($academic['perfil_ingreso_html'])) {
     $fc_audience_summary = wp_trim_words(wp_strip_all_tags((string) $academic['perfil_ingreso_html']), 40, '…');
 }
 
+// El diseño a dos columnas solo se aplica a descripciones extensas; la lectura
+// de propuestas breves permanece lineal y sin columnas artificialmente vacías.
+$fc_long_description = mb_strlen(trim(wp_strip_all_tags((string) ($academic['descripcion_html'] ?? '')))) >= 800;
+
 // Sólo el calendario independiente puede ofrecerse públicamente.
 $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendario_pdf_url'] : '';
 
@@ -495,9 +499,11 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                 <?php endif; ?>
             </section>
 
-            <!-- Índice editorial: enlaces únicamente a secciones presentes en la carta. -->
-            <nav class="fc-jump-nav" aria-label="<?php esc_attr_e('Navegación por la carta', 'flacso-uruguay'); ?>">
-                <span class="fc-jump-nav__label"><?php esc_html_e('En esta carta', 'flacso-uruguay'); ?></span>
+            <!-- Lectura editorial: índice lateral en escritorio, horizontal en móvil. -->
+            <div class="fc-reading-layout">
+                <aside class="fc-reading-sidebar">
+                    <nav class="fc-jump-nav" aria-label="<?php esc_attr_e('Navegación por la carta', 'flacso-uruguay'); ?>">
+                <span class="fc-jump-nav__label"><?php esc_html_e('Explorá la carta', 'flacso-uruguay'); ?></span>
                 <div class="fc-jump-nav__links">
                     <?php if ($hay_bloques_detallados) : ?>
                         <a href="#fc-overview-title"><?php esc_html_e('Propuesta', 'flacso-uruguay'); ?></a>
@@ -507,7 +513,15 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                     <a href="#fc-practica"><?php esc_html_e('Información práctica', 'flacso-uruguay'); ?></a>
                     <a href="#fc-contact-title"><?php esc_html_e('Contacto', 'flacso-uruguay'); ?></a>
                 </div>
-            </nav>
+                    </nav>
+                    <div class="fc-reading-help">
+                        <i class="bi bi-chat-dots" aria-hidden="true"></i>
+                        <strong><?php esc_html_e('¿Tenés consultas?', 'flacso-uruguay'); ?></strong>
+                        <p><?php esc_html_e('Nuestro equipo académico puede orientarte.', 'flacso-uruguay'); ?></p>
+                        <a href="#fc-contact-title"><?php esc_html_e('Ver contacto académico', 'flacso-uruguay'); ?> <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                    </div>
+                </aside>
+                <div class="fc-reading-main">
 
             <!-- CONTENIDO DETALLADO -->
             <section class="fc-content-sections" aria-label="<?php esc_attr_e('Información detallada del programa', 'flacso-uruguay'); ?>">
@@ -531,7 +545,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                             </header>
                             <?php if (!empty($academic['descripcion_html'])) : ?>
                             <article class="fc-content-panel fc-content-panel--primary fc-editorial-intro" aria-labelledby="fc-panel-descripcion">
-                                <div class="fc-general-grid<?php echo $fc_audience_summary !== '' ? ' fc-general-grid--with-audience' : ''; ?>">
+                                <div class="fc-general-grid<?php echo $fc_long_description ? ' fc-general-grid--long' : ($fc_audience_summary !== '' ? ' fc-general-grid--with-audience' : ''); ?>">
                                     <div class="fc-general-copy">
                                         <span class="fc-editorial-dots" aria-hidden="true"><i></i><i></i></span>
                                         <h3 id="fc-panel-descripcion"><?php esc_html_e('Información general', 'flacso-uruguay'); ?></h3>
@@ -960,6 +974,9 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                     </a>
                 <?php endif; ?>
             </section>
+
+                </div><!-- /.fc-reading-main -->
+            </div><!-- /.fc-reading-layout -->
 
             <?php if ($inscripciones_abiertas) : ?>
                 <a class="fc-floating-preinscripcion is-hidden" data-flacso-preinscription-cta="1" href="<?php echo esc_url($url_inscripcion); ?>" aria-label="<?php echo esc_attr(sprintf(__('Abrir formulario de preinscripción para %s', 'flacso-uruguay'), $titulo)); ?>" aria-hidden="true" tabindex="-1">
