@@ -13,6 +13,21 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+$catalog_css = 'assets/css/formacion-page.css';
+wp_enqueue_style(
+    'flacso-formacion-page',
+    get_stylesheet_directory_uri() . '/' . $catalog_css,
+    ['flacso-taxonomy-oferta'],
+    flacso_child_asset_version($catalog_css)
+);
+$listing_css = 'assets/css/type-listing-cards.css';
+wp_enqueue_style(
+    'flacso-type-listing-cards',
+    get_stylesheet_directory_uri() . '/' . $listing_css,
+    ['flacso-formacion-page'],
+    flacso_child_asset_version($listing_css)
+);
+
 $term = get_queried_object();
 if (!$term || !($term instanceof WP_Term)) {
     return;
@@ -121,22 +136,19 @@ $sort_offers = static function (array $a, array $b): int {
 usort($offers_open, $sort_offers);
 usort($offers_closed, $sort_offers);
 
-$render_offer_card = static function (array $item): void {
-    $card_cta = !empty($item['is_open'])
-        ? __('Ver información e inscribirme', 'flacso-uruguay')
-        : __('Ver información del programa', 'flacso-uruguay');
+$render_offer_card = static function (array $item) use ($taxonomy_name): void {
     ?>
     <article class="grid-item-wrap">
         <a
             href="<?php echo esc_url((string) $item['permalink']); ?>"
-            class="flacso-premium-card flacso-premium-card--link h-100 w-100"
+            class="flacso-formacion-card flacso-formacion-card--accented"
             style="--offer-accent: <?php echo esc_attr((string) ($item['brand_color'] ?? '#0a3470')); ?>;"
             aria-label="<?php echo esc_attr(sprintf(__('Ver información de %s', 'flacso-uruguay'), (string) $item['title'])); ?>"
             data-flacso-offer-click="1"
             data-offer-title="<?php echo esc_attr((string) $item['title']); ?>"
             data-offer-status="<?php echo !empty($item['is_open']) ? 'inscripciones_abiertas' : 'proxima_apertura'; ?>"
         >
-            <div class="flacso-premium-card__image-wrap">
+            <div class="flacso-formacion-card__media">
                 <?php if (!empty($item['thumbnail_url'])) : ?>
                     <?php
                     if (!empty($item['image_id'])) {
@@ -145,7 +157,7 @@ $render_offer_card = static function (array $item): void {
                             'large',
                             false,
                             [
-                                'class'    => 'flacso-premium-card__img',
+                                'class'    => 'flacso-formacion-card__image',
                                 'alt'      => (string) $item['title'],
                                 'loading'  => 'lazy',
                                 'decoding' => 'async',
@@ -154,57 +166,47 @@ $render_offer_card = static function (array $item): void {
                         );
                     } else {
                         ?>
-                        <img src="<?php echo esc_url((string) $item['thumbnail_url']); ?>" class="flacso-premium-card__img" alt="<?php echo esc_attr((string) $item['title']); ?>" loading="lazy" decoding="async" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                        <img src="<?php echo esc_url((string) $item['thumbnail_url']); ?>" class="flacso-formacion-card__image" alt="<?php echo esc_attr((string) $item['title']); ?>" loading="lazy" decoding="async" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
                         <?php
                     }
                     ?>
-                    <div class="flacso-premium-card__img-placeholder" style="display:none;">
+                    <div class="flacso-formacion-card__placeholder" style="display:none;">
                         <i class="bi bi-mortarboard" style="font-size: 3rem;"></i>
                     </div>
                 <?php else : ?>
-                    <div class="flacso-premium-card__img-placeholder">
+                    <div class="flacso-formacion-card__placeholder">
                         <i class="bi bi-mortarboard" style="font-size: 3rem;"></i>
                     </div>
                 <?php endif; ?>
 
-                <div class="flacso-premium-card__badges">
-                    <?php if (!empty($item['is_open'])) : ?>
-                        <span class="flacso-badge flacso-badge--open"><?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?></span>
-                    <?php else : ?>
-                        <span class="flacso-badge flacso-badge--soon"><?php esc_html_e('Próxima apertura', 'flacso-uruguay'); ?></span>
-                    <?php endif; ?>
-                </div>
+                <span class="flacso-formacion-card__badge"><?php echo esc_html($taxonomy_name); ?></span>
             </div>
 
-            <div class="flacso-premium-card__body">
-                <div class="flacso-premium-card__meta">
+            <div class="flacso-formacion-card__body">
+                <h3 class="flacso-formacion-card__title"><?php echo esc_html((string) $item['title']); ?></h3>
+                <p class="flacso-formacion-card__excerpt"><?php echo esc_html((string) $item['excerpt']); ?></p>
+                <div class="flacso-formacion-card__meta">
                     <?php if (!empty($item['duracion'])) : ?>
-                        <span class="flacso-meta-item">
+                        <span class="flacso-formacion-card__meta-item">
                             <i class="bi bi-clock" aria-hidden="true"></i>
                             <?php echo esc_html((string) $item['duracion']); ?>
                         </span>
                     <?php endif; ?>
 
                     <?php if (!empty($item['start_label'])) : ?>
-                        <span class="flacso-meta-item flacso-meta-item--start">
+                        <span class="flacso-formacion-card__meta-item">
                             <i class="bi bi-calendar3" aria-hidden="true"></i>
                             <time datetime="<?php echo esc_attr((string) $item['start_iso']); ?>"><?php echo esc_html((string) $item['start_label']); ?></time>
                         </span>
                     <?php endif; ?>
                 </div>
 
-                <h3 class="flacso-premium-card__title">
-                    <?php echo esc_html((string) $item['title']); ?>
-                </h3>
-
-                <div class="flacso-premium-card__excerpt">
-                    <?php echo esc_html((string) $item['excerpt']); ?>
-                </div>
-
-                <div class="flacso-premium-card__footer">
-                    <span class="flacso-premium-card__cta <?php echo !empty($item['is_open']) ? 'flacso-premium-card__cta--open' : ''; ?>">
-                        <?php echo esc_html($card_cta); ?>
-                        <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                <div class="flacso-formacion-card__footer">
+                    <span class="flacso-formacion-card__status<?php echo !empty($item['is_open']) ? ' is-open' : ''; ?>">
+                        <?php echo esc_html(!empty($item['is_open']) ? __('Inscripciones abiertas', 'flacso-uruguay') : __('Próxima apertura', 'flacso-uruguay')); ?>
+                    </span>
+                    <span class="flacso-formacion-card__action">
+                        <?php esc_html_e('Conocer más', 'flacso-uruguay'); ?> →
                     </span>
                 </div>
             </div>
@@ -255,7 +257,7 @@ get_header();
                         </div>
                     </div>
 
-                    <div class="flacso-ofertas-grid">
+                    <div class="flacso-ofertas-grid flacso-formacion-grid">
                         <?php foreach ($offers_open as $item) : ?>
                             <?php $render_offer_card($item); ?>
                         <?php endforeach; ?>
@@ -280,7 +282,7 @@ get_header();
                         </p>
                     </div>
 
-                    <div class="flacso-ofertas-grid">
+                    <div class="flacso-ofertas-grid flacso-formacion-grid">
                         <?php foreach ($offers_closed as $item) : ?>
                             <?php $render_offer_card($item); ?>
                         <?php endforeach; ?>

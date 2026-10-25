@@ -191,6 +191,7 @@ foreach ($catalog_raw as $item_context) {
         'days_since_start' => max(0, -$dias_hasta_inicio),
         'is_upcoming'      => $is_upcoming,
         'is_started_recent'=> $is_started_recent,
+        'is_open'          => !empty($item_context['registration']['is_open']),
         'modality'         => $modalidad,
         'credits'          => $creditos,
         'carga_horaria'    => $carga_horaria,
@@ -440,15 +441,15 @@ $seminarios_total = count($seminarios_catalogo);
                                         </span>
                                     </summary>
 
-                                    <div class="seminarios-grid">
+                                    <div class="seminarios-grid flacso-formacion-grid">
                                         <?php foreach ($grupo['items'] as $seminario_item) : ?>
                                             <article
-                                                class="seminario-card<?php echo $seminario_item['is_started_recent'] ? ' is-recent' : ''; ?>"
+                                                class="seminario-card flacso-formacion-card<?php echo $seminario_item['is_started_recent'] ? ' is-recent' : ''; ?>"
                                                 data-seminar-card
                                                 data-month="<?php echo esc_attr($month_key); ?>"
                                                 data-search="<?php echo esc_attr(strtolower(remove_accents($seminario_item['title'] . ' ' . $seminario_item['description'] . ' ' . $seminario_item['modality']))); ?>"
                                             >
-                                                <a class="seminario-card__media-link" href="<?php echo esc_url($seminario_item['permalink']); ?>">
+                                                <a class="seminario-card__media-link flacso-formacion-card__media" href="<?php echo esc_url($seminario_item['permalink']); ?>">
                                                     <?php if (!empty($seminario_item['image_url'])) : ?>
                                                         <?php
                                                         if (!empty($seminario_item['image_id'])) {
@@ -491,14 +492,15 @@ $seminarios_total = count($seminarios_catalogo);
                                                             <span class="seminarios-chip seminarios-chip--sky"><?php esc_html_e('Próximamente', 'flacso-uruguay'); ?></span>
                                                         <?php endif; ?>
                                                     </div>
+                                                    <span class="flacso-formacion-card__badge"><?php esc_html_e('Seminario', 'flacso-uruguay'); ?></span>
                                                 </a>
 
-                                                <div class="seminario-card__content">
-                                                    <h4 class="seminario-card__title">
+                                                <div class="seminario-card__content flacso-formacion-card__body">
+                                                    <h4 class="seminario-card__title flacso-formacion-card__title">
                                                         <a href="<?php echo esc_url($seminario_item['permalink']); ?>"><?php echo esc_html($seminario_item['title']); ?></a>
                                                     </h4>
 
-                                                    <p class="seminario-card__description"><?php echo esc_html($seminario_item['description']); ?></p>
+                                                    <p class="seminario-card__description flacso-formacion-card__excerpt"><?php echo esc_html($seminario_item['description']); ?></p>
 
                                                     <ul class="seminario-card__meta" role="list">
                                                         <li class="seminario-meta--date">
@@ -538,25 +540,24 @@ $seminarios_total = count($seminarios_catalogo);
                                                             <i class="bi bi-laptop" aria-hidden="true"></i>
                                                             <span><?php echo esc_html($seminario_item['modality']); ?></span>
                                                         </li>
+                                                        <?php if (!empty($seminario_item['credits'])) : ?>
+                                                            <li class="seminario-meta--credits">
+                                                                <i class="bi bi-journal-check" aria-hidden="true"></i>
+                                                                <span><?php echo esc_html($seminario_item['credits'] . ' ' . __('créditos', 'flacso-uruguay')); ?></span>
+                                                            </li>
+                                                        <?php endif; ?>
                                                         <li class="seminario-meta--teachers">
                                                             <i class="bi bi-people" aria-hidden="true"></i>
                                                             <span><?php echo esc_html($seminario_item['docentes_label']); ?></span>
                                                         </li>
                                                     </ul>
 
-                                                    <div class="seminario-card__footer">
-                                                        <span class="seminario-card__credits">
-                                                            <?php
-                                                            if (!empty($seminario_item['credits'])) {
-                                                                echo esc_html($seminario_item['credits'] . ' ' . __('créditos', 'flacso-uruguay'));
-                                                            } else {
-                                                                esc_html_e('Créditos a confirmar', 'flacso-uruguay');
-                                                            }
-                                                            ?>
+                                                    <div class="seminario-card__footer flacso-formacion-card__footer">
+                                                        <span class="flacso-formacion-card__status<?php echo $seminario_item['is_open'] ? ' is-open' : ''; ?>">
+                                                            <?php echo esc_html($seminario_item['is_open'] ? __('Inscripciones abiertas', 'flacso-uruguay') : __('Próxima apertura', 'flacso-uruguay')); ?>
                                                         </span>
-                                                        <a class="seminario-card__cta" href="<?php echo esc_url($seminario_item['permalink']); ?>">
-                                                            <?php esc_html_e('Ver detalle', 'flacso-uruguay'); ?>
-                                                            <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                                                        <a class="seminario-card__cta flacso-formacion-card__action" href="<?php echo esc_url($seminario_item['permalink']); ?>">
+                                                            <?php esc_html_e('Conocer más', 'flacso-uruguay'); ?> →
                                                         </a>
                                                     </div>
                                                 </div>

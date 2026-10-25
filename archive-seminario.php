@@ -39,6 +39,22 @@ wp_enqueue_style(
     function_exists( 'flacso_child_asset_version' ) ? flacso_child_asset_version( $polish_css_path ) : wp_get_theme()->get( 'Version' )
 );
 
+$catalog_css_path = 'assets/css/formacion-page.css';
+wp_enqueue_style(
+    'flacso-formacion-page',
+    get_stylesheet_directory_uri() . '/' . $catalog_css_path,
+    array( 'flacso-seminarios-listado-polish' ),
+    flacso_child_asset_version( $catalog_css_path )
+);
+
+$listing_css_path = 'assets/css/type-listing-cards.css';
+wp_enqueue_style(
+    'flacso-type-listing-cards',
+    get_stylesheet_directory_uri() . '/' . $listing_css_path,
+    array( 'flacso-formacion-page' ),
+    flacso_child_asset_version( $listing_css_path )
+);
+
 wp_enqueue_script(
     'flacso-seminarios-listado',
     get_stylesheet_directory_uri() . '/' . $js_path,
