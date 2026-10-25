@@ -195,6 +195,22 @@
     font-weight: 550;
 }
 
+.flacso-carta-virtual .fc-hero-copy .fc-convenio-pill {
+    position: static;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    width: fit-content;
+    margin-top: 16px;
+    padding: 7px 12px;
+    border: 1px solid #54709c;
+    border-radius: 999px;
+    color: #e0e9f7;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 650;
+}
+
 /* Conservamos la imagen como metadato de la oferta, pero en esta versión
    no competirá con la portada tipográfica (como en la maqueta adjunta). */
 .flacso-carta-virtual .fc-hero-visual {
