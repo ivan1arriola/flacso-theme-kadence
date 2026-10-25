@@ -511,6 +511,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
                     <?php endif; ?>
                     <a href="#fc-planificacion"><?php esc_html_e('Calendario y costos', 'flacso-uruguay'); ?></a>
                     <a href="#fc-practica"><?php esc_html_e('Información práctica', 'flacso-uruguay'); ?></a>
+                    <a href="#fc-trust"><?php esc_html_e('Por qué FLACSO', 'flacso-uruguay'); ?></a>
                     <a href="#fc-contact-title"><?php esc_html_e('Contacto', 'flacso-uruguay'); ?></a>
                 </div>
                     </nav>
@@ -881,7 +882,7 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
             $carta_mas_info_gestion_title = trim((string) get_option('flacso_carta_mas_info_gestion_title', __('Gestión Académica', 'flacso-uruguay')));
             $carta_mas_info_gestion_html = (string) get_option('flacso_carta_mas_info_gestion_html', '<p>' . __('Nos distingue un sistema de <strong>gestión académica eficiente y cercano</strong>, que acompaña de forma <strong>personalizada</strong> a cada estudiante y garantiza <strong>altos niveles de egreso, superiores al 90%</strong>.', 'flacso-uruguay') . '</p>');
             ?>
-            <section class="fc-section fc-major-section fc-major-section--trust">
+            <section id="fc-trust" class="fc-section fc-major-section fc-major-section--trust">
                 <header class="fc-major-heading">
                     <span class="fc-major-heading__kicker" aria-hidden="true">05</span>
                     <div>
