@@ -1009,6 +1009,56 @@ $calendario_url = !empty($academic['calendario_pdf_url']) ? $academic['calendari
         });
     });
 }());
+
+</script>
+
+<script>
+/* El índice resalta la sección que se está leyendo, también con teclado. */
+(function () {
+    const nav = document.querySelector('.fc-jump-nav');
+    if (!nav) return;
+
+    const items = Array.from(nav.querySelectorAll('a[href^="#"]'))
+        .map((link) => ({ link, target: document.getElementById(link.hash.slice(1)) }))
+        .filter((item) => item.target);
+
+    if (!items.length) return;
+    let scheduled = false;
+
+    const update = () => {
+        scheduled = false;
+        const threshold = Math.min(170, window.innerHeight * .28);
+        let current = items[0];
+
+        for (const item of items) {
+            if (item.target.getBoundingClientRect().top <= threshold) {
+                current = item;
+            }
+        }
+
+        if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 24) {
+            current = items[items.length - 1];
+        }
+
+        for (const item of items) {
+            if (item === current) {
+                item.link.setAttribute('aria-current', 'location');
+            } else {
+                item.link.removeAttribute('aria-current');
+            }
+        }
+    };
+
+    const scheduleUpdate = () => {
+        if (scheduled) return;
+        scheduled = true;
+        requestAnimationFrame(update);
+    };
+
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate);
+    update();
+}());
 </script>
 
 <script>
