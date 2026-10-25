@@ -31,6 +31,15 @@ $registration  = $context['registration'] ?? [];
 $program       = $context['program'] ?? [];
 $thumbnail_url = (string) ($context['thumbnail_url'] ?? '');
 
+// Separar visualmente el tipo de oferta del título si viene como prefijo en el nombre
+$title_prefix = '';
+$title_main   = $title;
+$prefix_pattern = '/^(Diploma|Maestría|Doctorado|Especialización|Certificado|Curso)(\s+(en|de|sobre|superior en|internacional en))?(:|\s+)/iu';
+if (preg_match($prefix_pattern, $title, $matches)) {
+    $title_prefix = trim($matches[0], " \t\n\r\0\x0B:");
+    $title_main   = trim(mb_substr($title, mb_strlen($matches[0])));
+}
+
 // Color principal de la oferta académica.
 // Si no hay un color válido configurado, se usa el azul institucional FLACSO.
 $offer_color_fallback = '#0a3470';
@@ -501,7 +510,12 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         </span>
                                     <?php endif; ?>
                                 </div>
-                                <h1 id="flacso-oa-program-title" class="flacso-academic-hero__title"><?php echo esc_html($title); ?></h1>
+                                <h1 id="flacso-oa-program-title" class="flacso-academic-hero__title">
+                                    <?php if ($title_prefix !== '') : ?>
+                                        <span class="flacso-academic-hero__title-kicker"><?php echo esc_html($title_prefix); ?></span>
+                                    <?php endif; ?>
+                                    <span class="flacso-academic-hero__title-main"><?php echo esc_html($title_main); ?></span>
+                                </h1>
                                 <div class="flacso-academic-hero__actions">
                                     <a href="<?php echo esc_url($hero_primary_url); ?>"<?php echo $has_preinscription_cta ? ' data-flacso-preinscription-cta="1"' : ''; ?> class="flacso-academic-hero__cta">
                                         <span><?php echo esc_html($hero_primary_label); ?></span>
@@ -820,8 +834,8 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                             <aside id="flacso-oa-consulta" class="sidebar flacso-mobile-info-sheet" aria-label="<?php esc_attr_e('Formulario de consulta', 'flacso-uruguay'); ?>">
                                 <!-- Cabecera móvil del panel lateral; se reutiliza el único formulario. -->
                                 <header class="flacso-mobile-info-sheet__header">
-                                    <h2 id="flacso-mobile-info-sheet-title"><?php esc_html_e('Más información', 'flacso-uruguay'); ?></h2>
-                                    <button type="button" class="flacso-mobile-info-sheet__close" aria-label="<?php esc_attr_e('Cerrar más información', 'flacso-uruguay'); ?>">
+                                    <h2 id="flacso-mobile-info-sheet-title"><?php esc_html_e('Solicitar información', 'flacso-uruguay'); ?></h2>
+                                    <button type="button" class="flacso-mobile-info-sheet__close" aria-label="<?php esc_attr_e('Cerrar solicitud de información', 'flacso-uruguay'); ?>">
                                         <span aria-hidden="true">×</span>
                                     </button>
                                 </header>
@@ -1022,8 +1036,8 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                     <div class="flacso-mobile-info-overlay" aria-hidden="true"></div>
                     <nav class="flacso-mobile-actions" aria-label="<?php esc_attr_e('Acciones de la Oferta Académica', 'flacso-uruguay'); ?>">
                         <button type="button" class="flacso-mobile-actions__info" aria-expanded="false" aria-controls="flacso-oa-consulta">
-                            <span class="flacso-mobile-actions__info-icon" aria-hidden="true">ⓘ</span>
-                            <?php esc_html_e('Más información', 'flacso-uruguay'); ?>
+                            <svg class="flacso-mobile-actions__info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="18" height="18"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            <?php esc_html_e('Solicitar información', 'flacso-uruguay'); ?>
                         </button>
                         <?php if ($has_preinscription_cta) : ?>
                             <a class="flacso-mobile-actions__register" href="<?php echo esc_url($preinscripcion_url); ?>" data-flacso-preinscription-cta="1">
