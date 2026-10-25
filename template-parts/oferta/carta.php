@@ -142,7 +142,7 @@ $url_inscripcion        = (string) ($registration['url'] ?? '');
 if ($url_inscripcion === '') {
     $url_inscripcion = 'https://preinscripciones.flacso.edu.uy/';
 }
-$inscripciones_abiertas = true;
+$inscripciones_abiertas = !empty($registration['is_open']) && !empty($registration['url']);
 
 // Fechas y datos clave
 $proximo_inicio = trim((string) ($instance['fechas_formateadas'] ?? ''));
