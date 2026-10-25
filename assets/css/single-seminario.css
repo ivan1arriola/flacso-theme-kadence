@@ -532,8 +532,11 @@
     }
 
     .flacso-seminario-shell {
-        width: min(1240px, calc(100% - 40px));
+        width: 100%;
+        max-width: 1180px;
         margin-inline: auto;
+        padding-left: clamp(24px, 5vw, 40px);
+        padding-right: clamp(24px, 5vw, 40px);
     }
 
     .seminario-breadcrumb-wrap {
@@ -1389,10 +1392,6 @@
     }
 
     @media (max-width: 767.98px) {
-        .flacso-seminario-shell {
-            width: min(100% - 24px, 680px);
-        }
-
         .seminario-breadcrumb-wrap {
             padding-top: 14px;
         }
@@ -1522,10 +1521,6 @@
     }
 
     @media (max-width: 420px) {
-        .flacso-seminario-shell {
-            width: calc(100% - 20px);
-        }
-
         .seminario-quick-meta {
             grid-template-columns: 1fr;
         }

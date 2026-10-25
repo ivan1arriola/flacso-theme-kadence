@@ -7182,9 +7182,41 @@
     background: #f7f9fc;
 }
 .flacso-oferta-responsive .flacso-academic-team__container {
-    width: min(100% - 36px, 1260px);
+    width: 100%;
+    max-width: 1180px;
     margin: 0 auto;
+    padding-inline: clamp(24px, 5vw, 40px);
     min-width: 0;
+}
+.flacso-oferta-responsive .flacso-academic-team--coordination.flacso-oa-team-section {
+    padding-bottom: clamp(38px, 5vw, 64px) !important;
+    background: linear-gradient(180deg, #f0f5fb 0%, #f7f9fc 100%);
+}
+.flacso-oferta-responsive .flacso-academic-team--faculty.flacso-oa-team-section {
+    padding-top: clamp(34px, 4vw, 56px) !important;
+}
+.flacso-oferta-responsive .flacso-academic-team--coordination .flacso-academic-team__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+.flacso-oferta-responsive .flacso-academic-team--coordination .flacso-academic-team__grid:has(> :nth-child(3)) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.flacso-oferta-responsive .flacso-academic-team--coordination .flacso-academic-person__summary,
+.flacso-oferta-responsive .flacso-academic-team--coordination .flacso-academic-person__static {
+    min-height: 106px;
+    padding: 18px 20px !important;
+    grid-template-columns: 68px minmax(0, 1fr) 36px;
+}
+.flacso-oferta-responsive .flacso-academic-team--coordination .flacso-academic-person__static {
+    grid-template-columns: 68px minmax(0, 1fr);
+}
+.flacso-oferta-responsive .flacso-academic-team--coordination .flacso-academic-person__avatar {
+    width: 68px;
+    height: 68px;
+}
+.flacso-oferta-responsive .flacso-academic-team--coordination .flacso-academic-person__name {
+    font-size: 1.05rem;
 }
 .flacso-oferta-responsive .flacso-academic-team__header {
     margin: 0 0 clamp(26px, 3vw, 42px);
@@ -7403,6 +7435,11 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
+@media (max-width: 860px) {
+    .flacso-oferta-responsive .flacso-academic-team--coordination .flacso-academic-team__grid:has(> :nth-child(3)) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
 @media (max-width: 720px) {
     .flacso-oferta-responsive .flacso-academic-accordions.details {
         gap: 10px !important;
@@ -7438,7 +7475,11 @@
         gap: 10px;
     }
     .flacso-oferta-responsive .flacso-academic-team__container {
-        width: calc(100% - 32px);
+        width: 100%;
+    }
+    .flacso-oferta-responsive .flacso-academic-team--coordination .flacso-academic-team__grid,
+    .flacso-oferta-responsive .flacso-academic-team--coordination .flacso-academic-team__grid:has(> :nth-child(3)) {
+        grid-template-columns: minmax(0, 1fr);
     }
     .flacso-oferta-responsive .flacso-academic-person__summary,
     .flacso-oferta-responsive .flacso-academic-person__static {

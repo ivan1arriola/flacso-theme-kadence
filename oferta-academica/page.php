@@ -873,25 +873,36 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                     <!-- EQUIPO ACADÉMICO -->
                     <!-- ========================================== -->
                     <?php
-                    $merged_equipos = [];
+                    $coordination_groups = [];
+                    $academic_team_groups = [];
 
                     $coordinacion_academica = $academic['coordinacion_academica'] ?? [];
                     if (!empty($coordinacion_academica) && is_array($coordinacion_academica)) {
+                        $coordination_people = [];
                         foreach ($coordinacion_academica as $coord) {
                             if (!empty($coord['docentes']) && is_array($coord['docentes'])) {
-                                $merged_equipos[] = [
-                                    'nombre'      => !empty($coord['rol']) ? $coord['rol'] : __('Coordinación académica', 'flacso-uruguay'),
-                                    'descripcion' => $coord['descripcion'] ?? '',
-                                    'docentes'    => $coord['docentes'],
-                                    'importancia' => '1',
-                                ];
+                                foreach ($coord['docentes'] as $docente_item) {
+                                    $person = is_array($docente_item) ? $docente_item : ['id' => $docente_item];
+                                    if (empty($person['rol'])) {
+                                        $person['rol'] = (string) ($coord['rol'] ?? '');
+                                    }
+                                    $coordination_people[] = $person;
+                                }
                             }
+                        }
+                        if ($coordination_people) {
+                            $coordination_groups[] = [
+                                'nombre'      => __('Coordinación académica', 'flacso-uruguay'),
+                                'descripcion' => '',
+                                'docentes'    => $coordination_people,
+                                'importancia' => '1',
+                            ];
                         }
                     }
 
                     $prog_coord = $program['coordinacion'] ?? [];
-                    if (empty($merged_equipos) && !empty($prog_coord) && is_array($prog_coord)) {
-                        $merged_equipos[] = [
+                    if (empty($coordination_groups) && !empty($prog_coord) && is_array($prog_coord)) {
+                        $coordination_groups[] = [
                             'nombre'      => __('Coordinación académica', 'flacso-uruguay'),
                             'descripcion' => '',
                             'docentes'    => array_filter(array_map(static function ($m) {
@@ -905,7 +916,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                     if (!empty($equipos) && is_array($equipos)) {
                         foreach ($equipos as $eq) {
                             if (!empty($eq['docentes']) && is_array($eq['docentes'])) {
-                                $merged_equipos[] = [
+                                $academic_team_groups[] = [
                                     'nombre'      => $eq['nombre'] ?? '',
                                     'descripcion' => $eq['descripcion'] ?? '',
                                     'docentes'    => $eq['docentes'],
@@ -916,11 +927,16 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                     }
                     ?>
 
-                    <?php if (!empty($merged_equipos)) : ?>
-                        <section class="flacso-academic-team flacso-oa-team-section" aria-labelledby="flacso-academic-team-title">
+                    <?php if (!empty($coordination_groups) || !empty($academic_team_groups)) : ?>
+                        <?php foreach ([
+                            ['groups' => $coordination_groups, 'title' => __('Coordinación académica', 'flacso-uruguay'), 'id' => 'flacso-academic-coordination-title', 'class' => 'flacso-academic-team--coordination'],
+                            ['groups' => $academic_team_groups, 'title' => __('Equipo académico', 'flacso-uruguay'), 'id' => 'flacso-academic-team-title', 'class' => 'flacso-academic-team--faculty'],
+                        ] as $team_section) : ?>
+                        <?php if (empty($team_section['groups'])) { continue; } ?>
+                        <section class="flacso-academic-team flacso-oa-team-section <?php echo esc_attr($team_section['class']); ?>" aria-labelledby="<?php echo esc_attr($team_section['id']); ?>">
                             <div class="flacso-oa-container flacso-academic-team__container">
                                 <header class="flacso-academic-team__header">
-                                    <h2 id="flacso-academic-team-title"><?php esc_html_e('Equipo académico', 'flacso-uruguay'); ?></h2>
+                                    <h2 id="<?php echo esc_attr($team_section['id']); ?>"><?php echo esc_html($team_section['title']); ?></h2>
                                 </header>
 
                                 <div class="flacso-academic-team__groups">
@@ -930,7 +946,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         ? trim((string) ($instance['label'] ?? ''))
                                         : '';
                                     ?>
-                                    <?php foreach ($merged_equipos as $grupo) : ?>
+                                    <?php foreach ($team_section['groups'] as $grupo) : ?>
                                         <?php
                                         $grupo_nombre = trim((string) ($grupo['nombre'] ?? ''));
                                         if ($grupo_nombre !== '' && ($grupo['alcance'] ?? '') === 'cohorte'
@@ -951,7 +967,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                         }
                                         ?>
                                         <div class="flacso-academic-team__group flacso-academic-team__group--level-<?php echo esc_attr($nivel); ?>">
-                                            <?php if ($grupo_nombre !== '') : ?>
+                                            <?php if ($grupo_nombre !== '' && $team_section['class'] !== 'flacso-academic-team--coordination') : ?>
                                                 <h3 class="flacso-academic-team__group-title"><?php echo esc_html($grupo_nombre); ?></h3>
                                             <?php endif; ?>
                                             <?php if (!empty($grupo['descripcion'])) : ?>
@@ -971,6 +987,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                 </div>
                             </div>
                         </section>
+                        <?php endforeach; ?>
                     <?php else : ?>
                         <section class="flacso-oa-team-section flacso-oa-team-section--empty">
                             <div class="flacso-oa-container">
