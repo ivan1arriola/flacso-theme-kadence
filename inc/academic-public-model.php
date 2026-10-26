@@ -163,6 +163,10 @@ function flacso_theme_get_price_table_data(?int $table_id): ?array {
     $type = (string) get_post_meta($table_id, "tabla_precios_tipo", true);
     $note = (string) get_post_meta($table_id, "precios_nota", true);
     $show_usd = (bool) get_post_meta($table_id, "mostrar_precios_dolares", true);
+    $columns = get_post_meta($table_id, "precios_columnas", true);
+    $columns = is_array($columns) ? array_values(array_filter($columns, static function ($column): bool {
+        return is_array($column) && !empty($column["id"]) && ($column["titulo"] ?? "") !== "";
+    })) : [];
 
     $highlighted_row = null;
     foreach ($rows as $row) {
@@ -181,7 +185,7 @@ function flacso_theme_get_price_table_data(?int $table_id): ?array {
     // Buscar si existe una fila secundaria con descuento (ej. Comunidad FLACSO / 15%)
     $discount_row = null;
     foreach ($rows as $row) {
-        $concept = strtolower((string) ($row["concepto"] ?? ""));
+        $concept = strtolower((string) ($row["concepto"] ?? "") . " " . (string) ($row["detalle"] ?? ""));
         if (strpos($concept, "descuento") !== false || strpos($concept, "comunidad") !== false || strpos($concept, "15%") !== false) {
             $discount_row = $row;
             break;
@@ -198,6 +202,7 @@ function flacso_theme_get_price_table_data(?int $table_id): ?array {
         "filas"                  => $rows,
         "nota"                   => $note,
         "mostrar_dolares"        => $show_usd,
+        "columnas"               => $columns,
         "valor_uyu"              => $val_uyu,
         "valor_usd"              => $val_usd,
         "valor_uyu_15_descuento" => $val_uyu_desc,
