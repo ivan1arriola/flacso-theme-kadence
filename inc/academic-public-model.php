@@ -162,7 +162,12 @@ function flacso_theme_get_price_table_data(?int $table_id): ?array {
     $rows = is_array($rows) ? $rows : [];
     $type = (string) get_post_meta($table_id, "tabla_precios_tipo", true);
     $note = (string) get_post_meta($table_id, "precios_nota", true);
-    $show_usd = (bool) get_post_meta($table_id, "mostrar_precios_dolares", true);
+    // Igual que el editor: sin el dato guardado, USD se considera visible. Nunca se publica una columna vacía.
+    $show_usd = !metadata_exists("post", $table_id, "mostrar_precios_dolares")
+        || filter_var(get_post_meta($table_id, "mostrar_precios_dolares", true), FILTER_VALIDATE_BOOLEAN);
+    $show_usd = $show_usd && (bool) array_filter($rows, static function ($row): bool {
+        return is_array($row) && trim(strip_tags((string) ($row["usd"] ?? $row["us"] ?? ""))) !== "";
+    });
     $columns = get_post_meta($table_id, "precios_columnas", true);
     $columns = is_array($columns) ? array_values(array_filter($columns, static function ($column): bool {
         return is_array($column) && !empty($column["id"]) && ($column["titulo"] ?? "") !== "";
