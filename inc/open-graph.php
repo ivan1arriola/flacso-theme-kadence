@@ -282,3 +282,17 @@ function flacso_theme_has_external_og_provider() {
         || defined('RANK_MATH_VERSION')
         || has_action('wp_head', 'jetpack_og_tags');
 }
+
+/**
+ * Emite la metaetiqueta robots noindex, nofollow y encabezado HTTP en cartas de presentación.
+ */
+function flacso_theme_render_carta_robots_meta() {
+    if ( function_exists( 'flacso_theme_is_carta' ) && flacso_theme_is_carta() ) {
+        if ( ! headers_sent() ) {
+            header( 'X-Robots-Tag: noindex, nofollow', true );
+        }
+        echo '<meta name="robots" content="noindex, nofollow">' . "\n";
+    }
+}
+add_action( 'wp_head', 'flacso_theme_render_carta_robots_meta', 1 );
+

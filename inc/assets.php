@@ -295,3 +295,54 @@ function flacso_child_enqueue_articulation_styles() {
     );
 }
 add_action('wp_enqueue_scripts', 'flacso_child_enqueue_articulation_styles', 50);
+
+/**
+ * Determina si la consulta actual corresponde a una carta de presentación académica.
+ */
+function flacso_theme_is_carta(): bool {
+    if ( ! function_exists( 'is_singular' ) || ! is_singular( 'oferta-academica' ) ) {
+        return false;
+    }
+    if ( (bool) get_query_var( 'es_carta' ) || ( get_query_var( 'carta' ) !== false && get_query_var( 'carta' ) !== '' ) ) {
+        return true;
+    }
+    if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+        $req_path = trim( (string) wp_parse_url( (string) $_SERVER['REQUEST_URI'], PHP_URL_PATH ), '/' );
+        if ( str_ends_with( $req_path, '/carta' ) || str_ends_with( $req_path, 'carta' ) ) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Encola estilos de la Carta de Presentación en wp_enqueue_scripts (antes de wp_head).
+ */
+function flacso_child_enqueue_carta_assets() {
+    if ( ! flacso_theme_is_carta() ) {
+        return;
+    }
+
+    wp_enqueue_style(
+        'flacso-single-carta',
+        get_stylesheet_directory_uri() . '/assets/css/single-carta.css',
+        array( 'chld_thm_cfg_child' ),
+        flacso_child_asset_version( 'assets/css/single-carta.css' )
+    );
+
+    wp_enqueue_style(
+        'flacso-single-carta-editorial',
+        get_stylesheet_directory_uri() . '/assets/css/single-carta-editorial.css',
+        array( 'flacso-single-carta' ),
+        flacso_child_asset_version( 'assets/css/single-carta-editorial.css' )
+    );
+
+    wp_enqueue_style(
+        'flacso-single-carta-reference',
+        get_stylesheet_directory_uri() . '/assets/css/single-carta-reference.css',
+        array( 'flacso-single-carta-editorial' ),
+        flacso_child_asset_version( 'assets/css/single-carta-reference.css' )
+    );
+}
+add_action( 'wp_enqueue_scripts', 'flacso_child_enqueue_carta_assets', 42 );
+

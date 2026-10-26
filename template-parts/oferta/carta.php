@@ -192,11 +192,13 @@ $tabla_precio = $instance['tabla_precio'] ?? null;
 $precios_filas = [];
 $precios_nota = '';
 $mostrar_precios_dolares = true;
+$precios_columnas = [];
 
 if (!empty($tabla_precio) && is_array($tabla_precio)) {
     $precios_filas = is_array($tabla_precio['filas'] ?? null) ? $tabla_precio['filas'] : [];
     $precios_nota  = (string) ($tabla_precio['nota'] ?? '');
     $mostrar_precios_dolares = !empty($tabla_precio['mostrar_dolares']);
+    $precios_columnas = is_array($tabla_precio['columnas'] ?? null) ? $tabla_precio['columnas'] : [];
 }
 
 // Helper para determinante de artículo
@@ -799,6 +801,9 @@ $calendario_y_malla_compartidos = flacso_theme_calendar_and_curriculum_share_doc
                                                 <span><?php esc_html_e('residentes en el exterior', 'flacso-uruguay'); ?></span>
                                             </th>
                                         <?php endif; ?>
+                                        <?php foreach ($precios_columnas as $columna) : ?>
+                                            <th scope="col"><?php echo esc_html((string) $columna['titulo']); ?></th>
+                                        <?php endforeach; ?>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -807,14 +812,19 @@ $calendario_y_malla_compartidos = flacso_theme_calendar_and_curriculum_share_doc
                                         $concepto_row = $row['concepto'] ?? ($row['concept'] ?? '');
                                         $uyu_row      = $row['uyu'] ?? ($row['uy'] ?? '');
                                         $usd_row      = $row['usd'] ?? ($row['us'] ?? '');
+                                        $detalle_row  = (string) ($row['detalle'] ?? '');
+                                        $extras_row   = is_array($row['extras'] ?? null) ? $row['extras'] : [];
                                         $is_destacada = !empty($row['destacada']) || !empty($row['highlight']);
                                     ?>
                                         <tr class="<?php echo $is_destacada ? 'is-highlighted' : ''; ?>">
-                                            <td data-label="<?php esc_attr_e('Concepto', 'flacso-uruguay'); ?>"><?php echo wp_kses_post((string) $concepto_row); ?></td>
+                                            <td data-label="<?php esc_attr_e('Concepto', 'flacso-uruguay'); ?>"><span><?php echo wp_kses_post((string) $concepto_row); ?><?php if ($detalle_row !== '') : ?><small class="fc-pricing-detail"><?php echo esc_html($detalle_row); ?></small><?php endif; ?></span></td>
                                             <td data-label="<?php esc_attr_e('Valor en pesos', 'flacso-uruguay'); ?>"><?php echo wp_kses_post((string) $uyu_row); ?></td>
                                             <?php if ($mostrar_precios_dolares) : ?>
                                                 <td data-label="<?php esc_attr_e('Valor en dólares', 'flacso-uruguay'); ?>"><?php echo wp_kses_post((string) $usd_row); ?></td>
                                             <?php endif; ?>
+                                            <?php foreach ($precios_columnas as $columna) : ?>
+                                                <td data-label="<?php echo esc_attr((string) $columna['titulo']); ?>"><?php echo esc_html((string) ($extras_row[$columna['id']] ?? '')); ?></td>
+                                            <?php endforeach; ?>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>

@@ -57,15 +57,16 @@ do_action( 'kadence_before_content' );
 			 * disponible.
 			 */
 			$renderers = [
-				'hero'       => 'flacso_section_hero_render',
-				'eventos'    => 'flacso_section_eventos_render',
-				'seminarios' => 'flacso_section_seminarios_proximos_render',
-				'novedades'  => 'flacso_section_novedades_render',
-				'quienes'    => 'flacso_section_quienes_somos_render',
-				'instagram'  => 'flacso_section_instagram_render',
-				'posgrados'  => 'flacso_section_oferta_educativa_render',
-				'mailing'    => 'flacso_section_mailing_render',
-                'contacto'   => 'flacso_section_contacto_render',
+				'hero'             => 'flacso_section_hero_render',
+				'eventos'          => 'flacso_section_eventos_render',
+				'seminarios'       => 'flacso_lista_seminarios_render',
+				'novedades'        => 'flacso_section_novedades_render',
+				'quienes'          => 'flacso_section_quienes_somos_render',
+				'instagram'        => 'flacso_section_instagram_render',
+				'oferta_academica' => 'flacso_section_oferta_educativa_render',
+				'posgrados'        => 'flacso_section_oferta_educativa_render',
+				'mailing'          => 'flacso_section_mailing_render',
+				'contacto'         => 'flacso_section_contacto_render',
 			];
 
 			$order = array_keys( $renderers );

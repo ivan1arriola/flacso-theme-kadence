@@ -147,9 +147,17 @@ while (have_posts()) :
                                 $sem_url = get_permalink($sem_id);
 
                                 $current_edition = null;
-                                if (class_exists('FLACSO_Academic_Public_Model')) {
-                                    $dto = FLACSO_Academic_Public_Model::build_single_seminar_view($sem_id);
-                                    $current_edition = $dto['edicion_vigente'] ?? null;
+                                if (function_exists('flacso_theme_get_seminar_context')) {
+                                    $sem_context = flacso_theme_get_seminar_context($sem_id);
+                                    if (!empty($sem_context['instance']['id'])) {
+                                        $current_edition = $sem_context['instance'];
+                                        if (empty($current_edition['nombre']) && !empty($current_edition['label'])) {
+                                            $current_edition['nombre'] = $current_edition['label'];
+                                        }
+                                    }
+                                } elseif (class_exists('FLACSO_Academic_Catalog')) {
+                                    $sem_data = FLACSO_Academic_Catalog::get_seminar($sem_id);
+                                    $current_edition = $sem_data['edicion_vigente'] ?? null;
                                 }
                             ?>
                                 <article class="academic-card academic-card--seminar">

@@ -124,6 +124,66 @@ function flacso_get_paises_consulta() {
         'US' => 'Estados Unidos',
         'CA' => 'Canadá',
     ];
+if ( ! function_exists( 'flacso_get_paises_consulta' ) ) {
+    function flacso_get_paises_consulta() {
+        return [
+            'AR' => 'Argentina',
+            'BO' => 'Bolivia',
+            'BR' => 'Brasil',
+            'CL' => 'Chile',
+            'CO' => 'Colombia',
+            'CR' => 'Costa Rica',
+            'CU' => 'Cuba',
+            'DO' => 'República Dominicana',
+            'EC' => 'Ecuador',
+            'SV' => 'El Salvador',
+            'GT' => 'Guatemala',
+            'HN' => 'Honduras',
+            'MX' => 'México',
+            'NI' => 'Nicaragua',
+            'PA' => 'Panamá',
+            'PY' => 'Paraguay',
+            'PE' => 'Perú',
+            'PR' => 'Puerto Rico',
+            'UY' => 'Uruguay',
+            'VE' => 'Venezuela',
+            'AT' => 'Austria',
+            'BE' => 'Bélgica',
+            'CZ' => 'República Checa',
+            'DK' => 'Dinamarca',
+            'EE' => 'Estonia',
+            'FI' => 'Finlandia',
+            'FR' => 'Francia',
+            'DE' => 'Alemania',
+            'GR' => 'Grecia',
+            'HU' => 'Hungría',
+            'IE' => 'Irlanda',
+            'IT' => 'Italia',
+            'LV' => 'Letonia',
+            'LT' => 'Lituania',
+            'LU' => 'Luxemburgo',
+            'NL' => 'Países Bajos',
+            'PL' => 'Polonia',
+            'PT' => 'Portugal',
+            'RO' => 'Rumania',
+            'SK' => 'Eslovaquia',
+            'SI' => 'Eslovenia',
+            'ES' => 'España',
+            'SE' => 'Suecia',
+            'CH' => 'Suiza',
+            'GB' => 'Reino Unido',
+            'AU' => 'Australia',
+            'CN' => 'China',
+            'IN' => 'India',
+            'JP' => 'Japón',
+            'KR' => 'Corea del Sur',
+            'NZ' => 'Nueva Zelanda',
+            'RU' => 'Rusia',
+            'ZA' => 'Sudáfrica',
+            'US' => 'Estados Unidos',
+            'CA' => 'Canadá',
+        ];
+    }
 }
 
 ?>
@@ -532,6 +592,8 @@ function flacso_get_paises_consulta() {
                 if (data.success) {
                     const editorOk = data.data && data.data.editor_response && data.data.editor_response.ok === true;
                     if (!editorOk) {
+                    const editorFailed = data.data && data.data.editor_response && data.data.editor_response.ok === false;
+                    if (editorFailed) {
                         throw new Error('El CRM no confirmó el guardado de la consulta.');
                     }
 

@@ -1234,6 +1234,159 @@
     }
 }
 
+/* Tabla de precios: encabezado con el color de la oferta, filas cálidas y
+   la fila principal destacada en naranja, como la planilla de aranceles. */
+.flacso-carta-virtual .fc-pricing-section {
+    --fc-price-warm: #fff8ea;
+    --fc-price-highlight: #ffe3b0;
+    --fc-price-accent: #f39c12;
+}
+
+.flacso-carta-virtual .fc-table-wrap {
+    border: 0;
+    border-radius: 12px;
+    box-shadow: 0 0 0 1px var(--fc-ref-line), 0 10px 24px rgba(18, 38, 77, .06);
+}
+
+.flacso-carta-virtual .fc-pricing-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.flacso-carta-virtual .fc-pricing-table thead th {
+    padding: 16px 18px;
+    border: 0;
+    background: var(--fc-brand);
+    color: var(--fc-brand-contrast, #fff);
+    vertical-align: bottom;
+}
+
+.flacso-carta-virtual .fc-pricing-table thead th:first-child {
+    background: var(--fc-brand-deep, var(--fc-ref-navy));
+}
+
+.flacso-carta-virtual .fc-pricing-table thead th span {
+    color: rgba(255, 255, 255, .78);
+}
+
+.flacso-carta-virtual .fc-pricing-table tbody tr,
+.flacso-carta-virtual .fc-pricing-table tbody tr:nth-child(even):not(.is-highlighted) {
+    background: var(--fc-price-warm);
+}
+
+.flacso-carta-virtual .fc-pricing-table tbody td {
+    padding: 18px;
+    border-bottom: 2px solid #fff;
+}
+
+.flacso-carta-virtual .fc-pricing-table tbody td:first-child {
+    color: var(--fc-ref-navy);
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.flacso-carta-virtual .fc-pricing-table tbody td:first-child strong {
+    font-weight: inherit;
+}
+
+.flacso-carta-virtual .fc-pricing-table tbody td:first-child small,
+.flacso-carta-virtual .fc-pricing-detail {
+    display: block;
+    margin-top: 4px;
+    color: var(--fc-ref-muted);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+/* Conceptos guardados en HTML: el <br> tras una letra chica en bloque deja un renglón vacío. */
+.flacso-carta-virtual .fc-pricing-table tbody td:first-child small + br {
+    display: none;
+}
+
+.flacso-carta-virtual .fc-pricing-table tbody td:not(:first-child) {
+    color: var(--fc-ref-ink);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.flacso-carta-virtual .fc-pricing-table tbody tr.is-highlighted {
+    background: var(--fc-price-highlight);
+}
+
+.flacso-carta-virtual .fc-pricing-table tbody tr.is-highlighted td:first-child {
+    box-shadow: inset 5px 0 0 var(--fc-price-accent);
+}
+
+.flacso-carta-virtual .fc-pricing-note {
+    display: block;
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: var(--fc-ref-soft);
+    color: var(--fc-ref-ink);
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.flacso-carta-virtual .fc-pricing-note small {
+    display: block;
+    margin-top: 4px;
+    color: var(--fc-ref-muted);
+    font-size: 12.5px;
+}
+
+.flacso-carta-virtual .fc-pricing-note a {
+    color: var(--fc-brand);
+    font-weight: 700;
+}
+
+@media (max-width: 767px) {
+    /* Cada fila es una tarjeta; la principal lleva borde naranja. */
+    .flacso-carta-virtual .fc-table-wrap {
+        overflow: visible;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .flacso-carta-virtual .fc-pricing-table tbody {
+        display: grid;
+        gap: 10px;
+    }
+
+    .flacso-carta-virtual .fc-pricing-table tbody tr,
+    .flacso-carta-virtual .fc-pricing-table tbody tr:last-child {
+        padding: 6px 0 8px;
+        border: 1px solid var(--fc-ref-line);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .flacso-carta-virtual .fc-pricing-table tbody tr.is-highlighted {
+        border: 2px solid var(--fc-price-accent);
+    }
+
+    .flacso-carta-virtual .fc-pricing-table tbody tr.is-highlighted td:first-child {
+        box-shadow: none;
+    }
+
+    .flacso-carta-virtual .fc-pricing-table tbody td {
+        border-bottom: 0;
+    }
+
+    .flacso-carta-virtual .fc-pricing-table tbody td:first-child {
+        padding: 10px 14px 8px;
+        font-size: 17px;
+    }
+
+    .flacso-carta-virtual .fc-pricing-table tbody td:not(:first-child) {
+        padding: 6px 14px;
+        font-size: 15px;
+    }
+}
+
 @media print {
     .flacso-carta-virtual .fc-hero {
         -webkit-print-color-adjust: exact;

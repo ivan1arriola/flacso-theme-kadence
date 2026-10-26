@@ -9,24 +9,24 @@ if ($template === false || $styles === false) {
     exit(1);
 }
 
-$objectiveStart = strpos($template, 'fc-content-panel fc-content-panel--objective');
-$objectiveEnd = $objectiveStart !== false ? strpos($template, '</article>', $objectiveStart) : false;
+$overviewStart = strpos($template, 'fc-content-panel fc-content-panel--primary fc-editorial-intro');
+$overviewEnd = $overviewStart !== false ? strpos($template, '</article>', $overviewStart) : false;
 
-if ($objectiveStart === false || $objectiveEnd === false) {
-    fwrite(STDERR, "FAIL: no se encontró el panel de objetivo general\n");
+if ($overviewStart === false || $overviewEnd === false) {
+    fwrite(STDERR, "FAIL: no se encontró el panel de información general de la propuesta\n");
     exit(1);
 }
 
-$objectiveBlock = substr($template, $objectiveStart, $objectiveEnd - $objectiveStart);
+$overviewBlock = substr($template, $overviewStart, $overviewEnd - $overviewStart);
 
-if (strpos($objectiveBlock, 'fc-content-panel__content') === false) {
-    fwrite(STDERR, "FAIL: el objetivo debe agrupar título y contenido en la segunda columna del grid\n");
+if (strpos($overviewBlock, 'fc-content-panel-body') === false) {
+    fwrite(STDERR, "FAIL: la propuesta debe estructurar su contenido en fc-content-panel-body\n");
     exit(1);
 }
 
-if (strpos($styles, '.fc-content-panel--objective > .fc-content-panel__content') === false
-    || strpos($styles, 'min-width: 0;') === false) {
-    fwrite(STDERR, "FAIL: el contenido del objetivo debe poder ocupar correctamente la columna flexible\n");
+if (strpos($styles, '.fc-editorial-intro') === false
+    || strpos($styles, '.fc-content-panel-body') === false) {
+    fwrite(STDERR, "FAIL: los estilos deben declarar reglas para .fc-editorial-intro y su contenedor de lectura\n");
     exit(1);
 }
 

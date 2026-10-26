@@ -237,6 +237,10 @@ if ($calendario_doc_url && function_exists('flacso_get_pdf_proxy_url')) {
     $proxied = flacso_get_pdf_proxy_url($calendario_doc_url, $documento_titulo);
     if ($proxied) $calendario_doc_url = $proxied;
 }
+if ($malla_doc_url && !$calendario_y_malla_compartidos && function_exists('flacso_get_pdf_proxy_url')) {
+    $proxied_malla = flacso_get_pdf_proxy_url($malla_doc_url, 'Malla curricular');
+    if ($proxied_malla) $malla_doc_url = $proxied_malla;
+}
 
 $correo_institucional = trim((string) ($academic['correo'] ?? ''));
 if ($correo_institucional === '') {
@@ -846,7 +850,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                     <div class="contact__body">
                                         <?php
                                         if (function_exists('flacso_consultas_render_form')) {
-                                            echo flacso_consultas_render_form(['mostrar_preinscripcion' => false]);
+                                            echo flacso_consultas_render_form(['mostrar_preinscripcion' => false, 'post_id' => $post_id]);
                                         }
                                         ?>
 
