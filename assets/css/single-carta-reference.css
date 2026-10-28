@@ -704,7 +704,6 @@
 .flacso-carta-virtual .fc-documents-section,
 .flacso-carta-virtual .fc-pricing-section {
     min-height: 0;
-    padding: 25px;
     border: 1px solid var(--fc-ref-line);
     border-radius: 10px;
     background: #fff;
@@ -1384,6 +1383,72 @@
     .flacso-carta-virtual .fc-pricing-table tbody td:not(:first-child) {
         padding: 6px 14px;
         font-size: 15px;
+    }
+}
+
+/* ==========================================================================
+   Correcciones de maquetación (capa final)
+   ========================================================================== */
+
+/* Tarjetas "Más información" y de documentos: el contenido se apila desde arriba.
+   Sin esto, al igualarse la altura entre tarjetas vecinas, las filas de la grilla
+   se estiran y el texto de la tarjeta más corta queda separado de su título. */
+.flacso-carta-virtual .fc-more-card {
+    align-content: start;
+}
+
+/* Contacto académico: una sola disposición (foto | datos). Las capas anteriores
+   definían áreas con nombre en tres columnas y luego pasaban a dos columnas sin
+   anularlas, de modo que el correo y el teléfono caían sobre el nombre. */
+.flacso-carta-virtual .fc-major-section--contact .fc-assistant-card {
+    grid-template-areas: none;
+    grid-template-columns: 64px minmax(0, 1fr);
+    grid-auto-rows: auto;
+}
+
+/* El relleno izquierdo lo había anulado una capa anterior; la foto quedaba pegada al borde. */
+.flacso-carta-virtual .fc-reading-main .fc-major-section--contact .fc-assistant-card {
+    padding: 25px;
+}
+
+.flacso-carta-virtual .fc-major-section--contact .fc-assistant-photo {
+    grid-area: auto;
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+}
+
+.flacso-carta-virtual .fc-major-section--contact .fc-assistant-copy {
+    grid-area: auto;
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.flacso-carta-virtual .fc-major-section--contact .fc-assistant-meta {
+    grid-area: auto;
+    grid-column: 1 / -1;
+    grid-row: 2;
+}
+
+.flacso-carta-virtual .fc-major-section--contact .fc-assistant-action {
+    grid-area: auto;
+    grid-column: 1 / -1;
+    grid-row: 3;
+}
+
+@media (min-width: 768px) {
+    .flacso-carta-virtual .fc-major-section--contact .fc-assistant-card {
+        grid-template-columns: 70px minmax(0, 1fr);
+    }
+
+    .flacso-carta-virtual .fc-major-section--contact .fc-assistant-photo {
+        grid-row: 1 / span 3;
+        align-self: start;
+    }
+
+    .flacso-carta-virtual .fc-major-section--contact .fc-assistant-meta,
+    .flacso-carta-virtual .fc-major-section--contact .fc-assistant-action {
+        grid-column: 2;
     }
 }
 
