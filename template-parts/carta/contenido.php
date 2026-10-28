@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
     'detalles_academicos' => $detalles_academicos,
     'hay_detalles_academicos' => $hay_detalles_academicos,
     'mensaje_bienvenida' => $mensaje_bienvenida,
-    'child_content' => $child_content,
+    'info_extra' => $info_extra,
     'fc_audience_summary' => $fc_audience_summary,
     'fc_long_description' => $fc_long_description,
 ] = $args['carta'];
@@ -125,10 +125,10 @@ if (!defined('ABSPATH')) {
                     </div>
                 <?php endif; ?>
 
-                <?php if ($child_content !== '') : ?>
-                    <article class="fc-content-panel fc-content-wrapper fc-content-wrapper-compact fc-child-content" aria-label="<?php esc_attr_e('Contenido adicional del programa', 'flacso-uruguay'); ?>">
+                <?php if ($info_extra !== '') : ?>
+                    <article class="fc-content-panel fc-content-wrapper fc-content-wrapper-compact fc-extra-info" aria-label="<?php esc_attr_e('Información extra', 'flacso-uruguay'); ?>">
                         <div class="fc-content-panel-body">
-                            <?php echo wp_kses_post($child_content); ?>
+                            <?php echo wp_kses_post($info_extra); ?>
                         </div>
                     </article>
                 <?php endif; ?>

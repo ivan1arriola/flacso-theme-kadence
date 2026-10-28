@@ -899,7 +899,7 @@
    09. CONTENIDO ADICIONAL
    ========================================================================== */
 
-.flacso-carta-virtual .fc-child-content {
+.flacso-carta-virtual .fc-extra-info {
     margin-top: 4px;
     padding: 20px;
     border-radius: 15px;
@@ -1571,7 +1571,7 @@
     }
 
     .flacso-carta-virtual .fc-academic-details,
-    .flacso-carta-virtual .fc-child-content {
+    .flacso-carta-virtual .fc-extra-info {
         grid-column: 1 / -1;
     }
 

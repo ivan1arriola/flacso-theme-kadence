@@ -351,7 +351,7 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         // Contenido informativo obligatorio en todas las cartas, incluso con metadatos históricos falsos.
         "mostrar_costos_envio"        => true,
         "mostrar_expedicion_titulo"   => true,
-        "carta_presentacion_html"     => (string) ($data["carta_presentacion_html"] ?? get_post_meta($offer_id, "carta_presentacion_html", true)),
+        "carta_info_extra_html"       => (string) ($data["carta_info_extra_html"] ?? get_post_meta($offer_id, "carta_info_extra_html", true) ?: get_post_meta($offer_id, "carta_presentacion_html", true)),
         "asistente_academica_docente_id" => absint($data["asistente_academica_docente_id"] ?? get_post_meta($offer_id, "asistente_academica_docente_id", true)),
         "asistente_academica_rol"     => (string) ($data["asistente_academica_rol"] ?? get_post_meta($offer_id, "asistente_academica_rol", true)),
         "asistente_academica_correo"  => (string) ($data["asistente_academica_correo"] ?? get_post_meta($offer_id, "asistente_academica_correo", true)),
