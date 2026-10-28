@@ -50,7 +50,8 @@ check_intermediate($result[2]['titulo'] === 'Diploma en Educación', 'titulo ofi
 check_intermediate(flacso_theme_resolve_intermediate_titles(13, $raw) === [], 'diploma no admite titulos intermedios');
 check_intermediate(flacso_theme_resolve_intermediate_titles(10, ['texto libre']) === [], 'texto libre no aceptado');
 
-$template = file_get_contents(dirname(__DIR__) . '/template-parts/oferta/carta.php');
+require_once __DIR__ . '/helpers/carta-source.php';
+$template = flacso_carta_template_source(dirname(__DIR__));
 $stylesheet = file_get_contents(dirname(__DIR__) . '/assets/css/single-carta-editorial.css');
 check_intermediate(strpos($template, "\$titulo_intermedio['titulo']") !== false, 'el titulo se obtiene de la oferta');
 check_intermediate(strpos($template, "\$titulo_intermedio['url']") !== false, 'se enlaza a su pagina publica');

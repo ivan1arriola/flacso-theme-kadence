@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 $root = dirname(__DIR__);
 $styles = (string) file_get_contents($root . '/assets/css/single-carta-editorial.css');
-$template = (string) file_get_contents($root . '/template-parts/oferta/carta.php');
+require_once __DIR__ . '/helpers/carta-source.php';
+$template = (string) flacso_carta_template_source($root);
 
 function check_carta_planning(bool $ok, string $message): void {
     if (!$ok) {

@@ -5,7 +5,8 @@
 declare(strict_types=1);
 
 $root = dirname(__DIR__);
-$template = (string) file_get_contents($root . '/template-parts/oferta/carta.php');
+require_once __DIR__ . '/helpers/carta-source.php';
+$template = (string) flacso_carta_template_source($root);
 $styles = (string) file_get_contents($root . '/assets/css/single-carta-editorial.css');
 
 function assert_carta_editorial(bool $ok, string $message): void {
@@ -29,7 +30,7 @@ assert_carta_editorial(strpos($template, '<div class="fc-reading-layout">') !== 
 assert_carta_editorial(strpos($template, '</div><!-- /.fc-reading-layout -->') !== false, 'falta cerrar la estructura editorial');
 assert_carta_editorial(strpos($template, 'fc-reading-sidebar') !== false, 'falta índice lateral');
 assert_carta_editorial(strpos($template, 'fc-general-grid--long') !== false, 'falta la variante editorial para descripciones extensas');
-assert_carta_editorial(strpos($template, '$fc_long_description = mb_strlen(') !== false, 'la variante de dos columnas debe depender de la extensión del texto');
+assert_carta_editorial(strpos($template, "'fc_long_description' => mb_strlen(") !== false, 'la variante de dos columnas debe depender de la extensión del texto');
 assert_carta_editorial(strpos($template, "aria-current', 'location'") !== false, 'falta el estado de la sección activa');
 assert_carta_editorial(strpos($styles, '.fc-reading-layout {') !== false && strpos($styles, 'position: sticky;') !== false, 'falta la lectura guiada en escritorio');
 assert_carta_editorial(strpos($styles, 'column-count: 2;') !== false, 'falta aprovechar el ancho de las descripciones largas');

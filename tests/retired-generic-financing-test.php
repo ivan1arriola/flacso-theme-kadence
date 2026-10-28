@@ -6,7 +6,8 @@
 $root = dirname(__DIR__);
 $model = file_get_contents($root . '/inc/academic-public-model.php');
 $offer = file_get_contents($root . '/oferta-academica/page.php');
-$carta = file_get_contents($root . '/template-parts/oferta/carta.php');
+require_once __DIR__ . '/helpers/carta-source.php';
+$carta = flacso_carta_template_source($root);
 $css = file_get_contents($root . '/oferta-academica/style.css');
 
 function generic_financing_assert(bool $condition, string $message): void {

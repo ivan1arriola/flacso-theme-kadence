@@ -1,7 +1,8 @@
 <?php
 
 $root = dirname(__DIR__);
-$template = file_get_contents($root . '/template-parts/oferta/carta.php');
+require_once __DIR__ . '/helpers/carta-source.php';
+$template = flacso_carta_template_source($root);
 $styles = file_get_contents($root . '/assets/css/single-carta-editorial.css');
 
 if ($template === false || $styles === false) {

@@ -71,7 +71,8 @@ check_shared_document(
 
 $root = dirname(__DIR__);
 $page = (string) file_get_contents($root . '/oferta-academica/page.php');
-$carta = (string) file_get_contents($root . '/template-parts/oferta/carta.php');
+require_once __DIR__ . '/helpers/carta-source.php';
+$carta = (string) flacso_carta_template_source($root);
 $model = (string) file_get_contents($root . '/inc/academic-public-model.php');
 $both = 'Calendario y malla académica';
 

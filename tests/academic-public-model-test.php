@@ -687,16 +687,19 @@ assert_same("#0057a8", $offer_context["academic"]["color_principal"], "Contexto 
 assert_same(true, file_exists(__DIR__ . "/../template-parts/oferta/carta.php"), "Template part de carta existe");
 assert_same(true, file_exists(__DIR__ . "/../assets/css/single-carta.css"), "Estilos de carta existen");
 $offer_template = file_get_contents(__DIR__ . "/../oferta-academica/page.php");
-$carta_template = file_get_contents(__DIR__ . "/../template-parts/oferta/carta.php");
+require_once __DIR__ . '/helpers/carta-source.php';
+$carta_template = flacso_carta_template_source(__DIR__ . "/..");
 assert_same(true, strpos($offer_template, "reconocimiento_red_flacso") !== false, "La página pública usa la opción independiente de reconocimiento de red");
 assert_same(true, strpos($offer_template, "Incluye instancias exclusivamente presenciales") !== false, "La oferta explica el carácter exclusivo de las instancias");
-assert_same(true, strpos($carta_template, "Incluye instancias exclusivamente presenciales") !== false, "La carta explica el carácter exclusivo de las instancias");
+assert_same(true, strpos($carta_template, "carta_badge_presenciales") !== false, "La carta explica el carácter exclusivo de las instancias (texto y regla en el plugin)");
 assert_same(false, strpos($carta_template, 'if ($mostrar_instancias_presenciales ||') !== false, "La bandera no debe convertir una modalidad virtual en híbrida");
 assert_same(true, strpos($carta_template, "Modalidad a confirmar") !== false, "Sin modalidad clara no se inventa cursada híbrida ni virtual");
-assert_same(true, strpos($carta_template, "reconocimiento_red_flacso") !== false, "La carta usa la opción independiente de reconocimiento de red");
-assert_same(true, strpos($carta_template, "Los certificados tienen costos de envío al exterior:") !== false, "La carta conserva detalle de costos de envío");
-assert_same(true, strpos($carta_template, "El título se expide en el exterior") !== false, "La carta conserva la información de expedición");
-assert_same(false, strpos($carta_template, 'if ($mostrar_costos_envio)') !== false, "No puede condicionarse el envío a una opción");
+assert_same(true, strpos($carta_template, "carta_badge_red") !== false, "La carta usa la opción independiente de reconocimiento de red (regla en el plugin)");
+assert_same(true, strpos($carta_template, 'carta_envio_titulos') !== false && strpos($carta_template, "\$textos['envio_titulos']") !== false, "El texto de envío viene de los ajustes del plugin");
+assert_same(false, strpos($carta_template, "USD 30") !== false, "La carta no publica tarifas fijas de envío");
+assert_same(true, strpos($carta_template, 'carta_titulo_exterior') !== false, "La expedición del título viene de los ajustes del plugin");
+assert_same(true, strpos($carta_template, "\$textos['titulo_exterior']") !== false && strpos($carta_template, "\$textos['titulo_sin_costo']") !== false, "La carta muestra la emisión del título con costo o sin costo según su regla");
+assert_same(true, strpos($carta_template, 'FLACSO_Carta_Settings::visible_text') !== false, "Los textos institucionales salen de FLACSO_Carta_Settings");
 assert_same(false, strpos($carta_template, 'if ($mostrar_expedicion)') !== false, "No puede condicionarse la expedición a una opción");
 assert_same(true, strpos($offer_template, "Apostillado de La Haya") !== false, "La página pública identifica por separado la titulación apostillada");
 

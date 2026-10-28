@@ -5,7 +5,8 @@
 $root = dirname(__DIR__);
 $model = file_get_contents($root . '/inc/academic-public-model.php');
 $default = file_get_contents($root . '/oferta-academica/page.php');
-$carta = file_get_contents($root . '/template-parts/oferta/carta.php');
+require_once __DIR__ . '/helpers/carta-source.php';
+$carta = flacso_carta_template_source($root);
 $partial = file_get_contents($root . '/template-parts/oferta/articulaciones.php');
 $assets = file_get_contents($root . '/inc/assets.php');
 $styles = file_get_contents($root . '/assets/css/academic-articulations.css');

@@ -19,6 +19,13 @@ El tema consume el dominio académico del plugin exclusivamente mediante `inc/ac
 - `flacso_theme_get_seminars_catalog()`: Retorna el catálogo ordenado de seminarios activos.
 - `flacso_theme_get_program_seminars_catalog(int $offer_id)`: Retorna los seminarios vinculados a una oferta académica.
 
+## Carta de presentación (`template-parts/oferta/carta.php`)
+
+- `inc/carta-view-model.php` (`flacso_theme_get_carta_view()`) resuelve las reglas de visibilidad, los valores por defecto, el color de la oferta y el contacto académico. Las plantillas solo presentan.
+- Cada sección es un parcial en `template-parts/carta/` (hero, propuesta-extras, indice, contenido, planificacion, practica, confianza, contacto, cierre, flotante, scripts) y recibe el modelo en `$args['carta']`.
+- Los textos institucionales (pagos, vencimiento, expedición del título, envío, financiación, correo y teléfono, "Por qué FLACSO") salen de `FLACSO_Carta_Settings` en el plugin. Se editan por la API `/wp-json/flacso/v1/ofertas/settings`; un texto vacío no se muestra y el marcador `{anio}` se reemplaza por el año de la cohorte.
+- El contacto académico es el integrante de Coordinación académica marcado en la Oferta (persona, rol y correo). Sin contacto, se usa el institucional.
+
 ## Verificación
 
 ```bash
