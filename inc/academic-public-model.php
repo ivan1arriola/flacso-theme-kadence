@@ -289,7 +289,7 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "valor_usd_15_descuento" => $price_table["valor_usd_15_descuento"] ?? null,
         "modalidad"              => flacso_theme_format_modality($current_cohort["modalidad"] ?? ""),
         "modalidad_descripcion"  => (string) ($current_cohort["modalidad_descripcion"] ?? ""),
-        "carta_mensaje_html"     => (string) ($current_cohort["carta_mensaje_html"] ?? ""),
+        "carta_info_extra_html"  => (string) ($current_cohort["carta_info_extra_html"] ?? ""),
         "docentes_ids"           => [],
         "encuentros"             => [],
     ];
@@ -351,7 +351,6 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         // Contenido informativo obligatorio en todas las cartas, incluso con metadatos históricos falsos.
         "mostrar_costos_envio"        => true,
         "mostrar_expedicion_titulo"   => true,
-        "carta_info_extra_html"       => (string) ($data["carta_info_extra_html"] ?? get_post_meta($offer_id, "carta_info_extra_html", true) ?: get_post_meta($offer_id, "carta_presentacion_html", true)),
         "asistente_academica_docente_id" => absint($data["asistente_academica_docente_id"] ?? get_post_meta($offer_id, "asistente_academica_docente_id", true)),
         "asistente_academica_rol"     => (string) ($data["asistente_academica_rol"] ?? get_post_meta($offer_id, "asistente_academica_rol", true)),
         "asistente_academica_correo"  => (string) ($data["asistente_academica_correo"] ?? get_post_meta($offer_id, "asistente_academica_correo", true)),

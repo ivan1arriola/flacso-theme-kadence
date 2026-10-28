@@ -1,7 +1,12 @@
 <?php
-/** «Información extra» de la oferta en la carta: nombre, ubicación y compatibilidad. */
+/** «Información extra para Carta»: llega desde la cohorte vigente y se muestra justo después de la sección 01. */
 
-$root = dirname(__DIR__);
+define('ABSPATH', __DIR__ . '/../');
+
+function esc_attr_e($s, $d = '') { echo htmlspecialchars((string) $s); }
+function wp_strip_all_tags($s) { return trim(strip_tags((string) $s)); }
+function wp_kses_post($s) { return (string) $s; }
+function wpautop($s) { return (string) $s; }
 
 function carta_extra_assert(bool $condition, string $message): void {
     if (!$condition) {
@@ -10,15 +15,33 @@ function carta_extra_assert(bool $condition, string $message): void {
     }
 }
 
-$model = (string) file_get_contents($root . '/inc/academic-public-model.php');
-$view = (string) file_get_contents($root . '/inc/carta-view-model.php');
-$content = (string) file_get_contents($root . '/template-parts/carta/contenido.php');
+$root = dirname(__DIR__);
 
-carta_extra_assert(strpos($model, '"carta_info_extra_html"') !== false, 'el modelo público usa carta_info_extra_html');
-carta_extra_assert(strpos($model, 'get_post_meta($offer_id, "carta_presentacion_html", true)') !== false, 'se lee el nombre anterior como respaldo');
-carta_extra_assert(strpos($view, "'info_extra' => trim((string) (\$academic['carta_info_extra_html'] ?? ''))") !== false, 'el modelo de vista entrega info_extra');
-carta_extra_assert(strpos($content, "esc_attr_e('Información extra'") !== false && strpos($content, 'fc-extra-info') !== false, 'la plantilla lo presenta como «Información extra»');
-carta_extra_assert(strpos($content, 'child_content') === false && strpos($content, 'carta_presentacion') === false, 'no quedan nombres de «presentación» en la plantilla');
-carta_extra_assert(strpos((string) file_get_contents($root . '/assets/css/single-carta-editorial.css'), 'fc-child-content') === false, 'el CSS usa la clase nueva');
+$render = static function (string $text) use ($root): string {
+    $args = ['carta' => ['info_extra' => $text]];
+    ob_start();
+    include $root . '/template-parts/carta/info-extra.php';
+    return trim((string) ob_get_clean());
+};
+
+carta_extra_assert($render('') === '', 'sin información extra no se muestra nada');
+carta_extra_assert($render('<p> </p>') === '', 'un texto sin contenido visible no se muestra');
+$html = $render('<h3>Becas</h3><p>Hasta <strong>80%</strong></p>');
+carta_extra_assert(strpos($html, 'fc-extra-info') !== false && strpos($html, '<strong>80%</strong>') !== false, 'se muestra con su formato');
+
+$content = (string) file_get_contents($root . '/template-parts/carta/contenido.php');
+$overview = strpos($content, 'fc-major-section--overview');
+$part = strpos($content, 'carta/info-extra', (int) $overview);
+$experience = strpos($content, 'fc-major-section--experience');
+carta_extra_assert($overview !== false && $part > $overview && $part < $experience, 'va justo después de la sección 01 y antes de la 02');
+carta_extra_assert(substr_count($content, 'carta/info-extra') === 2, 'sin sección 01 abre el contenido');
+carta_extra_assert(strpos($content, 'child_content') === false && strpos($content, 'carta_presentacion') === false, 'no quedan nombres antiguos en la plantilla');
+
+$model = (string) file_get_contents($root . '/inc/academic-public-model.php');
+carta_extra_assert(strpos($model, '"carta_info_extra_html"  => (string) ($current_cohort["carta_info_extra_html"] ?? "")') !== false, 'la cohorte vigente aporta la información extra a la instancia');
+carta_extra_assert(strpos($model, 'carta_presentacion_html') === false, 'la oferta ya no aporta este campo');
+$view = (string) file_get_contents($root . '/inc/carta-view-model.php');
+carta_extra_assert(strpos($view, "'info_extra' => trim((string) (\$instance['carta_info_extra_html'] ?? ''))") !== false, 'el modelo de vista la entrega a las plantillas');
+carta_extra_assert(strpos((string) file_get_contents($root . '/assets/css/single-carta-editorial.css'), 'fc-extra-info') === false, 'no quedan estilos del bloque anterior que choquen');
 
 echo "OK carta info extra\n";

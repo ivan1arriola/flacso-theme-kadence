@@ -17,7 +17,6 @@ if (!defined('ABSPATH')) {
     'detalles_academicos' => $detalles_academicos,
     'hay_detalles_academicos' => $hay_detalles_academicos,
     'mensaje_bienvenida' => $mensaje_bienvenida,
-    'info_extra' => $info_extra,
     'fc_audience_summary' => $fc_audience_summary,
     'fc_long_description' => $fc_long_description,
 ] = $args['carta'];
@@ -31,7 +30,7 @@ if (!defined('ABSPATH')) {
                 <?php endif; ?>
 
                 <?php if (!$hay_bloques_detallados) : ?>
-                    <?php get_template_part('template-parts/carta/mensaje', null, $args); ?>
+                    <?php get_template_part('template-parts/carta/info-extra', null, $args); ?>
                 <?php endif; ?>
 
                 <?php if ($hay_bloques_detallados) : ?>
@@ -72,7 +71,7 @@ if (!defined('ABSPATH')) {
                             <?php endif; ?>
                         </section>
 
-                        <?php get_template_part('template-parts/carta/mensaje', null, $args); ?>
+                        <?php get_template_part('template-parts/carta/info-extra', null, $args); ?>
 
                         <section class="fc-major-section fc-major-section--experience" aria-labelledby="fc-experience-title">
                             <header class="fc-major-heading">
@@ -123,13 +122,5 @@ if (!defined('ABSPATH')) {
                             </div>
                         </section>
                     </div>
-                <?php endif; ?>
-
-                <?php if ($info_extra !== '') : ?>
-                    <article class="fc-content-panel fc-content-wrapper fc-content-wrapper-compact fc-extra-info" aria-label="<?php esc_attr_e('Información extra', 'flacso-uruguay'); ?>">
-                        <div class="fc-content-panel-body">
-                            <?php echo wp_kses_post($info_extra); ?>
-                        </div>
-                    </article>
                 <?php endif; ?>
             </section>

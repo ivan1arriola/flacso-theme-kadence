@@ -896,17 +896,6 @@
 }
 
 /* ==========================================================================
-   09. CONTENIDO ADICIONAL
-   ========================================================================== */
-
-.flacso-carta-virtual .fc-extra-info {
-    margin-top: 4px;
-    padding: 20px;
-    border-radius: 15px;
-    background: #fff;
-}
-
-/* ==========================================================================
    10. PLANIFICACIÓN E INVERSIÓN
    ========================================================================== */
 
@@ -1570,8 +1559,7 @@
         gap: 20px;
     }
 
-    .flacso-carta-virtual .fc-academic-details,
-    .flacso-carta-virtual .fc-extra-info {
+    .flacso-carta-virtual .fc-academic-details {
         grid-column: 1 / -1;
     }
 

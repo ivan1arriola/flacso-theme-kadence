@@ -318,10 +318,9 @@ function flacso_theme_get_carta_view(array $context): array {
         'detalles_academicos' => $detalles_academicos,
         'hay_detalles_academicos' => $hay_detalles_academicos,
         'mensaje_bienvenida' => (string) get_option('flacso_mensaje_bienvenida', ''),
-        // «Información extra» de la oferta (promociones, becas); entre las secciones 02 y 03.
-        'info_extra' => trim((string) ($academic['carta_info_extra_html'] ?? '')),
-        // Mensaje propio de la cohorte vigente (editor de Cohorte → «Mensaje en la carta»).
-        'mensaje_cohorte' => trim((string) ($instance['carta_mensaje_html'] ?? '')),
+        // «Información extra para Carta» (promociones, becas): la carga cada cohorte y se muestra
+        // la de la cohorte vigente, justo después de la sección 01.
+        'info_extra' => trim((string) ($instance['carta_info_extra_html'] ?? '')),
         'fc_hero_summary' => !empty($academic['descripcion_html'])
             ? wp_trim_words(wp_strip_all_tags((string) $academic['descripcion_html']), 24, '…')
             : '',
