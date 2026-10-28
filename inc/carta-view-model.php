@@ -319,6 +319,8 @@ function flacso_theme_get_carta_view(array $context): array {
         'hay_detalles_academicos' => $hay_detalles_academicos,
         'mensaje_bienvenida' => (string) get_option('flacso_mensaje_bienvenida', ''),
         'child_content' => trim((string) ($academic['carta_presentacion_html'] ?? '')),
+        // Mensaje propio de la cohorte vigente (editor de Cohorte → «Mensaje en la carta»).
+        'mensaje_cohorte' => trim((string) ($instance['carta_mensaje_html'] ?? '')),
         'fc_hero_summary' => !empty($academic['descripcion_html'])
             ? wp_trim_words(wp_strip_all_tags((string) $academic['descripcion_html']), 24, '…')
             : '',

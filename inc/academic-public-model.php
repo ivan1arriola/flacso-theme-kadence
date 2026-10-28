@@ -289,6 +289,7 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         "valor_usd_15_descuento" => $price_table["valor_usd_15_descuento"] ?? null,
         "modalidad"              => flacso_theme_format_modality($current_cohort["modalidad"] ?? ""),
         "modalidad_descripcion"  => (string) ($current_cohort["modalidad_descripcion"] ?? ""),
+        "carta_mensaje_html"     => (string) ($current_cohort["carta_mensaje_html"] ?? ""),
         "docentes_ids"           => [],
         "encuentros"             => [],
     ];

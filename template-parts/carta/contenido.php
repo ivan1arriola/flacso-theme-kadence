@@ -30,6 +30,10 @@ if (!defined('ABSPATH')) {
                     </div>
                 <?php endif; ?>
 
+                <?php if (!$hay_bloques_detallados) : ?>
+                    <?php get_template_part('template-parts/carta/mensaje', null, $args); ?>
+                <?php endif; ?>
+
                 <?php if ($hay_bloques_detallados) : ?>
                     <div class="fc-academic-layout">
                         <section class="fc-major-section fc-major-section--overview" aria-labelledby="fc-overview-title">
@@ -67,6 +71,8 @@ if (!defined('ABSPATH')) {
                             </article>
                             <?php endif; ?>
                         </section>
+
+                        <?php get_template_part('template-parts/carta/mensaje', null, $args); ?>
 
                         <section class="fc-major-section fc-major-section--experience" aria-labelledby="fc-experience-title">
                             <header class="fc-major-heading">
