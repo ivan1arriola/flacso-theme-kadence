@@ -50,7 +50,12 @@ function flacso_theme_normalize_team_groups($value): array {
             continue;
         }
 
+        // El orden guardado en el editor (grupos e integrantes) es el orden público:
+        // no se ordena por importancia ni por nombre.
         $groups[] = [
+            'tipo' => sanitize_key((string) ($group['tipo'] ?? '')) === 'coordinacion_academica'
+                ? 'coordinacion_academica'
+                : '',
             'nombre' => sanitize_text_field((string) ($group['nombre'] ?? '')),
             'descripcion' => wp_kses_post((string) ($group['descripcion'] ?? '')),
             'importancia' => in_array((string) ($group['importancia'] ?? '3'), ['1', '2', '3'], true)

@@ -891,7 +891,29 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                     $coordination_groups = [];
                     $academic_team_groups = [];
 
-                    $coordinacion_academica = $academic['coordinacion_academica'] ?? [];
+                    // Coordinación académica de la Oferta: mismo orden de integrantes que en el editor.
+                    $equipos = $academic['equipos'] ?? [];
+                    $oferta_coordinacion = [];
+                    if (!empty($equipos) && is_array($equipos)) {
+                        foreach ($equipos as $eq_index => $eq) {
+                            if (($eq['tipo'] ?? '') === 'coordinacion_academica') {
+                                if (!empty($eq['docentes']) && is_array($eq['docentes'])) {
+                                    $oferta_coordinacion[] = $eq;
+                                }
+                                unset($equipos[$eq_index]);
+                            }
+                        }
+                    }
+                    foreach ($oferta_coordinacion as $eq) {
+                        $coordination_groups[] = [
+                            'nombre'      => __('Coordinación académica', 'flacso-uruguay'),
+                            'descripcion' => (string) ($eq['descripcion'] ?? ''),
+                            'docentes'    => $eq['docentes'],
+                            'importancia' => '1',
+                        ];
+                    }
+
+                    $coordinacion_academica = $oferta_coordinacion ? [] : ($academic['coordinacion_academica'] ?? []);
                     if (!empty($coordinacion_academica) && is_array($coordinacion_academica)) {
                         $coordination_people = [];
                         foreach ($coordinacion_academica as $coord) {
@@ -927,7 +949,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                         ];
                     }
 
-                    $equipos = $academic['equipos'] ?? [];
                     if (!empty($equipos) && is_array($equipos)) {
                         foreach ($equipos as $eq) {
                             if (!empty($eq['docentes']) && is_array($eq['docentes'])) {
