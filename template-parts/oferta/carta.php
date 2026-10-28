@@ -278,7 +278,7 @@ $bloques_html = [
     'perfil_ingreso_html'         => __('Perfil de Ingreso', 'flacso-uruguay'),
     'requisitos_ingreso_html'     => __('Requisitos de Ingreso', 'flacso-uruguay'),
     'perfil_egreso_html'          => __('Perfil del Egresado', 'flacso-uruguay'),
-    'requisitos_egreso_html'      => __('Requisitos de egreso y titulación.', 'flacso-uruguay'),
+    'requisitos_egreso_html'      => __('Requisitos de egreso', 'flacso-uruguay'),
     'titulos_certificaciones_html'=> __('Títulos y Certificaciones', 'flacso-uruguay'),
 ];
 
@@ -624,7 +624,7 @@ $calendario_y_malla_compartidos = flacso_theme_calendar_and_curriculum_share_doc
                             'perfil_ingreso_html'          => __('Perfil de Ingreso', 'flacso-uruguay'),
                             'requisitos_ingreso_html'      => __('Requisitos de Ingreso', 'flacso-uruguay'),
                             'perfil_egreso_html'           => __('Perfil del Egresado', 'flacso-uruguay'),
-                            'requisitos_egreso_html'       => __('Requisitos de egreso y titulación.', 'flacso-uruguay'),
+                            'requisitos_egreso_html'       => __('Requisitos de egreso', 'flacso-uruguay'),
                             'titulos_certificaciones_html' => __('Títulos y Certificaciones', 'flacso-uruguay'),
                         ];
                         $fc_has_academic_details = false;

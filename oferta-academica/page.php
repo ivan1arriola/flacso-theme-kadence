@@ -534,11 +534,10 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                         </div>
                     </section>
 
-                    <?php if ($has_public_recognitions) : ?>
-                        <!-- Reconocimientos siempre visibles; no son títulos ni convenios. -->
-                        <section class="flacso-academic-trust-strip" aria-labelledby="flacso-academic-trust-title">
+                    <?php if ($reconocido_mec || $reconocimiento_red_flacso) : ?>
+                        <!-- Reconocimientos siempre visibles; no son títulos ni convenios. El apostillado va con el título y la certificación. -->
+                        <section class="flacso-academic-trust-strip" aria-label="<?php esc_attr_e('Reconocimientos', 'flacso-uruguay'); ?>">
                             <div class="flacso-academic-trust-strip__inner">
-                                <h2 id="flacso-academic-trust-title"><?php esc_html_e('Reconocimientos', 'flacso-uruguay'); ?></h2>
                                 <ul class="flacso-academic-trust-strip__list">
                                     <?php if ($reconocido_mec) : ?>
                                         <li class="flacso-academic-trust-strip__item">
@@ -546,14 +545,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 2.5 2 3.2.2 1 3 2.6 2-.8 3.1.8 3.1-2.6 2-1 3-3.2.2L12 22l-2.5-2-3.2-.2-1-3-2.6-2 .8-3.1-.8-3.1 2.6-2 1-3 3.2-.2z"/><path d="m8.5 12 2.4 2.4L15.8 9.5"/></svg>
                                             </span>
                                             <span><?php esc_html_e('Reconocimiento oficial MEC', 'flacso-uruguay'); ?></span>
-                                        </li>
-                                    <?php endif; ?>
-                                    <?php if ($reconocimiento_internacional) : ?>
-                                        <li class="flacso-academic-trust-strip__item">
-                                            <span class="flacso-academic-trust-strip__icon" aria-hidden="true">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-5 5-5 13 0 18M12 3c5 5 5 13 0 18"/></svg>
-                                            </span>
-                                            <span><?php esc_html_e('Apostillado de La Haya', 'flacso-uruguay'); ?></span>
                                         </li>
                                     <?php endif; ?>
                                     <?php if ($reconocimiento_red_flacso) : ?>
@@ -753,7 +744,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                 <span class="flacso-academic-accordion__icon" aria-hidden="true">
                                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m2.5 9.5 9.5-5 9.5 5-9.5 5z"/><path d="M6.5 12v5.5c3.5 2.3 7.5 2.3 11 0V12M21.5 10v7"/></svg>
                                                 </span>
-                                                <span class="flacso-academic-accordion__label"><?php esc_html_e('Requisitos de egreso y titulación.', 'flacso-uruguay'); ?></span>
+                                                <span class="flacso-academic-accordion__label"><?php esc_html_e('Requisitos de egreso', 'flacso-uruguay'); ?></span>
                                                 <span class="flacso-academic-accordion__chevron" aria-hidden="true">
                                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                                                 </span>
@@ -779,6 +770,14 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                 </span>
                                             </summary>
                                             <div class="detail-body flacso-academic-accordion__body">
+                                                <?php if ($reconocimiento_internacional) : ?>
+                                                    <p class="flacso-academic-hague-note">
+                                                        <span class="flacso-academic-trust-strip__icon" aria-hidden="true">
+                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-5 5-5 13 0 18M12 3c5 5 5 13 0 18"/></svg>
+                                                        </span>
+                                                        <span><?php esc_html_e('Apostillado de La Haya', 'flacso-uruguay'); ?></span>
+                                                    </p>
+                                                <?php endif; ?>
                                                 <?php if (!empty(trim(wp_strip_all_tags((string) ($academic['titulos_certificaciones_html'] ?? ''))))) : ?>
                                                     <?php echo wp_kses_post($academic['titulos_certificaciones_html']); ?>
                                                 <?php else : ?>
@@ -848,7 +847,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                             <?php if ($show_cohort_section) : ?>
                                                 <a href="#cohorte"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Información de la cohorte', 'flacso-uruguay'); ?></a>
                                             <?php endif; ?>
-                                            <a href="#titulacion"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Requisitos de egreso y titulación.', 'flacso-uruguay'); ?></a>
+                                            <a href="#titulacion"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Requisitos de egreso', 'flacso-uruguay'); ?></a>
                                         </nav>
                                     </div>
 

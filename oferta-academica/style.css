@@ -7696,12 +7696,23 @@
     flex: 1 1 680px;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 12px 24px;
     margin: 0 !important;
     padding: 0 !important;
     list-style: none !important;
     min-width: 0;
+}
+
+.flacso-oferta-responsive .flacso-academic-hague-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 14px;
+    color: #234267;
+    font-size: .88rem;
+    font-weight: 650;
+    line-height: 1.45;
 }
 
 .flacso-oferta-responsive .flacso-academic-trust-strip__item {
