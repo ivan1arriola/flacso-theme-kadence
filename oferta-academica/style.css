@@ -7705,7 +7705,9 @@
 }
 
 .flacso-oferta-responsive .flacso-academic-hague-note {
-    display: inline-flex;
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
     align-items: center;
     gap: 10px;
     margin: 0 0 14px;
