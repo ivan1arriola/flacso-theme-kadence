@@ -110,8 +110,6 @@ function flacso_theme_carta_texts(string $anio, array $academic): array {
         'titulo_exterior' => $text('carta_titulo_exterior'),
         'titulo_sin_costo' => $text('carta_titulo_sin_costo'),
         'envio_titulos' => $text('carta_envio_titulos'),
-        'convenio_iin_titulo' => $text('carta_convenio_iin_titulo'),
-        'convenio_iin_texto' => $text('carta_convenio_iin_texto'),
         'financiacion_label' => $text('carta_financiacion_label'),
 
         'mas_info_titulo_seccion' => $text('carta_mas_info_section_title'),
@@ -325,7 +323,7 @@ function flacso_theme_get_carta_view(array $context): array {
             ? wp_trim_words(wp_strip_all_tags((string) $academic['descripcion_html']), 24, '…')
             : '',
         'fc_audience_summary' => !empty($academic['perfil_ingreso_html'])
-            ? wp_trim_words(wp_strip_all_tags((string) $academic['perfil_ingreso_html']), 40, '…')
+            ? trim(wp_strip_all_tags((string) $academic['perfil_ingreso_html']))
             : '',
         // El diseño a dos columnas solo se aplica a descripciones extensas; la
         // lectura de propuestas breves permanece lineal y sin columnas vacías.

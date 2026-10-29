@@ -46,13 +46,6 @@ if (!defined('ABSPATH')) {
                         </div>
                     <?php endforeach; ?>
 
-                    <?php if ($textos['convenio_iin_texto'] !== '') : ?>
-                        <div class="fc-info-row">
-                            <div class="fc-info-icon"><i class="bi bi-globe" aria-hidden="true"></i></div>
-                            <div><?php if ($textos['convenio_iin_titulo'] !== '') : ?><strong><?php echo esc_html($textos['convenio_iin_titulo']); ?></strong> <?php endif; ?><?php echo esc_html($textos['convenio_iin_texto']); ?></div>
-                        </div>
-                    <?php endif; ?>
-
                     <?php if ($textos['financiacion_label'] !== '' || $textos['correo_inscripciones'] !== '') : ?>
                         <div class="fc-info-row">
                             <div class="fc-info-icon"><i class="bi bi-envelope" aria-hidden="true"></i></div>
