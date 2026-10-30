@@ -651,3 +651,44 @@
     }
     .flacso-home-v2 .home-events-grid--1 .home-text-link { font-size: 1.05rem; }
 }
+
+/* Composición de la portada: ritmo vertical más compacto entre oferta y actividades. */
+.flacso-home-v2 .home-offer { padding-bottom: clamp(20px, 2.5vw, 36px); }
+.flacso-home-v2 .home-offer + .home-events { padding-top: clamp(20px, 2.5vw, 36px); }
+.flacso-home-v2 .home-events { padding-bottom: clamp(40px, 5vw, 72px); }
+.flacso-home-v2 .home-event-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px;
+}
+.flacso-home-v2 .home-event-pill,
+.flacso-home-v2 .home-event-time {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: .75rem;
+    font-weight: 800;
+    line-height: 1.4;
+}
+.flacso-home-v2 .home-event-pill { background: #fff4c2; color: #6b5200; }
+.flacso-home-v2 .home-event-time { background: #e8f0f9; color: var(--navy); }
+.flacso-home-v2 .home-event-copy .home-text-link {
+    align-self: flex-start;
+    padding: 10px 20px;
+    border-radius: 999px;
+    background: var(--navy);
+    color: #fff;
+    font-size: .85rem;
+}
+.flacso-home-v2 .home-event-copy .home-text-link:is(:hover, :focus-visible) { background: var(--deep); color: #fff; }
+@media (min-width: 761px) {
+    .flacso-home-v2 .home-events-grid--1 .home-event-card {
+        grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+        background: linear-gradient(100deg, #f4f8fc 0%, #fff 55%);
+    }
+    .flacso-home-v2 .home-events-grid--1 .home-event-copy { max-width: 760px; }
+    .flacso-home-v2 .home-events-grid--1 .home-event-copy .home-text-link { padding: 13px 28px; font-size: 1rem; }
+}
