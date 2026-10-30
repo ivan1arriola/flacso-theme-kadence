@@ -136,7 +136,11 @@ if (!empty($instance['modalidad'])) {
 
             <div class="seminario-hero-content">
                 <p class="seminario-kicker"><?php echo $is_integrated ? esc_html__('Seminario integrado', 'flacso-uruguay') : esc_html__('Seminario', 'flacso-uruguay'); ?></p>
-                <h1 id="seminario-title" class="seminario-title"><?php echo esc_html($title); ?></h1>
+                <?php
+                $title_length = mb_strlen($title);
+                $title_class  = $title_length > 110 ? ' seminario-title--xlong' : ($title_length > 60 ? ' seminario-title--long' : '');
+                ?>
+                <h1 id="seminario-title" class="seminario-title<?php echo esc_attr($title_class); ?>"><?php echo esc_html($title); ?></h1>
 
                 <?php if (!empty($hero_quick_items)) : ?>
                     <div class="seminario-quick-meta" aria-label="<?php esc_attr_e('Datos principales', 'flacso-uruguay'); ?>">
