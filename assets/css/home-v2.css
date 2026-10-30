@@ -692,3 +692,152 @@
     .flacso-home-v2 .home-events-grid--1 .home-event-copy { max-width: 760px; }
     .flacso-home-v2 .home-events-grid--1 .home-event-copy .home-text-link { padding: 13px 28px; font-size: 1rem; }
 }
+
+/* ==========================================================================
+ * Capa editorial de la portada
+ * Estructura por filtetes finos, esquinas rectas, sin sombras ni pastillas.
+ * Los colores por categoría quedan como único acento.
+ * ========================================================================== */
+.flacso-home-v2 {
+    --ink: #0b1f3f;
+    --rule: #cfd8e3;
+    --paper: #f6f4ef;
+}
+.flacso-home-v2 .home-section-heading {
+    padding-top: 18px;
+    border-top: 2px solid var(--ink);
+    margin-bottom: clamp(24px, 3vw, 40px);
+}
+.flacso-home-v2 .home-section-heading h2 {
+    color: var(--ink);
+    font-weight: 800;
+    letter-spacing: -.03em;
+}
+.flacso-home-v2 .home-eyebrow { color: #4a5f7c; letter-spacing: .16em; }
+.flacso-home-v2 .home-heading-link {
+    border-bottom: 1px solid var(--ink);
+    color: var(--ink);
+    font-size: .9rem;
+}
+
+/* Botones: rectangulares y sobrios. */
+.flacso-home-v2 .home-button,
+.flacso-home-v2 .home-hero .home-button,
+.flacso-home-v2 .home-impact .home-button {
+    border-radius: 2px;
+    box-shadow: none;
+    letter-spacing: .01em;
+}
+.flacso-home-v2 .home-hero .home-button:is(:hover, :focus-visible) { transform: none; }
+
+/* Oferta: índice tipográfico en lugar de tarjetas de color. */
+.flacso-home-v2 .home-offer-grid { gap: 0; border-bottom: 1px solid var(--rule); }
+@media (min-width: 761px) {
+    .flacso-home-v2 .home-offer-card {
+        min-height: 168px;
+        padding: 20px 20px 18px;
+        border: 0;
+        border-left: 1px solid var(--rule);
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        overflow: visible;
+    }
+    .flacso-home-v2 .home-offer-card:first-child { border-left: 0; padding-left: 0; }
+    .flacso-home-v2 .home-offer-card::before { height: 3px; inset: 0 20px auto 20px; }
+    .flacso-home-v2 .home-offer-card:first-child::before { left: 0; }
+}
+@media (max-width: 760px) {
+    .flacso-home-v2 .home-offer-grid { border-bottom: 0; }
+    .flacso-home-v2 .home-offer-card {
+        grid-template-rows: auto auto auto;
+        border: 0;
+        border-bottom: 1px solid var(--rule);
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+    .flacso-home-v2 .home-offer-card .home-offer-icon { grid-row: 1 / span 3; width: 40px; height: auto; }
+    .flacso-home-v2 .home-offer-card .home-offer-open { grid-column: 2; grid-row: 2; margin: 0; }
+    .flacso-home-v2 .home-offer-card .home-offer-bottom { grid-row: 3; border-top: 0; padding-top: 0; }
+}
+.flacso-home-v2 .home-offer-card .home-offer-icon {
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background: transparent;
+    margin-top: 6px;
+}
+.flacso-home-v2 .home-offer-card .home-offer-icon svg { width: 26px; height: 26px; stroke-width: 1.3; }
+.flacso-home-v2 .home-offer-card h3 { margin-top: 18px; font-size: 1.2rem; font-weight: 800; color: var(--ink); }
+.flacso-home-v2 .home-offer-open { margin-top: 8px; font-size: .82rem; }
+.flacso-home-v2 .home-offer-card .home-offer-bottom { border-top: 1px solid var(--rule); padding-top: 12px; }
+.flacso-home-v2 .home-offer-card:is(:hover, :focus-visible) {
+    transform: none;
+    box-shadow: none;
+    background: var(--paper);
+}
+.flacso-home-v2 .home-offer-card:is(:hover, :focus-visible) h3 { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Actividades: filas con filetes, estado como texto. */
+.flacso-home-v2 .home-events-grid { gap: 0; }
+.flacso-home-v2 .home-event-card,
+.flacso-home-v2 .home-events-grid--1 .home-event-card,
+.flacso-home-v2 .home-events-grid--2 .home-event-card {
+    border: 0;
+    border-bottom: 1px solid var(--rule);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    padding: 20px 0;
+}
+.flacso-home-v2 .home-events-grid--2 .home-event-card:nth-child(odd) { padding-right: clamp(16px, 3vw, 40px); }
+.flacso-home-v2 .home-events-grid--2 .home-event-card:nth-child(even) { padding-left: clamp(16px, 3vw, 40px); border-left: 1px solid var(--rule); }
+.flacso-home-v2 .home-events-grid--3 .home-event-card:not(:first-child) { padding-left: 20px; border-left: 1px solid var(--rule); }
+.flacso-home-v2 .home-events-grid--3 .home-event-card:not(:last-child) { padding-right: 20px; }
+.flacso-home-v2 .home-event-card:hover { transform: none; box-shadow: none; }
+.flacso-home-v2 .home-event-media,
+.flacso-home-v2 .home-event-date-art { border-radius: 0; }
+.flacso-home-v2 .home-event-date { color: var(--ink); letter-spacing: .1em; }
+.flacso-home-v2 .home-event-meta { gap: 0; margin-bottom: 12px; }
+.flacso-home-v2 .home-event-pill,
+.flacso-home-v2 .home-event-time {
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #4a5f7c;
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+.flacso-home-v2 .home-event-pill + .home-event-time::before { content: "·"; margin: 0 8px; }
+.flacso-home-v2 .home-event-copy .home-text-link,
+.flacso-home-v2 .home-events-grid--1 .home-event-copy .home-text-link {
+    padding: 0 0 3px;
+    border-radius: 0;
+    border-bottom: 1px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    font-size: .9rem;
+}
+.flacso-home-v2 .home-event-copy .home-text-link:is(:hover, :focus-visible) { background: transparent; color: #075fa7; border-color: #075fa7; }
+@media (min-width: 761px) {
+    .flacso-home-v2 .home-events-grid--1 .home-event-card { background: transparent; }
+    .flacso-home-v2 .home-events-grid--1 .home-event-card h3 { font-weight: 800; letter-spacing: -.02em; }
+}
+
+/* Noticias: papel cálido, tarjetas rectas y lista con filetes. */
+.flacso-home-v2 .home-news { background: var(--paper); }
+.flacso-home-v2 .home-news-card { border-radius: 0; box-shadow: none; }
+.flacso-home-v2 .home-news-card--featured:first-child { background: var(--ink); }
+.flacso-home-v2 .home-news-card--featured:not(:first-child) { border: 1px solid var(--rule); }
+.flacso-home-v2 .home-news-card h3 { letter-spacing: -.02em; font-weight: 800; }
+.flacso-home-v2 .home-news-card--recent { border-radius: 0; border: 0; border-top: 1px solid var(--rule); background: transparent; }
+.flacso-home-v2 .home-recent-heading { border-bottom: 2px solid var(--ink); }
+.flacso-home-v2 .home-recent-heading h3 { color: var(--ink); font-size: 1.25rem; }
+.flacso-home-v2 .home-news-pin { letter-spacing: .14em; }
+
+/* Institucional: titular sobrio y cierre con filete. */
+.flacso-home-v2 .home-about-copy h2 { color: var(--ink); font-weight: 800; letter-spacing: -.03em; }
+.flacso-home-v2 .home-impact { border-top-width: 2px; }
