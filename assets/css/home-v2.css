@@ -193,9 +193,9 @@
     position: absolute;
     inset: 0 auto 0 0;
     z-index: 2;
-    width: clamp(56px, 6vw, 92px);
+    width: clamp(120px, 16vw, 240px);
     pointer-events: none;
-    background: linear-gradient(90deg, #092c52 0%, rgba(9, 44, 82, .52) 22%, rgba(9, 44, 82, .12) 62%, transparent 100%);
+    background: linear-gradient(90deg, #092c52 0%, rgba(9, 44, 82, .85) 18%, rgba(9, 44, 82, .55) 40%, rgba(9, 44, 82, .22) 68%, transparent 100%);
 }
 .flacso-home-v2 .home-hero-photo:not(.home-hero-photo--logo)::after { display: none; }
 @media (max-width: 760px) {
