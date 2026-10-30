@@ -84,7 +84,11 @@ $render_footer_menu = static function ( $location ) use ( $fallback_menus ) {
 		</div>
 
 		<div class="flacso-footer__bottom">
-			<p>© <?php echo esc_html( wp_date( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?></p>
+			<p>
+				© <?php echo esc_html( wp_date( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?>
+				· <?php esc_html_e( 'Sitio desarrollado por', 'kadence-child-flacso' ); ?>
+				<a href="https://www.linkedin.com/in/ivan1arriola/" target="_blank" rel="noopener author">Iván Arriola</a>
+			</p>
 			<nav aria-label="<?php esc_attr_e( 'Enlaces legales', 'kadence-child-flacso' ); ?>">
 				<a href="<?php echo esc_url( get_privacy_policy_url() ?: home_url( '/politica-de-privacidad/' ) ); ?>"><?php esc_html_e( 'Privacidad', 'kadence-child-flacso' ); ?></a>
 				<a href="<?php echo esc_url( home_url( '/contactos/' ) ); ?>"><?php esc_html_e( 'Contacto', 'kadence-child-flacso' ); ?></a>
