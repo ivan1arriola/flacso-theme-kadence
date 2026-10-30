@@ -620,3 +620,34 @@
     color: #0f7a3d;
     font-weight: 800;
 }
+
+/* Con una o dos actividades las tarjetas crecen para aprovechar el ancho. */
+@media (min-width: 761px) {
+    .flacso-home-v2 .home-events-grid--1 { grid-template-columns: minmax(0, 1fr); }
+    .flacso-home-v2 .home-events-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .flacso-home-v2 .home-events-grid--1 .home-event-card {
+        grid-template-columns: minmax(200px, 260px) minmax(0, 1fr);
+        gap: clamp(24px, 4vw, 56px);
+        padding: clamp(20px, 2.5vw, 32px);
+        border-radius: 22px;
+    }
+    .flacso-home-v2 .home-events-grid--2 .home-event-card {
+        grid-template-columns: minmax(140px, 190px) minmax(0, 1fr);
+        gap: 24px;
+        padding: 20px;
+    }
+    .flacso-home-v2 .home-events-grid--1 .home-event-date { margin-bottom: 10px; font-size: .95rem; }
+    .flacso-home-v2 .home-events-grid--2 .home-event-date { font-size: .85rem; }
+    .flacso-home-v2 .home-events-grid--1 .home-event-card h3 {
+        margin-bottom: 22px;
+        font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+        line-height: 1.15;
+        -webkit-line-clamp: 4;
+    }
+    .flacso-home-v2 .home-events-grid--2 .home-event-card h3 {
+        margin-bottom: 16px;
+        font-size: 1.3rem;
+        -webkit-line-clamp: 3;
+    }
+    .flacso-home-v2 .home-events-grid--1 .home-text-link { font-size: 1.05rem; }
+}

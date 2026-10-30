@@ -4,7 +4,7 @@ if (empty($data['events'])) { return; }
 ?>
 <section class="home-section home-events" id="actividades" aria-labelledby="home-events-title"><div class="home-container">
   <div class="home-section-heading"><h2 id="home-events-title">Próximas actividades</h2></div>
-  <div class="home-events-grid">
+  <div class="home-events-grid home-events-grid--<?php echo (int) min(3, max(1, count($data['events']))); ?>">
     <?php foreach ($data['events'] as $event) :
       $id = absint($event['id'] ?? 0);
       $url = trim((string) ($event['link'] ?? ''));
