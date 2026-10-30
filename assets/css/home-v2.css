@@ -609,3 +609,14 @@
     .flacso-home-v2 .home-news-card--featured .home-news-media img { aspect-ratio: 16 / 9; }
     .flacso-home-v2 .home-about-logo { display: none; }
 }
+
+.flacso-home-v2 .home-offer-open {
+    margin-top: 6px;
+    color: #5b6b80;
+    font-size: .8rem;
+    font-weight: 600;
+}
+.flacso-home-v2 .home-offer-open.is-active {
+    color: #0f7a3d;
+    font-weight: 800;
+}

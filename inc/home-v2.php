@@ -17,7 +17,7 @@ function flacso_home_v2_get_data(): array {
     $primary = is_array($campaign['cta_primary'] ?? null) ? $campaign['cta_primary'] : [];
     $hero_cta = $custom_campaign && !empty($primary['url']) && !empty($primary['label'])
         ? ['label' => trim(wp_strip_all_tags((string) $primary['label'])), 'url' => (string) $primary['url']]
-        : ['label' => 'Explorar oferta académica', 'url' => '#oferta'];
+        : ['label' => 'Explorar oferta académica', 'url' => home_url('/formacion/')];
     $image_id = absint($campaign['desktop_image_id'] ?? 0);
     $hero_image = $image_id ? wp_get_attachment_image_url($image_id, 'full') : '';
     // Reutilizar la fotografía editorial configurada para la portada clásica.
@@ -59,6 +59,22 @@ function flacso_home_v2_get_data(): array {
             }
         }
     }
+    // Propuestas con inscripción abierta por tipo, con el mismo criterio del catálogo de Formación.
+    $open_counts = array_fill_keys(array_keys($defaults), 0);
+    if (function_exists('flacso_theme_get_offer_context')) {
+        $type_slugs = ['maestria' => 'maestrias', 'especializacion' => 'especializaciones', 'diplomado' => 'diplomados', 'diploma' => 'diplomas'];
+        foreach (get_posts(['post_type' => 'oferta-academica', 'post_status' => 'publish', 'posts_per_page' => -1, 'fields' => 'ids']) as $offer_id) {
+            $context = flacso_theme_get_offer_context((int) $offer_id);
+            $slug = $type_slugs[(string) ($context['type'] ?? 'maestria') ?: 'maestria'] ?? '';
+            if ($slug !== '' && !empty($context['registration']['is_open'])) { $open_counts[$slug]++; }
+        }
+    }
+    if (function_exists('flacso_theme_get_seminars_catalog')) {
+        foreach (flacso_theme_get_seminars_catalog() as $seminar) {
+            if (!empty($seminar['registration']['is_open'])) { $open_counts['seminarios']++; }
+        }
+    }
+    foreach ($cards as $slug => $card) { $cards[$slug]['open'] = $open_counts[$slug] ?? 0; }
     if (!function_exists('flacso_section_eventos_get_items')) {
         if (class_exists('Flacso_Main_Page_Loader')) {
             Flacso_Main_Page_Loader::load_components();
