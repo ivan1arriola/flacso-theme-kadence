@@ -146,6 +146,29 @@
             text-underline-offset: 3px;
         }
 
+        .flacso-post-content .flacso-evento-cta {
+            margin: 2rem 0 0;
+        }
+
+        .flacso-post-content .flacso-evento-cta__button {
+            display: inline-flex;
+            align-items: center;
+            min-height: 52px;
+            padding: 14px 30px;
+            border-radius: 999px;
+            background: #ffd223;
+            color: #071b35;
+            font-weight: 800;
+            text-decoration: none;
+            transition: background-color .2s ease, transform .2s ease;
+        }
+
+        .flacso-post-content .flacso-evento-cta__button:is(:hover, :focus-visible) {
+            background: #ffe16b;
+            color: #071b35;
+            transform: translateY(-2px);
+        }
+
         .flacso-post-content img {
             max-width: 100%;
             height: auto;

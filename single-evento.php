@@ -62,9 +62,19 @@ while (have_posts()) :
             <div class="flacso-post-columns">
                 <article class="flacso-post-content">
                     <?php
-                    // El filtro del módulo de Eventos agrega aquí el formulario,
-                    // después de todo el contenido editorial.
                     the_content();
+
+                    // La inscripción la gestiona Formularios FLACSO; el evento solo enlaza.
+                    $form_url = esc_url((string) get_post_meta($event_id, '_evento_formulario_url', true));
+                    if ($form_url !== '') :
+                        ?>
+                        <p class="flacso-evento-cta">
+                            <a class="flacso-evento-cta__button" href="<?php echo $form_url; ?>" rel="noopener">
+                                <?php esc_html_e('Inscribirme', 'kadence-child-flacso'); ?>
+                            </a>
+                        </p>
+                        <?php
+                    endif;
 
                     wp_link_pages([
                         'before' => '<div class="page-links">' . esc_html__('Páginas:', 'kadence-child-flacso'),
