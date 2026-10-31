@@ -107,6 +107,8 @@ check(strpos($css, 'min-height: 100px;') !== false, 'oferta móvil sin tarjetas 
 check(strpos($css, '.offer--seminarios') !== false && strpos($css, '.offer--maestrias') !== false, 'paleta sobria por categoría');
 check(strpos($css, 'outline: 3px solid #f4bc17') !== false, 'foco teclado visible en tarjetas');
 check(strpos($css, 'prefers-reduced-motion: reduce') !== false, 'hero respeta reducción de movimiento');
+check(strpos($css, 'home-offer-in') !== false && strpos($css, 'prefers-reduced-motion: no-preference') !== false, 'oferta anima solo sin reducción de movimiento');
+check(is_file($root . '/assets/js/home-offer-reveal.js') && strpos(file_get_contents($root . '/assets/js/home-offer-reveal.js'), 'prefers-reduced-motion') !== false, 'script de oferta respeta reducción de movimiento');
 $hero_template = file_get_contents($root . '/template-parts/home/hero.php');
 check(strpos($hero_template, '<picture>') !== false && strpos($hero_template, 'hero_mobile_image') !== false, 'fotografía responsive editable desde campaña');
 check(strpos($hero_template, 'home-hero-title') !== false && strpos($hero_template, 'home-button') !== false, 'título y CTA continúan siendo HTML accesible');

@@ -65,6 +65,8 @@ function flacso_child_enqueue_front_page_assets() {
         $path    = 'assets/css/home-v2.css';
         wp_enqueue_style( 'flacso-home-roboto', 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap', array(), null );
         wp_enqueue_style( 'flacso-home-v2', get_stylesheet_directory_uri() . '/' . $path, array( 'flacso-site-chrome', 'flacso-home-roboto' ), flacso_child_asset_version( $path ) );
+        $reveal_path = 'assets/js/home-offer-reveal.js';
+        wp_enqueue_script( 'flacso-home-offer-reveal', get_stylesheet_directory_uri() . '/' . $reveal_path, array(), flacso_child_asset_version( $reveal_path ), true );
         return;
     }
 

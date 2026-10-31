@@ -874,3 +874,26 @@
         transform: scale(1.035);
     }
 }
+
+/* Oferta: aparición escalonada, una sola vez. El script agrega js-offer-reveal; sin él las tarjetas se ven siempre. */
+.flacso-home-v2 .home-offer-grid.js-offer-reveal:not(.is-revealed) .home-offer-card { opacity: 0; }
+@keyframes home-offer-in {
+    from { opacity: 0; translate: 0 14px; }
+    to { opacity: 1; translate: 0 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+    .flacso-home-v2 .home-offer-grid.is-revealed .home-offer-card {
+        animation: home-offer-in .5s cubic-bezier(.2, .8, .2, 1) backwards;
+        animation-delay: calc(var(--offer-i, 0) * 70ms);
+    }
+    .flacso-home-v2 .home-offer-card:nth-child(2) { --offer-i: 1; }
+    .flacso-home-v2 .home-offer-card:nth-child(3) { --offer-i: 2; }
+    .flacso-home-v2 .home-offer-card:nth-child(4) { --offer-i: 3; }
+    .flacso-home-v2 .home-offer-card:nth-child(5) { --offer-i: 4; }
+}
+@media (max-width: 760px) {
+    @keyframes home-offer-in {
+        from { opacity: 0; translate: 0 8px; }
+        to { opacity: 1; translate: 0 0; }
+    }
+}
