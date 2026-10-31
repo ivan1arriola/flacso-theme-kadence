@@ -129,7 +129,8 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
                     <?php if (!empty($ofertas_por_tipo[$slug])) : ?>
                         <a href="#<?php echo esc_attr($slug); ?>" class="flacso-formacion-nav__link">
                             <span class="flacso-formacion-nav__name"><?php echo esc_html($info['label']); ?></span>
-                            <span class="flacso-formacion-nav__count"><?php echo esc_html(sprintf(_n('%d propuesta', '%d propuestas', count($ofertas_por_tipo[$slug]), 'flacso-uruguay'), count($ofertas_por_tipo[$slug]))); ?></span>
+                            <?php $nav_open = count(array_filter($ofertas_por_tipo[$slug], static fn($o) => !empty($o['registration']['is_open']))); ?>
+                            <span class="flacso-formacion-nav__count"><?php echo esc_html($nav_open > 0 ? sprintf(__('%d con inscripción abierta', 'flacso-uruguay'), $nav_open) : sprintf(_n('%d propuesta', '%d propuestas', count($ofertas_por_tipo[$slug]), 'flacso-uruguay'), count($ofertas_por_tipo[$slug]))); ?></span>
                             <span class="flacso-formacion-nav__colors" aria-hidden="true">
                                 <?php
                                 $nav_colors = [];
