@@ -841,3 +841,14 @@
 /* Institucional: titular sobrio y cierre con filete. */
 .flacso-home-v2 .home-about-copy h2 { color: var(--ink); font-weight: 800; letter-spacing: -.03em; }
 .flacso-home-v2 .home-impact { border-top-width: 2px; }
+
+/* Hero en pantallas anchas: la fotografía llena la mitad derecha hasta el borde de la ventana.
+ * La altura sigue la proporción de la foto (aprox. 5:4) para que el encuadre completo
+ * casi no se recorte y no queden franjas azules a los lados. */
+@media (min-width: 761px) {
+    .flacso-home-v2 .home-hero-layout { height: clamp(430px, 33vw, 640px); }
+    .flacso-home-v2 .home-hero-photo:not(.home-hero-photo--logo) img {
+        object-fit: cover;
+        object-position: 40% 35%;
+    }
+}
