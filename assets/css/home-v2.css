@@ -852,3 +852,25 @@
         object-position: 40% 35%;
     }
 }
+
+/* Oferta: efecto lupa. La tarjeta bajo el cursor crece y las vecinas lo hacen a medias. */
+@media (min-width: 761px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .flacso-home-v2 .home-offer-card {
+        position: relative;
+        transition: transform .28s cubic-bezier(.2, .8, .2, 1), box-shadow .28s, background-color .28s;
+        will-change: transform;
+    }
+    .flacso-home-v2 .home-offer-card:is(:hover, :focus-visible) {
+        z-index: 2;
+        transform: scale(1.1);
+        background: #fff;
+        box-shadow: 0 18px 40px rgba(11, 31, 63, .16);
+    }
+    .flacso-home-v2 .home-offer-card:first-child:is(:hover, :focus-visible) { transform-origin: left center; }
+    .flacso-home-v2 .home-offer-card:last-child:is(:hover, :focus-visible) { transform-origin: right center; }
+    .flacso-home-v2 .home-offer-card:is(:hover, :focus-visible) + .home-offer-card,
+    .flacso-home-v2 .home-offer-card:has(+ .home-offer-card:is(:hover, :focus-visible)) {
+        z-index: 1;
+        transform: scale(1.035);
+    }
+}
