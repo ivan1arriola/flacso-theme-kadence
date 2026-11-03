@@ -118,8 +118,8 @@ function flacso_theme_carta_texts(string $anio, array $academic): array {
         'mas_info_gestion_titulo' => $text('carta_mas_info_gestion_title'),
         'mas_info_gestion_html' => $text('carta_mas_info_gestion_html'),
 
-        // Un correo vacío no tiene sentido: se usa el institucional por defecto.
-        'correo_inscripciones' => $correo !== '' ? $correo : 'inscripciones@flacso.edu.uy',
+        // No inventar un correo cuando no hay uno configurado.
+        'correo_inscripciones' => $correo,
         'telefono' => $telefono,
         'telefono_href' => $telefono !== '' ? 'tel:' . preg_replace('/[^0-9+]/', '', $telefono) : '',
         'contacto_nombre' => $text('carta_contacto_nombre'),
