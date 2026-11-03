@@ -194,11 +194,15 @@ if (!defined('ABSPATH')) {
                         <i class="bi bi-currency-dollar" aria-hidden="true"></i>
                         <p>
                             <?php
-                            printf(
-                                /* translators: %s: email link */
-                                esc_html__('Para consultar los costos, planes de financiación y políticas de becas, ponte en contacto con %s.', 'flacso-uruguay'),
-                                '<a href="mailto:' . esc_attr($textos['correo_inscripciones']) . '">' . esc_html($textos['correo_inscripciones']) . '</a>'
-                            );
+                            if ($textos['correo_inscripciones'] !== '') {
+                                printf(
+                                    /* translators: %s: email link */
+                                    esc_html__('Para consultar los costos, planes de financiación y políticas de becas, ponte en contacto con %s.', 'flacso-uruguay'),
+                                    '<a href="mailto:' . esc_attr($textos['correo_inscripciones']) . '">' . esc_html($textos['correo_inscripciones']) . '</a>'
+                                );
+                            } else {
+                                esc_html_e('Información de costos y contacto pendiente de confirmar.', 'flacso-uruguay');
+                            }
                             ?>
                         </p>
                     </div>
