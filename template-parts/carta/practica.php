@@ -51,7 +51,11 @@ if (!defined('ABSPATH')) {
                             <div class="fc-info-icon"><i class="bi bi-envelope" aria-hidden="true"></i></div>
                             <div>
                                 <strong><?php echo esc_html($textos['financiacion_label']); ?></strong>
-                                <a href="mailto:<?php echo esc_attr($textos['correo_inscripciones']); ?>"><?php echo esc_html($textos['correo_inscripciones']); ?></a>
+                                <?php if ($textos['correo_inscripciones'] !== '') : ?>
+                                    <a href="mailto:<?php echo esc_attr($textos['correo_inscripciones']); ?>"><?php echo esc_html($textos['correo_inscripciones']); ?></a>
+                                <?php else : ?>
+                                    <span><?php esc_html_e('Correo de contacto pendiente de confirmar', 'flacso-uruguay'); ?></span>
+                                <?php endif; ?>
                             </div>
                         </div>
                     <?php endif; ?>
