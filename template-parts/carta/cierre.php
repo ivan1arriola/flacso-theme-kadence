@@ -33,10 +33,12 @@ if (!defined('ABSPATH')) {
                         <i class="bi bi-pencil-square" aria-hidden="true"></i>
                         <?php esc_html_e('Formulario de Preinscripción', 'flacso-uruguay'); ?>
                     </a>
-                <?php else : ?>
+                <?php elseif ($textos['correo_inscripciones'] !== '') : ?>
                     <a href="mailto:<?php echo esc_attr($textos['correo_inscripciones']); ?>" aria-label="<?php echo esc_attr(sprintf(__('Solicitar información para %s', 'flacso-uruguay'), $titulo)); ?>">
                         <i class="bi bi-envelope" aria-hidden="true"></i>
                         <?php esc_html_e('Solicitar información', 'flacso-uruguay'); ?>
                     </a>
+                <?php else : ?>
+                    <span><?php esc_html_e('Correo de contacto pendiente de confirmar', 'flacso-uruguay'); ?></span>
                 <?php endif; ?>
             </section>
