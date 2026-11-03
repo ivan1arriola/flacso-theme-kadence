@@ -70,6 +70,10 @@ jobs:
           echo "software_version=$software_version" >> "$GITHUB_OUTPUT"
           echo "Theme version for $GITHUB_SHA: $software_version"
 
+      - name: Checkout plugin source used by theme contracts
+        shell: bash
+        run: git clone --depth 1 --branch main https://github.com/ivan1arriola/flacso-uruguay-plugin.git ../flacso-uruguay-plugin
+
       - name: Validate theme
         shell: bash
         run: bash bin/check-theme.sh
