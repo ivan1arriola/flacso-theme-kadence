@@ -95,7 +95,6 @@ function flacso_theme_carta_texts(string $anio, array $academic): array {
     };
 
     $telefono = $text('carta_telefono');
-    $correo = $text('carta_correo_inscripciones');
 
     return [
         'badge_mec' => $text('carta_badge_mec'),
@@ -118,8 +117,8 @@ function flacso_theme_carta_texts(string $anio, array $academic): array {
         'mas_info_gestion_titulo' => $text('carta_mas_info_gestion_title'),
         'mas_info_gestion_html' => $text('carta_mas_info_gestion_html'),
 
-        // No inventar un correo cuando no hay uno configurado.
-        'correo_inscripciones' => $correo,
+        // El correo se resuelve por oferta, nunca desde un ajuste global.
+        'correo_inscripciones' => '',
         'telefono' => $telefono,
         'telefono_href' => $telefono !== '' ? 'tel:' . preg_replace('/[^0-9+]/', '', $telefono) : '',
         'contacto_nombre' => $text('carta_contacto_nombre'),
@@ -132,14 +131,14 @@ function flacso_theme_carta_texts(string $anio, array $academic): array {
  *
  * Orden: persona elegida en Coordinación académica (con su rol y correo);
  * si no hay, el primer integrante de un grupo "asistencia" o "coordinación";
- * si tampoco, el contacto institucional.
+ * si tampoco, el correo propio de la oferta. Nunca un correo global de inscripciones.
  *
  * @param array<string,mixed> $academic
  * @param array<string,string> $textos Resultado de flacso_theme_carta_texts().
  * @return array{nombre:string,rol:string,correo:string,foto_url:string}
  */
 function flacso_theme_carta_contact(array $academic, array $textos): array {
-    $correo_institucional = $textos['correo_inscripciones'];
+    $correo_oferta = sanitize_email(trim((string) ($academic['correo'] ?? '')));
     $docente_id = absint($academic['asistente_academica_docente_id'] ?? 0);
     $rol = trim((string) ($academic['asistente_academica_rol'] ?? ''));
     $correo = trim((string) ($academic['asistente_academica_correo'] ?? ''));
@@ -184,7 +183,7 @@ function flacso_theme_carta_contact(array $academic, array $textos): array {
     return [
         'nombre' => $nombre,
         'rol' => $rol !== '' ? $rol : __('Asistente Académica', 'flacso-uruguay'),
-        'correo' => $correo !== '' ? $correo : $correo_institucional,
+        'correo' => $correo !== '' ? sanitize_email($correo) : $correo_oferta,
         'foto_url' => $foto_url,
     ];
 }
