@@ -204,6 +204,9 @@ function flacso_theme_get_carta_view(array $context): array {
         : (!empty($instance['fecha_inicio']) ? substr((string) $instance['fecha_inicio'], 0, 4) : wp_date('Y'));
 
     $textos = flacso_theme_carta_texts($anio, $academic);
+    $contacto = flacso_theme_carta_contact($academic, $textos);
+    // El correo del contacto de esta oferta tiene prioridad en todas las secciones.
+    $textos['correo_inscripciones'] = $contacto['correo'];
 
     // Inscripción: solo con cohorte abierta y enlace publicado.
     $url_inscripcion = (string) ($registration['url'] ?? '');
@@ -343,7 +346,7 @@ function flacso_theme_get_carta_view(array $context): array {
 
         'hay_distintivos' => $textos['badge_mec'] !== '' || $textos['badge_apostilla'] !== '' || $textos['badge_red'] !== '',
         'textos' => $textos,
-        'contacto' => flacso_theme_carta_contact($academic, $textos),
+        'contacto' => $contacto,
         'carta_cta_titulo' => __('Comenzá el año cursando un posgrado en FLACSO Uruguay', 'flacso-uruguay'),
     ];
 }
