@@ -351,9 +351,20 @@ function flacso_theme_get_offer_context(int $offer_id): array {
         // Contenido informativo obligatorio en todas las cartas, incluso con metadatos históricos falsos.
         "mostrar_costos_envio"        => true,
         "mostrar_expedicion_titulo"   => true,
-        "asistente_academica_docente_id" => absint($data["asistente_academica_docente_id"] ?? get_post_meta($offer_id, "asistente_academica_docente_id", true)),
-        "asistente_academica_rol"     => (string) ($data["asistente_academica_rol"] ?? get_post_meta($offer_id, "asistente_academica_rol", true)),
-        "asistente_academica_correo"  => (string) ($data["asistente_academica_correo"] ?? get_post_meta($offer_id, "asistente_academica_correo", true)),
+        "asistente_academica_docente_id" => absint(
+            $data["asistente_academica_docente_id"] ?? (
+                get_post_meta($offer_id, "carta_contacto_docente_id", true)
+                ?: get_post_meta($offer_id, "asistente_academica_docente_id", true)
+            )
+        ),
+        "asistente_academica_rol"     => (string) ($data["asistente_academica_rol"] ?? (
+            get_post_meta($offer_id, "carta_contacto_titulo", true)
+            ?: get_post_meta($offer_id, "asistente_academica_rol", true)
+        )),
+        "asistente_academica_correo"  => (string) ($data["asistente_academica_correo"] ?? (
+            get_post_meta($offer_id, "carta_contacto_correo", true)
+            ?: get_post_meta($offer_id, "asistente_academica_correo", true)
+        )),
         "colores_presentacion"        => (array) ($data["colores_presentacion"] ?? (get_post_meta($offer_id, "colores_presentacion", true) ?: [])),
         "color_principal"             => !empty($data["colores_presentacion"]["principal"])
             ? strtolower((string) $data["colores_presentacion"]["principal"])
