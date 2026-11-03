@@ -65,7 +65,7 @@ function carta_view_assert(bool $condition, string $message): void {
 $texts_default = flacso_theme_carta_texts('2027', []);
 carta_view_assert(strpos($texts_default['pago_pesos'], 'durante todo 2027,') !== false, 'el marcador {anio} se reemplaza por el año de la cohorte');
 carta_view_assert($texts_default['telefono_href'] === 'tel:+59824817459', 'el enlace telefónico se arma con los dígitos del teléfono');
-carta_view_assert(is_string($texts_default['correo_inscripciones']), 'el correo es un texto configurable');
+carta_view_assert($texts_default['correo_inscripciones'] === '', 'la carta no usa un correo global');
 
 $GLOBALS['opts']['flacso_carta_vencimiento_cuotas'] = '';
 $GLOBALS['opts']['flacso_carta_telefono'] = '';
@@ -100,10 +100,12 @@ carta_view_assert($contact['rol'] === 'Asistente Académica', 'sin rol usa el ro
 // Sin contacto elegido: no hay personas escritas en el código, solo el contacto institucional editable.
 $contact = flacso_theme_carta_contact([], $texts_default);
 carta_view_assert($contact['nombre'] === 'Inscripciones FLACSO Uruguay', 'sin contacto se usa el institucional');
-carta_view_assert($contact['rol'] === 'Asistencia Académica' && $contact['correo'] === $texts_default['correo_inscripciones'], 'rol y correo configurables');
-$GLOBALS['opts']['flacso_carta_correo_inscripciones'] = '';
+carta_view_assert($contact['rol'] === 'Asistencia Académica' && $contact['correo'] === '', 'sin contacto no se inventa un correo');
+$contact = flacso_theme_carta_contact(['correo' => 'oferta@flacso.edu.uy'], $texts_default);
+carta_view_assert($contact['correo'] === 'oferta@flacso.edu.uy', 'se usa el correo propio de la oferta');
+$GLOBALS['opts']['flacso_carta_correo_inscripciones'] = 'inscripciones@flacso.edu.uy';
 $sin_correo = flacso_theme_carta_texts('2027', []);
-carta_view_assert($sin_correo['correo_inscripciones'] === '', 'sin correo configurado no hay fallback fijo');
+carta_view_assert($sin_correo['correo_inscripciones'] === '', 'incluso con un correo global guardado no hay fallback fijo');
 carta_view_assert(flacso_theme_carta_contact([], $sin_correo)['correo'] === '', 'el contacto sin correo permanece vacío');
 $GLOBALS['opts'] = [];
 
