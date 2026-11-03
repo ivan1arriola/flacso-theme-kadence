@@ -24,7 +24,34 @@ function get_the_title($id) { return $GLOBALS['posts'][$id]['title'] ?? ''; }
 function get_the_post_thumbnail_url($id, $size = '') { return $GLOBALS['posts'][$id]['thumb'] ?? false; }
 function flacso_theme_calendar_and_curriculum_share_document($a, $b) { return $a !== '' && $a === $b; }
 
-require_once __DIR__ . '/../../flacso-uruguay-plugin/modules/oferta-academica/includes/class-carta-settings.php';
+$plugin_root = realpath(__DIR__ . '/../../flacso-uruguay-plugin');
+if (is_string($plugin_root) && $plugin_root !== '') {
+    $carta_settings_candidates = [
+        $plugin_root . '/modules/oferta-academica/includes/class-carta-settings.php',
+        $plugin_root . '/includes/class-carta-settings.php',
+    ];
+    foreach ($carta_settings_candidates as $candidate) {
+        if (is_file($candidate)) {
+            require_once $candidate;
+        }
+        if (class_exists('FLACSO_Carta_Settings')) {
+            break;
+        }
+    }
+    if (!class_exists('FLACSO_Carta_Settings')) {
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($plugin_root, FilesystemIterator::SKIP_DOTS)
+        );
+        foreach ($iterator as $entry) {
+            if ($entry instanceof SplFileInfo && $entry->isFile() && $entry->getFilename() === 'class-carta-settings.php') {
+                require_once $entry->getPathname();
+                if (class_exists('FLACSO_Carta_Settings')) {
+                    break;
+                }
+            }
+        }
+    }
+}
 require_once __DIR__ . '/../inc/carta-view-model.php';
 
 function carta_view_assert(bool $condition, string $message): void {
