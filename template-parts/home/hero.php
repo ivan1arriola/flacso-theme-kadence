@@ -1,11 +1,4 @@
-<?php if (!defined('ABSPATH')) { exit; } ?>
-<section class="home-hero" aria-labelledby="home-hero-title">
-  <div class="home-container home-hero-layout">
-    <div class="home-hero-copy">
-      <p class="home-eyebrow"><span aria-hidden="true"></span> <?php echo esc_html($data['hero_kicker']); ?></p>
-      <?php if ($data['hero_title'] === 'Formación que conecta, conocimiento que transforma.') : ?><h1 id="home-hero-title">Formación que <em>conecta</em>, conocimiento que <em>transforma.</em></h1><?php else : ?><h1 id="home-hero-title"><?php echo esc_html($data['hero_title']); ?></h1><?php endif; ?>
-      <a class="home-button" href="<?php echo esc_url($data['hero_cta']['url']); ?>"><?php echo esc_html($data['hero_cta']['label']); ?> <span aria-hidden="true">→</span></a>
-    </div>
-    <div class="home-hero-photo<?php echo $data['hero_is_logo'] ? ' home-hero-photo--logo' : ''; ?>"><picture><?php if ($data['hero_mobile_image']) : ?><source media="(max-width: 760px)" srcset="<?php echo esc_url($data['hero_mobile_image']); ?>"><?php endif; ?><img src="<?php echo esc_url($data['hero_image']); ?>" alt="<?php echo esc_attr($data['hero_image_alt']); ?>" fetchpriority="high"></picture></div>
-  </div>
-</section>
+<?php if (!defined('ABSPATH')) { exit; }
+$hero = is_array($data['hero'] ?? null) ? $data['hero'] : [];
+?>
+<section class="hero" aria-labelledby="hero-title"><div class="container hero-grid"><div class="hero-copy"><p class="eyebrow"><span></span> <?php echo esc_html($hero['eyebrow'] ?? ''); ?></p><h1 id="hero-title"><?php echo esc_html($hero['title_lead'] ?? ''); ?><?php if (trim((string) ($hero['title_em'] ?? '')) !== '') : ?><br><em><?php echo esc_html($hero['title_em']); ?></em><?php endif; ?></h1><p class="hero-intro"><?php echo esc_html($hero['intro'] ?? ''); ?></p><?php if (!empty($hero['cta']['url']) && !empty($hero['cta']['label'])) : ?><a class="primary" href="<?php echo esc_url($hero['cta']['url']); ?>"><?php echo esc_html($hero['cta']['label']); ?> <span aria-hidden="true">↗</span></a><?php endif; ?></div><div class="hero-media"><picture><?php if (!empty($hero['image_mobile'])) : ?><source media="(max-width: 760px)" srcset="<?php echo esc_url($hero['image_mobile']); ?>"><?php endif; ?><img src="<?php echo esc_url($hero['image'] ?? ''); ?>" alt="<?php echo esc_attr($hero['image_alt'] ?? ''); ?>" fetchpriority="high"></picture><svg class="connections" viewBox="0 0 540 420" aria-hidden="true"><path d="M20 340 180 270 300 330 480 160M180 270 140 100 350 40 480 160M140 100 300 330M350 40 300 330"/><circle cx="180" cy="270" r="5"/><circle cx="140" cy="100" r="5"/><circle cx="350" cy="40" r="5"/><circle cx="480" cy="160" r="5"/></svg></div></div></section>

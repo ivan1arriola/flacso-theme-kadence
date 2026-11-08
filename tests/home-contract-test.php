@@ -12,6 +12,7 @@ function get_stylesheet_directory_uri() { return 'https://example.test/wp-conten
 function esc_html($value) { return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); }
 function esc_attr($value) { return esc_html($value); }
 function esc_url($value) { return esc_html($value); }
+function wp_kses_post($value) { return (string) $value; }
 function wp_trim_words($value, $count) { return implode(' ', array_slice(explode(' ', $value), 0, $count)); }
 function get_post_field($field, $id) { return 'Contenido de prueba'; }
 function get_the_title($id) { return 'Noticia ' . $id; }
@@ -113,5 +114,38 @@ check(count($inv) === 5 && $inv['maestrias']['url'] === 'https://example.test/fo
 unset($GLOBALS['cards']);
 
 ob_start(); flacso_home_news_card((object)['ID'=>101], 'featured', true); $card = ob_get_clean();
-check(strpos($card, 'home-news-card--featured') !== false && strpos($card, 'Noticia fijada') !== false, 'tarjeta de noticia');
+check(strpos($card, 'class="feature"') !== false && strpos($card, 'NOTICIA FIJADA') !== false && strpos($card, 'class="poster"') !== false && strpos($card, 'Leer noticia') !== false, 'tarjeta destacada con el marcado de la maqueta');
+ob_start(); flacso_home_news_card((object)['ID'=>201], 'recent', false); $card = ob_get_clean();
+check(strpos($card, 'NOTICIA FIJADA') === false && strpos($card, 'class="poster"') !== false && strpos($card, 'class="news-meta"') !== false, 'tarjeta reciente sin etiqueta fijada');
+
+// Plantillas
+$html = flacso_home_render();
+check(strpos($html, '<main id="main" class="flacso-home" role="main">') === 0, 'main con id y clase de la portada');
+$last = -1;
+foreach (['Formación que conecta', 'Encontrá tu próxima formación', 'Tu próximo paso empieza acá.', 'Noticias</h2>', 'Pensar la región.', '¿Qué es FLACSO Uruguay?'] as $heading) {
+    $pos = strpos($html, $heading);
+    check($pos !== false && $pos > $last, "encabezado en orden: $heading");
+    $last = $pos;
+}
+check(substr_count($html, '<h1') === 1, 'exactamente un h1');
+check(strpos($html, 'Próximas actividades') === false, 'sin eventos no hay agenda');
+check(substr_count($html, 'class="offer-grid"') === 1 && preg_match_all('#<div class="offer-grid">(.*?)</div>#s', $html, $m) && substr_count($m[1][0], '<a ') === 5, 'cinco enlaces de oferta');
+foreach (['01', '02', '03'] as $n) { check(strpos($html, '<span>' . $n . '</span>') !== false, "enlace de investigación $n"); }
+check(substr_count($html, 'class="research-links"') === 1 && preg_match('#class="research-links">(.*?)</div>#s', $html, $m) && substr_count($m[1], '<a ') === 3, 'tres enlaces de investigación');
+check(strpos($html, 'Conocer las novedades') === false, 'sin texto retirado');
+foreach (['hero', 'offer-section', 'campaign', 'news-section', 'research-section', 'about-section'] as $cls) { check(strpos($html, 'class="' . $cls) !== false, "sección $cls"); }
+check(strpos($html, 'agenda-section') === false, 'agenda oculta sin eventos');
+$blank_attr = 'target="_' . 'blank"';
+if (preg_match_all('/<a [^>]*' . preg_quote($blank_attr, '/') . '[^>]*>/', $html, $blank)) { foreach ($blank[0] as $tag) { check(strpos($tag, 'noopener noreferrer') !== false, 'enlace externo con rel'); } }
+
+$GLOBALS['events'] = [['id'=>301,'link'=>'https://example.test/evento-301','title'=>'Actividad abierta','day'=>'18','month'=>'Octubre','hora'=>'18:00','status'=>'Virtual']];
+$with = flacso_home_render();
+check(strpos($with, 'Próximas actividades') !== false && strpos($with, 'Actividad abierta') !== false && strpos($with, '18:00 · Virtual') !== false, 'agenda con un evento');
+unset($GLOBALS['events']);
+
+$GLOBALS['content'] = Flacso_Home_Content::defaults();
+$GLOBALS['content']['campaign']['enabled'] = false;
+$off = flacso_home_render();
+check(strpos($off, 'Tu próximo paso empieza acá.') === false && strpos($off, 'class="campaign"') === false, 'campaña apagada oculta');
+unset($GLOBALS['content']);
 echo "Portada: contrato de datos correcto.\n";

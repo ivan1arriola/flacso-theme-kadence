@@ -203,19 +203,23 @@ function flacso_home_news_card($post, string $variant, bool $is_pinned = false):
     $title = wp_strip_all_tags(get_the_title($id));
     $url = get_permalink($id);
     $image_id = get_post_thumbnail_id($id);
-    $excerpt = has_excerpt($id) ? get_the_excerpt($id) : wp_trim_words(wp_strip_all_tags((string) get_post_field('post_content', $id)), 22);
-    ?>
-    <article class="home-news-card home-news-card--<?php echo esc_attr($variant); ?>">
-        <a class="home-news-media" href="<?php echo esc_url($url); ?>" aria-label="<?php echo esc_attr('Leer: ' . $title); ?>">
-            <?php if ($image_id) : echo wp_get_attachment_image($image_id, 'medium_large', false, ['alt' => '', 'loading' => 'lazy']); else : ?><span class="home-media-empty" aria-hidden="true">FLACSO Uruguay</span><?php endif; ?>
-        </a>
-        <div class="home-news-copy">
-            <?php if ($variant === 'featured' || $is_pinned) : ?><span class="home-news-pin">● <?php echo $is_pinned ? 'Noticia fijada' : 'En portada'; ?></span><?php endif; ?>
-            <time datetime="<?php echo esc_attr(get_the_date('c', $id)); ?>"><?php echo esc_html(get_the_date('j \\d\\e F \\d\\e Y', $id)); ?></time>
-            <h3><a href="<?php echo esc_url($url); ?>"><?php echo esc_html($title); ?></a></h3>
-            <?php if ($variant === 'featured' && trim((string) $excerpt) !== '') : ?><p><?php echo esc_html(wp_strip_all_tags($excerpt)); ?></p><?php endif; ?>
-            <a class="home-text-link" href="<?php echo esc_url($url); ?>">Leer noticia <span aria-hidden="true">→</span></a>
-        </div>
-    </article>
-    <?php
+    $category = '';
+    if (function_exists('get_the_category')) {
+        $categories = get_the_category($id);
+        if (is_array($categories) && !empty($categories[0]->name)) { $category = trim(wp_strip_all_tags((string) $categories[0]->name)); }
+    }
+    $is_feature = $variant === 'featured' || $variant === 'secondary';
+    $poster = '<a class="poster" href="' . esc_url($url) . '" aria-label="' . esc_attr('Leer noticia: ' . $title) . '">'
+        . ($image_id ? wp_get_attachment_image($image_id, 'medium_large', false, ['alt' => '', 'loading' => 'lazy']) : '')
+        . '</a>';
+    $meta = '<p class="news-meta">' . ($category !== '' ? esc_html($category) . ' · ' : '')
+        . '<time datetime="' . esc_attr(get_the_date('c', $id)) . '">' . esc_html(get_the_date('j M Y', $id)) . '</time></p>';
+    $heading = '<h3><a href="' . esc_url($url) . '">' . esc_html($title) . '</a></h3>';
+    $link = '<a class="text-link" href="' . esc_url($url) . '">Leer noticia <span aria-hidden="true">↗</span></a>';
+    if ($is_feature) {
+        $pin = $is_pinned ? '<p class="pin-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 3 7 7-4 1-4 5-2-2-6 6M4 13l7-7 1-4"/></svg> NOTICIA FIJADA</p>' : '';
+        echo '<article class="feature' . ($variant === 'secondary' ? ' secondary' : '') . '">' . $poster . '<div>' . $pin . $meta . $heading . $link . '</div></article>';
+        return;
+    }
+    echo '<article>' . $poster . $meta . $heading . $link . '</article>';
 }
