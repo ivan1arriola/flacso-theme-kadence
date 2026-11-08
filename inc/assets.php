@@ -61,37 +61,14 @@ function flacso_child_enqueue_front_page_assets() {
         return;
     }
 
-    if ( class_exists( 'FLACSO_Home_Campaign' ) && FLACSO_Home_Campaign::is_enabled() ) {
-        $path    = 'assets/css/home-v2.css';
-        wp_enqueue_style( 'flacso-home-roboto', 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap', array(), null );
-        wp_enqueue_style( 'flacso-home-v2', get_stylesheet_directory_uri() . '/' . $path, array( 'flacso-site-chrome', 'flacso-home-roboto' ), flacso_child_asset_version( $path ) );
-        $reveal_path = 'assets/js/home-offer-reveal.js';
-        wp_enqueue_script( 'flacso-home-offer-reveal', get_stylesheet_directory_uri() . '/' . $reveal_path, array(), flacso_child_asset_version( $reveal_path ), true );
-        return;
-    }
+    $css_path = 'assets/css/front-page.css';
 
-    $base_css_path = 'assets/css/front-page-base.css';
-    $css_path      = 'assets/css/front-page-hero.css';
-    $js_path       = 'assets/js/front-page-hero.js';
-
+    wp_enqueue_style( 'flacso-home-roboto', 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800;900&display=swap', array(), null );
     wp_enqueue_style(
-        'flacso-front-page-base',
-        get_stylesheet_directory_uri() . '/' . $base_css_path,
-        array( 'flacso-site-chrome' ),
-        flacso_child_asset_version( $base_css_path )
-    );
-    wp_enqueue_style(
-        'flacso-front-page-hero',
+        'flacso-front-page',
         get_stylesheet_directory_uri() . '/' . $css_path,
-        array( 'flacso-front-page-base' ),
+        array( 'flacso-site-chrome', 'flacso-home-roboto' ),
         flacso_child_asset_version( $css_path )
-    );
-    wp_enqueue_script(
-        'flacso-front-page-hero',
-        get_stylesheet_directory_uri() . '/' . $js_path,
-        array(),
-        flacso_child_asset_version( $js_path ),
-        true
     );
 }
 add_action( 'wp_enqueue_scripts', 'flacso_child_enqueue_front_page_assets', 50 );

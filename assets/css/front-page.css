@@ -1,0 +1,237 @@
+/* Portada FLACSO Uruguay: estilos de la maqueta aprobada, acotados a .flacso-home. Roboto la encola inc/assets.php. */
+.flacso-home{--blue:#2c4777;--deep:#1d3358;--yellow:#fed222;--ink:#293c59;--muted:#68778c;--paper:#f6f7f9;--line:#d9e0e9;display:block;width:100%;margin:0;padding:0;color:var(--ink);background:#fff;font-family:Roboto,Arial,sans-serif;font-size:16px;line-height:1.5}
+.flacso-home *,.flacso-home *::before,.flacso-home *::after{box-sizing:border-box}
+.flacso-home button,.flacso-home input{font:inherit}
+.flacso-home a{color:inherit;text-decoration:none}
+.flacso-home a:hover{color:inherit;text-decoration:underline;text-underline-offset:4px}
+.flacso-home a:focus-visible,.flacso-home button:focus-visible{outline:3px solid #d7a900;outline-offset:4px}
+.flacso-home svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.flacso-home h1,.flacso-home h2,.flacso-home h3,.flacso-home p{margin:0;font-family:inherit;text-transform:none}
+.flacso-home h2{font-size:32px;line-height:1.2;letter-spacing:-.75px;font-weight:500;color:inherit}
+.flacso-home h3{font-weight:500;color:inherit}
+.flacso-home img{display:block;max-width:100%;height:auto}
+.flacso-home .container{width:calc(100% - 112px);max-width:1280px;margin:0 auto}
+.flacso-home .hero{background:#233c66;position:relative;isolation:isolate;overflow:hidden}
+.flacso-home .hero-grid{display:grid;grid-template-columns:1fr;min-height:565px;align-items:center;padding-block:35px}
+.flacso-home .hero-copy{z-index:2;max-width:760px;padding:38px 0 44px}
+.flacso-home .eyebrow{font-size:10px;letter-spacing:1.65px;font-weight:700;color:var(--blue);margin-bottom:18px}
+.flacso-home .hero .eyebrow{display:flex;align-items:center;gap:11px;color:#e8cf6d}
+.flacso-home .hero .eyebrow span{height:2px;width:27px;background:var(--yellow)}
+.flacso-home h1{font-size:64px;line-height:1.08;letter-spacing:-2.15px;color:#fff;font-weight:500;max-width:720px;margin:0 0 25px}
+.flacso-home h1 em{font-style:normal;font-weight:700}
+.flacso-home .hero-intro{max-width:440px;color:#d3deed;font-size:16px;line-height:1.65;margin-bottom:28px}
+.flacso-home .primary{display:inline-flex;align-items:center;justify-content:space-between;gap:30px;background:var(--yellow);padding:15px 19px;font-size:13px;font-weight:600;color:#233d66;border-radius:2px;transition:background .15s}
+.flacso-home .primary:hover{background:#f2c512;color:#233d66;text-decoration:none}
+.flacso-home .primary>span{font-size:19px}
+.flacso-home .hero-media{position:absolute;inset:0;margin:0;z-index:-1;overflow:hidden;background:#344e6c}
+.flacso-home .hero-media picture{display:block;width:100%;height:100%}
+.flacso-home .hero-media img{width:100%;height:100%;object-fit:cover;object-position:50% 44%;position:absolute;inset:0}
+.flacso-home .hero-media:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#172e53f2 4%,#1d3358d9 36%,#233e6a55 75%,#233e6a30)}
+.flacso-home .connections{position:absolute;z-index:1;right:0;bottom:0;width:45%;height:90%;opacity:.22;stroke:#fff;stroke-width:.8}
+.flacso-home .connections circle{fill:#fed222;stroke:none}
+.flacso-home .offer-section{padding:58px 0 54px}
+.flacso-home .section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:25px;margin-bottom:30px}
+.flacso-home .section-head .eyebrow{margin-bottom:10px}
+.flacso-home .text-link{font-size:13px;font-weight:600;display:inline-block;color:var(--blue);text-underline-offset:5px;white-space:normal}
+.flacso-home .section-head>.text-link{white-space:nowrap;padding-bottom:5px}
+.flacso-home .offer-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-block:1px solid var(--line)}
+.flacso-home .offer-grid>a{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:156px;padding:22px 22px 20px;border-right:1px solid var(--line);color:var(--blue);transition:background .2s}
+.flacso-home .offer-grid>a:first-child{border-left:1px solid var(--line);border-top:3px solid var(--blue)}
+.flacso-home .offer-grid>a:nth-child(2){border-top:3px solid #7596a1}
+.flacso-home .offer-grid>a:nth-child(3){border-top:3px solid #a27860}
+.flacso-home .offer-grid>a:nth-child(4){border-top:3px solid #88916a}
+.flacso-home .offer-grid>a:nth-child(5){border-top:3px solid #8583a2}
+.flacso-home .offer-grid>a:hover{background:#f1f4f8;text-decoration:none}
+.flacso-home .offer-grid svg{width:30px;height:30px;margin-bottom:24px;stroke-width:1.25}
+.flacso-home .offer-grid h3{font-size:17px;letter-spacing:-.25px}
+.flacso-home .offer-grid>a>span{position:absolute;right:18px;top:22px;font-size:18px}
+.flacso-home .campaign{background:#f8eabb;padding:27px 0}
+.flacso-home .campaign-grid{display:grid;grid-template-columns:1fr 2fr auto;align-items:center;gap:30px}
+.flacso-home .campaign-label{font-size:10px;letter-spacing:1.1px;font-weight:700;display:flex;align-items:center;gap:9px}
+.flacso-home .status-dot{width:6px;height:6px;background:var(--blue);border-radius:50%}
+.flacso-home .campaign h2{font-size:23px;letter-spacing:-.4px;margin-bottom:4px}
+.flacso-home .campaign p:not(.campaign-label){font-size:12px;color:#665f4e}
+.flacso-home .campaign-cta{border-bottom:1px solid var(--blue);padding:8px 0;font-size:13px;font-weight:600;white-space:nowrap}
+.flacso-home .campaign-cta span{margin-left:23px}
+.flacso-home .agenda-section{padding:62px 0;border-bottom:1px solid var(--line)}
+.flacso-home .agenda-grid{display:grid;grid-template-columns:.8fr 1.5fr;gap:56px;align-items:center}
+.flacso-home .agenda-grid h2{font-size:28px;margin:0 0 20px}
+.flacso-home .event{display:grid;grid-template-columns:auto 1fr 92px;align-items:center;gap:24px}
+.flacso-home .event-date{border-right:1px solid #cad3e0;padding-right:24px;text-align:center;color:var(--blue)}
+.flacso-home .event-date strong{font-size:52px;line-height:1.1;font-weight:400;display:block;letter-spacing:-2px}
+.flacso-home .event-date span{font-size:10px;letter-spacing:1px}
+.flacso-home .event-copy>p{font-size:11px;color:#6c7b8d;margin-bottom:8px}
+.flacso-home .event h3{font-size:20px;line-height:1.35;letter-spacing:-.2px;margin-bottom:12px}
+.flacso-home .event-poster{display:block;min-width:0}
+.flacso-home .event-poster img{aspect-ratio:4/5;object-fit:contain;width:92px;background:#eef1f7}
+.flacso-home .news-section{padding:64px 0 72px}
+.flacso-home .featured-news{display:grid;grid-template-columns:1.13fr 1fr;gap:36px;margin-bottom:42px}
+.flacso-home .feature{display:grid;grid-template-columns:.9fr 1.1fr;gap:24px;align-items:center;min-width:0}
+.flacso-home .feature>div{min-width:0}
+.flacso-home .poster{display:block;background:#edf1f6;overflow:hidden;aspect-ratio:4/5}
+.flacso-home .poster img{width:100%;height:100%;object-fit:contain}
+.flacso-home .feature h3{font-size:25px;line-height:1.23;letter-spacing:-.55px;margin:14px 0 22px}
+.flacso-home .feature.secondary h3{font-size:21px;letter-spacing:-.3px}
+.flacso-home .pin-label{font-size:9px;letter-spacing:1px;font-weight:600;color:var(--blue);display:flex;align-items:center;gap:6px;margin-bottom:15px}
+.flacso-home .pin-label svg{width:13px;height:13px}
+.flacso-home .news-meta{font-size:11px;color:#758095;line-height:1.5}
+.flacso-home .recent-heading{display:flex;align-items:center;gap:20px;border-top:1px solid var(--line);padding:24px 0}
+.flacso-home .recent-heading h3{font-size:18px}
+.flacso-home .recent-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}
+.flacso-home .recent-grid .news-meta{margin:18px 0 10px}
+.flacso-home .recent-grid h3{font-size:19px;line-height:1.35;letter-spacing:-.2px;margin-bottom:17px}
+.flacso-home .recent-grid .text-link{font-size:12px}
+.flacso-home .research-section{background:var(--blue);color:white;padding:65px 0}
+.flacso-home .research-grid{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center}
+.flacso-home .research-section .eyebrow{color:#e9ce6f}
+.flacso-home .research-section h2{font-size:36px;margin-bottom:18px;color:#fff}
+.flacso-home .research-section p:not(.eyebrow){font-size:14px;color:#cdd7e8;max-width:340px;margin-bottom:25px}
+.flacso-home .research-section .text-link{color:white}
+.flacso-home .research-links{border-top:1px solid #6d83a3}
+.flacso-home .research-links a{display:flex;align-items:center;gap:20px;min-height:83px;border-bottom:1px solid #6d83a3;font-size:18px;font-weight:400}
+.flacso-home .research-links span{font-size:10px;color:#b7c7df}
+.flacso-home .research-links b{font-size:21px;font-weight:400;margin-left:auto}
+.flacso-home .about-section{padding:76px 0 80px}
+.flacso-home .about-grid{display:grid;grid-template-columns:.85fr 1.4fr;gap:110px;align-items:start}
+.flacso-home .about-identity>img{max-width:270px;margin:24px 0 35px}
+.flacso-home .about-identity>p:not(.eyebrow){font-size:30px;color:var(--blue);font-weight:400;letter-spacing:-.4px;line-height:1.2}
+.flacso-home .about-rule{height:3px;background:var(--yellow);width:48px;display:block;margin-top:28px}
+.flacso-home .about-section h2{margin-bottom:24px;font-size:30px}
+.flacso-home .about-grid>div:not(.about-identity) p{font-size:15px;line-height:1.85;color:#5f6d81;margin-bottom:18px}
+.flacso-home .about-section strong{font-weight:600;color:#3e526f}
+.flacso-home .about-section .text-link{margin-top:10px}
+@media(max-width:1150px){
+  .flacso-home .container{width:calc(100% - 72px)}
+  .flacso-home .hero h1{font-size:58px}
+  .flacso-home .offer-grid>a{padding:20px 16px}
+  .flacso-home .offer-grid h3{font-size:15px}
+  .flacso-home .campaign-grid{grid-template-columns:.8fr 1.5fr auto;gap:20px}
+  .flacso-home .campaign h2{font-size:21px}
+  .flacso-home .agenda-grid{gap:28px;grid-template-columns:.8fr 1.5fr}
+  .flacso-home .agenda-grid h2{font-size:26px}
+  .flacso-home .event{gap:18px;grid-template-columns:auto minmax(0,1fr) 92px}
+  .flacso-home .event h3{font-size:18px}
+  .flacso-home .featured-news{gap:28px;grid-template-columns:1fr 1fr}
+  .flacso-home .feature{grid-template-columns:.8fr 1.2fr;gap:18px}
+  .flacso-home .feature h3,.flacso-home .feature.secondary h3{font-size:20px}
+  .flacso-home .recent-grid{gap:22px}
+  .flacso-home .recent-grid h3{font-size:17px}
+  .flacso-home .research-grid{gap:50px}
+  .flacso-home .research-links a{font-size:16px}
+  .flacso-home .about-grid{gap:60px}
+}
+@media(max-width:900px){
+  .flacso-home .container{width:calc(100% - 48px)}
+  .flacso-home .hero-grid{min-height:520px}
+  .flacso-home .hero h1{font-size:55px;max-width:630px}
+  .flacso-home .hero-intro{font-size:15px}
+  .flacso-home .offer-section{padding:42px 0}
+  .flacso-home .section-head h2{font-size:27px}
+  .flacso-home .offer-grid>a{padding:16px 12px;min-height:145px}
+  .flacso-home .offer-grid h3{font-size:13px}
+  .flacso-home .offer-grid svg{width:26px;height:26px}
+  .flacso-home .offer-grid>a>span{font-size:16px;right:10px;top:16px}
+  .flacso-home .campaign-grid{grid-template-columns:1fr auto;gap:12px 20px}
+  .flacso-home .campaign-label{grid-column:1/-1}
+  .flacso-home .campaign h2{font-size:22px}
+  .flacso-home .agenda-grid{grid-template-columns:1fr;gap:26px}
+  .flacso-home .agenda-grid>div{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+  .flacso-home .agenda-grid .eyebrow{width:100%;margin-bottom:-15px}
+  .flacso-home .agenda-grid h2{margin:0}
+  .flacso-home .agenda-grid>div>.text-link{margin-left:auto}
+  .flacso-home .event{grid-template-columns:auto 1fr 80px}
+  .flacso-home .event-poster img{width:80px}
+  .flacso-home .featured-news{gap:25px}
+  .flacso-home .feature,.flacso-home .feature.secondary{grid-template-columns:1fr;align-items:start}
+  .flacso-home .feature>.poster{width:100%}
+  .flacso-home .feature h3,.flacso-home .feature.secondary h3{font-size:22px}
+  .flacso-home .pin-label{margin-bottom:8px}
+  .flacso-home .feature h3{margin-top:10px}
+  .flacso-home .recent-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 24px}
+  .flacso-home .research-grid{gap:35px}
+  .flacso-home .research-section h2{font-size:30px}
+  .flacso-home .research-links a{font-size:15px}
+  .flacso-home .about-grid{grid-template-columns:.7fr 1.2fr;gap:40px}
+  .flacso-home .about-identity>p:not(.eyebrow){font-size:24px}
+  .flacso-home .about-section h2{font-size:26px}
+  .flacso-home .about-grid>div:not(.about-identity) p{font-size:14px}
+}
+@media(max-width:600px){
+  .flacso-home .container{width:calc(100% - 40px)}
+  .flacso-home .hero-grid{display:flex;flex-direction:column;justify-content:center;align-items:stretch;min-height:520px;padding:0}
+  .flacso-home .hero-copy{padding:45px 0 55px;max-width:100%}
+  .flacso-home .eyebrow{font-size:9px;letter-spacing:1.2px;margin-bottom:15px}
+  .flacso-home .hero h1{font-size:41px;letter-spacing:-1.4px;line-height:1.08;max-width:430px;margin-bottom:20px}
+  .flacso-home .hero-intro{font-size:14px;max-width:320px;margin-bottom:24px;line-height:1.6}
+  .flacso-home .primary{padding:12px 16px;font-size:12px;gap:24px}
+  .flacso-home .hero-media{min-height:0;max-height:none}
+  .flacso-home .hero-media img{object-position:60% center}
+  .flacso-home .hero-media:after{background:linear-gradient(90deg,#172e53ed 0,#1d3358b9 70%,#233e6a88)}
+  .flacso-home .connections{width:100%;height:60%;bottom:0}
+  .flacso-home .offer-section{padding:32px 0}
+  .flacso-home .section-head{margin-bottom:22px;align-items:flex-start;gap:15px}
+  .flacso-home .section-head h2{font-size:25px;max-width:250px;letter-spacing:-.6px}
+  .flacso-home .section-head>.text-link{font-size:11px;padding-top:4px;white-space:normal;text-align:right;max-width:90px}
+  .flacso-home .section-head .eyebrow{margin-bottom:8px}
+  .flacso-home .offer-grid{grid-template-columns:1fr;border:0}
+  .flacso-home .offer-grid>a,.flacso-home .offer-grid>a:first-child,.flacso-home .offer-grid>a:nth-child(n){padding:15px 13px;min-height:63px;border:1px solid var(--line);border-bottom:0;border-left:3px solid var(--blue);display:flex;flex-direction:row;align-items:center;gap:16px}
+  .flacso-home .offer-grid>a:last-child{border-bottom:1px solid var(--line)}
+  .flacso-home .offer-grid>a:nth-child(2){border-left-color:#7596a1}
+  .flacso-home .offer-grid>a:nth-child(3){border-left-color:#a27860}
+  .flacso-home .offer-grid>a:nth-child(4){border-left-color:#88916a}
+  .flacso-home .offer-grid>a:nth-child(5){border-left-color:#8583a2}
+  .flacso-home .offer-grid h3{font-size:16px}
+  .flacso-home .offer-grid svg{width:25px;height:25px;margin:0}
+  .flacso-home .offer-grid>a>span{position:static;margin-left:auto;font-size:20px}
+  .flacso-home .campaign{padding:24px 0}
+  .flacso-home .campaign-grid{grid-template-columns:1fr;gap:14px}
+  .flacso-home .campaign-label{font-size:9px}
+  .flacso-home .campaign h2{font-size:24px;max-width:270px}
+  .flacso-home .campaign p:not(.campaign-label){font-size:12px;line-height:1.6;max-width:275px}
+  .flacso-home .campaign-cta{font-size:12px;justify-self:start;padding:6px 0}
+  .flacso-home .agenda-section{padding:35px 0}
+  .flacso-home .agenda-grid{gap:22px}
+  .flacso-home .agenda-grid>div{gap:12px;align-items:flex-end}
+  .flacso-home .agenda-grid .eyebrow{margin-bottom:-3px}
+  .flacso-home .agenda-grid h2{font-size:24px;max-width:180px;letter-spacing:-.5px}
+  .flacso-home .agenda-grid>div>.text-link{font-size:10px;max-width:100px;text-align:right;line-height:1.5}
+  .flacso-home .event{grid-template-columns:84px minmax(0,1fr);gap:10px 16px;align-items:start}
+  .flacso-home .event-poster{grid-column:1;grid-row:1 / span 2}
+  .flacso-home .event-poster img{width:84px;aspect-ratio:4/5;object-fit:contain}
+  .flacso-home .event-date{grid-column:2;grid-row:1;padding:0;border:0;display:flex;align-items:baseline;gap:7px;text-align:left}
+  .flacso-home .event-date strong{font-size:25px;letter-spacing:-.5px}
+  .flacso-home .event-date span{font-size:10px;letter-spacing:.3px}
+  .flacso-home .event-copy{grid-column:2;grid-row:2;min-width:0}
+  .flacso-home .event h3{font-size:17px}
+  .flacso-home .event-copy>p{font-size:10px}
+  .flacso-home .event .text-link{font-size:12px}
+  .flacso-home .news-section{padding:36px 0 40px}
+  .flacso-home .news-section .section-head h2{font-size:28px}
+  .flacso-home .featured-news{grid-template-columns:1fr;gap:28px;margin-bottom:28px}
+  .flacso-home .feature,.flacso-home .feature.secondary{grid-template-columns:.8fr 1.2fr;gap:17px;align-items:start}
+  .flacso-home .feature>.poster{margin-top:2px}
+  .flacso-home .feature h3,.flacso-home .feature.secondary h3{font-size:17px;line-height:1.25;letter-spacing:-.25px;margin:10px 0 13px}
+  .flacso-home .feature .news-meta{font-size:10px}
+  .flacso-home .feature .pin-label{font-size:8px;letter-spacing:.4px;gap:5px;margin:0 0 9px}
+  .flacso-home .feature .text-link{font-size:11px}
+  .flacso-home .recent-heading{padding:20px 0;gap:10px}
+  .flacso-home .recent-heading h3{font-size:17px}
+  .flacso-home .recent-grid{gap:26px 18px}
+  .flacso-home .recent-grid h3{font-size:15px;line-height:1.3;margin-bottom:12px}
+  .flacso-home .recent-grid .news-meta{font-size:9px;margin:12px 0 8px}
+  .flacso-home .recent-grid .text-link{font-size:11px}
+  .flacso-home .research-section{padding:38px 0}
+  .flacso-home .research-grid{grid-template-columns:1fr;gap:28px}
+  .flacso-home .research-section h2{font-size:30px}
+  .flacso-home .research-section p:not(.eyebrow){font-size:13px}
+  .flacso-home .research-links a{font-size:15px;min-height:68px;gap:15px}
+  .flacso-home .about-section{padding:40px 0}
+  .flacso-home .about-grid{grid-template-columns:1fr;gap:30px}
+  .flacso-home .about-identity>img{width:180px;margin:0}
+  .flacso-home .about-identity>.eyebrow,.flacso-home .about-identity>p:not(.eyebrow),.flacso-home .about-rule{display:none}
+  .flacso-home .about-section h2{font-size:25px}
+  .flacso-home .about-grid>div:not(.about-identity) p{font-size:15px;line-height:1.75}
+}
+@media(prefers-reduced-motion:reduce){
+  .flacso-home *{transition:none!important}
+}
