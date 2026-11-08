@@ -63,11 +63,10 @@ function flacso_child_enqueue_front_page_assets() {
 
     $css_path = 'assets/css/front-page.css';
 
-    wp_enqueue_style( 'flacso-home-roboto', 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap', array(), null );
     wp_enqueue_style(
         'flacso-front-page',
         get_stylesheet_directory_uri() . '/' . $css_path,
-        array( 'flacso-site-chrome', 'flacso-home-roboto' ),
+        array( 'flacso-site-chrome' ),
         flacso_child_asset_version( $css_path )
     );
 }
