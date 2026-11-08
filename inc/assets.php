@@ -73,6 +73,33 @@ function flacso_child_enqueue_front_page_assets() {
 }
 add_action( 'wp_enqueue_scripts', 'flacso_child_enqueue_front_page_assets', 50 );
 
+/**
+ * Handles que el plugin encola en la portada (prioridades 60 y 65) para sus
+ * secciones anteriores. El nuevo marcado no los usa. Bootstrap y Bootstrap Icons
+ * del tema (bootstrap-css, bootstrap-icons) no se tocan.
+ */
+function flacso_child_front_page_legacy_style_handles() {
+    return array(
+        'flacso-main-page-novedades-45',
+        'flacso-main-page-mobile-fixes',
+        'flacso-main-page-base',
+        'flacso-mobile-first',
+        'flacso-main-page-fonts',
+        'flacso-main-page-icons',
+    );
+}
+
+function flacso_child_dequeue_front_page_legacy_assets() {
+    if ( ! is_front_page() ) {
+        return;
+    }
+    foreach ( flacso_child_front_page_legacy_style_handles() as $handle ) {
+        wp_dequeue_style( $handle );
+        wp_deregister_style( $handle );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'flacso_child_dequeue_front_page_legacy_assets', 100 );
+
 // Carga Bootstrap 5 y Bootstrap Icons
 /**
  * Determina si la página actual requiere Bootstrap y jQuery UI.

@@ -13,6 +13,10 @@ function esc_html($value) { return htmlspecialchars((string) $value, ENT_QUOTES,
 function esc_attr($value) { return esc_html($value); }
 function esc_url($value) { return esc_html($value); }
 function wp_kses_post($value) { return (string) $value; }
+function wpautop($value) { $parts = array_filter(array_map('trim', preg_split('/
+\s*
+/', (string) $value))); return implode("
+", array_map(static fn($p) => strncmp($p, '<p>', 3) === 0 ? $p : '<p>' . $p . '</p>', $parts)); }
 function wp_trim_words($value, $count) { return implode(' ', array_slice(explode(' ', $value), 0, $count)); }
 function get_post_field($field, $id) { return 'Contenido de prueba'; }
 function get_the_title($id) { return 'Noticia ' . $id; }
@@ -20,7 +24,7 @@ function get_the_excerpt($id) { return 'Resumen de la noticia'; }
 function has_excerpt($id) { return true; }
 function get_the_date($format, $id) { return $format === 'c' ? '2026-10-01T00:00:00-03:00' : '1 de octubre de 2026'; }
 function get_permalink($id) { return 'https://example.test/noticia-' . $id; }
-function get_post_thumbnail_id($id) { return $id === 101 ? 55 : 0; }
+function get_post_thumbnail_id($id) { return $id === 101 || $id === ($GLOBALS['thumb_for'] ?? 0) ? 55 : 0; }
 function wp_get_attachment_image($id, $size, $icon=false, $attrs=[]) { return '<img src="https://example.test/image.jpg" alt="">'; }
 function wp_get_attachment_image_url($id, $size) { return 'https://example.test/hero-' . $id . '.jpg'; }
 function flacso_section_oferta_educativa_get_cards() { return $GLOBALS['cards'] ?? [
@@ -35,15 +39,21 @@ function flacso_section_novedades_get_posts($limit,$category,$page) {
     return ['posts'=>array_map(static fn($id) => (object)['ID'=>$id], $ids)];
 }
 class FLACSO_Home_Campaign { public static function view_model() { return ['campaign'=>$GLOBALS['campaign'] ?? ['source'=>'fallback']]; } }
-class Flacso_Main_Page_Settings { public static function get_section($key) {
-    if ($key === 'quienes') { return ['content'=>$GLOBALS['quienes'] ?? '<p>Texto institucional editable.</p>']; }
-    return $GLOBALS['hero_settings'] ?? [];
-} }
+class Flacso_Main_Page_Settings {
+    // Réplica del valor predeterminado real del plugin (sin etiquetas <p>), que get_section() fusiona con lo guardado.
+    const DEFAULT_QUIENES = '<strong>FLACSO Uruguay</strong> es la sede uruguaya de la <strong>Facultad Latinoamericana de Ciencias Sociales</strong>, una de las principales redes académicas de América Latina y el Caribe. Contribuye al desarrollo de la región mediante formación, investigación crítica y transferencia de conocimiento.';
+    const DEFAULT_HERO_IMAGE = 'https://example.test/plugin-default.jpg';
+    public static function default_hero_image(): string { return self::DEFAULT_HERO_IMAGE; }
+    public static function get_section($key) {
+        if ($key === 'quienes') { return ['content'=>$GLOBALS['quienes'] ?? self::DEFAULT_QUIENES]; }
+        return $GLOBALS['hero_settings'] ?? ['background_image'=>self::DEFAULT_HERO_IMAGE];
+    }
+}
 class Flacso_Home_Content {
     public static function defaults(): array { return [
         'hero'=>['eyebrow'=>'PROGRAMA URUGUAY','title_lead'=>'Formación que conecta,','title_em'=>'conocimiento que transforma.','intro'=>'Formación, investigación y cooperación académica con perspectiva latinoamericana.','cta_label'=>'Explorar oferta académica','cta_url'=>'/formacion/'],
         'campaign'=>['enabled'=>true,'label'=>'INSCRIPCIONES 2027','title'=>'Tu próximo paso empieza acá.','text'=>'Explorá las propuestas con inscripciones abiertas.','cta_label'=>'Conocer la oferta','cta_url'=>'/formacion/'],
-        'research'=>['title_lead'=>'Pensar la región.','title_em'=>'Producir conocimiento.','intro'=>'Conocé los proyectos, centros y publicaciones de FLACSO Uruguay.','link_label'=>'Ver investigaciones','link_url'=>'/institucional/investigaciones/','links'=>[
+        'research'=>['title_lead'=>'Pensar la región.','title_em'=>'Producir conocimiento.','intro'=>'Conocé los proyectos, centros y publicaciones de FLACSO Uruguay.','link_label'=>'Explorar investigaciones','link_url'=>'/institucional/investigaciones/','links'=>[
             ['label'=>'Proyectos de investigación','url'=>'/institucional/investigaciones/'],
             ['label'=>'Archivo Histórico IIN–FLACSO','url'=>'https://www.archivoiinflacso.uy/'],
             ['label'=>'Libros y publicaciones','url'=>'/categoria/publicaciones/libros/'],
@@ -60,11 +70,11 @@ check($data['hero']['eyebrow'] === 'PROGRAMA URUGUAY' && $data['hero']['cta']['u
 check($data['hero']['image'] === 'https://example.test/wp-content/themes/kadence-child-flacso/assets/img/home-hero.jpg', 'sin imagen configurada usa la fotografía por defecto');
 check($data['hero']['image_alt'] === 'Personas adultas participando en una instancia de intercambio académico', 'alt descriptivo de la fotografía por defecto');
 check(count($data['cards']) === 5 && array_keys($data['cards']) === ['maestrias','especializaciones','diplomados','diplomas','seminarios'], 'cinco niveles en orden');
-check(isset($data['cards']['maestrias']['title'], $data['cards']['maestrias']['url'], $data['cards']['maestrias']['open']), 'tarjeta con title, url y open');
+check(isset($data['cards']['maestrias']['title'], $data['cards']['maestrias']['url']) && !array_key_exists('open', $data['cards']['maestrias']), 'tarjeta con title y url, sin conteo de inscripciones');
 check($data['campaign'] !== null && $data['campaign']['cta']['label'] === 'Conocer la oferta', 'campaña por defecto activa');
 check($data['event'] === null, 'sin eventos, event es null');
 check($data['research']['title_lead'] === 'Pensar la región.' && count($data['research']['links']) === 3, 'investigación desde el contenido editable');
-check(strpos($data['institution']['content'], 'Texto institucional editable.') !== false, 'contenido institucional del plugin');
+check(strpos($data['institution']['content'], 'sede uruguaya') !== false, 'contenido institucional del plugin');
 check(count($data['featured_news']) === 1 && count($data['recent_news']) === 4, 'sin fijadas: 1 destacada y 4 recientes');
 check((int) $data['featured_news'][0]->ID === 101, 'la destacada es la primera reciente');
 
@@ -106,6 +116,9 @@ unset($GLOBALS['campaign']);
 $GLOBALS['hero_settings'] = ['background_image'=>'https://example.test/ajustes.jpg'];
 $s = flacso_home_get_data()['hero'];
 check($s['image'] === 'https://example.test/ajustes.jpg' && $s['image_alt'] !== '', 'imagen de ajustes antes que la predeterminada');
+$GLOBALS['hero_settings'] = ['background_image'=>Flacso_Main_Page_Settings::DEFAULT_HERO_IMAGE];
+$d = flacso_home_get_data()['hero'];
+check($d['image'] === 'https://example.test/wp-content/themes/kadence-child-flacso/assets/img/home-hero.jpg', 'la imagen predeterminada del plugin no reemplaza la fotografía del tema');
 unset($GLOBALS['hero_settings']);
 
 $GLOBALS['cards'] = [['title'=>'Maestrías','url'=>'#'],['title'=>'Seminarios','url'=>'/formacion/seminarios/']];
@@ -133,6 +146,8 @@ check(substr_count($html, 'class="offer-grid"') === 1 && preg_match_all('#<div c
 foreach (['01', '02', '03'] as $n) { check(strpos($html, '<span>' . $n . '</span>') !== false, "enlace de investigación $n"); }
 check(substr_count($html, 'class="research-links"') === 1 && preg_match('#class="research-links">(.*?)</div>#s', $html, $m) && substr_count($m[1], '<a ') === 3, 'tres enlaces de investigación');
 check(strpos($html, 'Conocer las novedades') === false, 'sin texto retirado');
+check(strpos($html, 'Explorar investigaciones <span') !== false, 'enlace de investigación con la etiqueta del contenido');
+check(strpos($html, '<p><strong>FLACSO Uruguay</strong> es la sede uruguaya') !== false, 'texto institucional sin <p> se envuelve en párrafos');
 foreach (['hero', 'offer-section', 'campaign', 'news-section', 'research-section', 'about-section'] as $cls) { check(strpos($html, 'class="' . $cls) !== false, "sección $cls"); }
 check(strpos($html, 'agenda-section') === false, 'agenda oculta sin eventos');
 $blank_attr = 'target="_' . 'blank"';
@@ -142,6 +157,28 @@ $GLOBALS['events'] = [['id'=>301,'link'=>'https://example.test/evento-301','titl
 $with = flacso_home_render();
 check(strpos($with, 'Próximas actividades') !== false && strpos($with, 'Actividad abierta') !== false && strpos($with, '18:00 · Virtual') !== false, 'agenda con un evento');
 unset($GLOBALS['events']);
+
+$GLOBALS['content'] = Flacso_Home_Content::defaults();
+$GLOBALS['content']['research']['link_label'] = 'Etiqueta propia';
+check(strpos(flacso_home_render(), 'Etiqueta propia <span') !== false, 'la etiqueta editada del enlace se imprime');
+unset($GLOBALS['content']);
+
+$GLOBALS['events'] = [['id'=>301,'title'=>'Sin enlace','day'=>'1','month'=>'Mayo']]; // id 301: sin miniatura en el stub
+$GLOBALS['thumb_for'] = 301;
+$nolink = flacso_home_render();
+check(strpos($nolink, 'Sin enlace') !== false && strpos($nolink, 'href=""') === false, 'evento sin enlace no genera href vacío');
+unset($GLOBALS['events'], $GLOBALS['thumb_for']);
+
+$GLOBALS['campaign_raw'] = true;
+$GLOBALS['content'] = Flacso_Home_Content::defaults();
+$GLOBALS['content']['campaign'] = ['enabled'=>true, 'cta_label'=>'', 'cta_url'=>''];
+$partial = flacso_home_render();
+check(strpos($partial, 'campaign-grid') !== false, 'campaña con claves faltantes se imprime sin avisos');
+unset($GLOBALS['content'], $GLOBALS['campaign_raw']);
+
+$css = file_get_contents($root . '/assets/css/front-page.css');
+check(strpos($css, '.flacso-home .featured-news .feature:only-child') !== false, 'una sola noticia destacada ocupa todo el ancho');
+check(preg_match('#\.flacso-home \.container\{[^}]*padding-inline:0#', $css) === 1, 'el contenedor no depende del padding de Bootstrap');
 
 $GLOBALS['content'] = Flacso_Home_Content::defaults();
 $GLOBALS['content']['campaign']['enabled'] = false;

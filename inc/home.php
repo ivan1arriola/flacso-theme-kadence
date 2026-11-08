@@ -19,7 +19,7 @@ function flacso_home_default_content(): array {
     return [
         'hero' => ['eyebrow' => 'PROGRAMA URUGUAY', 'title_lead' => 'Formación que conecta,', 'title_em' => 'conocimiento que transforma.', 'intro' => 'Formación, investigación y cooperación académica con perspectiva latinoamericana.', 'cta_label' => 'Explorar oferta académica', 'cta_url' => home_url('/formacion/')],
         'campaign' => ['enabled' => true, 'label' => 'INSCRIPCIONES 2027', 'title' => 'Tu próximo paso empieza acá.', 'text' => 'Explorá las propuestas con inscripciones abiertas.', 'cta_label' => 'Conocer la oferta', 'cta_url' => home_url('/formacion/')],
-        'research' => ['title_lead' => 'Pensar la región.', 'title_em' => 'Producir conocimiento.', 'intro' => 'Conocé los proyectos, centros y publicaciones de FLACSO Uruguay.', 'link_label' => 'Ver investigaciones', 'link_url' => home_url('/institucional/investigaciones/'), 'links' => [
+        'research' => ['title_lead' => 'Pensar la región.', 'title_em' => 'Producir conocimiento.', 'intro' => 'Conocé los proyectos, centros y publicaciones de FLACSO Uruguay.', 'link_label' => 'Explorar investigaciones', 'link_url' => home_url('/institucional/investigaciones/'), 'links' => [
             ['label' => 'Proyectos de investigación', 'url' => home_url('/institucional/investigaciones/')],
             ['label' => 'Archivo Histórico IIN–FLACSO', 'url' => 'https://www.archivoiinflacso.uy/'],
             ['label' => 'Libros y publicaciones', 'url' => home_url('/categoria/publicaciones/libros/')],
@@ -57,8 +57,11 @@ function flacso_home_get_data(): array {
     $hero_image = $image_id ? (string) wp_get_attachment_image_url($image_id, 'full') : '';
     if (!$hero_image && class_exists('Flacso_Main_Page_Settings')) {
         $hero_settings = Flacso_Main_Page_Settings::get_section('hero');
-        if (is_array($hero_settings) && !empty($hero_settings['background_image'])) {
-            $hero_image = esc_url_raw((string) $hero_settings['background_image']);
+        $configured = is_array($hero_settings) ? trim((string) ($hero_settings['background_image'] ?? '')) : '';
+        // La foto predeterminada del plugin no cuenta como elección editorial: se usa la de la maqueta.
+        $plugin_default = method_exists('Flacso_Main_Page_Settings', 'default_hero_image') ? trim((string) Flacso_Main_Page_Settings::default_hero_image()) : '';
+        if ($configured !== '' && $configured !== $plugin_default) {
+            $hero_image = esc_url_raw($configured);
         }
     }
     if (!$hero_image) {
@@ -91,23 +94,6 @@ function flacso_home_get_data(): array {
             }
         }
     }
-    // Propuestas con inscripción abierta por tipo, con el mismo criterio del catálogo de Formación.
-    $open_counts = array_fill_keys(array_keys($defaults), 0);
-    if (function_exists('flacso_theme_get_offer_context')) {
-        $type_slugs = ['maestria' => 'maestrias', 'especializacion' => 'especializaciones', 'diplomado' => 'diplomados', 'diploma' => 'diplomas'];
-        foreach (get_posts(['post_type' => 'oferta-academica', 'post_status' => 'publish', 'posts_per_page' => -1, 'fields' => 'ids']) as $offer_id) {
-            $context = flacso_theme_get_offer_context((int) $offer_id);
-            $slug = $type_slugs[(string) ($context['type'] ?? 'maestria') ?: 'maestria'] ?? '';
-            if ($slug !== '' && !empty($context['registration']['is_open'])) { $open_counts[$slug]++; }
-        }
-    }
-    if (function_exists('flacso_theme_get_seminars_catalog')) {
-        foreach (flacso_theme_get_seminars_catalog() as $seminar) {
-            if (!empty($seminar['registration']['is_open'])) { $open_counts['seminarios']++; }
-        }
-    }
-    foreach ($cards as $slug => $card) { $cards[$slug]['open'] = $open_counts[$slug] ?? 0; }
-
     if (!function_exists('flacso_section_eventos_get_items')) {
         if (class_exists('Flacso_Main_Page_Loader')) {
             Flacso_Main_Page_Loader::load_components();

@@ -20,4 +20,5 @@ check($data['hero']['intro'] !== '' && $data['hero']['cta']['label'] === 'Explor
 check($data['campaign'] !== null && $data['campaign']['title'] === 'Tu próximo paso empieza acá.' && $data['campaign']['cta']['url'] !== '', 'campaña por defecto activa');
 check(count($data['research']['links']) === 3 && $data['research']['title_lead'] === 'Pensar la región.' && $data['research']['link']['url'] !== '', 'investigación por defecto con tres enlaces');
 check($data['research']['links'][1]['url'] === 'https://www.archivoiinflacso.uy/', 'enlace externo intacto');
+check($data['research']['link']['label'] === 'Explorar investigaciones', 'etiqueta por defecto del enlace de investigación');
 echo "Portada: respaldo sin plugin correcto.\n";
