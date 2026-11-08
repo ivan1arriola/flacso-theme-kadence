@@ -12,8 +12,23 @@ function flacso_home_default_institution_content(): string {
         . '<p><strong>FLACSO Uruguay</strong> ofrece <strong>programas de posgrado</strong> en diversas áreas de las <strong>ciencias sociales</strong> y desarrolla <strong>proyectos de investigación</strong> en temas como <strong>género</strong>, <strong>política pública</strong>, <strong>medio ambiente</strong>, <strong>desarrollo humano</strong> y <strong>cultura</strong>, con un enfoque <strong>interdisciplinario</strong> y un compromiso con la <strong>transformación social</strong>.</p>';
 }
 
+/**
+ * Respaldo si el plugin está desactivado: replica Flacso_Home_Content::defaults().
+ */
+function flacso_home_default_content(): array {
+    return [
+        'hero' => ['eyebrow' => 'PROGRAMA URUGUAY', 'title_lead' => 'Formación que conecta,', 'title_em' => 'conocimiento que transforma.', 'intro' => 'Formación, investigación y cooperación académica con perspectiva latinoamericana.', 'cta_label' => 'Explorar oferta académica', 'cta_url' => home_url('/formacion/')],
+        'campaign' => ['enabled' => true, 'label' => 'INSCRIPCIONES 2027', 'title' => 'Tu próximo paso empieza acá.', 'text' => 'Explorá las propuestas con inscripciones abiertas.', 'cta_label' => 'Conocer la oferta', 'cta_url' => home_url('/formacion/')],
+        'research' => ['title_lead' => 'Pensar la región.', 'title_em' => 'Producir conocimiento.', 'intro' => 'Conocé los proyectos, centros y publicaciones de FLACSO Uruguay.', 'link_label' => 'Ver investigaciones', 'link_url' => home_url('/institucional/investigaciones/'), 'links' => [
+            ['label' => 'Proyectos de investigación', 'url' => home_url('/institucional/investigaciones/')],
+            ['label' => 'Archivo Histórico IIN–FLACSO', 'url' => 'https://www.archivoiinflacso.uy/'],
+            ['label' => 'Libros y publicaciones', 'url' => home_url('/categoria/publicaciones/libros/')],
+        ]],
+    ];
+}
+
 function flacso_home_get_data(): array {
-    $content = class_exists('Flacso_Home_Content') ? Flacso_Home_Content::get() : [];
+    $content = class_exists('Flacso_Home_Content') ? Flacso_Home_Content::get() : flacso_home_default_content();
     $hero_text = is_array($content['hero'] ?? null) ? $content['hero'] : [];
     $campaign_text = is_array($content['campaign'] ?? null) ? $content['campaign'] : [];
     $research_text = is_array($content['research'] ?? null) ? $content['research'] : [];
