@@ -13,7 +13,7 @@ El tema hijo contiene presentación, plantillas y compatibilidad con Kadence. Lo
 - `inc/contact.php`: opciones del personalizador, datos de contacto y ruta virtual `/contactos/`.
 - `inc/academic-public-model.php`: adaptador de sólo lectura al modelo académico del plugin.
 - `inc/academic-team-context.php`: adaptación de equipos académicos para la presentación.
-- `inc/home-v2.php`: componentes y View Models de la portada renovada.
+- `inc/home.php`: datos, View Models y render de la portada.
 - `inc/open-graph.php`: metadatos Open Graph y compatibilidad con plugins SEO.
 
 Las plantillas que WordPress detecta por nombre permanecen en la raíz. Las secciones reutilizables se colocan en `template-parts/<dominio>/` y reciben sus datos por `context` de `get_template_part()`.
