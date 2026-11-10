@@ -602,7 +602,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                     <div class="cohort__label"><?php esc_html_e('Fecha de inicio', 'flacso-uruguay'); ?></div>
                                                     <div class="cohort__value"><?php echo esc_html($cohorte_inicio_fecha); ?></div>
                                                 </div>
-                                                <div class="cohort__row">
+                                                <div class="cohort__row<?php echo mb_strlen($cohorte_modalidad_titulo, 'UTF-8') > 16 ? ' cohort__row--wide' : ''; ?>">
                                                     <div class="cohort__label"><?php esc_html_e('Modalidad', 'flacso-uruguay'); ?></div>
                                                     <div class="cohort__value"><?php echo esc_html($cohorte_modalidad_titulo); ?></div>
                                                 </div>
@@ -619,9 +619,9 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                     <div class="cohort__row"><div class="cohort__label"><?php esc_html_e('Horas de trabajo académico', 'flacso-uruguay'); ?></div><div class="cohort__value"><?php echo esc_html($oferta_horas); ?></div></div>
                                                 <?php endif; ?>
                                                 <?php if ($cohorte_modalidad_desc !== '') : ?>
-                                                    <div class="cohort__row" style="grid-column: 1 / -1; padding-left: 0; border-left: 0;">
+                                                    <div class="cohort__row cohort__row--full">
                                                         <div class="cohort__label"><?php esc_html_e('Cursada y encuentros', 'flacso-uruguay'); ?></div>
-                                                        <div class="cohort__value" style="font-weight: normal; font-size: 0.95rem;">
+                                                        <div class="cohort__value cohort__value--prose">
                                                             <?php echo wp_kses_post($cohorte_modalidad_desc); ?>
                                                         </div>
                                                     </div>
@@ -631,7 +631,7 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                             <?php if ($mostrar_instancias_presenciales || $calendario_doc_url !== '' || $malla_doc_url !== '') : ?>
                                                 <div class="cohort__note">
                                                     <?php if ($mostrar_instancias_presenciales) : ?>
-                                                        <p class="mb-1" style="color: #b45309; font-weight: 700;">
+                                                        <p class="cohort__note-warning">
                                                             <i class="bi bi-geo-alt-fill me-1" aria-hidden="true"></i>
                                                             <strong><?php esc_html_e('Incluye instancias exclusivamente presenciales.', 'flacso-uruguay'); ?></strong>
                                                         </p>
