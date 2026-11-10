@@ -8121,8 +8121,8 @@
     letter-spacing: inherit !important;
 }
 
-/* Orientaciones: bloques debajo del hero */
-.flacso-oferta-responsive .flacso-academic-orientations {
+/* Menciones: bloques debajo del hero */
+.flacso-oferta-responsive .flacso-academic-menciones {
     width: 100%;
     margin: 0;
     padding: clamp(18px, 3vw, 28px) clamp(18px, 4vw, 56px);
@@ -8131,13 +8131,13 @@
     color: #1b3b64;
 }
 
-.flacso-oferta-responsive .flacso-academic-orientations__inner {
+.flacso-oferta-responsive .flacso-academic-menciones__inner {
     max-width: 1260px;
     min-width: 0;
     margin: 0 auto;
 }
 
-.flacso-oferta-responsive .flacso-academic-orientations__title {
+.flacso-oferta-responsive .flacso-academic-menciones__title {
     margin: 0 0 12px;
     font-size: .7rem;
     font-weight: 850;
@@ -8147,7 +8147,7 @@
     color: #547092;
 }
 
-.flacso-oferta-responsive .flacso-academic-orientations__list {
+.flacso-oferta-responsive .flacso-academic-menciones__list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
     gap: 12px;
@@ -8156,7 +8156,7 @@
     list-style: none !important;
 }
 
-.flacso-oferta-responsive .flacso-academic-orientations__item {
+.flacso-oferta-responsive .flacso-academic-menciones__item {
     display: flex;
     align-items: center;
     min-width: 0;
