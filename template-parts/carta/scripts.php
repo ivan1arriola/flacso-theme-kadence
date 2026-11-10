@@ -142,8 +142,53 @@ if (!defined('ABSPATH')) {
             content_name: <?php echo wp_json_encode((string) $titulo); ?>,
             content_category: 'oferta_academica',
             content_ids: ['oferta-' + <?php echo wp_json_encode((string) $post_id); ?>],
-            flacso_stage: 'carta_informacion'
+            flacso_stage: 'carta_informacion',
+            flacso_offer_type: (location.pathname.split('/')[2] || '')
         });
     } catch (e) {}
+})();
+</script>
+
+<script>
+(function() {
+    // Carta: vistas y clics de precios, calendario y malla curricular.
+    if (typeof window.flacsoMetaTrackCustom !== 'function') return;
+    var base = {
+        content_name: <?php echo wp_json_encode((string) $titulo); ?>,
+        content_category: 'oferta_academica',
+        content_ids: ['oferta-' + <?php echo wp_json_encode((string) $post_id); ?>],
+        flacso_offer_type: (location.pathname.split('/')[2] || ''),
+        flacso_stage: 'carta_seccion_visible'
+    };
+    function fire(name, extra) {
+        try { window.flacsoMetaTrackCustom(name, Object.assign({}, base, extra || {})); } catch (e) {}
+    }
+    function watch(selector, names) {
+        var el = document.querySelector(selector);
+        if (!el) return;
+        function once() { names.forEach(function(n) { fire(n); }); }
+        if (!('IntersectionObserver' in window)) { once(); return; }
+        var io = new IntersectionObserver(function(entries) {
+            if (entries.some(function(e) { return e.isIntersecting; })) { io.disconnect(); once(); }
+        }, { threshold: 0.35 });
+        io.observe(el);
+    }
+    watch('.fc-pricing-section', ['PreciosSectionView']);
+    var docs = document.querySelector('.fc-documents-section');
+    if (docs) {
+        var t = (docs.querySelector('.fc-section-title') || {}).textContent || '';
+        var names = [];
+        if (/calendario/i.test(t) || /documentos/i.test(t)) names.push('CalendarioAcademicoSectionView');
+        if (/malla|documentos/i.test(t)) names.push('MallaCurricularSectionView');
+        watch('.fc-documents-section', names);
+        docs.addEventListener('click', function(ev) {
+            var a = ev.target.closest('a.fc-card-button');
+            if (!a) return;
+            var label = (a.textContent || '').toLowerCase();
+            var extra = { flacso_stage: 'document_click', flacso_doc_url: a.href || '' };
+            if (label.indexOf('calendario') !== -1) fire('CalendarioAcademicoClick', extra);
+            if (label.indexOf('malla') !== -1) fire('MallaCurricularClick', extra);
+        }, true);
+    }
 })();
 </script>

@@ -258,7 +258,8 @@
             content_name: document.querySelector('.flacso-oferta-responsive').dataset.offerTitle,
             content_category: 'oferta_academica',
             content_ids: ['oferta-' + document.querySelector('.flacso-oferta-responsive').dataset.offerId],
-            flacso_stage: 'pagina_oferta'
+            flacso_stage: 'pagina_oferta',
+            flacso_offer_type: (location.pathname.split('/')[2] || '')
         });
     } catch (e) {}
 })();
@@ -282,7 +283,8 @@ document.addEventListener('click', function(event) {
     var baseParams = {
         content_name: ofertaTitle,
         content_category: 'oferta_academica',
-        content_ids: ['oferta-' + ofertaId]
+        content_ids: ['oferta-' + ofertaId],
+        flacso_offer_type: (location.pathname.split('/')[2] || '')
     };
 
     function trackDocumentEvent(eventName, extraParams) {
@@ -311,6 +313,15 @@ document.addEventListener('click', function(event) {
                 flacso_stage: 'document_section_visible',
                 flacso_doc_layout: layout
             });
+
+            var also = section.getAttribute('data-flacso-meta-doc-also') || '';
+            if (also && !trackedSections[also]) {
+                trackedSections[also] = true;
+                trackDocumentEvent(also, {
+                    flacso_stage: 'document_section_visible',
+                    flacso_doc_layout: layout
+                });
+            }
         }
 
         if ('IntersectionObserver' in window) {
@@ -346,6 +357,13 @@ document.addEventListener('click', function(event) {
 
         if (link.classList.contains('flacso-meta-doc-link--calendario')) {
             eventName = 'CalendarioAcademicoClick';
+        }
+        if (link.classList.contains('flacso-meta-doc-link--malla')) {
+            trackDocumentEvent('MallaCurricularClick', {
+                flacso_stage: 'document_click',
+                flacso_doc_layout: layout,
+                flacso_doc_url: link.href || ''
+            });
         }
 
         trackDocumentEvent(eventName, {

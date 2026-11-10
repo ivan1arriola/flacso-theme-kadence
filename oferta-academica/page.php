@@ -636,14 +636,14 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                     <?php endif; ?>
                                                     <?php if ($calendario_y_malla_compartidos) : ?>
                                                         <p class="mb-0 mt-2">
-                                                            <a href="<?php echo esc_url($calendario_doc_url); ?>" target="_blank" rel="noopener noreferrer" class="flacso-meta-doc-link flacso-meta-doc-link--calendario flacso-meta-doc-link--malla" data-flacso-meta-doc-section="CalendarioAcademicoSectionView" style="color:var(--azul);font-weight:750;text-decoration:none;">
+                                                            <a href="<?php echo esc_url($calendario_doc_url); ?>" target="_blank" rel="noopener noreferrer" class="flacso-meta-doc-link flacso-meta-doc-link--calendario flacso-meta-doc-link--malla" data-flacso-meta-doc-section="CalendarioAcademicoSectionView" data-flacso-meta-doc-also="MallaCurricularSectionView" style="color:var(--azul);font-weight:750;text-decoration:none;">
                                                                 <i class="bi bi-file-earmark-pdf text-danger me-1" aria-hidden="true"></i>
                                                                 <?php esc_html_e('Descargar calendario y malla académica (PDF)', 'flacso-uruguay'); ?>
                                                             </a>
                                                         </p>
                                                     <?php else : ?>
                                                         <?php if ($malla_doc_url !== '') : ?>
-                                                            <p class="mb-0 mt-2"><a href="<?php echo esc_url($malla_doc_url); ?>" target="_blank" rel="noopener noreferrer" class="flacso-meta-doc-link flacso-meta-doc-link--malla" style="color:var(--azul);font-weight:750;text-decoration:none;"><i class="bi bi-file-earmark-pdf text-danger me-1" aria-hidden="true"></i><?php esc_html_e('Descargar malla curricular', 'flacso-uruguay'); ?></a></p>
+                                                            <p class="mb-0 mt-2"><a href="<?php echo esc_url($malla_doc_url); ?>" target="_blank" rel="noopener noreferrer" class="flacso-meta-doc-link flacso-meta-doc-link--malla" data-flacso-meta-doc-section="MallaCurricularSectionView" style="color:var(--azul);font-weight:750;text-decoration:none;"><i class="bi bi-file-earmark-pdf text-danger me-1" aria-hidden="true"></i><?php esc_html_e('Descargar malla curricular', 'flacso-uruguay'); ?></a></p>
                                                         <?php endif; ?>
                                                         <?php if ($calendario_doc_url !== '') : ?>
                                                             <p class="mb-0 mt-2">
