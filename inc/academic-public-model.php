@@ -1012,5 +1012,13 @@ function flacso_theme_format_modality($modality): string {
     if ($modality === '') {
         return '';
     }
+    // Valores del selector de cohorte que no se resuelven solo capitalizando.
+    $etiquetas = [
+        'virtual-sincronica' => __('Virtual con encuentros sincrónicos', 'flacso-uruguay'),
+        'hibrida'            => __('Híbrida', 'flacso-uruguay'),
+    ];
+    if (isset($etiquetas[$modality])) {
+        return $etiquetas[$modality];
+    }
     return mb_strtoupper(mb_substr($modality, 0, 1, 'UTF-8'), 'UTF-8') . mb_substr($modality, 1, null, 'UTF-8');
 }

@@ -534,6 +534,8 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                         </div>
                     </section>
 
+                    <?php get_template_part('template-parts/oferta/orientaciones', null, ['orientaciones' => $academic['orientaciones'] ?? []]); ?>
+
                     <?php if ($reconocido_mec || $reconocimiento_red_flacso) : ?>
                         <!-- Reconocimientos siempre visibles; no son títulos ni convenios. El apostillado va con el título y la certificación. -->
                         <section class="flacso-academic-trust-strip" aria-label="<?php esc_attr_e('Reconocimientos', 'flacso-uruguay'); ?>">
