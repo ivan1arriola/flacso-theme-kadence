@@ -33,7 +33,14 @@ while (have_posts()) :
     $form_url   = esc_url((string) get_post_meta($event_id, '_evento_formulario_url', true));
     $last_day   = $end_date !== '' ? $end_date : $start_date;
     $is_past    = $last_day !== '' && $last_day < current_time('Y-m-d');
-    $can_signup = $form_url !== '' && !$is_past;
+    $estado     = function_exists('flacso_eventos_get_estado') ? flacso_eventos_get_estado($event_id) : 'programado';
+    $can_signup = $form_url !== '' && !$is_past && $estado !== 'cancelado';
+    $modalidad  = (string) get_post_meta($event_id, '_charla_modalidad', true);
+    $modos      = ['virtual' => __('Virtual', 'kadence-child-flacso'), 'presencial' => __('Presencial', 'kadence-child-flacso'), 'hibrida' => __('Híbrida', 'kadence-child-flacso')];
+    $lugar      = trim(get_post_meta($event_id, '_charla_lugar_nombre', true) . ' ' . get_post_meta($event_id, '_charla_direccion', true));
+    $gratuito   = !empty(get_post_meta($event_id, '_evento_gratuito', true));
+    $programa   = (int) get_post_meta($event_id, '_evento_programa_id', true);
+    $has_ics    = function_exists('flacso_eventos_ics_url') && get_post_meta($event_id, '_charla_inicio', true) !== '';
     $short_date = $start_date !== ''
         ? date_i18n('j \d\e F', strtotime($start_date)) . ($start_time !== '' ? ' · ' . $start_time : '')
         : '';
@@ -57,6 +64,16 @@ while (have_posts()) :
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M8 2.5v4M16 2.5v4M3 9.5h18"/></svg>
                         <?php echo esc_html($event_date); ?>
                     </div>
+                    <?php if ($estado !== 'programado') : ?>
+                        <p class="flacso-evento-status flacso-evento-status--<?php echo esc_attr($estado); ?>"><?php echo esc_html($estado === 'cancelado' ? __('Evento cancelado', 'kadence-child-flacso') : __('Evento reprogramado', 'kadence-child-flacso')); ?></p>
+                    <?php endif; ?>
+                    <ul class="flacso-evento-meta">
+                        <?php if (isset($modos[$modalidad])) : ?><li><?php echo esc_html($modos[$modalidad]); ?></li><?php endif; ?>
+                        <?php if ($lugar !== '' && $modalidad !== 'virtual') : ?><li><?php echo esc_html($lugar); ?></li><?php endif; ?>
+                        <?php if ($gratuito) : ?><li><?php esc_html_e('Gratuito', 'kadence-child-flacso'); ?></li><?php endif; ?>
+                        <?php if ($programa > 0) : ?><li><a href="<?php echo esc_url(get_permalink($programa)); ?>"><?php echo esc_html(get_the_title($programa)); ?></a></li><?php endif; ?>
+                        <?php if ($has_ics) : ?><li><a href="<?php echo esc_url(flacso_eventos_ics_url($event_id)); ?>"><?php esc_html_e('Agregar al calendario', 'kadence-child-flacso'); ?></a></li><?php endif; ?>
+                    </ul>
                     <?php if ($can_signup) : ?>
                         <a id="flacso-evento-hero-cta" class="flacso-evento-cta__button flacso-evento-hero-cta" href="<?php echo $form_url; ?>" rel="noopener"><?php esc_html_e('Inscribirme', 'kadence-child-flacso'); ?></a>
                     <?php elseif ($is_past) : ?>
