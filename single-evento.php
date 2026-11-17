@@ -28,9 +28,18 @@ while (have_posts()) :
     if ($end_date !== '' && $end_date !== $start_date) {
         $event_date .= ' — ' . date_i18n('j \d\e F \d\e Y', strtotime($end_date));
     }
+
+    // La inscripción la gestiona Formularios FLACSO; el evento solo enlaza.
+    $form_url   = esc_url((string) get_post_meta($event_id, '_evento_formulario_url', true));
+    $last_day   = $end_date !== '' ? $end_date : $start_date;
+    $is_past    = $last_day !== '' && $last_day < current_time('Y-m-d');
+    $can_signup = $form_url !== '' && !$is_past;
+    $short_date = $start_date !== ''
+        ? date_i18n('j \d\e F', strtotime($start_date)) . ($start_time !== '' ? ' · ' . $start_time : '')
+        : '';
     ?>
 
-    <main class="flacso-single-post flacso-single-evento">
+    <main class="flacso-single-post flacso-single-evento<?php echo $can_signup ? ' has-signup-bar' : ''; ?>">
         <div class="flacso-single-container">
             <nav class="flacso-breadcrumb" aria-label="<?php esc_attr_e('Navegación', 'kadence-child-flacso'); ?>">
                 <a href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e('Inicio', 'kadence-child-flacso'); ?></a>
@@ -44,7 +53,15 @@ while (have_posts()) :
                 <div class="flacso-hero-body">
                     <div class="flacso-post-kicker"><?php esc_html_e('Evento', 'kadence-child-flacso'); ?></div>
                     <h1 class="flacso-post-title"><?php the_title(); ?></h1>
-                    <div class="flacso-post-date"><?php echo esc_html($event_date); ?></div>
+                    <div class="flacso-post-date">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M8 2.5v4M16 2.5v4M3 9.5h18"/></svg>
+                        <?php echo esc_html($event_date); ?>
+                    </div>
+                    <?php if ($can_signup) : ?>
+                        <a id="flacso-evento-hero-cta" class="flacso-evento-cta__button flacso-evento-hero-cta" href="<?php echo $form_url; ?>" rel="noopener"><?php esc_html_e('Inscribirme', 'kadence-child-flacso'); ?></a>
+                    <?php elseif ($is_past) : ?>
+                        <p class="flacso-evento-finished"><?php esc_html_e('Este evento ya finalizó.', 'kadence-child-flacso'); ?></p>
+                    <?php endif; ?>
                 </div>
 
                 <?php if (has_post_thumbnail()) : ?>
@@ -64,17 +81,9 @@ while (have_posts()) :
                     <?php
                     the_content();
 
-                    // La inscripción la gestiona Formularios FLACSO; el evento solo enlaza.
-                    $form_url = esc_url((string) get_post_meta($event_id, '_evento_formulario_url', true));
-                    if ($form_url !== '') :
-                        ?>
-                        <p class="flacso-evento-cta">
-                            <a class="flacso-evento-cta__button" href="<?php echo $form_url; ?>" rel="noopener">
-                                <?php esc_html_e('Inscribirme', 'kadence-child-flacso'); ?>
-                            </a>
-                        </p>
-                        <?php
-                    endif;
+                    get_template_part('template-parts/evento/expositores', null, [
+                        'ids' => function_exists('flacso_eventos_get_speaker_ids') ? flacso_eventos_get_speaker_ids($event_id) : [],
+                    ]);
 
                     wp_link_pages([
                         'before' => '<div class="page-links">' . esc_html__('Páginas:', 'kadence-child-flacso'),
@@ -138,6 +147,31 @@ while (have_posts()) :
             </div>
         </div>
     </main>
+
+    <?php if ($can_signup) : ?>
+        <div class="flacso-evento-signup" id="flacso-evento-signup" hidden>
+            <p class="flacso-evento-signup__info">
+                <strong><?php the_title(); ?></strong>
+                <?php if ($short_date !== '') : ?><span><?php echo esc_html($short_date); ?></span><?php endif; ?>
+            </p>
+            <a class="flacso-evento-cta__button" href="<?php echo $form_url; ?>" rel="noopener"><?php esc_html_e('Inscribirme', 'kadence-child-flacso'); ?></a>
+        </div>
+        <script>
+        (function () {
+            var bar = document.getElementById('flacso-evento-signup');
+            var hero = document.getElementById('flacso-evento-hero-cta');
+            if (!bar) return;
+            var narrow = window.matchMedia('(max-width: 860px)');
+            // En escritorio el botón flota cuando el del hero sale de pantalla; en móvil la barra siempre se ve.
+            var heroVisible = true;
+            function update() { bar.hidden = !(narrow.matches || !heroVisible); }
+            if (!hero || !('IntersectionObserver' in window)) { heroVisible = false; }
+            else { new IntersectionObserver(function (entries) { heroVisible = entries[0].isIntersecting; update(); }).observe(hero); }
+            narrow.addEventListener('change', update);
+            update();
+        })();
+        </script>
+    <?php endif; ?>
     <?php
 endwhile;
 
