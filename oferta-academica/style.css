@@ -65,12 +65,17 @@
     padding: 0;
 }
 
+.flacso-oferta-responsive {
+    /* Fuente única del ancho de la página: todo bloque a ancho completo usa estas dos variables. */
+    --oa-max: 1180px;
+    --oa-gutter: clamp(24px, 5vw, 40px);
+}
+
 .flacso-oa-container {
     width: 100%;
-    max-width: 1180px;
+    max-width: var(--oa-max);
     margin-inline: auto;
-    padding-left: clamp(24px, 5vw, 40px);
-    padding-right: clamp(24px, 5vw, 40px);
+    padding-inline: var(--oa-gutter);
     box-sizing: border-box;
 }
 
@@ -6811,10 +6816,10 @@
 .flacso-oferta-responsive .flacso-academic-hero__inner {
     position: relative;
     width: 100%;
-    max-width: 1180px;
+    max-width: var(--oa-max);
     min-height: 370px;
     margin: 0 auto;
-    padding-inline: clamp(24px, 5vw, 40px);
+    padding-inline: var(--oa-gutter);
     display: grid;
     grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
     align-items: center;
@@ -7352,9 +7357,9 @@
 }
 .flacso-oferta-responsive .flacso-academic-team__container {
     width: 100%;
-    max-width: 1180px;
+    max-width: var(--oa-max);
     margin: 0 auto;
-    padding-inline: clamp(24px, 5vw, 40px);
+    padding-inline: var(--oa-gutter);
     min-width: 0;
 }
 .flacso-oferta-responsive .flacso-academic-team--coordination.flacso-oa-team-section {
@@ -7706,7 +7711,7 @@
 .flacso-oferta-responsive .flacso-academic-trust-strip {
     width: 100%;
     margin: 0;
-    padding: 15px clamp(18px, 4vw, 56px);
+    padding: 15px 0;
     border-block: 1px solid #e6edf6;
     background: #f9fbfd;
     color: #1b3b64;
@@ -7717,8 +7722,11 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 14px clamp(20px, 3vw, 36px);
-    max-width: 1260px;
+    width: 100%;
+    max-width: var(--oa-max);
     margin: 0 auto;
+    padding-inline: var(--oa-gutter);
+    box-sizing: border-box;
     min-width: 0;
 }
 
@@ -8167,16 +8175,19 @@
 .flacso-oferta-responsive .flacso-academic-menciones {
     width: 100%;
     margin: 0;
-    padding: clamp(18px, 3vw, 28px) clamp(18px, 4vw, 56px);
+    padding: clamp(18px, 3vw, 28px) 0;
     background: #fff;
     border-bottom: 1px solid #e6edf6;
     color: #1b3b64;
 }
 
 .flacso-oferta-responsive .flacso-academic-menciones__inner {
-    max-width: 1260px;
-    min-width: 0;
+    width: 100%;
+    max-width: var(--oa-max);
     margin: 0 auto;
+    padding-inline: var(--oa-gutter);
+    box-sizing: border-box;
+    min-width: 0;
 }
 
 .flacso-oferta-responsive .flacso-academic-menciones__title {
