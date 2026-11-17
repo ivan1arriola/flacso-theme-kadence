@@ -368,3 +368,24 @@ function flacso_child_enqueue_carta_assets() {
 }
 add_action( 'wp_enqueue_scripts', 'flacso_child_enqueue_carta_assets', 42 );
 
+
+/**
+ * Barra de administración: "Editar Cohorte" junto a "Editar Oferta Académica".
+ * Apunta a la cohorte vigente que alimenta la página pública.
+ */
+function flacso_child_admin_bar_edit_cohort( $admin_bar ) {
+    if ( is_admin() || ! is_singular( 'oferta-academica' ) || ! function_exists( 'flacso_theme_get_offer_context' ) ) {
+        return;
+    }
+    $context   = flacso_theme_get_offer_context( (int) get_queried_object_id() );
+    $cohort_id = absint( $context['instance']['id'] ?? 0 );
+    if ( $cohort_id <= 0 || ! current_user_can( 'edit_post', $cohort_id ) ) {
+        return;
+    }
+    $admin_bar->add_node( [
+        'id'    => 'flacso-edit-cohort',
+        'title' => __( 'Editar Cohorte', 'flacso-uruguay' ),
+        'href'  => get_edit_post_link( $cohort_id, 'raw' ),
+    ] );
+}
+add_action( 'admin_bar_menu', 'flacso_child_admin_bar_edit_cohort', 81 );

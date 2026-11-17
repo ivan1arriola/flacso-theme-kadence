@@ -468,6 +468,56 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
     </div>
     <?php
 };
+
+// Coordinación: tarjeta propia, con el CV siempre desplegado (no es un acordeón).
+$render_coordinador = static function ($docente_id, $rol = '') {
+    $doc_post = get_post($docente_id);
+    if (!$doc_post || $doc_post->post_type !== 'docente') {
+        return;
+    }
+    $nombre_completo = function_exists('dp_nombre_completo')
+        ? dp_nombre_completo($docente_id, false)
+        : get_the_title($docente_id);
+    $nombre   = trim((string) get_post_meta($docente_id, 'nombre', true));
+    $apellido = trim((string) get_post_meta($docente_id, 'apellido', true));
+    $titulo_acad = trim((string) get_post_meta($docente_id, 'titulo_academico', true));
+    if ($titulo_acad === '') {
+        $titulo_acad = trim((string) get_post_meta($docente_id, 'cargo', true));
+    }
+    if ($titulo_acad !== '' && stripos($nombre_completo, $titulo_acad) !== false) {
+        $titulo_acad = '';
+    }
+    $cv = trim((string) get_post_meta($docente_id, 'cv', true));
+    $iniciales = ($nombre !== '' || $apellido !== '')
+        ? mb_substr($nombre, 0, 1) . mb_substr($apellido, 0, 1)
+        : mb_substr($nombre_completo, 0, 2);
+    ?>
+    <article class="flacso-coordinator">
+        <header class="flacso-coordinator__head">
+            <span class="flacso-coordinator__avatar" aria-hidden="true">
+                <?php if (has_post_thumbnail($docente_id)) : ?>
+                    <?php echo get_the_post_thumbnail($docente_id, 'medium', ['alt' => '', 'loading' => 'lazy', 'decoding' => 'async']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                <?php else : ?>
+                    <span class="flacso-coordinator__initials"><?php echo esc_html(mb_strtoupper($iniciales ?: 'FL', 'UTF-8')); ?></span>
+                <?php endif; ?>
+            </span>
+            <div class="flacso-coordinator__id">
+                <?php if (trim((string) $rol) !== '') : ?>
+                    <span class="flacso-coordinator__role"><?php echo esc_html($rol); ?></span>
+                <?php endif; ?>
+                <h3 class="flacso-coordinator__name"><?php echo esc_html($nombre_completo); ?></h3>
+                <?php if ($titulo_acad !== '') : ?>
+                    <p class="flacso-coordinator__qualification"><?php echo esc_html($titulo_acad); ?></p>
+                <?php endif; ?>
+            </div>
+        </header>
+        <?php if (trim(wp_strip_all_tags($cv)) !== '') : ?>
+            <div class="flacso-coordinator__bio"><?php echo wp_kses_post(wpautop($cv)); ?></div>
+        <?php endif; ?>
+    </article>
+    <?php
+};
+
 ?>
 
 <div id="inner-wrap" class="wrap kt-clear flacso-oferta-responsive" style="<?php echo esc_attr($offer_style_vars); ?>" data-offer-title="<?php echo esc_attr($title); ?>" data-offer-id="<?php echo esc_attr((string) $post_id); ?>">
@@ -536,8 +586,8 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
 
                     <?php get_template_part('template-parts/oferta/menciones', null, ['menciones' => $academic['menciones'] ?? []]); ?>
 
-                    <?php if ($reconocido_mec || $reconocimiento_red_flacso) : ?>
-                        <!-- Reconocimientos siempre visibles; no son títulos ni convenios. El apostillado va con el título y la certificación. -->
+                    <?php if ($reconocido_mec || $reconocimiento_internacional || $reconocimiento_red_flacso || $convenio_iin_oea) : ?>
+                        <!-- Reconocimientos y convenio siempre visibles, justo bajo el hero. -->
                         <section class="flacso-academic-trust-strip" aria-label="<?php esc_attr_e('Reconocimientos', 'flacso-uruguay'); ?>">
                             <div class="flacso-academic-trust-strip__inner">
                                 <ul class="flacso-academic-trust-strip__list">
@@ -546,7 +596,15 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                             <span class="flacso-academic-trust-strip__icon" aria-hidden="true">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 2.5 2 3.2.2 1 3 2.6 2-.8 3.1.8 3.1-2.6 2-1 3-3.2.2L12 22l-2.5-2-3.2-.2-1-3-2.6-2 .8-3.1-.8-3.1 2.6-2 1-3 3.2-.2z"/><path d="m8.5 12 2.4 2.4L15.8 9.5"/></svg>
                                             </span>
-                                            <span><?php esc_html_e('Reconocimiento oficial MEC', 'flacso-uruguay'); ?></span>
+                                            <span><?php esc_html_e('Programa con Reconocimiento Oficial del Ministerio de Educación y Cultura (MEC)', 'flacso-uruguay'); ?></span>
+                                        </li>
+                                    <?php endif; ?>
+                                    <?php if ($reconocimiento_internacional) : ?>
+                                        <li class="flacso-academic-trust-strip__item">
+                                            <span class="flacso-academic-trust-strip__icon" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-5 5-5 13 0 18M12 3c5 5 5 13 0 18"/></svg>
+                                            </span>
+                                            <span><?php esc_html_e('Apostillado de La Haya', 'flacso-uruguay'); ?></span>
                                         </li>
                                     <?php endif; ?>
                                     <?php if ($reconocimiento_red_flacso) : ?>
@@ -554,7 +612,15 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                             <span class="flacso-academic-trust-strip__icon" aria-hidden="true">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="m7 11 10-5M7 13l10 5"/></svg>
                                             </span>
-                                            <span><?php esc_html_e('Reconocimiento en la red FLACSO', 'flacso-uruguay'); ?></span>
+                                            <span><?php esc_html_e('Título con validez y reconocimiento en la red del Sistema Internacional FLACSO', 'flacso-uruguay'); ?></span>
+                                        </li>
+                                    <?php endif; ?>
+                                    <?php if ($convenio_iin_oea) : ?>
+                                        <li class="flacso-academic-trust-strip__item">
+                                            <span class="flacso-academic-trust-strip__icon" aria-hidden="true">
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5z"/><path d="m8 12 3 3 5-6"/></svg>
+                                            </span>
+                                            <span><?php esc_html_e('Convenio IIN/OEA', 'flacso-uruguay'); ?></span>
                                         </li>
                                     <?php endif; ?>
                                 </ul>
@@ -772,14 +838,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                 </span>
                                             </summary>
                                             <div class="detail-body flacso-academic-accordion__body">
-                                                <?php if ($reconocimiento_internacional) : ?>
-                                                    <p class="flacso-academic-hague-note">
-                                                        <span class="flacso-academic-trust-strip__icon" aria-hidden="true">
-                                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-5 5-5 13 0 18M12 3c5 5 5 13 0 18"/></svg>
-                                                        </span>
-                                                        <span><?php esc_html_e('Apostillado de La Haya', 'flacso-uruguay'); ?></span>
-                                                    </p>
-                                                <?php endif; ?>
                                                 <?php if (!empty(trim(wp_strip_all_tags((string) ($academic['titulos_certificaciones_html'] ?? ''))))) : ?>
                                                     <?php echo wp_kses_post($academic['titulos_certificaciones_html']); ?>
                                                 <?php else : ?>
@@ -790,18 +848,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
 
                                     </div>
                                 </section>
-
-                                <?php if ($convenio_iin_oea) : ?>
-                                    <aside class="flacso-academic-convention" aria-labelledby="flacso-academic-convention-title">
-                                        <span class="flacso-academic-convention__symbol" aria-hidden="true">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5z"/><path d="m8 12 3 3 5-6"/></svg>
-                                        </span>
-                                        <div class="flacso-academic-convention__content">
-                                            <h3 id="flacso-academic-convention-title"><?php esc_html_e('Convenio institucional', 'flacso-uruguay'); ?></h3>
-                                            <p><?php esc_html_e('Convenio con el Instituto Interamericano del Niño, la Niña y Adolescentes (IIN - OEA).', 'flacso-uruguay'); ?></p>
-                                        </div>
-                                    </aside>
-                                <?php endif; ?>
 
                                 <!-- FINAL CTA -->
                                 <?php if ($has_preinscription_cta) : ?>
@@ -843,16 +889,6 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                 </div>
 
                                 <div class="contact-support">
-                                    <div class="contact-support__section">
-                                        <span class="contact-support__eyebrow"><?php esc_html_e('Información útil', 'flacso-uruguay'); ?></span>
-                                        <nav class="contact-support__links" aria-label="<?php esc_attr_e('Enlaces de la oferta académica', 'flacso-uruguay'); ?>">
-                                            <?php if ($show_cohort_section) : ?>
-                                                <a href="#cohorte"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Información de la cohorte', 'flacso-uruguay'); ?></a>
-                                            <?php endif; ?>
-                                            <a href="#titulacion"><i class="bi bi-arrow-down-short"></i> <?php esc_html_e('Requisitos de egreso', 'flacso-uruguay'); ?></a>
-                                        </nav>
-                                    </div>
-
                                     <?php if ($asistente_nombre !== '' || $asistente_correo !== '') : ?>
                                         <div class="contact-support__section contact-support__person">
                                             <span class="contact-support__eyebrow"><?php esc_html_e('Contacto académico', 'flacso-uruguay'); ?></span>
@@ -1015,6 +1051,10 @@ $render_docente_item = static function ($docente_id, $rol = '', $nivel = '3') {
                                                     <?php
                                                     $docente_id = is_array($docente_item) ? (int) ($docente_item['id'] ?? 0) : (int) $docente_item;
                                                     $rol_especifico = is_array($docente_item) ? (string) ($docente_item['rol'] ?? '') : '';
+                                                    if ($team_section['class'] === 'flacso-academic-team--coordination') {
+                                                        $render_coordinador($docente_id, $rol_especifico);
+                                                        continue;
+                                                    }
                                                     $render_docente_item($docente_id, $rol_especifico, $nivel);
                                                     ?>
                                                 <?php endforeach; ?>
