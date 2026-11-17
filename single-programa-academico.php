@@ -14,6 +14,14 @@ while (have_posts()) :
     $presentacion = (string) get_post_meta($prog_id, 'presentacion', true);
     $coordinacion = (array) get_post_meta($prog_id, 'coordinacion', true);
 
+    // ?id=102,103 limita la página a esas ofertas/seminarios (solo los que pertenecen al programa).
+    $ids_filtro = [];
+    if (isset($_GET['id'])) {
+        $raw = is_array($_GET['id']) ? implode(',', array_map('strval', $_GET['id'])) : (string) wp_unslash($_GET['id']);
+        $ids_filtro = array_values(array_unique(array_filter(array_map('absint', preg_split('/[^0-9]+/', $raw)))));
+    }
+    $filtrado = !empty($ids_filtro);
+
     // Consultar Ofertas Académicas del Programa
     $ofertas = get_posts([
         'post_type'      => 'oferta-academica',
@@ -23,6 +31,7 @@ while (have_posts()) :
         'posts_per_page' => -1,
         'orderby'        => 'title',
         'order'          => 'ASC',
+        'post__in'       => $filtrado ? $ids_filtro : [],
     ]);
 
     // Consultar Seminarios del Programa
@@ -34,6 +43,7 @@ while (have_posts()) :
         'posts_per_page' => -1,
         'orderby'        => 'title',
         'order'          => 'ASC',
+        'post__in'       => $filtrado ? $ids_filtro : [],
     ]);
     ?>
 
@@ -47,6 +57,10 @@ while (have_posts()) :
                     <a href="<?php echo esc_url(home_url('/programas/')); ?>"><?php esc_html_e('Programas Académicos', 'flacso-uruguay'); ?></a>
                     <span class="sep">/</span>
                     <span class="current"><?php echo esc_html($titulo); ?></span>
+                    <?php if ($filtrado) : ?>
+                        <span class="sep">/</span>
+                        <a href="<?php echo esc_url(get_permalink($prog_id)); ?>"><?php esc_html_e('Ver todas las propuestas', 'flacso-uruguay'); ?></a>
+                    <?php endif; ?>
                 </nav>
 
                 <div class="programa-hero__content">
@@ -74,7 +88,7 @@ while (have_posts()) :
         <div class="site-container programa-layout">
             <main class="programa-main-content">
                 <!-- Presentación del Programa -->
-                <?php if ($presentacion) : ?>
+                <?php if ($presentacion && !$filtrado) : ?>
                     <section class="programa-section programa-presentacion">
                         <h2 class="section-title">
                             <span class="icon">📖</span> <?php esc_html_e('Presentación del Programa', 'flacso-uruguay'); ?>

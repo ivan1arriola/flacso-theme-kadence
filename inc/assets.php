@@ -302,6 +302,23 @@ function flacso_child_enqueue_articulation_styles() {
 add_action('wp_enqueue_scripts', 'flacso_child_enqueue_articulation_styles', 50);
 
 /**
+ * Estilos de /programas/ (archivo) y /programas/{slug} (single).
+ */
+function flacso_child_enqueue_programa_styles() {
+    if (!is_singular('programa-academico') && !is_post_type_archive('programa-academico')) {
+        return;
+    }
+    $path = 'assets/css/programa-academico.css';
+    wp_enqueue_style(
+        'flacso-programa-academico',
+        get_stylesheet_directory_uri() . '/' . $path,
+        [],
+        flacso_child_asset_version($path)
+    );
+}
+add_action('wp_enqueue_scripts', 'flacso_child_enqueue_programa_styles', 50);
+
+/**
  * Determina si la consulta actual corresponde a una carta de presentación académica.
  */
 function flacso_theme_is_carta(): bool {
