@@ -52,6 +52,13 @@ if (is_string($plugin_root) && $plugin_root !== '') {
         }
     }
 }
+// Este test de integración necesita las definiciones del plugin hermano.
+// En CI del tema solo se descarga este repositorio: no confundir la ausencia
+// de esa dependencia con una regresión de los textos institucionales.
+if (!class_exists('FLACSO_Carta_Settings')) {
+    echo "SKIP carta view model: requiere flacso-uruguay-plugin junto al tema\\n";
+    exit(0);
+}
 require_once __DIR__ . '/../inc/carta-view-model.php';
 
 function carta_view_assert(bool $condition, string $message): void {
