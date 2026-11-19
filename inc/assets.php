@@ -121,7 +121,7 @@ function child_theme_needs_bootstrap() {
     }
 
     // 3. Páginas conocidas por usar formularios o listados
-    if ( is_page( array( 'seminarios', 'contactar-seminario', 'preinscripciones' ) ) ) {
+    if ( is_page( array( 'seminarios', 'preinscripciones' ) ) ) {
         return true;
     }
 
@@ -217,7 +217,6 @@ function flacso_child_enqueue_template_assets() {
         'taxonomy-tipo-oferta-academica.php'  => 'taxonomy-oferta',
         'page-contacto.php'                   => 'page-contacto',
         'page-preguntas-frecuentes.php'       => 'page-faq',
-        'consulta-seminario.php'              => 'consulta-seminario',
         'page-formacion.php'                  => 'formacion-page',
         'formacion-page.php'                  => 'formacion-page',
         'seminarios-listado.php'              => 'seminarios-listado',
@@ -268,14 +267,6 @@ function flacso_child_enqueue_template_assets() {
                 flacso_child_asset_version( $js_path ),
                 true
             );
-        }
-
-        if ( 'consulta-seminario' === $asset ) {
-            wp_enqueue_script( 'jquery' );
-            wp_enqueue_style( 'intl-tel-input-css', 'https://cdn.jsdelivr.net/npm/intl-tel-input@24.2.0/build/css/intlTelInput.css', array(), '24.2.0' );
-            wp_enqueue_style( 'country-select-css', 'https://cdn.jsdelivr.net/npm/country-select-js@2.0.1/build/css/countrySelect.min.css', array(), '2.0.1' );
-            wp_enqueue_script( 'intl-tel-input-js', 'https://cdn.jsdelivr.net/npm/intl-tel-input@24.2.0/build/js/intlTelInput.min.js', array(), '24.2.0', true );
-            wp_enqueue_script( 'country-select-js', 'https://cdn.jsdelivr.net/npm/country-select-js@2.0.1/build/js/countrySelect.min.js', array( 'jquery' ), '2.0.1', true );
         }
 
         break;
