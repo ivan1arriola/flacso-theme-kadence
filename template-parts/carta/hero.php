@@ -107,10 +107,14 @@ if (!defined('ABSPATH')) {
                             </a>
                         <?php endif; ?>
 
-                        <a href="<?php echo $hay_bloques_detallados ? '#fc-overview-title' : '#fc-planificacion'; ?>" class="fc-secondary-button">
-                            <i class="bi bi-info-circle" aria-hidden="true"></i>
-                            <?php esc_html_e('Conocer más', 'flacso-uruguay'); ?>
-                        </a>
+                        <?php $url_oferta = get_permalink(get_the_ID()); ?>
+                        <?php if ($url_oferta) : ?>
+                            <a href="<?php echo esc_url($url_oferta); ?>" class="fc-secondary-button">
+                                <i class="bi bi-book" aria-hidden="true"></i>
+                                <?php esc_html_e('Ver información completa', 'flacso-uruguay'); ?>
+                                <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+                            </a>
+                        <?php endif; ?>
                     </div>
                 </div>
 
