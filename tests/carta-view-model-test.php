@@ -61,9 +61,13 @@ function carta_view_assert(bool $condition, string $message): void {
     }
 }
 
-// Textos del plugin con el año de la cohorte.
+// El reemplazo del marcador debe probarse con un texto controlado, no con
+// el valor por defecto editable del plugin.
+$GLOBALS['opts']['flacso_carta_pago_pesos'] = 'Para pagos en pesos, durante todo {anio}, se mantienen las cuotas.';
+$texts_with_year = flacso_theme_carta_texts('2027', []);
+carta_view_assert(strpos($texts_with_year['pago_pesos'], 'durante todo 2027,') !== false, 'el marcador {anio} se reemplaza por el año de la cohorte');
+$GLOBALS['opts'] = [];
 $texts_default = flacso_theme_carta_texts('2027', []);
-carta_view_assert(strpos($texts_default['pago_pesos'], 'durante todo 2027,') !== false, 'el marcador {anio} se reemplaza por el año de la cohorte');
 carta_view_assert($texts_default['telefono_href'] === 'tel:+59824817459', 'el enlace telefónico se arma con los dígitos del teléfono');
 carta_view_assert($texts_default['correo_inscripciones'] === '', 'la carta no usa un correo global');
 
