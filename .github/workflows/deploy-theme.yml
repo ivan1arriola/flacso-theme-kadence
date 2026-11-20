@@ -155,7 +155,7 @@ jobs:
             --exclude='.superpowers/' \
             --exclude='.worktrees/' \
             --exclude='node_modules/' \
-            --exclude='vendor/' \
+            --exclude='/vendor/' \
             --exclude='bin/' \
             --exclude='.gitignore' \
             --exclude='CONTRIBUTING.md' \

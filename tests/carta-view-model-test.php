@@ -133,5 +133,7 @@ $styles = flacso_theme_carta_brand_styles(['color_principal' => '#7a1fa2'], [], 
 carta_view_assert(strpos($styles, '--fc-brand: #7a1fa2;') !== false && strpos($styles, '--fc-brand-contrast: #ffffff;') !== false, 'el color de la oferta genera sus variables');
 $styles = flacso_theme_carta_brand_styles(['color_principal' => 'rojo'], [], 1);
 carta_view_assert(strpos($styles, '--fc-brand: #16396f;') !== false, 'un color inválido usa el azul institucional');
+$styles = flacso_theme_carta_brand_styles(['color_principal' => '#fcd116'], [], 1);
+carta_view_assert(strpos($styles, '--fc-brand: #fcd116;') !== false && strpos($styles, '--fc-brand-contrast: #000000;') !== false, 'un color claro usa texto negro con contraste WCAG');
 
 echo "OK carta view model\n";

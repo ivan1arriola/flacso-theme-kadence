@@ -290,7 +290,7 @@
     align-items: center;
     justify-content: center;
     gap: 7px;
-    min-height: 44px;
+    min-height: 48px;
     padding: 9px 15px;
     border-radius: 999px;
     font-size: 13.5px;
@@ -299,9 +299,10 @@
 }
 
 .flacso-carta-virtual .fc-primary-button {
-    color: var(--fc-ui-navy-deep);
-    background: var(--fc-ui-yellow);
-    box-shadow: 0 7px 20px rgba(253,210,35,.24);
+    color: var(--fc-brand-contrast, #fff);
+    background: var(--fc-brand);
+    font-weight: 800;
+    box-shadow: 0 12px 26px rgba(var(--fc-brand-rgb), .18);
 }
 
 .flacso-carta-virtual .fc-secondary-button {
@@ -1392,14 +1393,15 @@
     justify-content: center;
     gap: 7px;
     width: 100%;
-    min-height: 44px;
+    min-height: 48px;
     padding: 9px 14px;
     border-radius: 999px;
-    color: var(--fc-ui-navy-deep);
-    background: var(--fc-ui-yellow);
+    color: var(--fc-brand-contrast, #fff);
+    background: var(--fc-brand);
     font-size: 13px;
-    font-weight: 850;
+    font-weight: 800;
     text-decoration: none;
+    box-shadow: 0 12px 26px rgba(var(--fc-brand-rgb), .18);
 }
 
 /* ==========================================================================
@@ -1408,7 +1410,11 @@
 
 @media (hover: hover) {
     .flacso-carta-virtual .fc-primary-button:hover,
-    .flacso-carta-virtual .fc-final-cta a:hover,
+    .flacso-carta-virtual .fc-final-cta a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 17px 30px rgba(var(--fc-brand-rgb), .23);
+    }
+
     .flacso-carta-virtual .fc-pricing-cta a:hover {
         transform: translateY(-1px);
         filter: brightness(.98);
@@ -2433,11 +2439,17 @@
 
 .flacso-carta-virtual .fc-jump-nav__links a:focus-visible,
 .flacso-carta-virtual details.fc-academic-detail > summary:focus-visible,
-.flacso-carta-virtual .fc-primary-button:focus-visible,
 .flacso-carta-virtual .fc-secondary-button:focus-visible,
 .flacso-carta-virtual .fc-card-button:focus-visible {
     outline: 3px solid var(--fc-ui-blue);
     outline-offset: 3px;
+}
+
+.flacso-carta-virtual .fc-primary-button:focus-visible,
+.flacso-carta-virtual .fc-final-cta a:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 6px #051938;
 }
 
 .flacso-carta-virtual .fc-reading-help {

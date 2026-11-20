@@ -22,6 +22,10 @@ if (!defined('ABSPATH')) {
  * @param array<string,mixed> $academic
  */
 function flacso_theme_carta_brand_styles(array $context, array $academic, int $post_id): string {
+    if (!function_exists('flacso_child_contrast_ink')) {
+        require_once __DIR__ . '/color-contrast.php';
+    }
+
     $raw_color = '';
     if (!empty($academic['color_principal']) && is_string($academic['color_principal'])) {
         $raw_color = trim($academic['color_principal']);
@@ -62,8 +66,6 @@ function flacso_theme_carta_brand_styles(array $context, array $academic, int $p
         );
     };
 
-    $luminance = (0.299 * $r + 0.587 * $g + 0.114 * $b) / 255;
-
     return sprintf(
         '--fc-brand: %s; --fc-brand-rgb: %d, %d, %d; --fc-brand-dark: %s; --fc-brand-deep: %s; --fc-brand-light: %s; --fc-brand-contrast: %s;',
         esc_attr($brand_hex),
@@ -73,7 +75,7 @@ function flacso_theme_carta_brand_styles(array $context, array $academic, int $p
         esc_attr($scale(0.70)),
         esc_attr($scale(0.38)),
         esc_attr($lighten(0.30)),
-        esc_attr($luminance > 0.65 ? '#102b56' : '#ffffff')
+        esc_attr(flacso_child_contrast_ink($brand_hex))
     );
 }
 

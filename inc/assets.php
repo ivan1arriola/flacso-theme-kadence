@@ -133,12 +133,12 @@ function child_theme_needs_bootstrap() {
     return false;
 }
 
-// Carga Bootstrap 5 y Bootstrap Icons
-function child_theme_enqueue_bootstrap() {
+// Registra Bootstrap 5 y Bootstrap Icons locales antes que enqueue_block_assets del plugin
+function child_theme_register_bootstrap() {
     // Registrar CSS Bootstrap
     wp_register_style(
         'bootstrap-css',
-        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css',
+        get_stylesheet_directory_uri() . '/assets/vendor/bootstrap/css/bootstrap.min.css',
         array(),
         '5.3.8',
         'all'
@@ -147,7 +147,7 @@ function child_theme_enqueue_bootstrap() {
     // Registrar CSS Bootstrap Icons
     wp_register_style(
         'bootstrap-icons',
-        'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css',
+        get_stylesheet_directory_uri() . '/assets/vendor/bootstrap-icons/font/bootstrap-icons.min.css',
         array(),
         '1.13.1',
         'all'
@@ -156,18 +156,51 @@ function child_theme_enqueue_bootstrap() {
     // Registrar JS Bootstrap Bundle (incluye Popper)
     wp_register_script(
         'bootstrap-js',
-        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js',
+        get_stylesheet_directory_uri() . '/assets/vendor/bootstrap/js/bootstrap.bundle.min.js',
         array(),
         '5.3.8',
         true
     );
+}
+add_action( 'wp_enqueue_scripts', 'child_theme_register_bootstrap', 5 ); // prioridad 5 para que enqueue_block_assets del plugin reutilice nuestro src local de bootstrap-icons
 
+// Carga Bootstrap 5 y Bootstrap Icons
+function child_theme_enqueue_bootstrap() {
     // Bootstrap forma parte de la base visual del tema FLACSO.
     wp_enqueue_style( 'bootstrap-css' );
     wp_enqueue_style( 'bootstrap-icons' );
     wp_enqueue_script( 'bootstrap-js' );
 }
-add_action('wp_enqueue_scripts', 'child_theme_enqueue_bootstrap', 20); // prioridad 20, antes del child CSS
+add_action( 'wp_enqueue_scripts', 'child_theme_enqueue_bootstrap', 20 ); // prioridad 20, antes del child CSS
+
+// Carga Bootstrap Icons sin bloquear el render
+function flacso_child_async_bootstrap_icons( $html, $handle, $href, $media ) {
+    if ( 'bootstrap-icons' !== $handle ) {
+        return $html;
+    }
+
+    $async_tag = preg_replace(
+        '/\smedia=[\'"][^\'"]*[\'"]/',
+        ' media="print" onload="this.media=\'all\'"',
+        $html,
+        1,
+        $count
+    );
+    if ( null === $async_tag || ! $count ) {
+        $async_tag = preg_replace(
+            '/\s*\/?>$/',
+            ' media="print" onload="this.media=\'all\'" />',
+            $html,
+            1
+        );
+    }
+
+    $noscript_media = $media ? $media : 'all';
+    $noscript       = '<noscript><link rel="stylesheet" href="' . esc_url( $href ) . '" media="' . esc_attr( $noscript_media ) . '" /></noscript>';
+
+    return rtrim( (string) $async_tag ) . "\n" . $noscript . "\n";
+}
+add_filter( 'style_loader_tag', 'flacso_child_async_bootstrap_icons', 10, 4 );
 
 // Carga jQuery UI y estilos base
 function child_theme_enqueue_jquery_ui() {
@@ -250,7 +283,7 @@ function flacso_child_enqueue_template_assets() {
         $css_path = 'single-oferta-academica' === $asset ? 'oferta-academica/style.css' : 'assets/css/' . $asset . '.css';
         $js_path  = 'single-oferta-academica' === $asset ? 'oferta-academica/script.js' : 'assets/js/' . $asset . '.js';
 
-        if ( is_readable( get_stylesheet_directory() . '/' . $css_path ) ) {
+        if ( ! ( 'single-oferta-academica' === $asset && flacso_theme_is_carta() ) && is_readable( get_stylesheet_directory() . '/' . $css_path ) ) {
             wp_enqueue_style(
                 'flacso-' . $asset,
                 get_stylesheet_directory_uri() . '/' . $css_path,
@@ -259,7 +292,7 @@ function flacso_child_enqueue_template_assets() {
             );
         }
 
-        if ( is_readable( get_stylesheet_directory() . '/' . $js_path ) ) {
+        if ( ! ( 'single-oferta-academica' === $asset && flacso_theme_is_carta() ) && is_readable( get_stylesheet_directory() . '/' . $js_path ) ) {
             wp_enqueue_script(
                 'flacso-' . $asset,
                 get_stylesheet_directory_uri() . '/' . $js_path,

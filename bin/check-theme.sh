@@ -30,6 +30,11 @@ php "$theme_dir/tests/carta-planning-layout-test.php"
 php "$theme_dir/tests/carta-editorial-navigation-contract-test.php"
 php "$theme_dir/tests/carta-reference-layout-contract-test.php"
 
+if grep -n -F -e "--exclude='vendor/'" "$theme_dir/.github/workflows/deploy-theme.yml"; then
+    echo "deploy-theme.yml: usar --exclude='/vendor/' (anclado) para no borrar assets/vendor." >&2
+    exit 1
+fi
+
 if grep -rn -P 'target="_blank"(?![^>]*\brel=)' --include='*.php' "$theme_dir"; then
     echo 'Hay enlaces target="_blank" sin rel="noopener noreferrer".' >&2
     exit 1

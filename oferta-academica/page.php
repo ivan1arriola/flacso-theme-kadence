@@ -535,13 +535,13 @@ $render_coordinador = static function ($docente_id, $rol = '') {
                                     <?php endif; ?>
                                     <?php if ($duracion_text !== '' && $duracion_text !== __('A definir', 'flacso-uruguay')) : ?>
                                         <span class="flacso-academic-hero__badge flacso-academic-hero__badge--duration">
-                                            <span class="flacso-academic-hero__symbol" aria-hidden="true">◷</span>
+                                            <i class="bi bi-clock flacso-academic-hero__symbol" aria-hidden="true"></i>
                                             <?php echo esc_html($duracion_text); ?>
                                         </span>
                                     <?php endif; ?>
                                     <?php if ($inscripciones_abiertas) : ?>
                                         <span class="flacso-academic-hero__badge flacso-academic-hero__badge--open">
-                                            <span class="flacso-academic-hero__symbol" aria-hidden="true">✓</span>
+                                            <i class="bi bi-check-lg flacso-academic-hero__symbol" aria-hidden="true"></i>
                                             <?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?>
                                         </span>
                                     <?php endif; ?>
@@ -555,7 +555,7 @@ $render_coordinador = static function ($docente_id, $rol = '') {
                                 <div class="flacso-academic-hero__actions">
                                     <a href="<?php echo esc_url($hero_primary_url); ?>"<?php echo $has_preinscription_cta ? ' data-flacso-preinscription-cta="1"' : ''; ?> class="flacso-academic-hero__cta">
                                         <span><?php echo esc_html($hero_primary_label); ?></span>
-                                        <span class="flacso-academic-hero__arrow" aria-hidden="true">→</span>
+                                        <i class="bi bi-arrow-right flacso-academic-hero__arrow" aria-hidden="true"></i>
                                     </a>
                                 </div>
                             </div>
@@ -612,7 +612,7 @@ $render_coordinador = static function ($docente_id, $rol = '') {
                                             <span class="flacso-academic-trust-strip__icon" aria-hidden="true">
                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="m7 11 10-5M7 13l10 5"/></svg>
                                             </span>
-                                            <span><?php esc_html_e('Título con validez y reconocimiento en la red del Sistema Internacional FLACSO', 'flacso-uruguay'); ?></span>
+                                            <span><?php esc_html_e('Título con validez internacional y reconocimiento del Sistema FLACSO', 'flacso-uruguay'); ?></span>
                                         </li>
                                     <?php endif; ?>
                                     <?php if ($convenio_iin_oea) : ?>
@@ -855,8 +855,8 @@ $render_coordinador = static function ($docente_id, $rol = '') {
                                         <div class="final-cta__text">
                                             <h3><?php esc_html_e('¿Querés postularte a la próxima cohorte?', 'flacso-uruguay'); ?></h3>
                                         </div>
-                                        <a class="btn btn--primary" href="<?php echo esc_url($preinscripcion_url); ?>" data-flacso-preinscription-cta="1" style="background:var(--azul) !important;color:#fff !important;white-space:nowrap;">
-                                            <?php esc_html_e('Iniciar preinscripción →', 'flacso-uruguay'); ?>
+                                        <a class="btn btn--primary" href="<?php echo esc_url($preinscripcion_url); ?>" data-flacso-preinscription-cta="1">
+                                            <?php esc_html_e('Iniciar preinscripción', 'flacso-uruguay'); ?> <i class="bi bi-arrow-right" aria-hidden="true"></i>
                                         </a>
                                     </section>
                                 <?php endif; ?>
@@ -869,7 +869,7 @@ $render_coordinador = static function ($docente_id, $rol = '') {
                                 <header class="flacso-mobile-info-sheet__header">
                                     <h2 id="flacso-mobile-info-sheet-title"><?php esc_html_e('Más Información', 'flacso-uruguay'); ?></h2>
                                     <button type="button" class="flacso-mobile-info-sheet__close" aria-label="<?php esc_attr_e('Cerrar solicitud de información', 'flacso-uruguay'); ?>">
-                                        <span aria-hidden="true">×</span>
+                                        <i class="bi bi-x-lg" aria-hidden="true"></i>
                                     </button>
                                 </header>
                                 <div class="contact">
