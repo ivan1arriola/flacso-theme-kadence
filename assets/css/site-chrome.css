@@ -1,10 +1,10 @@
 :root {
-    --flacso-chrome-blue: #163970;
-    --flacso-chrome-navy: #0d203e;
-    --flacso-chrome-yellow: #fed222;
-    --flacso-chrome-line: #dce3ec;
-    --flacso-chrome-muted: #6f7b8e;
-    --flacso-chrome-width: 1180px;
+    --flacso-chrome-blue: var(--global-palette1, #163970);
+    --flacso-chrome-navy: var(--global-palette3, #0d203e);
+    --flacso-chrome-yellow: var(--global-palette2, #fed222);
+    --flacso-chrome-line: var(--global-gray-400, #dce3ec);
+    --flacso-chrome-muted: var(--global-palette5, #6f7b8e);
+    --flacso-chrome-width: var(--global-content-width, 1180px);
     --flacso-content-inset: 40px; /* Margen total, compartido por cabecera, portada y pie. */
 }
 
@@ -330,9 +330,9 @@
     justify-content: center;
     padding: 0 1.15rem;
     border-radius: 999px;
-    background: var(--flacso-chrome-yellow);
-    color: var(--flacso-chrome-navy);
-    box-shadow: 0 10px 24px rgba(254, 210, 34, 0.22);
+    background: var(--global-palette-btn-bg, var(--flacso-chrome-yellow));
+    color: var(--global-palette-btn, var(--flacso-chrome-navy));
+    box-shadow: 0 10px 24px rgba(9, 25, 49, 0.16);
     font-size: 0.88rem;
     font-weight: 800;
     text-decoration: none;
@@ -341,8 +341,8 @@
 
 .flacso-navbar__cta:hover,
 .flacso-navbar__cta:focus-visible {
-    background: #ffe053;
-    color: var(--flacso-chrome-navy);
+    background: var(--global-palette-btn-bg-hover, var(--flacso-chrome-yellow));
+    color: var(--global-palette-btn-hover, var(--flacso-chrome-navy));
     transform: translateY(-2px);
 }
 
@@ -413,8 +413,8 @@
     padding: 0 1rem;
     border: 0;
     border-radius: 999px;
-    background: var(--flacso-chrome-blue);
-    color: #fff;
+    background: var(--global-palette-btn-bg, var(--flacso-chrome-blue));
+    color: var(--global-palette-btn, #fff);
     font-weight: 750;
 }
 
