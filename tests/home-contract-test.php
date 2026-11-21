@@ -200,7 +200,16 @@ check(strpos($single, 'class="news-bento news-bento--compact"') !== false && sub
 $GLOBALS['recent'] = [601, 602];
 $pair = flacso_home_render();
 check(strpos($pair, 'class="news-bento news-bento--compact"') !== false && substr_count($pair, 'class="news-card') === 2, 'dos noticias mantienen Bento compacto');
-unset($GLOBALS['recent']);
+$GLOBALS['recent'] = [601, 602, 603];
+$triple = flacso_home_render();
+check(strpos($triple, 'class="news-bento"') !== false && substr_count($triple, 'class="news-card') === 3, 'tres noticias usan Bento normal');
+$GLOBALS['recent'] = [601, 602, 603, 604];
+$four = flacso_home_render();
+check(strpos($four, 'class="news-bento"') !== false && substr_count($four, 'class="news-card') === 4, 'cuatro noticias usan Bento normal');
+$GLOBALS['pinned'] = [(object)['ID'=>101], (object)['ID'=>102]];
+$six = flacso_home_render();
+check(strpos($six, 'class="news-bento"') !== false && substr_count($six, 'class="news-card') === 6, 'seis noticias usan Bento normal');
+unset($GLOBALS['recent'], $GLOBALS['pinned']);
 
 $GLOBALS['content'] = Flacso_Home_Content::defaults();
 $GLOBALS['content']['campaign']['enabled'] = false;
