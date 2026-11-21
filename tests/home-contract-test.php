@@ -127,9 +127,10 @@ check(count($inv) === 5 && $inv['maestrias']['url'] === 'https://example.test/fo
 unset($GLOBALS['cards']);
 
 ob_start(); flacso_home_news_card((object)['ID'=>101], 'featured', true); $card = ob_get_clean();
-check(strpos($card, 'class="feature"') !== false && strpos($card, 'NOTICIA FIJADA') !== false && strpos($card, 'class="poster"') !== false && strpos($card, 'Leer noticia') !== false, 'tarjeta destacada con el marcado de la maqueta');
+check(strpos($card, 'class="news-card feature"') !== false && strpos($card, 'NOTICIA FIJADA') !== false && strpos($card, 'class="poster"') !== false && strpos($card, 'Leer noticia') !== false, 'tarjeta destacada en cuadrícula Bento');
 ob_start(); flacso_home_news_card((object)['ID'=>201], 'recent', false); $card = ob_get_clean();
 check(strpos($card, 'NOTICIA FIJADA') === false && strpos($card, 'class="poster"') !== false && strpos($card, 'class="news-meta"') !== false, 'tarjeta reciente sin etiqueta fijada');
+check(strpos($card, 'class="news-card recent"') !== false, 'tarjeta reciente en cuadrícula Bento');
 
 // Plantillas
 $html = flacso_home_render();
@@ -146,6 +147,8 @@ check(substr_count($html, 'class="offer-grid"') === 1 && preg_match_all('#<div c
 foreach (['01', '02', '03'] as $n) { check(strpos($html, '<span>' . $n . '</span>') !== false, "enlace de investigación $n"); }
 check(substr_count($html, 'class="research-links"') === 1 && preg_match('#class="research-links">(.*?)</div>#s', $html, $m) && substr_count($m[1], '<a ') === 3, 'tres enlaces de investigación');
 check(strpos($html, 'Conocer las novedades') === false, 'sin texto retirado');
+check(strpos($html, 'class="news-bento"') !== false && substr_count($html, 'class="news-card') === 5, 'cinco noticias en una sola cuadrícula');
+check(strpos($html, 'class="hero-media"') !== false && strpos($html, 'class="primary hero-cta"') !== false, 'hero con imagen y CTA neumórfico');
 check(strpos($html, 'Explorar investigaciones <span') !== false, 'enlace de investigación con la etiqueta del contenido');
 check(strpos($html, '<p><strong>FLACSO Uruguay</strong> es la sede uruguaya') !== false, 'texto institucional sin <p> se envuelve en párrafos');
 foreach (['hero', 'offer-section', 'campaign', 'news-section', 'research-section', 'about-section'] as $cls) { check(strpos($html, 'class="' . $cls) !== false, "sección $cls"); }
@@ -177,8 +180,20 @@ check(strpos($partial, 'campaign-grid') !== false, 'campaña con claves faltante
 unset($GLOBALS['content'], $GLOBALS['campaign_raw']);
 
 $css = file_get_contents($root . '/assets/css/front-page.css');
-check(strpos($css, '.flacso-home .featured-news .feature:only-child') !== false, 'una sola noticia destacada ocupa todo el ancho');
+check(strpos($css, '.flacso-home .news-bento .news-card:only-child{grid-column:1/-1') !== false, 'una sola noticia ocupa todo el ancho');
+check(strpos($css, '.flacso-home .hero-media img{transform:translate3d(') !== false, 'parallax actúa sobre la imagen real');
+check(strpos($css, '@media(max-width:760px)') !== false && strpos($css, '@media(prefers-reduced-motion:reduce)') !== false, 'adaptación móvil y movimiento reducido');
+$js = file_get_contents($root . '/assets/js/front-page.js');
+check(strpos($js, 'min-width: 761px') !== false && strpos($js, 'prefers-reduced-motion: reduce') !== false, 'parallax desactivado en móvil o movimiento reducido');
 check(preg_match('#\.flacso-home \.container\{[^}]*padding-inline:0#', $css) === 1, 'el contenedor no depende del padding de Bootstrap');
+
+$GLOBALS['recent'] = [601];
+$single = flacso_home_render();
+check(strpos($single, 'class="news-bento news-bento--compact"') !== false && substr_count($single, 'class="news-card') === 1, 'noticia única mantiene Bento compacto');
+$GLOBALS['recent'] = [601, 602];
+$pair = flacso_home_render();
+check(strpos($pair, 'class="news-bento news-bento--compact"') !== false && substr_count($pair, 'class="news-card') === 2, 'dos noticias mantienen Bento compacto');
+unset($GLOBALS['recent']);
 
 $GLOBALS['content'] = Flacso_Home_Content::defaults();
 $GLOBALS['content']['campaign']['enabled'] = false;
