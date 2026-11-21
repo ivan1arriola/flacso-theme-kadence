@@ -195,18 +195,22 @@ function flacso_home_news_card($post, string $variant, bool $is_pinned = false):
         if (is_array($categories) && !empty($categories[0]->name)) { $category = trim(wp_strip_all_tags((string) $categories[0]->name)); }
     }
     $is_feature = $variant === 'featured' || $variant === 'secondary';
-    $poster = '<a class="poster" href="' . esc_url($url) . '" aria-label="' . esc_attr('Leer noticia: ' . $title) . '">'
-        . ($image_id ? wp_get_attachment_image($image_id, 'medium_large', false, ['alt' => '', 'loading' => 'lazy']) : '')
-        . '</a>';
+    // Una noticia sin miniatura se presenta a ancho completo, sin enlaces vacíos.
+    $poster = $image_id
+        ? '<a class="poster" href="' . esc_url($url) . '" aria-label="' . esc_attr('Leer noticia: ' . $title) . '">'
+            . wp_get_attachment_image($image_id, 'medium_large', false, ['alt' => '', 'loading' => 'lazy'])
+            . '</a>'
+        : '';
+    $visual_class = $image_id ? '' : ' news-card--no-image';
     $meta = '<p class="news-meta">' . ($category !== '' ? esc_html($category) . ' · ' : '')
         . '<time datetime="' . esc_attr(get_the_date('c', $id)) . '">' . esc_html(get_the_date('j M Y', $id)) . '</time></p>';
     $heading = '<h3><a href="' . esc_url($url) . '">' . esc_html($title) . '</a></h3>';
     $link = '<a class="text-link" href="' . esc_url($url) . '">Leer noticia <span aria-hidden="true">↗</span></a>';
     if ($is_feature) {
         $pin = $is_pinned ? '<p class="pin-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 3 7 7-4 1-4 5-2-2-6 6M4 13l7-7 1-4"/></svg> NOTICIA FIJADA</p>' : '';
-        echo '<article class="news-card feature' . ($variant === 'secondary' ? ' secondary' : '') . '">' . $poster . '<div>' . $pin . $meta . $heading . $link . '</div></article>';
+        echo '<article class="news-card feature' . ($variant === 'secondary' ? ' secondary' : '') . $visual_class . '">' . $poster . '<div>' . $pin . $meta . $heading . $link . '</div></article>';
         return;
     }
     $pin = $is_pinned ? '<p class="pin-label">NOTICIA FIJADA</p>' : '';
-    echo '<article class="news-card recent">' . $poster . '<div>' . $pin . $meta . $heading . $link . '</div></article>';
+    echo '<article class="news-card recent' . $visual_class . '">' . $poster . '<div>' . $pin . $meta . $heading . $link . '</div></article>';
 }

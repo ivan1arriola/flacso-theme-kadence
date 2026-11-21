@@ -129,8 +129,10 @@ unset($GLOBALS['cards']);
 ob_start(); flacso_home_news_card((object)['ID'=>101], 'featured', true); $card = ob_get_clean();
 check(strpos($card, 'class="news-card feature"') !== false && strpos($card, 'NOTICIA FIJADA') !== false && strpos($card, 'class="poster"') !== false && strpos($card, 'Leer noticia') !== false, 'tarjeta destacada en cuadrícula Bento');
 ob_start(); flacso_home_news_card((object)['ID'=>201], 'recent', false); $card = ob_get_clean();
-check(strpos($card, 'NOTICIA FIJADA') === false && strpos($card, 'class="poster"') !== false && strpos($card, 'class="news-meta"') !== false, 'tarjeta reciente sin etiqueta fijada');
-check(strpos($card, 'class="news-card recent"') !== false, 'tarjeta reciente en cuadrícula Bento');
+check(strpos($card, 'NOTICIA FIJADA') === false && strpos($card, 'class="poster"') === false && strpos($card, 'class="news-meta"') !== false, 'tarjeta sin miniatura no genera enlace visual vacío');
+check(strpos($card, 'class="news-card recent news-card--no-image"') !== false, 'tarjeta reciente sin miniatura ocupa ancho completo');
+ob_start(); flacso_home_news_card((object)['ID'=>601], 'featured', false); $card = ob_get_clean();
+check(strpos($card, 'class="news-card feature news-card--no-image"') !== false && strpos($card, 'class="poster"') === false, 'noticia destacada sin imagen no crea enlace invisible');
 
 // Plantillas
 $html = flacso_home_render();
@@ -181,6 +183,11 @@ unset($GLOBALS['content'], $GLOBALS['campaign_raw']);
 
 $css = file_get_contents($root . '/assets/css/front-page.css');
 check(strpos($css, '.flacso-home .news-bento .news-card:only-child{grid-column:1/-1') !== false, 'una sola noticia ocupa todo el ancho');
+check(strpos($css, '.news-bento .news-card:first-child{grid-column:span 6;') !== false, 'destacada ocupa media cuadrícula');
+check(strpos($css, '.news-bento .news-card:nth-child(4):nth-last-child(2)') !== false, 'cinco noticias completan la última fila');
+check(strpos($css, '.news-bento .news-card:nth-child(4):last-child{grid-column:1/-1}') !== false, 'cuatro noticias no dejan huecos');
+check(strpos($css, '.news-card.news-card--no-image') !== false, 'tarjetas sin imagen no reservan columna');
+check(strpos($css, '.news-bento .news-meta{margin:0 0 9px;font-size:12px;color:#53647e}') !== false, 'metadatos de Bento con contraste reforzado');
 check(strpos($css, '.flacso-home .hero-media img{transform:translate3d(') !== false, 'parallax actúa sobre la imagen real');
 check(strpos($css, '@media(max-width:760px)') !== false && strpos($css, '@media(prefers-reduced-motion:reduce)') !== false, 'adaptación móvil y movimiento reducido');
 $js = file_get_contents($root . '/assets/js/front-page.js');
