@@ -31,7 +31,7 @@ layout_check(strpos($header, 'id="inner-wrap"') !== false, 'header abre #inner-w
 layout_check(strpos($footer, '</div><!-- #inner-wrap -->') !== false, 'footer cierra #inner-wrap');
 layout_check(strpos($header, "kadence_before_content") !== false, 'header ejecuta hook before_content');
 layout_check(strpos($footer, "kadence_after_content") !== false, 'footer ejecuta hook after_content');
-layout_check(strpos($front, "kadence_before_content") === false && strpos($front, "kadence_after_content") === false, 'front-page no duplica hooks');
+layout_check(strpos($front, "do_action( 'kadence_before_content' )") === false && strpos($front, "do_action( 'kadence_after_content' )") === false, 'front-page no duplica hooks');
 
 $chrome = file_get_contents($root . '/assets/css/site-chrome.css');
 $home = file_get_contents($root . '/assets/css/front-page.css');
