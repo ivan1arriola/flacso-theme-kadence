@@ -14,10 +14,6 @@ html {
         overflow-x: clip;
     }
 
-    .flacso-chrome-container {
-        width: min(var(--flacso-chrome-width, 1180px), calc(100% - 24px));
-    }
-
     /* Una sola línea de accesos evita que la franja superior ocupe media pantalla. */
     .flacso-topbar__inner {
         justify-content: flex-start;
@@ -189,10 +185,6 @@ html {
 }
 
 @media (max-width: 480px) {
-    .flacso-chrome-container {
-        width: calc(100% - 20px);
-    }
-
     .flacso-topbar {
         font-size: 0.74rem;
     }

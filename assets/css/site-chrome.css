@@ -5,11 +5,21 @@
     --flacso-chrome-line: #dce3ec;
     --flacso-chrome-muted: #6f7b8e;
     --flacso-chrome-width: 1180px;
+    --flacso-content-inset: 40px; /* Margen total, compartido por cabecera, portada y pie. */
 }
 
 .flacso-chrome-container {
-    width: min(var(--flacso-chrome-width), calc(100% - 40px));
+    width: min(var(--flacso-chrome-width), calc(100% - var(--flacso-content-inset)));
     margin-inline: auto;
+}
+
+/* El mismo margen lateral se aplica en todos los contenedores institucionales. */
+@media (max-width: 782px) {
+    :root { --flacso-content-inset: 24px; }
+}
+
+@media (max-width: 480px) {
+    :root { --flacso-content-inset: 20px; }
 }
 
 /* Header */
@@ -725,10 +735,6 @@
 }
 
 @media (max-width: 680px) {
-    .flacso-chrome-container {
-        width: min(var(--flacso-chrome-width), calc(100% - 28px));
-    }
-
     .flacso-topbar__inner {
         min-height: 0;
         justify-content: center;
@@ -986,10 +992,6 @@
             #123a72;
     }
 
-    .flacso-footer .flacso-chrome-container {
-        width: min(calc(100% - 28px), var(--flacso-chrome-width));
-    }
-
     .flacso-footer__grid {
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         gap: 0 !important;
@@ -1117,10 +1119,6 @@
 }
 
 @media (max-width: 420px) {
-    .flacso-footer .flacso-chrome-container {
-        width: calc(100% - 24px);
-    }
-
     .flacso-footer__grid {
         grid-template-columns: 1fr 1fr !important;
         padding-top: 1.6rem !important;
