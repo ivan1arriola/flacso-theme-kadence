@@ -15,6 +15,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Con el modo nativo, Kadence utiliza su constructor de pie de página.
+if ( function_exists( 'flacso_child_use_kadence_chrome' ) && flacso_child_use_kadence_chrome() ) {
+    $kadence_footer = get_template_directory() . '/footer.php';
+    if ( is_readable( $kadence_footer ) ) {
+        require $kadence_footer;
+        return;
+    }
+}
+
 /**
  * Hook for bottom of inner wrap.
  */

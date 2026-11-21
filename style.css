@@ -12,18 +12,18 @@ Updated: 2026-08-23 12:50:00
 */
 
 :root {
-    --flacso-color-primary: #163970;
-    --flacso-color-primary-dark: #051938;
-    --flacso-color-accent: #fcd116;
-    --flacso-color-text: #1f2937;
-    --flacso-color-muted: #64748b;
-    --flacso-color-surface: #ffffff;
-    --flacso-color-background: #f8fafc;
+    --flacso-color-primary: var(--global-palette1, #163970);
+    --flacso-color-primary-dark: var(--global-palette3, #051938);
+    --flacso-color-accent: var(--global-palette2, #fcd116);
+    --flacso-color-text: var(--global-palette4, #1f2937);
+    --flacso-color-muted: var(--global-palette5, #64748b);
+    --flacso-color-surface: var(--global-palette9, #ffffff);
+    --flacso-color-background: var(--global-palette8, #f8fafc);
     --flacso-radius-sm: 0.5rem;
     --flacso-radius-md: 1rem;
     --flacso-radius-lg: 1.5rem;
     --flacso-shadow-card: 0 8px 24px rgb(7 28 61 / 10%);
-    --flacso-content-width: 1200px;
+    --flacso-content-width: var(--global-content-width, 1200px);
 }
 
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
