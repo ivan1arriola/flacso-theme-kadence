@@ -204,8 +204,9 @@ function flacso_home_news_card($post, string $variant, bool $is_pinned = false):
     $link = '<a class="text-link" href="' . esc_url($url) . '">Leer noticia <span aria-hidden="true">↗</span></a>';
     if ($is_feature) {
         $pin = $is_pinned ? '<p class="pin-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 3 7 7-4 1-4 5-2-2-6 6M4 13l7-7 1-4"/></svg> NOTICIA FIJADA</p>' : '';
-        echo '<article class="feature' . ($variant === 'secondary' ? ' secondary' : '') . '">' . $poster . '<div>' . $pin . $meta . $heading . $link . '</div></article>';
+        echo '<article class="news-card feature' . ($variant === 'secondary' ? ' secondary' : '') . '">' . $poster . '<div>' . $pin . $meta . $heading . $link . '</div></article>';
         return;
     }
-    echo '<article>' . $poster . $meta . $heading . $link . '</article>';
+    $pin = $is_pinned ? '<p class="pin-label">NOTICIA FIJADA</p>' : '';
+    echo '<article class="news-card recent">' . $poster . '<div>' . $pin . $meta . $heading . $link . '</div></article>';
 }

@@ -69,6 +69,15 @@ function flacso_child_enqueue_front_page_assets() {
         array( 'flacso-site-chrome' ),
         flacso_child_asset_version( $css_path )
     );
+
+    $js_path = 'assets/js/front-page.js';
+    wp_enqueue_script(
+        'flacso-front-page',
+        get_stylesheet_directory_uri() . '/' . $js_path,
+        array(),
+        flacso_child_asset_version( $js_path ),
+        true
+    );
 }
 add_action( 'wp_enqueue_scripts', 'flacso_child_enqueue_front_page_assets', 50 );
 
