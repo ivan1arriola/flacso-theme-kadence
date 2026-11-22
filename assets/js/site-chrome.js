@@ -97,8 +97,14 @@
             document.body.classList.toggle('flacso-menu-open', opening);
             if (opening) {
                 closeAllSubmenus();
-                var firstLink = menu.querySelector('a');
-                if (firstLink) firstLink.focus();
+                // El cajón sigue en visibility:hidden en este instante y focus() no funciona sobre un elemento oculto:
+                // la transición de visibility sale de "hidden" recién en el frame siguiente al cambio de clase.
+                requestAnimationFrame(function () {
+                    requestAnimationFrame(function () {
+                        var focusTarget = menuClose || menu.querySelector('a');
+                        if (focusTarget) focusTarget.focus();
+                    });
+                });
             }
         });
     }
@@ -125,7 +131,28 @@
         });
     }
 
+    // El <nav> va antes del botón en el HTML: sin esto, Tab sale del cajón abierto hacia la página tapada.
+    function menuFocusables() {
+        return Array.prototype.filter.call(menu.querySelectorAll('a[href], button'), function (el) {
+            return !el.disabled && getComputedStyle(el).visibility !== 'hidden' && el.offsetParent !== null;
+        });
+    }
+
     document.addEventListener('keydown', function (event) {
+        if (event.key === 'Tab' && menu && menu.classList.contains('is-open')) {
+            var items = menuFocusables();
+            if (!items.length) return;
+            var first = items[0];
+            var last = items[items.length - 1];
+            if (event.shiftKey && (document.activeElement === first || !menu.contains(document.activeElement))) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && (document.activeElement === last || !menu.contains(document.activeElement))) {
+                event.preventDefault();
+                first.focus();
+            }
+            return;
+        }
         if (event.key !== 'Escape') return;
         if (search && !search.hidden) {
             closeSearch(true);
