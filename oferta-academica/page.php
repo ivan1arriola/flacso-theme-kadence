@@ -520,7 +520,7 @@ $render_coordinador = static function ($docente_id, $rol = '') {
 
 ?>
 
-<div id="inner-wrap" class="wrap kt-clear flacso-oferta-responsive" style="<?php echo esc_attr($offer_style_vars); ?>" data-offer-title="<?php echo esc_attr($title); ?>" data-offer-id="<?php echo esc_attr((string) $post_id); ?>">
+<div class="wrap kt-clear flacso-oferta-responsive" style="<?php echo esc_attr($offer_style_vars); ?>" data-offer-title="<?php echo esc_attr($title); ?>" data-offer-id="<?php echo esc_attr((string) $post_id); ?>">
     <div id="primary" class="content-area">
         <div class="content-container">
             <main id="main" class="site-main">
