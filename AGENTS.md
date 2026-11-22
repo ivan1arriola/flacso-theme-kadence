@@ -24,3 +24,9 @@ Este documento rige para cualquier agente o herramienta (Claude Code, Codex, Ant
 - Los colores, tipografías, anchos y botones deben salir de las variables de Kadence (`var(--global-*)`) y no de valores fijos. Hay tests del tema acoplados al CSS (`offer-contrast-ink-test.php`, `page-formacion-color-contract-test.php`, `front-page-legacy-assets-test.php`, entre otros): ejecutarlos y mapearlos antes de cambiar CSS.
 - Los colores por área de oferta académica son intencionales y no se colapsan a la paleta.
 - No agregar `!important` ni estilos en línea nuevos; no agregar CSS a las hojas apiladas de seminarios.
+
+## Herramientas de calidad (PHP)
+
+- Instalar: `composer install` (solo desarrollo; `vendor/` no se versiona).
+- `composer phpstan`: análisis estático nivel 3; lo viejo está congelado en `phpstan-baseline.neon`. En Windows con tildes en la ruta, correrlo desde la ruta corta 8.3.
+- `composer phpcs`: seguridad y compatibilidad PHP 7.4; en CI bloquea en archivos nuevos e informa en los modificados.

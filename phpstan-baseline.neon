@@ -1,0 +1,139 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Constant FLACSO_EMAIL_CONTACTO not found\.$#'
+			identifier: constant.notFound
+			count: 2
+			path: gracias/consulta.php
+
+		-
+			message: '#^Variable \$intro might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: gracias/consulta.php
+
+		-
+			message: '#^Constant FLACSO_EMAIL_CONTACTO not found\.$#'
+			identifier: constant.notFound
+			count: 2
+			path: gracias/solicitud_informacion.php
+
+		-
+			message: '#^Variable \$intro might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: gracias/solicitud_informacion.php
+
+		-
+			message: '#^Function str_ends_with not found\.$#'
+			identifier: function.notFound
+			count: 2
+			path: inc/assets.php
+
+		-
+			message: '#^Access to an undefined property WP_Post\:\:\$target\.$#'
+			identifier: property.notFound
+			count: 1
+			path: inc/navigation.php
+
+		-
+			message: '#^Function str_starts_with not found\.$#'
+			identifier: function.notFound
+			count: 1
+			path: oferta-academica/page.php
+
+		-
+			message: '#^Variable \$hero_image_url in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: seminarios-listado.php
+
+		-
+			message: '#^Function str_ends_with not found\.$#'
+			identifier: function.notFound
+			count: 2
+			path: single-oferta-academica.php
+
+		-
+			message: '#^Variable \$args might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: template-parts/carta/cierre.php
+
+		-
+			message: '#^Variable \$args might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: template-parts/carta/confianza.php
+
+		-
+			message: '#^Variable \$args might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: template-parts/carta/contacto.php
+
+		-
+			message: '#^Variable \$args might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: template-parts/carta/contenido.php
+
+		-
+			message: '#^Variable \$args might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: template-parts/carta/flotante.php
+
+		-
+			message: '#^Variable \$args might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: template-parts/carta/hero.php
+
+		-
+			message: '#^Variable \$args might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: template-parts/carta/indice.php
+
+		-
+			message: '#^Variable \$args might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: template-parts/carta/info-extra.php
+
+		-
+			message: '#^Variable \$args might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: template-parts/carta/planificacion.php
+
+		-
+			message: '#^Variable \$args might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: template-parts/carta/practica.php
+
+		-
+			message: '#^Variable \$args might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: template-parts/carta/propuesta-extras.php
+
+		-
+			message: '#^Variable \$args might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: template-parts/carta/scripts.php
+
+		-
+			message: '#^Variable \$data might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: template-parts/home/hero.php
+
+		-
+			message: '#^Variable \$data might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: template-parts/home/research.php
