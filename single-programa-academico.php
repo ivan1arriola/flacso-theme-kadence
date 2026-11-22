@@ -12,7 +12,7 @@ while (have_posts()) :
     $titulo       = get_the_title();
     $correo       = (string) get_post_meta($prog_id, 'correo', true);
     $presentacion = (string) get_post_meta($prog_id, 'presentacion', true);
-    $coordinacion = (array) get_post_meta($prog_id, 'coordinacion', true);
+    $coordinacion = flacso_theme_program_coordination($prog_id);
 
     // ?id=102,103 limita la página a esas ofertas/seminarios (solo los que pertenecen al programa).
     $ids_filtro = [];

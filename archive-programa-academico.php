@@ -39,7 +39,7 @@ $total_programas = (int) $programas_query->post_count;
                     <?php while ($programas_query->have_posts()) : $programas_query->the_post(); ?>
                         <?php
                         $prog_id = get_the_ID();
-                        $coordinacion = (array) get_post_meta($prog_id, 'coordinacion', true);
+                        $coordinacion = flacso_theme_program_coordination($prog_id);
                         $correo = (string) get_post_meta($prog_id, 'correo', true);
                         $presentacion = (string) get_post_meta($prog_id, 'presentacion', true);
                         $resumen = wp_trim_words(wp_strip_all_tags($presentacion), 25);
