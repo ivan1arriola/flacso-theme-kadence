@@ -79,7 +79,7 @@ ph_check(preg_match('/\.flacso-page-header__title\s*\{[^}]*font-size:\s*clamp\(2
 ph_check(strpos($css, '!important') === false, 'el componente no usa !important');
 ph_check(strpos($css, 'var(--global-content-width') !== false, 'el ancho viene del ancho de contenido de Kadence');
 ph_check(preg_match('/#[0-9a-fA-F]{3,6}\b/', preg_replace('/var\([^)]*\)/', '', $css)) === 0 || true, 'los colores de marca salen de variables');
-$assets = (string) file_get_contents($root . '/inc/assets.php');
-ph_check(strpos($assets, 'components/page-header.css') !== false, 'inc/assets.php encola el CSS del componente');
+ph_check(strpos((string) file_get_contents($root . '/inc/assets.php'), 'components/page-header.css') !== false, 'inc/assets.php encola el CSS del componente en la taxonomía');
+ph_check(strpos((string) file_get_contents($root . '/archive-seminario.php'), 'components/page-header.css') !== false, 'archive-seminario.php encola el CSS del componente');
 
 echo "OK encabezado de página compartido\n";

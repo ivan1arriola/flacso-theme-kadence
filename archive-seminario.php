@@ -55,6 +55,14 @@ wp_enqueue_style(
     flacso_child_asset_version( $listing_css_path )
 );
 
+$header_css_path = 'assets/css/components/page-header.css';
+wp_enqueue_style(
+    'flacso-page-header',
+    get_stylesheet_directory_uri() . '/' . $header_css_path,
+    array( 'flacso-type-listing-cards' ),
+    flacso_child_asset_version( $header_css_path )
+);
+
 wp_enqueue_script(
     'flacso-seminarios-listado',
     get_stylesheet_directory_uri() . '/' . $js_path,

@@ -275,7 +275,7 @@ function flacso_child_enqueue_template_assets() {
         $active_template = 'page-formacion.php';
     }
 
-    if ( in_array( $active_template, array( 'seminarios-listado.php', 'taxonomy-tipo-oferta-academica.php' ), true ) ) {
+    if ( in_array( $active_template, array( 'taxonomy-tipo-oferta-academica.php' ), true ) ) {
         wp_enqueue_style(
             'flacso-page-header',
             get_stylesheet_directory_uri() . '/assets/css/components/page-header.css',
