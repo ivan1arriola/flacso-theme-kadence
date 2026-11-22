@@ -6,7 +6,8 @@
 $root = dirname(__DIR__);
 $page = file_get_contents($root . '/oferta-academica/page.php');
 $partial = file_get_contents($root . '/template-parts/oferta/menciones.php');
-$model = file_get_contents($root . '/inc/academic-public-model.php');
+// Normaliza finales de línea: la expresión de abajo busca LF y falla con CRLF (checkout de Windows).
+$model = str_replace("\r\n", "\n", (string) file_get_contents($root . '/inc/academic-public-model.php'));
 $css = file_get_contents($root . '/oferta-academica/style.css');
 function verify_menc($condition, $message) {
     if (!$condition) { fwrite(STDERR, "FAIL: {$message}\n"); exit(1); }

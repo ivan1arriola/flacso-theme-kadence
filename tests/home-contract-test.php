@@ -61,6 +61,7 @@ class Flacso_Home_Content {
     ]; }
     public static function get(): array { return $GLOBALS['content'] ?? self::defaults(); }
 }
+function flacso_child_main_tag() { return 'main'; }
 require $root . '/inc/home.php';
 
 $data = flacso_home_get_data();
@@ -136,7 +137,7 @@ check(strpos($card, 'class="news-card feature news-card--no-image"') !== false &
 
 // Plantillas
 $html = flacso_home_render();
-check(strpos($html, '<main id="main" class="flacso-home" role="main">') === 0, 'main con id y clase de la portada');
+check(strpos($html, '<main id="main" class="flacso-home">') === 0, 'main con id y clase de la portada');
 $last = -1;
 foreach (['Formación que conecta', 'Encontrá tu próxima formación', 'Tu próximo paso empieza acá.', 'Noticias</h2>', 'Pensar la región.', '¿Qué es FLACSO Uruguay?'] as $heading) {
     $pos = strpos($html, $heading);

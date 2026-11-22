@@ -46,7 +46,7 @@ while (have_posts()) :
         : '';
     ?>
 
-    <main class="flacso-single-post flacso-single-evento<?php echo $can_signup ? ' has-signup-bar' : ''; ?>">
+    <<?php echo flacso_child_main_tag(); ?> id="main" class="flacso-single-post flacso-single-evento<?php echo $can_signup ? ' has-signup-bar' : ''; ?>">
         <div class="flacso-single-container">
             <nav class="flacso-breadcrumb" aria-label="<?php esc_attr_e('Navegación', 'kadence-child-flacso'); ?>">
                 <a href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e('Inicio', 'kadence-child-flacso'); ?></a>
@@ -168,7 +168,7 @@ while (have_posts()) :
                 </aside>
             </div>
         </div>
-    </main>
+    </<?php echo flacso_child_main_tag(); ?>>
 
     <?php if ($can_signup) : ?>
         <div class="flacso-evento-signup" id="flacso-evento-signup" hidden>

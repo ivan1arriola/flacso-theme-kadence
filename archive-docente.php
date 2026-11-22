@@ -108,7 +108,7 @@ $total_count  = (int) $equipo_query->post_count;
         </div>
     </header>
 
-    <main class="archive-main">
+    <<?php echo flacso_child_main_tag(); ?> class="archive-main" id="main">
         <div class="site-container">
             <div id="docentes-grid" class="docentes-grid">
                 <?php if ($equipo_query->have_posts()) : ?>
@@ -181,7 +181,7 @@ $total_count  = (int) $equipo_query->post_count;
                 <?php endif; ?>
             </div>
         </div>
-    </main>
+    </<?php echo flacso_child_main_tag(); ?>>
 </div>
 
 <?php

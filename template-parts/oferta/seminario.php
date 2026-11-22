@@ -78,7 +78,7 @@ if (!empty($instance['modalidad'])) {
 }
 ?>
 
-<main id="main" class="site-main flacso-seminario-page">
+<<?php echo flacso_child_main_tag(); ?> id="main" class="site-main flacso-seminario-page">
     <div class="flacso-seminario-shell">
         <nav class="seminario-breadcrumb-wrap" aria-label="<?php esc_attr_e('Migas de pan', 'flacso-uruguay'); ?>">
             <ol class="seminario-breadcrumb">
@@ -553,7 +553,7 @@ if (!empty($instance['modalidad'])) {
             </section>
         <?php endif; ?>
     </div>
-</main>
+</<?php echo flacso_child_main_tag(); ?>>
 
 <script>
 (function () {

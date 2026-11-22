@@ -110,7 +110,7 @@ while (have_posts()) :
 
             <div class="docente-grid">
                 <!-- Columna Principal: CV -->
-                <main class="docente-main">
+                <<?php echo flacso_child_main_tag(); ?> class="docente-main" id="main">
                     <section class="docente-card profile-section">
                         <div class="card-header">
                             <span class="icon">📜</span>
@@ -124,7 +124,7 @@ while (have_posts()) :
                             <?php endif; ?>
                         </div>
                     </section>
-                </main>
+                </<?php echo flacso_child_main_tag(); ?>>
 
                 <!-- Sidebar: Redes y Enlaces -->
                 <aside class="docente-sidebar">

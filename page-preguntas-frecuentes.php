@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 
 get_header();
 ?>
-<main class="flacso-faq-page">
+<<?php echo flacso_child_main_tag(); ?> class="flacso-faq-page" id="main">
     <div class="flacso-faq-page__shell">
         <nav class="flacso-faq-page__breadcrumb" aria-label="<?php esc_attr_e('Navegación', 'kadence-child-flacso'); ?>">
             <a href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e('Inicio', 'kadence-child-flacso'); ?></a>
@@ -36,6 +36,6 @@ get_header();
         }
         ?>
     </div>
-</main>
+</<?php echo flacso_child_main_tag(); ?>>
 <?php
 get_footer();
