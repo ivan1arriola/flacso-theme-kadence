@@ -77,7 +77,7 @@ if ($ofertas_query->have_posts()) {
 
             $thumbnail_url = '';
             if ($image_id > 0) {
-                $cropped = wp_get_attachment_image_url($image_id, 'large');
+                $cropped = wp_get_attachment_image_url($image_id, 'flacso-card');
                 if ($cropped) {
                     $thumbnail_url = (string) $cropped;
                 }
@@ -154,7 +154,7 @@ $render_offer_card = static function (array $item) use ($taxonomy_name): void {
                     if (!empty($item['image_id'])) {
                         echo wp_get_attachment_image(
                             (int) $item['image_id'],
-                            'large',
+                            'flacso-card',
                             false,
                             [
                                 'class'    => 'flacso-formacion-card__image',
