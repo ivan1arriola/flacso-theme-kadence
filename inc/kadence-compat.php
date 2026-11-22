@@ -23,7 +23,7 @@ function flacso_child_register_kadence_compat( $wp_customize ): void {
         'flacso_kadence_compat',
         array(
             'title'       => __( 'Integración con Kadence', 'kadence-child-flacso' ),
-            'description' => __( 'Los colores, las fuentes y los botones usan las opciones globales de Kadence. Podés activar también los constructores nativos de cabecera y pie.', 'kadence-child-flacso' ),
+            'description' => __( 'Los colores, las fuentes y los botones usan las opciones globales de Kadence. Podés activar también los constructores nativos de cabecera y pie. Aviso de accesibilidad: el texto atenuado usa la paleta 5 de Kadence; mantené al menos 4,5:1 de contraste sobre blanco (#7a8696 da 3,7:1 y no alcanza; #64748b da 4,8:1).', 'kadence-child-flacso' ),
             'priority'    => 32,
         )
     );

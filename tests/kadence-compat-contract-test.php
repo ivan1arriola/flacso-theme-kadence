@@ -36,6 +36,8 @@ flacso_child_register_kadence_compat( $customizer );
 bridge_check( isset( $customizer->sections['flacso_kadence_compat'] ), 'sección de integración disponible' );
 bridge_check( isset( $customizer->controls['flacso_use_kadence_chrome'] ), 'opción reversible disponible' );
 bridge_check( $customizer->settings['flacso_use_kadence_chrome']['default'] === false, 'el modo nativo requiere activación' );
+$section_help = $customizer->sections['flacso_kadence_compat']['description'];
+bridge_check( strpos( $section_help, 'paleta 5' ) !== false && strpos( $section_help, '4,5:1' ) !== false, 'el Customizer advierte el contraste mínimo del texto atenuado' );
 
 $header = file_get_contents( $root . '/header.php' );
 $footer = file_get_contents( $root . '/footer.php' );
@@ -49,9 +51,11 @@ $chrome = file_get_contents( $root . '/assets/css/site-chrome.css' );
 $home = file_get_contents( $root . '/assets/css/front-page.css' );
 bridge_check( strpos( $base, 'var(--global-palette1' ) !== false, 'paleta Kadence aplicada a tokens base' );
 bridge_check( strpos( $chrome, 'var(--global-content-width' ) !== false, 'ancho institucional de Kadence' );
-bridge_check( strpos( $chrome, 'var(--global-palette-btn-bg' ) !== false, 'el CTA de cabecera usa Kadence' );
+// Los CTA de marca (cabecera y hero) siguen la paleta global de Kadence (palette2, amarillo), no el botón de Kadence (verde, de los formularios).
+bridge_check( strpos( $chrome, 'var(--global-palette2' ) !== false, 'el CTA de cabecera usa el acento de la paleta Kadence' );
+bridge_check( strpos( $chrome, 'palette-btn' ) === false, 'la cabecera no depende del botón de Kadence' );
 bridge_check( strpos( $home, 'var(--global-body-font-family' ) !== false, 'la portada usa la fuente base Kadence' );
 bridge_check( strpos( $home, 'var(--global-heading-font-family' ) !== false, 'la portada usa títulos Kadence' );
-bridge_check( strpos( $home, 'var(--global-palette-btn-bg' ) !== false, 'el CTA del hero usa el botón Kadence' );
-bridge_check( strpos( $home, 'var(--global-palette-btn-bg-hover' ) !== false, 'hover del hero usa Kadence' );
+bridge_check( strpos( $home, 'var(--global-palette2' ) !== false, 'el CTA del hero usa el acento de la paleta Kadence' );
+bridge_check( strpos( $home, 'palette-btn' ) === false, 'la portada no depende del botón de Kadence' );
 echo "Kadence: integración visual y cabecera/pie reversibles correctos.\n";

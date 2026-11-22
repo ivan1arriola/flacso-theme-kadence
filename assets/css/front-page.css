@@ -25,8 +25,8 @@
 .flacso-home h1{font-size:64px;line-height:1.08;letter-spacing:-2.15px;color:#fff;font-weight:500;max-width:680px;margin:0 0 25px}
 .flacso-home h1 em{font-style:normal;font-weight:700}
 .flacso-home .hero-intro{max-width:440px;color:#d3deed;font-size:16px;line-height:1.65;margin-bottom:28px}
-.flacso-home .primary{display:inline-flex;align-items:center;justify-content:space-between;gap:30px;background:var(--global-palette-btn-bg,var(--yellow));padding:15px 19px;font-size:13px;font-weight:600;color:var(--global-palette-btn,#233d66);border-radius:2px;transition:background .15s}
-.flacso-home .primary:hover{background:var(--global-palette-btn-bg-hover,var(--yellow));color:var(--global-palette-btn-hover,#233d66);text-decoration:none}
+.flacso-home .primary{display:inline-flex;align-items:center;justify-content:space-between;gap:30px;background:var(--global-palette2,var(--yellow));padding:15px 19px;font-size:13px;font-weight:600;color:var(--global-palette3,#233d66);border-radius:2px;transition:background .15s,filter .15s}
+.flacso-home .primary:hover{background:var(--global-palette2,var(--yellow));color:var(--global-palette3,#233d66);filter:brightness(1.06);text-decoration:none}
 .flacso-home .primary>span{font-size:19px}
 .flacso-home .hero-media{position:absolute;inset:0;margin:0;z-index:-1;overflow:hidden;background:#344e6c}
 .flacso-home .hero-media picture{display:block;width:100%;height:100%}
@@ -245,8 +245,8 @@
 
 /* El desplazamiento se aplica al img, que está posicionado en forma absoluta. */
 .flacso-home .hero-media img{transform:translate3d(0,var(--hero-parallax,0px),0) scale(1.13);transform-origin:center;will-change:transform}
-.flacso-home .hero-cta{border:1px solid #ffffff70;border-radius:12px;background:var(--global-palette-btn-bg,var(--yellow));color:var(--global-palette-btn,#233d66);box-shadow:7px 7px 16px #10254d60,-4px -4px 14px #ffffff38,inset 2px 2px 3px #ffffff40,inset -2px -2px 4px #00000018;transition:background .2s,box-shadow .2s,transform .2s}
-.flacso-home .hero-cta:hover{background:var(--global-palette-btn-bg-hover,var(--yellow));color:var(--global-palette-btn-hover,#233d66);box-shadow:9px 9px 20px #10254d70,-5px -5px 14px #ffffff45,inset 2px 2px 4px #ffffff3d,inset -2px -2px 4px #0000001e;text-decoration:none;transform:translateY(-2px)}
+.flacso-home .hero-cta{border:1px solid #ffffff70;border-radius:12px;background:var(--global-palette2,var(--yellow));color:var(--global-palette3,#233d66);box-shadow:7px 7px 16px #10254d60,-4px -4px 14px #ffffff38,inset 2px 2px 3px #ffffff40,inset -2px -2px 4px #00000018;transition:background .2s,box-shadow .2s,transform .2s,filter .2s}
+.flacso-home .hero-cta:hover{background:var(--global-palette2,var(--yellow));color:var(--global-palette3,#233d66);filter:brightness(1.06);box-shadow:9px 9px 20px #10254d70,-5px -5px 14px #ffffff45,inset 2px 2px 4px #ffffff3d,inset -2px -2px 4px #0000001e;text-decoration:none;transform:translateY(-2px)}
 .flacso-home .hero-cta:active{transform:translateY(1px);box-shadow:inset 4px 4px 8px #00000038,inset -3px -3px 8px #ffffff40}
 /* Las noticias fijadas y recientes mantienen el orden del DOM. */
 .flacso-home .news-bento{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-rows:minmax(205px,auto);grid-auto-flow:row;gap:16px}
