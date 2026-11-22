@@ -16,7 +16,7 @@ while (have_posts()) :
     $external_url = (string) get_post_meta(get_the_ID(), '_flacso_convenio_external_url', true);
     $content = trim((string) apply_filters('the_content', get_the_content()));
     ?>
-    <main class="flacso-convenio-single" id="main" role="main">
+    <<?php echo flacso_child_main_tag(); ?> class="flacso-convenio-single" id="main">
         <div class="flacso-convenios-container">
             <nav class="flacso-convenios-breadcrumb" aria-label="<?php esc_attr_e('Navegación', 'kadence-child-flacso'); ?>">
                 <a href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e('Inicio', 'kadence-child-flacso'); ?></a>
@@ -50,7 +50,7 @@ while (have_posts()) :
                 </div>
             </article>
         </div>
-    </main>
+    </<?php echo flacso_child_main_tag(); ?>>
     <?php
 endwhile;
 

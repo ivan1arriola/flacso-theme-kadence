@@ -32,7 +32,7 @@ $total_programas = (int) $programas_query->post_count;
         </div>
     </header>
 
-    <main class="programas-main">
+    <<?php echo flacso_child_main_tag(); ?> class="programas-main" id="main">
         <div class="site-container">
             <div class="programas-grid">
                 <?php if ($programas_query->have_posts()) : ?>
@@ -122,7 +122,7 @@ $total_programas = (int) $programas_query->post_count;
                 <?php endif; ?>
             </div>
         </div>
-    </main>
+    </<?php echo flacso_child_main_tag(); ?>>
 </div>
 
 <?php

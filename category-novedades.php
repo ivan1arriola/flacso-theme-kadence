@@ -18,7 +18,7 @@ $current_name = $category ? $category->name : 'Novedades';
 $description = category_description();
 ?>
 
-<main class="flacso-archive-novedades" role="main">
+<<?php echo flacso_child_main_tag(); ?> class="flacso-archive-novedades" id="main">
     <div class="flacso-archive-container">
 
         <header class="flacso-archive-hero">
@@ -79,7 +79,7 @@ $description = category_description();
         <?php endif; ?>
 
     </div>
-</main>
+</<?php echo flacso_child_main_tag(); ?>>
 
 
 <?php

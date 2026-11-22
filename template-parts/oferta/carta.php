@@ -67,7 +67,7 @@ $carta_parte = static function (string $parte) use ($carta_args): void {
 
 <div id="primary" class="content-area flacso-carta-virtual" style="<?php echo esc_attr($carta['inline_brand_styles']); ?>">
     <a class="fc-skip-link" href="<?php echo $carta['hay_bloques_detallados'] ? '#fc-overview-title' : '#fc-planificacion'; ?>"><?php esc_html_e('Saltar a la información principal', 'flacso-uruguay'); ?></a>
-    <main id="main" class="site-main" aria-labelledby="fc-carta-title">
+    <<?php echo flacso_child_main_tag(); ?> id="main" class="site-main" aria-labelledby="fc-carta-title">
 
         <?php $carta_parte('hero'); ?>
         <?php $carta_parte('propuesta-extras'); ?>
@@ -90,7 +90,7 @@ $carta_parte = static function (string $parte) use ($carta_args): void {
             <?php $carta_parte('flotante'); ?>
 
         </div>
-    </main>
+    </<?php echo flacso_child_main_tag(); ?>>
 </div>
 
 <?php $carta_parte('scripts'); ?>

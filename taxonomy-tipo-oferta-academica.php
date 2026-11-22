@@ -218,7 +218,7 @@ $render_offer_card = static function (array $item) use ($taxonomy_name): void {
 get_header();
 ?>
 
-<main class="flacso-taxonomy-oferta">
+<<?php echo flacso_child_main_tag(); ?> class="flacso-taxonomy-oferta" id="main">
     <div class="flacso-taxonomy-container">
 
         <header class="flacso-taxonomy-hero">
@@ -309,7 +309,7 @@ get_header();
             </div>
         <?php endif; ?>
     </div>
-</main>
+</<?php echo flacso_child_main_tag(); ?>>
 
 <script>
 (function() {

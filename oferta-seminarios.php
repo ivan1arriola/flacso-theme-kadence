@@ -90,7 +90,7 @@ if (function_exists('flacso_global_styles')) {
 ?>
 
 <div class="content-area flacso-seminarios-page">
-    <main id="main" class="site-main">
+    <<?php echo flacso_child_main_tag(); ?> id="main" class="site-main">
         <header class="seminarios-hero" role="banner">
             <div class="seminarios-hero__overlay" aria-hidden="true"></div>
             <div class="seminarios-hero__grid" aria-hidden="true"></div>
@@ -244,7 +244,7 @@ if (function_exists('flacso_global_styles')) {
                 </div>
             </div>
         </section>
-    </main>
+    </<?php echo flacso_child_main_tag(); ?>>
 </div>
 
 <?php

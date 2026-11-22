@@ -23,7 +23,7 @@ $contactos = function_exists('flacso_get_contactos') ? flacso_get_contactos() : 
 $telefono_tel = preg_replace('/\D/', '', $telefono);
 ?>
 
-<main class="flacso-contact-page">
+<<?php echo flacso_child_main_tag(); ?> class="flacso-contact-page" id="main">
     <div class="flacso-contact-shell">
 
         <header class="flacso-contact-hero">
@@ -198,7 +198,7 @@ $telefono_tel = preg_replace('/\D/', '', $telefono);
         <?php endif; ?>
 
     </div>
-</main>
+</<?php echo flacso_child_main_tag(); ?>>
 
 
 <?php

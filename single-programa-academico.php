@@ -86,7 +86,7 @@ while (have_posts()) :
         </header>
 
         <div class="site-container programa-layout">
-            <main class="programa-main-content">
+            <<?php echo flacso_child_main_tag(); ?> class="programa-main-content" id="main">
                 <!-- Presentación del Programa -->
                 <?php if ($presentacion && !$filtrado) : ?>
                     <section class="programa-section programa-presentacion">
@@ -206,7 +206,7 @@ while (have_posts()) :
                         </div>
                     </section>
                 <?php endif; ?>
-            </main>
+            </<?php echo flacso_child_main_tag(); ?>>
 
             <!-- Sidebar: Coordinación -->
             <aside class="programa-sidebar">

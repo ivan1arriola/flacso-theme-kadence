@@ -21,7 +21,7 @@ while (have_posts()) :
     $blog_url     = $blog_page_id ? get_permalink($blog_page_id) : home_url('/categoria/novedades/');
     ?>
 
-    <main class="flacso-single-post">
+    <<?php echo flacso_child_main_tag(); ?> class="flacso-single-post" id="main">
         <div class="flacso-single-container">
 
             <nav class="flacso-breadcrumb" aria-label="Navegación">
@@ -114,7 +114,7 @@ while (have_posts()) :
             </div>
 
         </div>
-    </main>
+    </<?php echo flacso_child_main_tag(); ?>>
 
 
 

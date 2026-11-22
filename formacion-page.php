@@ -99,7 +99,7 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
     : [];
 ?>
 
-<main id="main" class="site-main flacso-formacion-page">
+<<?php echo flacso_child_main_tag(); ?> id="main" class="site-main flacso-formacion-page">
 
     <section class="flacso-formacion-hero">
         <div class="flacso-formacion-hero__inner">
@@ -389,7 +389,7 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
 
     </div>
 
-</main>
+</<?php echo flacso_child_main_tag(); ?>>
 
 <?php
 get_footer();

@@ -523,7 +523,7 @@ $render_coordinador = static function ($docente_id, $rol = '') {
 <div class="wrap kt-clear flacso-oferta-responsive" style="<?php echo esc_attr($offer_style_vars); ?>" data-offer-title="<?php echo esc_attr($title); ?>" data-offer-id="<?php echo esc_attr((string) $post_id); ?>">
     <div id="primary" class="content-area">
         <div class="content-container">
-            <main id="main" class="site-main">
+            <<?php echo flacso_child_main_tag(); ?> id="main" class="site-main">
                 <article id="post-<?php echo esc_attr($post_id); ?>" <?php post_class('entry content-bg single-entry flacso-oa-article'); ?>>
 
                     <section class="flacso-academic-hero" aria-labelledby="flacso-oa-program-title">
@@ -1096,7 +1096,7 @@ $render_coordinador = static function ($docente_id, $rol = '') {
                     </nav>
 
                 </article>
-            </main>
+            </<?php echo flacso_child_main_tag(); ?>>
         </div>
     </div>
 </div>
