@@ -169,7 +169,7 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
            <?php if ($accent !== '') : ?>style="--offer-accent: <?php echo esc_attr($accent); ?>;"<?php endif; ?>>
             <div class="flacso-formacion-card__media">
                 <?php if (!empty($item['thumbnail_url'])) : ?>
-                    <img src="<?php echo esc_url($item['thumbnail_url']); ?>" alt="<?php echo esc_attr($item['title']); ?>" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                    <?php echo flacso_child_card_image_html((int) ($item['thumbnail_id'] ?? 0), (string) $item['thumbnail_url'], (string) $item['title'], '(max-width: 767px) 92vw, 380px', ['onerror' => "this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';"]); ?>
                     <div class="flacso-formacion-card__placeholder" style="display:none;">
                         <i class="bi bi-mortarboard" aria-hidden="true"></i>
                     </div>
@@ -338,7 +338,7 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
                         <a href="<?php echo esc_url($sem['permalink']); ?>" class="flacso-formacion-card">
                             <div class="flacso-formacion-card__media">
                                 <?php if (!empty($sem['thumbnail_url'])) : ?>
-                                    <img src="<?php echo esc_url($sem['thumbnail_url']); ?>" alt="<?php echo esc_attr($sem['title']); ?>" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                                    <?php echo flacso_child_card_image_html((int) ($sem['thumbnail_id'] ?? 0), (string) $sem['thumbnail_url'], (string) $sem['title'], '(max-width: 767px) 92vw, 380px', ['onerror' => "this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';"]); ?>
                                     <div class="flacso-formacion-card__placeholder" style="display:none;">
                                         <i class="bi bi-mortarboard" aria-hidden="true"></i>
                                     </div>
