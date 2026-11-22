@@ -318,7 +318,7 @@
 .flacso-home .open-card__cta{margin-top:auto;padding-top:6px;font-size:15px;font-weight:700;color:var(--blue)}
 @media(max-width:767px){
   .flacso-home .open-section{padding:36px 0 40px}
-  .flacso-home .open-list{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;margin-inline:calc(var(--flacso-content-inset,32px)/-2);padding:4px calc(var(--flacso-content-inset,32px)/2) 14px;scrollbar-width:thin}
+  .flacso-home .open-list{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:calc(var(--flacso-content-inset,32px)/2);-webkit-overflow-scrolling:touch;margin-inline:calc(var(--flacso-content-inset,32px)/-2);padding:4px calc(var(--flacso-content-inset,32px)/2) 14px;scrollbar-width:thin}
   .flacso-home .open-list>li{flex:0 0 72%;max-width:300px;scroll-snap-align:start}
   .flacso-home .hero .hero-cta{display:flex;width:100%}
   .flacso-home .offer-grid>a{min-height:64px}
