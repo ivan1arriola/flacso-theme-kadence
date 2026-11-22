@@ -405,8 +405,15 @@
     font-size: 1rem;
 }
 
-.flacso-header-search__form input:focus {
-    outline: 0;
+.flacso-header-search__form input:focus-visible {
+    outline: 2px solid var(--flacso-chrome-blue);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+.flacso-header-search__form button:focus-visible {
+    outline: 2px solid var(--flacso-chrome-blue);
+    outline-offset: 2px;
 }
 
 .flacso-header-search__form button {
