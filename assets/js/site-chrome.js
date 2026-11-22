@@ -54,6 +54,47 @@
         if (returnFocus) menuToggle.focus();
     }
 
+    // Submenú de escritorio: se abre por :hover y :focus-within; Escape lo descarta (WCAG 1.4.13) hasta que el
+    // puntero o el foco salgan del ítem. El submenú pasa por una transición de visibility: focus() se reintenta.
+    function dismissDesktopSubmenu() {
+        if (!menu || window.innerWidth <= 1080) return false;
+        var active = document.activeElement;
+        var item = active && active.closest ? active.closest('.menu-item-has-children') : null;
+        if (!item || !menu.contains(item)) item = menu.querySelector('.menu-item-has-children:hover');
+        if (!item) return false;
+        var link = item.querySelector(':scope > a');
+        item.classList.add('is-submenu-dismissed');
+        if (link && item.contains(active) && active !== link) link.focus();
+        return true;
+    }
+
+    function openDesktopSubmenuFromKeyboard(item) {
+        var first = item.querySelector(':scope > .sub-menu a');
+        if (!first) return;
+        item.classList.remove('is-submenu-dismissed');
+        var attempts = 0;
+        var focusFirst = function () {
+            first.focus();
+            if (document.activeElement !== first && attempts++ < 30) requestAnimationFrame(focusFirst);
+        };
+        requestAnimationFrame(focusFirst);
+    }
+
+    if (menu) {
+        Array.prototype.forEach.call(menu.querySelectorAll('.menu-item-has-children'), function (item) {
+            // Una nueva entrada o salida del puntero es una interacción nueva: el submenú vuelve a mostrarse.
+            item.addEventListener('mouseenter', function () {
+                item.classList.remove('is-submenu-dismissed');
+            });
+            item.addEventListener('mouseleave', function () {
+                item.classList.remove('is-submenu-dismissed');
+            });
+            item.addEventListener('focusout', function (event) {
+                if (!event.relatedTarget || !item.contains(event.relatedTarget)) item.classList.remove('is-submenu-dismissed');
+            });
+        });
+    }
+
     function closeSearch(returnFocus) {
         if (!search || !searchToggle) return;
         search.hidden = true;
@@ -155,11 +196,22 @@
             }
             return;
         }
+        if (event.key === 'ArrowDown' && menu && window.innerWidth > 1080) {
+            var parentLink = document.activeElement;
+            var parentItem = parentLink && parentLink.parentElement;
+            if (parentItem && parentItem.classList.contains('menu-item-has-children') && menu.contains(parentItem)
+                && parentLink.matches('.menu-item-has-children > a')) {
+                event.preventDefault();
+                openDesktopSubmenuFromKeyboard(parentItem);
+                return;
+            }
+        }
         if (event.key !== 'Escape') return;
         if (search && !search.hidden) {
             closeSearch(true);
             return;
         }
+        if (dismissDesktopSubmenu()) return;
         if (menu && menu.classList.contains('is-open')) closeMenu(true);
     });
 

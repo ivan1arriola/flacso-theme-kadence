@@ -239,6 +239,15 @@
     transform: translateY(0);
 }
 
+/* Escape descarta el submenú aunque el puntero o el foco sigan adentro (WCAG 1.4.13); vuelve al salir y entrar. */
+@media (min-width: 1081px) {
+    .flacso-navbar__menu li.menu-item-has-children.is-submenu-dismissed > .sub-menu {
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(8px);
+    }
+}
+
 .flacso-navbar__menu .sub-menu a {
     display: block;
     padding: 0.72rem 0.85rem;
