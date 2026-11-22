@@ -36,7 +36,7 @@ layout_check(strpos($front, "do_action( 'kadence_before_content' )") === false &
 $chrome = file_get_contents($root . '/assets/css/site-chrome.css');
 $home = file_get_contents($root . '/assets/css/front-page.css');
 $mobile = file_get_contents($root . '/assets/css/mobile-ux.css');
-layout_check(strpos($chrome, '--flacso-chrome-width: 1180px;') !== false, 'ancho máximo compartido de 1180px');
+layout_check(strpos($chrome, '--flacso-chrome-width: var(--global-content-width, 1180px);') !== false, 'ancho común configurable desde Kadence');
 layout_check(strpos($chrome, '--flacso-content-inset: 40px;') !== false, 'margen compartido escritorio');
 layout_check(strpos($chrome, '--flacso-content-inset: 24px;') !== false, 'margen compartido tablet');
 layout_check(strpos($chrome, '--flacso-content-inset: 20px;') !== false, 'margen compartido móvil');

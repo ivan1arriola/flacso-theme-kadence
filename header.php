@@ -6,6 +6,15 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+// Al activar la integración, Kadence utiliza el constructor nativo de cabecera.
+if ( function_exists( 'flacso_child_use_kadence_chrome' ) && flacso_child_use_kadence_chrome() ) {
+    $kadence_header = get_template_directory() . '/header.php';
+    if ( is_readable( $kadence_header ) ) {
+        require $kadence_header;
+        return;
+    }
+}
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?> class="no-js">

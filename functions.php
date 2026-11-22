@@ -4,6 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once get_stylesheet_directory() . '/inc/theme-setup.php';
+require_once get_stylesheet_directory() . '/inc/kadence-compat.php';
 require_once get_stylesheet_directory() . '/inc/color-contrast.php';
 require_once get_stylesheet_directory() . '/inc/academic-document-presentation.php';
 require_once get_stylesheet_directory() . '/inc/academic-public-model.php';
