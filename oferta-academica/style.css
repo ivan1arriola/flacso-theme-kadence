@@ -4949,8 +4949,8 @@
 
 @media (max-width: 760px) {
     .flacso-oferta-responsive.flacso-mobile-sheet-ready {
-        padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
-        scroll-padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+        padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px));
+        scroll-padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
     }
 
     .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-mobile-actions {
@@ -4961,18 +4961,17 @@
         left: 0;
         right: 0;
         display: grid;
-        grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
-        align-items: center;
-        gap: 10px;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        align-items: stretch;
+        gap: 12px;
         width: 100%;
-        padding: 10px max(16px, env(safe-area-inset-left, 0px))
-                 calc(10px + env(safe-area-inset-bottom, 0px))
+        padding: 12px max(16px, env(safe-area-inset-left, 0px))
+                 calc(12px + env(safe-area-inset-bottom, 0px))
                  max(16px, env(safe-area-inset-right, 0px));
-        border-top: 1px solid #e1e8f2;
-        background: rgba(255, 255, 255, .97);
-        box-shadow: 0 -8px 28px rgba(8, 43, 96, .12);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        /* Fondo sólido y borde del color de la oferta: la barra se separa del contenido que pasa por debajo. */
+        border-top: 3px solid var(--oa-brand);
+        background: #fff;
+        box-shadow: 0 -12px 32px rgba(8, 43, 96, .22);
         transition: opacity .18s ease, visibility .18s ease;
     }
 
@@ -4984,12 +4983,12 @@
         justify-content: center;
         gap: 7px;
         min-width: 0;
-        min-height: 48px;
+        min-height: 56px;
         margin: 0;
-        padding: 10px 12px;
+        padding: 12px 10px;
         border: 2px solid var(--oa-brand);
         border-radius: 999px;
-        font-size: clamp(.8rem, 3.4vw, .95rem);
+        font-size: clamp(1rem, 4vw, 1.05rem);
         font-weight: 800;
         line-height: 1.25;
         text-decoration: none !important;
@@ -4999,12 +4998,14 @@
     }
     .flacso-oferta-responsive .flacso-mobile-actions__info {
         background: #fff;
+        background: color-mix(in srgb, var(--oa-brand) 9%, #fff);
         color: #143962;
     }
     .flacso-oferta-responsive .flacso-mobile-actions__register,
     .flacso-oferta-responsive .flacso-mobile-actions__register:visited {
         background: var(--oa-brand);
         color: var(--oa-hero-brand-ink, #fff) !important;
+        box-shadow: 0 6px 16px rgba(8, 43, 96, .28);
     }
     .flacso-oferta-responsive .flacso-mobile-actions__info:only-child {
         grid-column: 1 / -1;
@@ -5013,6 +5014,11 @@
         flex: none;
         font-size: 1.2rem;
         line-height: 1;
+    }
+    @media (max-width: 380px) {
+        .flacso-oferta-responsive .flacso-mobile-actions__info-icon {
+            display: none;
+        }
     }
     .flacso-oferta-responsive .flacso-mobile-actions__info:focus-visible,
     .flacso-oferta-responsive .flacso-mobile-actions__register:focus-visible,
@@ -5197,7 +5203,6 @@
     .flacso-oferta-responsive .flacso-mobile-actions__info,
     .flacso-oferta-responsive .flacso-mobile-actions__register {
         padding-inline: 8px;
-        font-size: .79rem;
         gap: 5px;
     }
 }

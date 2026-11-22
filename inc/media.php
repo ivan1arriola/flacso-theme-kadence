@@ -6,8 +6,85 @@ if ( ! defined( 'ABSPATH' ) ) {
 function flacso_child_register_seminar_image_sizes() {
     add_image_size( 'flacso-seminario-4x5', 800, 1000, true );
     add_image_size( 'flacso-oferta-4x5', 800, 1000, true );
+    // Miniatura de tarjeta de los listados (4:5). El 800x1000 anterior sirve de versión 2x en el srcset.
+    add_image_size( 'flacso-card', 480, 600, true );
 }
 add_action( 'after_setup_theme', 'flacso_child_register_seminar_image_sizes', 25 );
+
+/**
+ * Tamaño reducido más grande disponible para una imagen, nunca el original.
+ *
+ * Las imágenes subidas antes de registrar los tamaños 4x5 del tema no los tienen y WordPress devuelve `full`
+ * (3 a 5 MB por tarjeta). Devuelve '' si el tamaño no es del tema o no hay ningún reducido.
+ *
+ * @param array<string,mixed> $metadata Metadatos del adjunto (wp_get_attachment_metadata).
+ */
+function flacso_child_fallback_image_size( $metadata, string $requested ): string {
+    $order = array(
+        'flacso-card'          => array( 'flacso-card', 'flacso-oferta-4x5', 'flacso-seminario-4x5', 'medium_large', 'large', 'medium' ),
+        'flacso-oferta-4x5'    => array( 'flacso-oferta-4x5', 'flacso-seminario-4x5', 'medium_large', 'large', 'medium' ),
+        'flacso-seminario-4x5' => array( 'flacso-seminario-4x5', 'flacso-oferta-4x5', 'medium_large', 'large', 'medium' ),
+    );
+    if ( ! isset( $order[ $requested ] ) || ! is_array( $metadata ) || empty( $metadata['sizes'] ) || ! is_array( $metadata['sizes'] ) ) {
+        return '';
+    }
+    foreach ( $order[ $requested ] as $candidate ) {
+        if ( isset( $metadata['sizes'][ $candidate ] ) ) {
+            return $candidate;
+        }
+    }
+    return '';
+}
+
+/** image_downsize: si falta el tamaño de tarjeta pedido, entrega el reducido más grande en vez del original. */
+function flacso_child_image_downsize_fallback( $out, $attachment_id, $size ) {
+    if ( false !== $out || ! is_string( $size ) ) {
+        return $out;
+    }
+    $metadata = wp_get_attachment_metadata( $attachment_id );
+    $fallback = flacso_child_fallback_image_size( $metadata, $size );
+    if ( '' === $fallback || $fallback === $size ) {
+        return $out;
+    }
+    return image_downsize( $attachment_id, $fallback );
+}
+add_filter( 'image_downsize', 'flacso_child_image_downsize_fallback', 10, 3 );
+
+/**
+ * <img> de una tarjeta de listado: tamaño `flacso-card` con srcset y sizes, carga diferida y decodificación asíncrona.
+ *
+ * @param int                  $attachment_id Adjunto (0 si no se conoce: se resuelve por la URL).
+ * @param string               $fallback_url  URL de respaldo (imagen externa o sin adjunto).
+ * @param array<string,string> $extra         Atributos adicionales (por ejemplo `onerror`).
+ */
+function flacso_child_card_image_html( int $attachment_id, string $fallback_url, string $alt, string $sizes = '', array $extra = array() ): string {
+    if ( $attachment_id <= 0 && '' !== $fallback_url ) {
+        $attachment_id = (int) attachment_url_to_postid( $fallback_url );
+    }
+    $attr = array_merge(
+        array(
+            'alt'      => $alt,
+            'loading'  => 'lazy',
+            'decoding' => 'async',
+        ),
+        '' !== $sizes ? array( 'sizes' => $sizes ) : array(),
+        $extra
+    );
+    if ( $attachment_id > 0 ) {
+        $html = wp_get_attachment_image( $attachment_id, 'flacso-card', false, $attr );
+        if ( '' !== $html ) {
+            return $html;
+        }
+    }
+    if ( '' === $fallback_url ) {
+        return '';
+    }
+    $html = '<img src="' . esc_url( $fallback_url ) . '"';
+    foreach ( $attr as $name => $value ) {
+        $html .= ' ' . $name . '="' . esc_attr( $value ) . '"';
+    }
+    return $html . '>';
+}
 
 function flacso_child_needs_featured_images() {
     return is_home()

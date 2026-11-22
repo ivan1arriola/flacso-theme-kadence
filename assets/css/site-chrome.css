@@ -239,6 +239,15 @@
     transform: translateY(0);
 }
 
+/* Escape descarta el submenú aunque el puntero o el foco sigan adentro (WCAG 1.4.13); vuelve al salir y entrar. */
+@media (min-width: 1081px) {
+    .flacso-navbar__menu li.menu-item-has-children.is-submenu-dismissed > .sub-menu {
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(8px);
+    }
+}
+
 .flacso-navbar__menu .sub-menu a {
     display: block;
     padding: 0.72rem 0.85rem;
@@ -830,16 +839,40 @@
 @media (max-width: 1080px) {
     .flacso-navbar__navigation {
         width: min(420px, calc(100vw - 24px));
-        padding: 0 1rem 1.5rem;
+        padding: env(safe-area-inset-top, 0px) 1rem 1.5rem;
         background: #fbfcfe;
     }
 
-    .flacso-navbar__drawer-close {
-        min-height: 68px;
-        padding-inline: 0.15rem;
+    /* Dos clases: la regla global `body:not(.wp-admin) :where(button)` (min-height 44px hasta 782px) pesa (0,1,1). */
+    .flacso-navbar__navigation .flacso-navbar__drawer-close {
+        min-height: 72px;
+        height: auto;
+        padding: 0.9rem 0.6rem;
         background: rgba(251, 252, 254, 0.98);
         font-size: 1.05rem;
         letter-spacing: -0.01em;
+    }
+
+    /* Kadence pinta todo <button> en :hover y :focus (fondo de botón, texto blanco y sombra): la barra del cajón
+       y la flecha del submenú conservan su aspecto y muestran el anillo de foco hacia adentro, sin recortarse. */
+    .flacso-navbar__drawer-close:hover,
+    .flacso-navbar__drawer-close:focus,
+    .flacso-navbar__drawer-close:active {
+        background: rgba(251, 252, 254, 0.98);
+        color: var(--flacso-chrome-navy);
+        box-shadow: none;
+    }
+
+    .flacso-navbar__drawer-close:focus-visible {
+        outline: 3px solid var(--flacso-color-primary);
+        outline-offset: -6px;
+    }
+
+    .flacso-navbar__submenu-toggle:hover,
+    .flacso-navbar__submenu-toggle:focus,
+    .flacso-navbar__submenu-toggle:active {
+        color: var(--flacso-chrome-blue);
+        box-shadow: none;
     }
 
     .flacso-navbar__drawer-close svg {
