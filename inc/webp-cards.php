@@ -46,30 +46,45 @@ function flacso_child_webp_companion_url( string $url ): string {
 	return file_exists( $dir . $relative ) ? $webp_url : $url;
 }
 
-/** Filtro de srcset: entrega el .webp en los candidatos de tarjeta que lo tienen. */
-function flacso_child_card_srcset_webp( $sources ) {
-	if ( ! is_array( $sources ) ) {
-		return $sources;
-	}
-	foreach ( $sources as $key => $source ) {
-		if ( is_array( $source ) && ! empty( $source['url'] ) ) {
-			$sources[ $key ]['url'] = flacso_child_webp_companion_url( (string) $source['url'] );
+/** srcset en cadena ("url 480w, url 800w"): entrega el .webp en los candidatos de tarjeta que lo tienen. */
+function flacso_child_webp_srcset( string $srcset ): string {
+	$candidates = array_map( 'trim', explode( ',', $srcset ) );
+	foreach ( $candidates as $index => $candidate ) {
+		$parts = preg_split( '/\s+/', $candidate, 2 );
+		if ( false === $parts || '' === $parts[0] ) {
+			continue;
 		}
+		$parts[0]            = flacso_child_webp_companion_url( $parts[0] );
+		$candidates[ $index ] = implode( ' ', $parts );
 	}
-	return $sources;
+	return implode( ', ', $candidates );
 }
-add_filter( 'wp_calculate_image_srcset', 'flacso_child_card_srcset_webp', 20, 1 );
 
-/** Filtro de la URL principal: solo para los tamaños nombrados del tema. */
-function flacso_child_card_image_src_webp( $image, $attachment_id = 0, $size = '' ) {
+/**
+ * Atributos FINALES de la etiqueta <img>: cambia src y srcset a .webp, solo para los tamaños nombrados del tema.
+ *
+ * Tiene que ser en este filtro y no en wp_get_attachment_image_src ni en wp_calculate_image_srcset: WordPress arma el srcset
+ * solo si la URL principal coincide con un archivo de los metadatos, y una URL .webp no coincide, así que la etiqueta perdía el
+ * srcset completo (sin 800 px para pantallas de alta densidad).
+ *
+ * @param array|false $attr       Atributos de la etiqueta.
+ * @param mixed       $attachment Adjunto (no se usa).
+ * @param mixed       $size       Tamaño pedido: solo se actúa sobre los nombres de tarjeta del tema.
+ */
+function flacso_child_card_attributes_webp( $attr, $attachment = null, $size = '' ) {
 	$card_sizes = array( 'flacso-card', 'flacso-oferta-4x5', 'flacso-seminario-4x5' );
-	if ( ! is_array( $image ) || empty( $image[0] ) || ! is_string( $size ) || ! in_array( $size, $card_sizes, true ) ) {
-		return $image;
+	if ( ! is_array( $attr ) || ! is_string( $size ) || ! in_array( $size, $card_sizes, true ) ) {
+		return $attr;
 	}
-	$image[0] = flacso_child_webp_companion_url( (string) $image[0] );
-	return $image;
+	if ( ! empty( $attr['src'] ) ) {
+		$attr['src'] = flacso_child_webp_companion_url( (string) $attr['src'] );
+	}
+	if ( ! empty( $attr['srcset'] ) ) {
+		$attr['srcset'] = flacso_child_webp_srcset( (string) $attr['srcset'] );
+	}
+	return $attr;
 }
-add_filter( 'wp_get_attachment_image_src', 'flacso_child_card_image_src_webp', 20, 3 );
+add_filter( 'wp_get_attachment_image_attributes', 'flacso_child_card_attributes_webp', 20, 3 );
 
 /**
  * Genera los .webp de los tamaños de tarjeta de un adjunto. Devuelve cuántos archivos creó (0 si no hay editor o ya existen).
