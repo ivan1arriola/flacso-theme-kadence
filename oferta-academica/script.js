@@ -53,8 +53,16 @@
     var savedScroll = 0;
     var bodyBefore = {};
     var topLayerActive = false;
+    // El panel se comporta como una pantalla: abrirlo agrega una entrada al historial para que el gesto "atrás" del
+    // teléfono lo cierre en vez de sacar a la persona de la ficha.
+    var historyEntry = false;
 
     function isMobile() { return mobile.matches; }
+
+    // Una recarga conserva history.state: sin esto quedaría una entrada fantasma con el panel cerrado.
+    if (history.state && history.state.flacsoInfoSheet) {
+        history.replaceState(null, '', location.href);
+    }
 
     // Los widgets de accesibilidad y traducción pueden estar por encima de
     // cualquier z-index normal. La top layer nativa evita solapamientos.
@@ -110,7 +118,9 @@
         window.scrollTo(0, savedScroll);
     }
 
-    function closePanel(focusBack) {
+    // historyMode: sin valor retira la entrada del historial (history.back); 'popstate' es el propio gesto atrás;
+    // 'keep' cierra sin retroceder (ancla del panel o cambio de tamaño) y solo limpia la marca de la entrada.
+    function closePanel(focusBack, historyMode) {
         if (!isOpen) return;
         isOpen = false;
         root.classList.remove('flacso-mobile-sheet-open');
@@ -121,6 +131,14 @@
         restoreBody();
         if (focusBack !== false && returnFocus && returnFocus.isConnected) {
             returnFocus.focus({preventScroll: true});
+        }
+        if (historyEntry) {
+            historyEntry = false;
+            if (historyMode === 'keep') {
+                history.replaceState(null, '', location.href);
+            } else if (historyMode !== 'popstate' && history.state && history.state.flacsoInfoSheet) {
+                history.back();
+            }
         }
     }
 
@@ -144,6 +162,8 @@
         document.body.style.overflow = 'hidden';
 
         isOpen = true;
+        history.pushState({flacsoInfoSheet: true}, '', location.href);
+        historyEntry = true;
         aside.inert = false;
         aside.removeAttribute('aria-hidden');
         aside.setAttribute('role', 'dialog');
@@ -159,10 +179,19 @@
     }
 
     function syncMode() {
-        if (!isMobile() && isOpen) closePanel(false);
+        if (!isMobile() && isOpen) closePanel(false, 'keep');
         root.classList.toggle('flacso-mobile-sheet-ready', isMobile());
         if (!isOpen) setClosedAccessibility();
     }
+
+    // Gesto atrás del teléfono: cierra el panel. Si se avanza a una entrada marcada con el panel cerrado, se limpia.
+    window.addEventListener('popstate', function() {
+        if (isOpen) {
+            closePanel(true, 'popstate');
+        } else if (history.state && history.state.flacsoInfoSheet) {
+            history.replaceState(null, '', location.href);
+        }
+    });
 
     openButton.addEventListener('click', function() { openPanel(openButton); });
     closeButton.addEventListener('click', function() { closePanel(true); });
@@ -211,7 +240,7 @@
         if (!isOpen || !(event.target instanceof Element)) return;
         var destination = event.target.closest('a[href^="#"]');
         if (destination && destination.getAttribute('href') !== '#flacso-oa-consulta') {
-            closePanel(false);
+            closePanel(false, 'keep');
         }
     });
 
