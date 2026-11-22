@@ -26,6 +26,8 @@ Antes de integrar cambios, ejecutar:
 bash bin/check-theme.sh
 ```
 
-El script incluye las pruebas académica, FAQ, portada y cargador modular. La prueba visual de portada requiere Chrome o Chromium; indicar una ruta personalizada con `FLACSO_TEST_BROWSER` si el ejecutable no está en PATH. Las pruebas de contratos de equipos y cartas que no figuran en `bin/check-theme.sh` pueden ejecutarse individualmente con `php tests/<archivo>.php`.
+El script incluye las pruebas académica, FAQ, portada y cargador modular. Las pruebas de portada son contratos PHP. Ejecutá las comprobaciones visuales por separado en un navegador. Las pruebas de contratos de equipos y cartas que no figuran en `bin/check-theme.sh` pueden ejecutarse individualmente con `php tests/<archivo>.php`.
 
 Al reorganizar módulos, conservar nombres de funciones, hooks, prioridades, dependencias y rutas de recursos. Documentar aquí o en `ARCHITECTURE.md` los cambios de estructura que afecten a futuras contribuciones.
+
+Para elegir pruebas y preparar un PR, consultá la [guía técnica](docs/desarrollo.md).

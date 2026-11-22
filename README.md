@@ -7,7 +7,7 @@ Tema hijo de WordPress para el sitio institucional de FLACSO Uruguay. Extiende K
 - WordPress 6.2 o posterior.
 - PHP 7.4 o posterior.
 - Tema padre `kadence` instalado.
-- Bash y PHP para ejecutar la validación local; Chrome o Chromium para las comprobaciones visuales de portada.
+- Bash, PHP CLI y grep compatible con -P para la validación local. Usar un navegador para las comprobaciones visuales por separado.
 - WP-CLI en el servidor para el smoke test de despliegue.
 
 El slug del tema es `kadence-child-flacso`. WordPress lee sus metadatos desde `style.css`.
@@ -43,7 +43,7 @@ La validación local oficial es:
 bash bin/check-theme.sh
 ```
 
-El script revisa la sintaxis de todos los PHP, ejecuta las pruebas académica, FAQ, portada y cargador modular, y comprueba enlaces externos, estilos embebidos, CTA y referencias legacy. La prueba de portada necesita Chrome o Chromium disponible en el entorno; puede indicarse su ruta mediante `FLACSO_TEST_BROWSER`.
+El script revisa la sintaxis de todos los PHP, ejecuta las pruebas académica, FAQ, portada y cargador modular, y comprueba enlaces externos, estilos embebidos, CTA y referencias legacy. Los contratos de portada se ejecutan con PHP CLI. Las comprobaciones visuales y del Personalizador se realizan por separado.
 
 No se utiliza `./build`, `package-theme.sh` ni otro script local para preparar entregas. Para agregar o modificar componentes, seguir [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
@@ -58,3 +58,7 @@ El artifact excluye `.git`, `.github`, `docs/`, `tests/`, `bin/`, `node_modules/
 ## Versionado automático
 
 El workflow deriva la versión del historial Git del SHA con el formato `<versión base>.<cantidad de commits>`. La versión base se declara en `style.css` y solo se cambia manualmente al iniciar una nueva línea. El workflow no crea commits automáticos.
+
+## Incorporación al proyecto
+
+[Guía técnica para desarrolladores y agentes](docs/desarrollo.md), con mapa de plantillas, contratos entre tema y plugin y pruebas por tipo de cambio.
