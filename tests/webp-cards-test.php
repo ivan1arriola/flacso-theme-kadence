@@ -3,6 +3,10 @@
  * Las tarjetas de los listados sirven una versión WebP de los tamaños del tema (flacso-card 480x600 y los 4x5 de 800x1000)
  * cuando existe un archivo .webp junto al PNG/JPEG. No se usa el filtro global image_editor_output_format porque
  * convertiría todas las imágenes del sitio, incluida la de las vistas previas de enlaces (og_meta_size).
+ *
+ * El cambio a .webp se hace sobre los atributos FINALES de la etiqueta (wp_get_attachment_image_attributes), nunca sobre
+ * wp_get_attachment_image_src ni wp_calculate_image_srcset: WordPress arma el srcset solo si la URL principal coincide con un
+ * archivo de los metadatos, y una URL .webp no coincide, así que la etiqueta perdía el srcset completo.
  * Ejecutable sin WordPress: php tests/webp-cards-test.php
  */
 $root = dirname(__DIR__);
@@ -27,9 +31,9 @@ function touch_file($rel) { $p = $GLOBALS['uploads'] . '/' . $rel; file_put_cont
 
 webp_check(function_exists('flacso_child_webp_companion_path'), 'existe flacso_child_webp_companion_path()');
 webp_check(function_exists('flacso_child_webp_companion_url'), 'existe flacso_child_webp_companion_url()');
-webp_check(function_exists('flacso_child_card_srcset_webp'), 'existe el filtro del srcset');
-webp_check(function_exists('flacso_child_card_image_src_webp'), 'existe el filtro de la URL principal');
+webp_check(function_exists('flacso_child_card_attributes_webp'), 'existe el filtro de atributos de la etiqueta');
 webp_check(function_exists('flacso_child_generate_webp_companions'), 'existe el generador de archivos WebP');
+webp_check(!function_exists('flacso_child_card_srcset_webp') && !function_exists('flacso_child_card_image_src_webp'), 'ya no existen los filtros que reescribían la URL antes de que WordPress calculara el srcset');
 
 // Ruta del archivo acompañante: solo para los tamaños de tarjeta del tema.
 webp_check(flacso_child_webp_companion_path('/u/2026/05/afiche-480x600.png') === '/u/2026/05/afiche-480x600.webp', 'PNG de 480x600 -> .webp');
@@ -49,29 +53,34 @@ webp_check(flacso_child_webp_companion_url($url) === 'https://sitio.test/wp-cont
 webp_check(flacso_child_webp_companion_url('https://otro.test/x/afiche-480x600.png') === 'https://otro.test/x/afiche-480x600.png', 'una URL de otro dominio no se toca');
 webp_check(flacso_child_webp_companion_url('https://sitio.test/wp-content/uploads/2026/05/afiche-768x960.png') === 'https://sitio.test/wp-content/uploads/2026/05/afiche-768x960.png', 'un tamaño ajeno no se toca');
 
-// Filtro del srcset: reescribe solo los candidatos de tarjeta que tienen su .webp.
+// Atributos finales de la etiqueta: src y srcset, solo para los tamaños nombrados del tema.
 touch_file('2026/05/afiche-800x1000.webp');
-$sources = [
-    480 => ['url' => 'https://sitio.test/wp-content/uploads/2026/05/afiche-480x600.png', 'descriptor' => 'w', 'value' => 480],
-    768 => ['url' => 'https://sitio.test/wp-content/uploads/2026/05/afiche-768x960.png', 'descriptor' => 'w', 'value' => 768],
-    800 => ['url' => 'https://sitio.test/wp-content/uploads/2026/05/afiche-800x1000.png', 'descriptor' => 'w', 'value' => 800],
+$base = 'https://sitio.test/wp-content/uploads/2026/05/';
+$attr = [
+    'src'    => $base . 'afiche-480x600.png',
+    'srcset' => $base . 'afiche-480x600.png 480w, ' . $base . 'afiche-768x960.png 768w, ' . $base . 'afiche-800x1000.png 800w',
+    'sizes'  => '(max-width: 600px) 40vw, 400px',
+    'alt'    => 'Maestría',
 ];
-$out = flacso_child_card_srcset_webp($sources, [480, 600], 'x', [], 1);
-webp_check(substr($out[480]['url'], -5) === '.webp' && substr($out[800]['url'], -5) === '.webp', 'el srcset entrega .webp en los tamaños de tarjeta');
-webp_check(substr($out[768]['url'], -4) === '.png', 'el srcset no toca el tamaño que no es de tarjeta');
-webp_check(flacso_child_card_srcset_webp(false, [], '', [], 1) === false, 'el filtro respeta un srcset ausente');
+$out = flacso_child_card_attributes_webp($attr, null, 'flacso-card');
+webp_check($out['src'] === $base . 'afiche-480x600.webp', 'el src de la etiqueta pasa a .webp');
+webp_check(strpos($out['srcset'], 'afiche-480x600.webp 480w') !== false && strpos($out['srcset'], 'afiche-800x1000.webp 800w') !== false, 'el srcset conserva todos los candidatos y pasa a .webp los de tarjeta');
+webp_check(strpos($out['srcset'], 'afiche-768x960.png 768w') !== false, 'el srcset no toca el candidato que no es de tarjeta');
+webp_check(substr_count($out['srcset'], ',') === 2, 'el srcset conserva sus tres candidatos (no se pierde ninguno)');
+webp_check($out['sizes'] === $attr['sizes'] && $out['alt'] === 'Maestría', 'los demás atributos no cambian');
+webp_check(flacso_child_card_attributes_webp($attr, null, 'flacso-oferta-4x5')['src'] === $base . 'afiche-480x600.webp', 'los tamaños 4x5 también');
+webp_check(flacso_child_card_attributes_webp($attr, null, 'large') === $attr, 'otros tamaños nombrados no se tocan');
+webp_check(flacso_child_card_attributes_webp($attr, null, [480, 600]) === $attr, 'los tamaños por dimensiones no se tocan');
+webp_check(flacso_child_card_attributes_webp(false, null, 'flacso-card') === false, 'el filtro respeta atributos ausentes');
+$sin = ['src' => $base . 'otro-480x600.png', 'srcset' => $base . 'otro-480x600.png 480w'];
+webp_check(flacso_child_card_attributes_webp($sin, null, 'flacso-card') === $sin, 'sin archivo .webp en disco la etiqueta queda igual (respaldo al PNG)');
 
-// Filtro de la URL principal: solo para los tamaños del tema.
-$img = ['https://sitio.test/wp-content/uploads/2026/05/afiche-480x600.png', 480, 600, true];
-webp_check(substr(flacso_child_card_image_src_webp($img, 1, 'flacso-card')[0], -5) === '.webp', 'flacso-card entrega .webp');
-webp_check(substr(flacso_child_card_image_src_webp($img, 1, 'large')[0], -4) === '.png', 'otros tamaños nombrados no se tocan');
-webp_check(flacso_child_card_image_src_webp(false, 1, 'flacso-card') === false, 'el filtro respeta una imagen ausente');
-webp_check(flacso_child_card_image_src_webp($img, 1, [480, 600]) === $img, 'los tamaños por dimensiones no se tocan');
-
-// Ganchos: generación al subir, limpieza al borrar, y NO el filtro global.
+// Ganchos: generación al subir, limpieza al borrar, atributos finales, y NINGÚN filtro que rompa el srcset ni el global.
 webp_check(!empty($GLOBALS['hooks']['wp_generate_attachment_metadata']), 'se genera el .webp al subir una imagen');
 webp_check(!empty($GLOBALS['hooks']['delete_attachment']), 'se borran los .webp al eliminar el adjunto');
-webp_check(!empty($GLOBALS['hooks']['wp_calculate_image_srcset']) && !empty($GLOBALS['hooks']['wp_get_attachment_image_src']), 'los filtros de srcset y de URL están enganchados');
+webp_check(!empty($GLOBALS['hooks']['wp_get_attachment_image_attributes']), 'el cambio a .webp se hace en wp_get_attachment_image_attributes');
+webp_check(empty($GLOBALS['hooks']['wp_get_attachment_image_src']), 'NO se reescribe la URL en wp_get_attachment_image_src (WordPress descartaría el srcset)');
+webp_check(empty($GLOBALS['hooks']['wp_calculate_image_srcset']), 'NO se usa wp_calculate_image_srcset (afectaría a todo el contenido del sitio)');
 webp_check(empty($GLOBALS['hooks']['image_editor_output_format']), 'NO se usa el filtro global image_editor_output_format');
 
 // Generador: sin editor disponible no falla ni toca nada.
