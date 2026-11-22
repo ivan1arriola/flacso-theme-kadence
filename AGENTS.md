@@ -17,7 +17,7 @@ Este documento rige para cualquier agente o herramienta (Claude Code, Codex, Ant
 - El despliegue sale de `.github/workflows/deploy-theme.yml`, que también admite ejecución manual (`workflow_dispatch`) y, para correr sus contratos, clona la rama `main` del plugin. No tiene rollback. Por eso solo una persona mergea o ejecuta ese workflow.
 - La integración continua del tema es `.github/workflows/theme-ci.yml` y solo corre en PR con cambios en archivos PHP: un PR solo de CSS no ejecuta tests del tema, así que debe verificarse a mano (capturas antes y después).
 - Estilo de código PHP: `phpcs.xml.dist`.
-- Arquitectura y convenciones: `ARCHITECTURE.md` y `CONTRIBUTING.md`.
+- Arquitectura y convenciones: `ARCHITECTURE.md` y `CONTRIBUTING.md`. La [guía técnica](docs/desarrollo.md) indexa rutas, contratos y pruebas.
 
 ## 3. Criterio de diseño
 

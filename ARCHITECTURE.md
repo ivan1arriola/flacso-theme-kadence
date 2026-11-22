@@ -13,11 +13,13 @@ El tema hijo contiene presentación, plantillas y compatibilidad con Kadence. Lo
 - `inc/assets.php`: limpieza de cabecera y carga condicional de CSS/JavaScript, Bootstrap, jQuery UI y recursos de páginas.
 - `inc/contact.php`: opciones del personalizador, datos de contacto y ruta virtual `/contactos/`.
 - `inc/academic-public-model.php`: adaptador de sólo lectura al modelo académico del plugin.
-- `inc/academic-team-context.php`: adaptación de equipos académicos para la presentación.
+- `inc/academic-team-context.php`: adaptación de equipos académicos. Lo carga el dispatcher de oferta.
+- `inc/color-contrast.php` e `inc/academic-document-presentation.php`: contraste para acentos académicos y relación entre documentos de oferta y cohorte.
+- `inc/carta-view-model.php`: modelo de presentación para la Carta.
 - `inc/home.php`: datos, View Models y render de la portada.
 - `inc/open-graph.php`: metadatos Open Graph y compatibilidad con plugins SEO.
 
-Las plantillas que WordPress detecta por nombre permanecen en la raíz. Las secciones reutilizables se colocan en `template-parts/<dominio>/` y reciben sus datos por `context` de `get_template_part()`.
+Las plantillas que WordPress detecta por nombre permanecen en la raíz. Las secciones reutilizables se colocan en `template-parts/<dominio>/` y reciben sus datos en el tercer argumento de `get_template_part()`. Las fichas usan `context` y las secciones de Carta usan `carta`.
 
 La ficha pública de una Oferta Académica se mantiene en `oferta-academica/`: `page.php` genera el marcado, `style.css` reúne sus estilos y `script.js` sus interacciones. `single-oferta-academica.php` permanece en la raíz como entrada exigida por la jerarquía de plantillas de WordPress y despacha a `page.php`; `inc/assets.php` carga los dos recursos de la carpeta. La subpágina Carta conserva su plantilla independiente.
 
@@ -37,7 +39,7 @@ La página virtual `/formacion/` se implementa en sólo dos archivos de presenta
 - `formacion-page.php`: consultas mediante el adaptador académico y marcado HTML de ofertas y seminarios.
 - `assets/css/formacion-page.css`: composición responsive, gestos cromáticos y marcos fotográficos 4:5 con `object-fit: cover` (se permite recorte, no deformación).
 
-`page-formacion.php` es exclusivamente un puente de compatibilidad: WordPress lo selecciona por nombre y el plugin también lo incluye directamente. No introducir lógica ni estilos en ese puente. `inc/assets.php` carga la hoja de estilos únicamente para la ruta de formación, aunque ésta se resuelva como página virtual. No se necesita JavaScript propio para el recorte.
+`page-formacion.php` es exclusivamente un puente de compatibilidad: WordPress lo selecciona por nombre y el plugin también lo incluye directamente. No introducir lógica ni estilos en ese puente. `inc/assets.php` reconoce la ruta virtual al cargar el CSS. El archivo de Seminarios y la taxonomía de tipos también reutilizan esa hoja y estilos comunes de tarjetas. No se necesita JavaScript propio para el recorte.
 
 ## Adaptador académico
 
@@ -53,8 +55,10 @@ Ejecutar `bash bin/check-theme.sh`. El script valida sintaxis PHP, pruebas contr
 
 ## Compatibilidad con Kadence
 
-Los colores, las familias tipográficas, los colores de botones y el ancho máximo de los contenedores institucionales utilizan variables globales de Kadence. Los breakpoints y las composiciones editoriales de la portada siguen definidos por el tema hijo.
+Parte de la paleta, familias tipográficas, botones y anchos se conecta a las variables globales de Kadence. La herencia efectiva se verifica por plantilla y propiedad. Los breakpoints y las composiciones editoriales de la portada siguen definidos por el tema hijo.
 
 En **Apariencia → Personalizar → Integración con Kadence** se puede activar **Usar cabecera y pie nativos de Kadence**. Se mantiene desactivado por defecto para evitar reemplazar la navegación institucional en producción sin una vista previa. Al activarlo se delegan `header.php` y `footer.php` al tema padre: sus constructores administran logo, filas, menús, botones, widgets y responsive. Desactivar la opción recupera el chrome institucional.
 
-Los menús y widgets propios de Kadence deben configurarse en el constructor del tema padre: no se transfieren automáticamente los menús y los campos de contacto del pie personalizado. Las fuentes, colores y botones de Kadence siguen funcionando en la portada con cualquiera de los dos modos. Los tamaños editoriales del hero y Bento Grid continúan a cargo del tema hijo.
+Los menús y widgets propios de Kadence deben configurarse en el constructor del tema padre: no se transfieren automáticamente los menús y los campos de contacto del pie personalizado. Los valores globales que consume la portada tienen vigencia en ambos modos. Los tamaños editoriales del hero y Bento Grid continúan a cargo del tema hijo.
+
+La [guía técnica](docs/desarrollo.md) reúne los puntos de entrada, los recursos y las pruebas por superficie.
