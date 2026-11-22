@@ -176,11 +176,11 @@ function flacso_home_part(string $name, array $data): void {
 function flacso_home_render(): string {
     $data = flacso_home_get_data();
     ob_start();
-    echo '<main id="main" class="flacso-home" role="main">';
+    echo '<' . flacso_child_main_tag() . ' id="main" class="flacso-home">';
     foreach (['hero', 'offer', 'campaign', 'agenda', 'news', 'research', 'about'] as $part) {
         flacso_home_part($part, $data);
     }
-    echo '</main>';
+    echo '</' . flacso_child_main_tag() . '>';
     return (string) ob_get_clean();
 }
 

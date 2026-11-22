@@ -238,7 +238,7 @@ $seminarios_total = count($seminarios_catalogo);
 ?>
 
 <div class="content-area flacso-seminarios-page">
-    <main id="main" class="site-main">
+    <<?php echo flacso_child_main_tag(); ?> id="main" class="site-main">
         <header class="seminarios-hero" role="banner">
             <div class="site-container seminarios-hero__inner">
                 <div class="seminarios-hero__poster">
@@ -609,7 +609,7 @@ $seminarios_total = count($seminarios_catalogo);
                 </div>
             </div>
         </section>
-    </main>
+    </<?php echo flacso_child_main_tag(); ?>>
 </div>
 
 <?php get_footer(); ?>

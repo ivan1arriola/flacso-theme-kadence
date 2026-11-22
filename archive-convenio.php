@@ -21,7 +21,7 @@ $convenios = new WP_Query([
 ]);
 $total = (int) $convenios->post_count;
 ?>
-<main class="flacso-convenios-archive" id="main" role="main">
+<<?php echo flacso_child_main_tag(); ?> class="flacso-convenios-archive" id="main">
     <header class="flacso-convenios-hero">
         <div class="flacso-convenios-container">
             <nav class="flacso-convenios-breadcrumb" aria-label="<?php esc_attr_e('Navegación', 'kadence-child-flacso'); ?>">
@@ -79,6 +79,6 @@ $total = (int) $convenios->post_count;
             <?php endif; ?>
         </div>
     </section>
-</main>
+</<?php echo flacso_child_main_tag(); ?>>
 <?php
 get_footer();

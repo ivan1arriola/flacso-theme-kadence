@@ -12,7 +12,7 @@ while (have_posts()) :
     $titulo       = get_the_title();
     $correo       = (string) get_post_meta($prog_id, 'correo', true);
     $presentacion = (string) get_post_meta($prog_id, 'presentacion', true);
-    $coordinacion = (array) get_post_meta($prog_id, 'coordinacion', true);
+    $coordinacion = flacso_theme_program_coordination($prog_id);
 
     // ?id=102,103 limita la página a esas ofertas/seminarios (solo los que pertenecen al programa).
     $ids_filtro = [];
@@ -86,7 +86,7 @@ while (have_posts()) :
         </header>
 
         <div class="site-container programa-layout">
-            <main class="programa-main-content">
+            <<?php echo flacso_child_main_tag(); ?> class="programa-main-content" id="main">
                 <!-- Presentación del Programa -->
                 <?php if ($presentacion && !$filtrado) : ?>
                     <section class="programa-section programa-presentacion">
@@ -206,7 +206,7 @@ while (have_posts()) :
                         </div>
                     </section>
                 <?php endif; ?>
-            </main>
+            </<?php echo flacso_child_main_tag(); ?>>
 
             <!-- Sidebar: Coordinación -->
             <aside class="programa-sidebar">

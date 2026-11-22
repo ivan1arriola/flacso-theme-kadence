@@ -13,6 +13,14 @@ function flacso_child_use_kadence_chrome(): bool {
     return (bool) get_theme_mod( 'flacso_use_kadence_chrome', false );
 }
 
+/**
+ * Etiqueta del contenedor principal de cada plantilla. Con Kadence nativo el tema padre ya abre
+ * <main id="inner-wrap">, y un documento debe tener un solo landmark principal.
+ */
+function flacso_child_main_tag(): string {
+    return flacso_child_use_kadence_chrome() ? 'div' : 'main';
+}
+
 /** Evitar que cadenas arbitrarias activen el cambio. */
 function flacso_child_sanitize_kadence_toggle( $value ): bool {
     return in_array( $value, array( true, 1, '1', 'yes', 'on' ), true );
