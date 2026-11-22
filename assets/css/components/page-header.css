@@ -42,6 +42,8 @@
 .flacso-page-header__facts li { padding: .3rem .8rem; border: 1px solid currentColor; border-radius: 999px; font-size: .9rem; }
 .flacso-page-header__more { margin-top: 1.25rem; max-width: 60ch; }
 .flacso-page-header__more summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: 700; }
+.flacso-page-header__more summary::after { content: "+"; margin-left: .6rem; font-size: 1.3rem; line-height: 1; }
+.flacso-page-header__more[open] summary::after { content: "−"; }
 .flacso-page-header__more-body p { margin: 0 0 .8rem; line-height: 1.6; }
 .flacso-page-header__media { margin: 0; }
 .flacso-page-header__image { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 16px; }
