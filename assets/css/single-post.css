@@ -13,7 +13,7 @@
         }
 
         .flacso-single-container {
-            width: min(100% - 2rem, 1080px);
+            width: min(100% - 2 * var(--flacso-gutter, clamp(1rem, 4vw, 2rem)), 1080px);
             margin: 0 auto;
         }
 
@@ -286,7 +286,7 @@
         /* ── Responsive ── */
         @media (max-width: 860px) {
             .flacso-single-container {
-                width: min(100% - 1.25rem, 1080px);
+                width: min(100% - 2 * var(--flacso-gutter, clamp(1rem, 4vw, 2rem)), 1080px);
             }
 
             .flacso-post-hero {
