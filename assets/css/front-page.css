@@ -195,7 +195,7 @@
   .flacso-home .campaign-label{font-size:12px}
   .flacso-home .campaign h2{font-size:24px;max-width:270px}
   .flacso-home .campaign p:not(.campaign-label){font-size:12px;line-height:1.6;max-width:275px}
-  .flacso-home .campaign-cta{font-size:12px;justify-self:start;padding:6px 0}
+  .flacso-home .campaign-cta{justify-self:start}
   .flacso-home .agenda-section{padding:35px 0}
   .flacso-home .agenda-grid{gap:22px}
   .flacso-home .agenda-grid>div{gap:12px;align-items:flex-end}
