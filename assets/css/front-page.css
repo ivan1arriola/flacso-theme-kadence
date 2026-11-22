@@ -303,3 +303,25 @@
   .flacso-home .hero-media img{transform:none;will-change:auto}
   .flacso-home .news-bento .news-card:hover,.flacso-home .hero-cta:hover{transform:none}
 }
+
+/* Inscripciones abiertas: carrusel táctil en móvil, cuadrícula en escritorio. */
+.flacso-home .open-section{padding:48px 0 56px;background:var(--paper)}
+.flacso-home .open-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.flacso-home .open-card{--open-color:var(--blue);display:flex;flex-direction:column;height:100%;overflow:hidden;border:1px solid var(--line);border-top:4px solid var(--open-color);border-radius:16px;background:var(--global-palette9,#fff);color:var(--ink);transition:transform .2s,box-shadow .2s}
+.flacso-home .open-card:hover{text-decoration:none;transform:translateY(-4px);box-shadow:0 12px 25px #1d335824}
+.flacso-home .open-card__media{display:block;aspect-ratio:4/5;background:var(--paper);overflow:hidden}
+.flacso-home .open-card__media img{width:100%;height:100%;object-fit:cover}
+.flacso-home .open-card__body{display:flex;flex-direction:column;gap:8px;padding:18px 18px 20px;flex:1}
+.flacso-home .open-card__type{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--open-color)}
+.flacso-home .open-card h3{font-size:19px;line-height:1.25;font-weight:700}
+.flacso-home .open-card__date{font-size:14px;color:var(--muted)}
+.flacso-home .open-card__cta{margin-top:auto;padding-top:6px;font-size:15px;font-weight:700;color:var(--blue)}
+@media(max-width:767px){
+  .flacso-home .open-section{padding:36px 0 40px}
+  .flacso-home .open-list{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;margin-inline:calc(var(--flacso-content-inset,32px)/-2);padding:4px calc(var(--flacso-content-inset,32px)/2) 14px;scrollbar-width:thin}
+  .flacso-home .open-list>li{flex:0 0 72%;max-width:300px;scroll-snap-align:start}
+  .flacso-home .hero .hero-cta{display:flex;width:100%}
+  .flacso-home .offer-grid>a{min-height:64px}
+  .flacso-home .text-link{display:inline-flex;align-items:center;min-height:44px}
+}
+

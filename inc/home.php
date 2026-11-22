@@ -27,6 +27,42 @@ function flacso_home_default_content(): array {
     ];
 }
 
+/**
+ * Propuestas con inscripción abierta, ordenadas por fecha de inicio (las que no tienen fecha, al final).
+ *
+ * @return array<int,array<string,mixed>>
+ */
+function flacso_home_open_offers(int $limit = 6): array {
+    if (!function_exists('flacso_theme_get_offer_context')) { return []; }
+    $query = new WP_Query([
+        'post_type' => 'oferta-academica',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'no_found_rows' => true,
+        'fields' => 'ids',
+    ]);
+    $items = [];
+    foreach ($query->posts as $post_id) {
+        $ctx = flacso_theme_get_offer_context((int) $post_id);
+        if (empty($ctx) || empty($ctx['registration']['is_open'])) { continue; }
+        $start = (string) ($ctx['instance']['fecha_inicio'] ?? '');
+        $terms = get_the_terms((int) $post_id, 'tipo-oferta-academica');
+        $raw_color = (string) ($ctx['academic']['color_principal'] ?? '');
+        $items[] = [
+            'title' => wp_strip_all_tags((string) ($ctx['title'] ?? '')),
+            'url' => (string) ($ctx['permalink'] ?? ''),
+            'image_id' => (int) get_post_thumbnail_id((int) $post_id),
+            'image_url' => (string) ($ctx['thumbnail_url'] ?? ''),
+            'type' => is_array($terms) && !empty($terms[0]->name) ? (string) $terms[0]->name : '',
+            'start' => !empty($ctx['instance']['fechas_formateadas']) ? (string) $ctx['instance']['fechas_formateadas'] : '',
+            'timestamp' => $start !== '' ? (int) strtotime($start) : PHP_INT_MAX,
+            'color' => preg_match('/^#[0-9a-fA-F]{6}$/', $raw_color) ? strtolower($raw_color) : '',
+        ];
+    }
+    usort($items, static fn(array $a, array $b): int => $a['timestamp'] <=> $b['timestamp']);
+    return array_slice(array_filter($items, static fn(array $i): bool => $i['title'] !== '' && $i['url'] !== ''), 0, max(1, $limit));
+}
+
 function flacso_home_get_data(): array {
     $content = class_exists('Flacso_Home_Content') ? Flacso_Home_Content::get() : flacso_home_default_content();
     $hero_text = is_array($content['hero'] ?? null) ? $content['hero'] : [];
@@ -153,6 +189,7 @@ function flacso_home_get_data(): array {
             'image_alt' => $image_alt,
         ],
         'cards' => $cards,
+        'open_offers' => flacso_home_open_offers(6),
         'campaign' => $campaign_block,
         'event' => $event,
         'featured_news' => $featured,
@@ -177,7 +214,7 @@ function flacso_home_render(): string {
     $data = flacso_home_get_data();
     ob_start();
     echo '<' . flacso_child_main_tag() . ' id="main" class="flacso-home">';
-    foreach (['hero', 'offer', 'campaign', 'agenda', 'news', 'research', 'about'] as $part) {
+    foreach (['hero', 'offer', 'open', 'campaign', 'agenda', 'news', 'research', 'about'] as $part) {
         flacso_home_part($part, $data);
     }
     echo '</' . flacso_child_main_tag() . '>';
