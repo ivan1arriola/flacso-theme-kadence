@@ -221,24 +221,27 @@ get_header();
 <<?php echo flacso_child_main_tag(); ?> class="flacso-taxonomy-oferta" id="main">
     <div class="flacso-taxonomy-container">
 
-        <header class="flacso-taxonomy-hero">
-            <div class="flacso-taxonomy-hero__body">
-                <nav class="flacso-taxonomy-breadcrumb" aria-label="<?php esc_attr_e('Navegación', 'flacso-uruguay'); ?>">
-                    <a href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e('Inicio', 'flacso-uruguay'); ?></a>
-                    <span>/</span>
-                    <a href="<?php echo esc_url(home_url('/formacion/')); ?>"><?php esc_html_e('Oferta académica', 'flacso-uruguay'); ?></a>
-                    <span>/</span>
-                    <span><?php echo esc_html($taxonomy_name); ?></span>
-                </nav>
-
-                <span class="flacso-taxonomy-hero__kicker"><?php esc_html_e('Oferta académica', 'flacso-uruguay'); ?></span>
-                <h1 class="flacso-taxonomy-hero__title"><?php echo esc_html($taxonomy_name); ?></h1>
-
-                <p class="flacso-taxonomy-hero__description">
-                    <?php esc_html_e('Conocé las propuestas disponibles. Revisá la duración, modalidad, fecha de inicio y requisitos de inscripción de cada programa.', 'flacso-uruguay'); ?>
-                </p>
-            </div>
-        </header>
+        <?php
+        $term_lede = trim(wp_strip_all_tags((string) term_description()));
+        $term_image_id = (int) get_term_meta((int) get_queried_object_id(), 'thumbnail_id', true);
+        $lede_is_short = '' !== $term_lede && mb_strlen($term_lede) <= 260;
+        get_template_part(
+            'template-parts/components/page-header',
+            null,
+            [
+                'breadcrumb' => [
+                    ['label' => __('Inicio', 'flacso-uruguay'), 'url' => home_url('/')],
+                    ['label' => __('Oferta académica', 'flacso-uruguay'), 'url' => home_url('/formacion/')],
+                    ['label' => $taxonomy_name],
+                ],
+                'kicker'     => __('Oferta académica', 'flacso-uruguay'),
+                'title'      => $taxonomy_name,
+                'lede'       => $lede_is_short ? $term_lede : __('Conocé las propuestas disponibles. Revisá la duración, modalidad, fecha de inicio y requisitos de inscripción de cada programa.', 'flacso-uruguay'),
+                'image_id'   => $term_image_id,
+                'image_size' => 'flacso-seminario-4x5',
+            ]
+        );
+        ?>
 
         <div id="flacso-listado-ofertas"></div>
         <?php if (!empty($offers_open) || !empty($offers_closed)) : ?>
@@ -300,7 +303,7 @@ get_header();
 
         <?php
         $term_desc = term_description();
-        if (!empty($term_desc)) :
+        if (!empty($term_desc) && !$lede_is_short) :
         ?>
             <div class="flacso-taxonomy-description-footer mt-5">
                 <div class="flacso-content-box" style="padding: 2rem; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 15px rgba(5, 25, 56, 0.05); color: #475569; line-height: 1.6;">

@@ -275,6 +275,15 @@ function flacso_child_enqueue_template_assets() {
         $active_template = 'page-formacion.php';
     }
 
+    if ( in_array( $active_template, array( 'seminarios-listado.php', 'taxonomy-tipo-oferta-academica.php' ), true ) ) {
+        wp_enqueue_style(
+            'flacso-page-header',
+            get_stylesheet_directory_uri() . '/assets/css/components/page-header.css',
+            array( 'chld_thm_cfg_child' ),
+            flacso_child_asset_version( 'assets/css/components/page-header.css' )
+        );
+    }
+
     foreach ( $template_assets as $template_file => $asset ) {
         if ( $active_template !== $template_file ) {
             continue;

@@ -18,7 +18,4 @@ $seminar_css = file_get_contents($root . '/assets/css/seminarios-listado-polish.
 expect_archive_design(strpos($taxonomy, 'flacso-formacion-card__media') !== false, 'archivo usa tarjeta del catálogo');
 expect_archive_design(strpos($taxonomy, "'flacso-oferta-4x5'") === false, 'archivo no solicita derivado recortado');
 expect_archive_design(strpos($listing_css, '.flacso-formacion-grid') !== false, 'archivo organiza tarjetas como catálogo');
-expect_archive_design(strpos($css, '90px 0 0 #e4a629') !== false && strpos($css, '120px 0 0 #5083bf') !== false, 'cinco puntos en cabecera academica');
-expect_archive_design(strpos($seminars, '<span></span><span></span><span></span><span></span><span></span>') !== false, 'cinco puntos en Seminarios');
-expect_archive_design(strpos($seminar_css, 'span:nth-child(5)') !== false, 'color del quinto punto');
-echo "Archivo académico: tarjetas del catálogo, formato 4:5 y cinco puntos verificados.\n";
+echo "Archivo académico: tarjetas del catálogo, formato 4:5 verificados (los cinco puntos se quitaron con el encabezado compartido).\n";

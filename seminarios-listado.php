@@ -241,69 +241,31 @@ $seminarios_total = count($seminarios_catalogo);
 
 <div class="content-area flacso-seminarios-page">
     <<?php echo flacso_child_main_tag(); ?> id="main" class="site-main">
-        <header class="seminarios-hero" role="banner">
-            <div class="site-container seminarios-hero__inner">
-                <div class="seminarios-hero__poster">
-                    <div class="seminarios-hero__content">
-                        <div class="seminarios-hero__dots" aria-hidden="true">
-                            <span></span><span></span><span></span><span></span><span></span>
-                        </div>
+        <?php
+        get_template_part(
+            'template-parts/components/page-header',
+            null,
+            [
+                'breadcrumb'  => [
+                    ['label' => __('Inicio', 'flacso-uruguay'), 'url' => home_url('/')],
+                    ['label' => __('Oferta académica', 'flacso-uruguay'), 'url' => home_url('/formacion/')],
+                    ['label' => __('Seminarios', 'flacso-uruguay')],
+                ],
+                'kicker'      => __('Formación de posgrado', 'flacso-uruguay'),
+                'title'       => __('Seminarios', 'flacso-uruguay'),
+                'title_id'    => 'seminarios-page-title',
+                'lede'        => 'Propuestas de formación de corta duración, diseñadas para la actualización teórica y profesional en distintos campos de las ciencias sociales.',
+                'facts'       => [__('3–5 semanas', 'flacso-uruguay'), __('Virtual o híbrida', 'flacso-uruguay'), __('Posibilidad de acreditación', 'flacso-uruguay')],
+                'more_label'  => __('Cómo funcionan los seminarios', 'flacso-uruguay'),
+                'more_html'   => '<p>Se vinculan con los diferentes programas académicos de la institución. Se ofrecen en modalidad virtual o híbrida, lo que permite la participación de personas residentes en Montevideo, en el interior del país o en el exterior. La cursada combina actividades que pueden realizarse con flexibilidad horaria y encuentros sincrónicos o presenciales previamente establecidos (según el seminario).</p><p>Pueden ser acreditables a estudios de maestría, de acuerdo con las características de cada propuesta y los criterios del programa correspondiente. En la información de cada seminario podrás consultar sus objetivos, contenidos, modalidad de cursada, duración, equipo docente, créditos, requisitos e inscripción.</p><p>Por dudas o consultas: <a href="mailto:inscripciones@flacso.edu.uy">inscripciones@flacso.edu.uy</a></p>',
+                'image_id'    => (int) $hero_image_id,
+                'image_size'  => 'flacso-seminario-4x5',
+                'image_sizes' => '(max-width: 767px) 92vw, 380px',
+            ]
+        );
+        ?>
 
-                        <p class="seminarios-hero__kicker"><?php esc_html_e('Formación de posgrado', 'flacso-uruguay'); ?></p>
-                        <h1 id="seminarios-page-title" class="seminarios-hero__title"><?php esc_html_e('Seminarios', 'flacso-uruguay'); ?></h1>
-                        <div class="seminarios-hero__editorial">
-                            <p><strong class="seminarios-hero__editorial-highlight">Los seminarios de posgrado de FLACSO Uruguay son propuestas de formación de corta duración, diseñadas para la actualización teórica y profesional en distintos campos de las ciencias sociales.</strong> Tienen una duración aproximada de entre tres y cinco semanas y se vinculan con los diferentes programas académicos de la institución.</p>
-                            <p>Se ofrecen en modalidad virtual o híbrida, lo que permite la participación de personas residentes en Montevideo, en el interior del país o en el exterior. La cursada combina actividades que pueden realizarse con flexibilidad horaria y encuentros sincrónicos o presenciales previamente establecidos (según el seminario).</p>
-                            <p>Los seminarios pueden ser acreditables a estudios de maestría o doctorado, de acuerdo con las características de cada propuesta y los criterios del programa correspondiente. En la información de cada seminario podrás consultar sus objetivos, contenidos, modalidad de cursada, duración, equipo docente, cantidad de créditos, requisitos e inscripción.</p>
-                        </div>
-
-                        <div class="seminarios-hero__facts" aria-label="<?php esc_attr_e('Características principales', 'flacso-uruguay'); ?>">
-                            <span><strong>3–5</strong> <?php esc_html_e('semanas', 'flacso-uruguay'); ?></span>
-                            <span><?php esc_html_e('Virtual o híbrida', 'flacso-uruguay'); ?></span>
-                            <span><?php esc_html_e('Posibilidad de acreditación', 'flacso-uruguay'); ?></span>
-                        </div>
-
-                        <p class="seminarios-hero__contact">
-                            <?php esc_html_e('Por dudas o consultas:', 'flacso-uruguay'); ?>
-                            <a href="mailto:inscripciones@flacso.edu.uy">inscripciones@flacso.edu.uy</a>
-                        </p>
-                    </div>
-
-                    <?php if (!empty($hero_image_url)) : ?>
-                        <div class="seminarios-hero__visual" aria-hidden="true">
-                            <?php
-                            if ($hero_image_id) {
-                                // Fotografía recortada a 4:5 por CSS: se pide el tamaño 4:5 con srcset (y .webp si existe).
-                                // sizes según el ancho real medido: 224px en 412px, 736px en 768px, 550px en 1024px y 576px.
-                                echo wp_get_attachment_image(
-                                    (int) $hero_image_id,
-                                    'flacso-seminario-4x5',
-                                    false,
-                                    [
-                                        'class'         => 'seminarios-hero__image',
-                                        'alt'           => '',
-                                        'loading'       => 'eager',
-                                        'decoding'      => 'async',
-                                        'fetchpriority' => 'high',
-                                        'sizes'         => '(max-width: 600px) 55vw, (max-width: 900px) 96vw, (max-width: 1100px) 550px, 576px',
-                                    ]
-                                );
-                            } else {
-                                ?>
-                            <img
-                                class="seminarios-hero__image"
-                                src="<?php echo esc_url($hero_image_url); ?>"
-                                alt=""
-                                loading="eager"
-                                decoding="async"
-                            >
-                                <?php
-                            }
-                            ?>
-                        </div>
-                    <?php endif; ?>
-                </div>
-
+        <div class="site-container seminarios-hero seminarios-hero--tools">
                 <div class="seminarios-hero__tools">
                     <div class="seminarios-hero__search">
                         <i class="bi bi-search" aria-hidden="true"></i>
@@ -323,8 +285,7 @@ $seminarios_total = count($seminarios_catalogo);
                         </nav>
                     <?php endif; ?>
                 </div>
-            </div>
-        </header>
+        </div>
 
         <section id="seminarios-destacados" class="seminarios-main" aria-labelledby="seminarios-destacados-titulo">
             <div class="site-container">
