@@ -97,14 +97,16 @@
             document.body.classList.toggle('flacso-menu-open', opening);
             if (opening) {
                 closeAllSubmenus();
-                // El cajón sigue en visibility:hidden en este instante y focus() no funciona sobre un elemento oculto:
-                // la transición de visibility sale de "hidden" recién en el frame siguiente al cambio de clase.
-                requestAnimationFrame(function () {
-                    requestAnimationFrame(function () {
-                        var focusTarget = menuClose || menu.querySelector('a');
-                        if (focusTarget) focusTarget.focus();
-                    });
-                });
+                // El cajón sigue en visibility:hidden al abrir y focus() no funciona sobre un elemento oculto. Cuántos
+                // frames tarda en salir de "hidden" depende de la carga de la página: se reintenta hasta que el foco entra.
+                var focusTarget = menuClose || menu.querySelector('a');
+                var attempts = 0;
+                var focusDrawer = function () {
+                    if (!focusTarget || !menu.classList.contains('is-open')) return;
+                    focusTarget.focus();
+                    if (document.activeElement !== focusTarget && attempts++ < 60) requestAnimationFrame(focusDrawer);
+                };
+                requestAnimationFrame(focusDrawer);
             }
         });
     }
