@@ -27,8 +27,10 @@ Updated: 2026-08-23 12:50:00
 }
 
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
-    outline: 3px solid var(--flacso-color-accent);
+    /* Anillo de dos tonos: azul (palette1) sobre fondo claro y franja blanca sobre fondo oscuro. */
+    outline: 3px solid var(--flacso-color-primary);
     outline-offset: 3px;
+    box-shadow: 0 0 0 3px #fff;
 }
 
 /*
