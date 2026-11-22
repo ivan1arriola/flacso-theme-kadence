@@ -38,7 +38,6 @@ function flacso_child_utility_menu_fallback() {
     $links = array(
         'https://virtual.flacso.edu.uy/'       => __( 'Campus Virtual', 'kadence-child-flacso' ),
         $agenda_url                            => __( 'Agenda', 'kadence-child-flacso' ),
-        'https://www.instagram.com/flacsouruguay/' => 'Instagram',
     );
 
     echo '<ul class="flacso-topbar__menu">';
