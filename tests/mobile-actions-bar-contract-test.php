@@ -25,8 +25,7 @@ bar_check(strpos($bar, 'backdrop-filter') === false, 'no usa desenfoque de fondo
 bar_check(preg_match('/box-shadow:\s*0 -(1[2-9]|[2-9]\d)px/', $bar) === 1, 'la sombra superior es marcada');
 bar_check(preg_match('/align-items:\s*stretch/', $bar) === 1, 'los dos botones tienen el mismo alto');
 
-$botones = bar_rule($css, '.flacso-oferta-responsive .flacso-mobile-actions__info,
-    .flacso-oferta-responsive .flacso-mobile-actions__register');
+$botones = bar_rule($css, ".flacso-oferta-responsive .flacso-mobile-actions__info,\n    .flacso-oferta-responsive .flacso-mobile-actions__register");
 bar_check(preg_match('/min-height:\s*(5[6-9]|[6-9]\d)px/', $botones) === 1, 'los botones miden al menos 56px');
 bar_check(preg_match('/font-size:\s*clamp\(1rem,/', $botones) === 1, 'el texto de los botones es de al menos 1rem (16px)');
 
