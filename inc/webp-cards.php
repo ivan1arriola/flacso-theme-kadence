@@ -58,7 +58,7 @@ function flacso_child_card_srcset_webp( $sources ) {
 	}
 	return $sources;
 }
-add_filter( 'wp_calculate_image_srcset', 'flacso_child_card_srcset_webp', 20, 5 );
+add_filter( 'wp_calculate_image_srcset', 'flacso_child_card_srcset_webp', 20, 1 );
 
 /** Filtro de la URL principal: solo para los tamaños nombrados del tema. */
 function flacso_child_card_image_src_webp( $image, $attachment_id = 0, $size = '' ) {
