@@ -1,0 +1,12 @@
+parameters:
+  level: 3
+  paths:
+    - .
+  excludePaths:
+    - vendor
+    - tests
+    - assets
+    - docs
+  treatPhpDocTypesAsCertain: false
+includes:
+  - phpstan-baseline.neon
