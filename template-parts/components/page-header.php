@@ -2,7 +2,7 @@
 /**
  * Encabezado de página compartido (componente C1): migas, etiqueta, título, bajada, datos, texto largo desplegable e imagen.
  *
- * Args: breadcrumb [[label,url?]], kicker, title, title_id, lede, facts[], more_label, more_html, image_id, image_size, image_sizes.
+ * Args: breadcrumb [[label,url?]], kicker, title, title_id, lede, facts[], more_label, more_html, image_id, image_size, image_sizes, modifier (p. ej. reading).
  *
  * @package kadence-child-flacso
  */
@@ -18,7 +18,7 @@ $image  = (int) ( $args['image_id'] ?? 0 );
 $more   = (string) ( $args['more_html'] ?? '' );
 $last   = count( $crumbs ) - 1;
 ?>
-<header class="flacso-page-header<?php echo $image ? ' flacso-page-header--has-media' : ''; ?>">
+<header class="flacso-page-header<?php echo $image ? ' flacso-page-header--has-media' : ''; ?><?php echo ! empty( $args['modifier'] ) ? ' flacso-page-header--' . esc_attr( $args['modifier'] ) : ''; ?>">
 	<div class="flacso-page-header__body">
 		<?php if ( $crumbs ) : ?>
 			<nav class="flacso-page-header__breadcrumb" aria-label="<?php esc_attr_e( 'Navegación', 'flacso-uruguay' ); ?>">

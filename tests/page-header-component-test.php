@@ -82,4 +82,9 @@ ph_check(preg_match('/#[0-9a-fA-F]{3,6}\b/', preg_replace('/var\([^)]*\)/', '', 
 ph_check(strpos((string) file_get_contents($root . '/inc/assets.php'), 'components/page-header.css') !== false, 'inc/assets.php encola el CSS del componente en la taxonomía');
 ph_check(strpos((string) file_get_contents($root . '/archive-seminario.php'), 'components/page-header.css') !== false, 'archive-seminario.php encola el CSS del componente');
 
+$single = (string) file_get_contents($root . '/single.php');
+ph_check(preg_match("/get_template_part\(\s*'template-parts\/components\/page-header'/", $single) === 1 && strpos($single, "'modifier'    => 'reading'") !== false, 'single.php usa el componente con ancho de lectura');
+ph_check(strpos($single, 'flacso-post-hero') === false && substr_count($single, '<h1') === 0, 'las noticias ya no tienen encabezado propio');
+ph_check(strpos($css, 'flacso-page-header--reading') !== false && strpos($css, '--flacso-w-lectura') !== false, 'el componente tiene la variante de lectura (1080)');
+
 echo "OK encabezado de página compartido\n";

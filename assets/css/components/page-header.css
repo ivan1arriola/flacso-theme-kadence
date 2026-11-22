@@ -48,6 +48,11 @@
 .flacso-page-header__media { margin: 0; }
 .flacso-page-header__image { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 16px; }
 
+/* Páginas de lectura (noticias): ancho de lectura y fotografía apaisada. */
+.flacso-page-header--reading { width: min(100% - 2 * var(--flacso-gutter, clamp(1rem, 4vw, 2rem)), var(--flacso-w-lectura, 1080px)); }
+.flacso-page-header--reading.flacso-page-header--has-media { grid-template-columns: minmax(0, 1fr) minmax(0, 360px); }
+.flacso-page-header--reading .flacso-page-header__image { aspect-ratio: 3 / 2; }
+
 @media (max-width: 767px) {
 	.flacso-page-header--has-media { grid-template-columns: 1fr; }
 	.flacso-page-header__image { aspect-ratio: 16 / 9; }

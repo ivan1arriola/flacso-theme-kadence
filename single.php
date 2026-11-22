@@ -22,42 +22,29 @@ while (have_posts()) :
     ?>
 
     <<?php echo flacso_child_main_tag(); ?> class="flacso-single-post" id="main">
+        <?php
+        get_template_part(
+            'template-parts/components/page-header',
+            null,
+            [
+                'modifier'    => 'reading',
+                'breadcrumb'  => [
+                    ['label' => __('Inicio', 'flacso-uruguay'), 'url' => home_url('/')],
+                    ['label' => __('Noticias', 'flacso-uruguay'), 'url' => $blog_url],
+                    ['label' => $primary_category],
+                ],
+                'kicker'      => $primary_category,
+                'title'       => get_the_title(),
+                'lede'        => has_excerpt() ? wp_strip_all_tags(get_the_excerpt()) : '',
+                'facts'       => [get_the_date()],
+                'image_id'    => (int) get_post_thumbnail_id(),
+                'image_size'  => 'large',
+                'image_sizes' => '(max-width: 767px) 92vw, 360px',
+            ]
+        );
+        ?>
+
         <div class="flacso-single-container">
-
-            <nav class="flacso-breadcrumb" aria-label="Navegación">
-                <a href="<?php echo esc_url(home_url('/')); ?>">Inicio</a>
-                <span>/</span>
-                <a href="<?php echo esc_url($blog_url); ?>">Noticias</a>
-                <span>/</span>
-                <span><?php echo esc_html($primary_category); ?></span>
-            </nav>
-
-            <header class="flacso-post-hero">
-                <div class="flacso-hero-body">
-                    <div class="flacso-post-kicker">
-                        <?php echo esc_html($primary_category); ?>
-                    </div>
-
-                    <h1 class="flacso-post-title">
-                        <?php the_title(); ?>
-                    </h1>
-
-                    <div class="flacso-post-date">
-                        <?php echo esc_html(get_the_date()); ?>
-                    </div>
-                </div>
-
-                <?php if (has_post_thumbnail()) : ?>
-                    <figure class="flacso-hero-figure">
-                        <?php
-                        the_post_thumbnail('large', array(
-                            'class' => 'flacso-hero-image',
-                            'alt'   => esc_attr(get_the_title()),
-                        ));
-                        ?>
-                    </figure>
-                <?php endif; ?>
-            </header>
 
             <div class="flacso-post-columns">
                 <article class="flacso-post-content">
