@@ -43,12 +43,6 @@ parameters:
 			path: oferta-academica/page.php
 
 		-
-			message: '#^Variable \$hero_image_url in empty\(\) always exists and is not falsy\.$#'
-			identifier: empty.variable
-			count: 1
-			path: seminarios-listado.php
-
-		-
 			message: '#^Function str_ends_with not found\.$#'
 			identifier: function.notFound
 			count: 2

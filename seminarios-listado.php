@@ -18,7 +18,9 @@ if (function_exists('flacso_global_styles')) {
     flacso_global_styles();
 }
 
-$hero_image_url = 'https://flacso.edu.uy/wp-content/uploads/2026/02/seminarios-artwork.png';
+// La URL se deriva de la carpeta de subidas del sitio (en producción es la misma de siempre) para poder probarla en local.
+$hero_upload_dir = wp_get_upload_dir();
+$hero_image_url = trailingslashit($hero_upload_dir['baseurl']) . '2026/02/seminarios-artwork.png';
 $hero_image_id = attachment_url_to_postid($hero_image_url);
 if ($hero_image_id) {
     $hero_cropped_url = wp_get_attachment_image_url($hero_image_id, 'flacso-seminario-4x5');
@@ -269,6 +271,25 @@ $seminarios_total = count($seminarios_catalogo);
 
                     <?php if (!empty($hero_image_url)) : ?>
                         <div class="seminarios-hero__visual" aria-hidden="true">
+                            <?php
+                            if ($hero_image_id) {
+                                // Fotografía recortada a 4:5 por CSS: se pide el tamaño 4:5 con srcset (y .webp si existe).
+                                // sizes según el ancho real medido: 224px en 412px, 736px en 768px, 550px en 1024px y 576px.
+                                echo wp_get_attachment_image(
+                                    (int) $hero_image_id,
+                                    'flacso-seminario-4x5',
+                                    false,
+                                    [
+                                        'class'         => 'seminarios-hero__image',
+                                        'alt'           => '',
+                                        'loading'       => 'eager',
+                                        'decoding'      => 'async',
+                                        'fetchpriority' => 'high',
+                                        'sizes'         => '(max-width: 600px) 55vw, (max-width: 900px) 96vw, (max-width: 1100px) 550px, 576px',
+                                    ]
+                                );
+                            } else {
+                                ?>
                             <img
                                 class="seminarios-hero__image"
                                 src="<?php echo esc_url($hero_image_url); ?>"
@@ -276,6 +297,9 @@ $seminarios_total = count($seminarios_catalogo);
                                 loading="eager"
                                 decoding="async"
                             >
+                                <?php
+                            }
+                            ?>
                         </div>
                     <?php endif; ?>
                 </div>
