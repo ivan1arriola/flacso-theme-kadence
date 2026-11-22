@@ -58,3 +58,33 @@ U0 arnés de regresión visual (hecho) · U1 tokens y anchos, por familias: lect
 ## Decisiones aún abiertas
 
 Título de pestaña y buscadores al editar los encabezados en Kadence (supuesto: solo cambia el encabezado visible); radio canónico de tarjeta (propuesta 16 px); si la FAQ pasa a acordeón; Template Elements de Theme Kit Pro.
+
+## Imágenes de las tarjetas (ya implementado)
+
+Medido el 22/11/2026, `/formacion/` descargaba 67,7 MB de imágenes de tarjetas (20 archivos originales de 3 a 5 MB). Hoy descarga 0,50 MB. Cómo funciona y qué no hay que romper:
+
+- **Tamaños:** `flacso-card` (480×600) y los 4:5 del tema (`flacso-oferta-4x5` y `flacso-seminario-4x5`, 800×1000), registrados en `inc/media.php`.
+- **Nunca el original:** el filtro `image_downsize` (`flacso_child_image_downsize_fallback`) entrega el mayor tamaño reducido que exista cuando falta el del tema (imágenes subidas antes de que se registraran). Una plantilla nueva de listado usa `flacso_child_card_image_html()`, que agrega `srcset`, `sizes`, `loading="lazy"` y `decoding="async"`.
+- **`sizes` según el ancho real de la tarjeta**, medido en producción: 154–159 px a 412 px, 346 px a 768 px, 307 px a 1024 px y 392 px a 1280 px, es decir `(max-width: 600px) 40vw, (max-width: 900px) 46vw, (max-width: 1100px) 31vw, 400px`. Con un `sizes` mayor, un teléfono retina descarga la variante de 800 px (1,2 MB).
+- **WebP acotado (`inc/webp-cards.php`):** se genera un `.webp` (calidad 82) junto al PNG o JPEG de los tamaños `-480x600` y `-800x1000`, y se sirve solo en las tarjetas; si no existe, se sirve el PNG. **No usar el filtro global `image_editor_output_format`:** convertiría todas las imágenes del sitio, incluida la de las vistas previas de enlaces (`og_meta_size`). Se genera al subir y se borra con el adjunto.
+- Una imagen de listado nueva en otro tamaño no recibe WebP: hay que sumar su tamaño a `FLACSO_CHILD_WEBP_CARD_SIZES` y sus pruebas.
+
+## Plugins del sitio y qué cuidar (revisados en producción el 22/11/2026)
+
+| Plugin | Relación con el tema | Qué cuidar |
+|---|---|---|
+| **WP Smush** | Optimiza PNG y JPG sin pérdida y hace la carga diferida (clases `lazyload`, atributos `data-src`) | Hoy no genera WebP (`wp-smush-webp` no existe, `webp_mod` en `false`). Si se activa su WebP local (Pro), podría duplicar el trabajo del módulo del tema. Se engancha a los mismos filtros de URL, pero solo para su caché y con prioridad 10 (el tema usa 20). |
+| **Content Views** | Su filtro `filter_disable_wp_responsive_image` quita `srcset` y `sizes` | Solo dentro de sus propios bloques: un listado hecho con Content Views no tendrá `srcset`. |
+| **Rank Math** | Etiqueta robots de la Carta | El tema corrige su directiva con el filtro `rank_math/frontend/robots`; un cambio de plugin SEO exige revisarlo. |
+| **WP Super Cache** | Sirve HTML estático | No reenvía encabezados de PHP (la Carta no emite `X-Robots-Tag` en copias cacheadas; basta la etiqueta). Tras cambiar plantillas o imágenes hay que vaciar la caché o los cambios no se ven. |
+| **Code Snippets** | PHP guardado en la base de datos | Revisar sus fragmentos antes de tocar ganchos de imágenes o robots (hoy hay 1 activo y no toca esas zonas). |
+| Kadence Blocks, Quick Featured Images, Site Kit, WP Consent API | Sin cruce conocido | — |
+
+## Operaciones en el servidor (procedimientos y advertencias)
+
+Siempre con autorización explícita de la persona responsable, como el usuario `web5` (`sudo -n -u web5 wp --path=<ruta>`), con `nice -n 19`, y verificando antes y después.
+
+- **Generar un tamaño en imágenes existentes:** `wp media regenerate <ids> --image_size=flacso-card --yes`. **Advertencia:** en 16 de 66 adjuntos dejó registrado **un único tamaño** en los metadatos (los archivos siguieron en disco). Se repara con `wp media regenerate <ids> --only-missing --yes`. Antes y después, comparar por adjunto la cantidad de tamaños registrados y de archivos en disco, y probar primero con un solo adjunto.
+- **Generar los `.webp`:** `flacso_child_backfill_webp( $ids )` con una lista de IDs. Sin argumentos recorre toda la mediateca: pasar siempre los IDs. Solo agrega archivos; se revierte borrando los `.webp`.
+- **Vaciar la caché de páginas:** el plugin no trae comando de WP-CLI (`wp super-cache` no existe). Usar `global $file_prefix; wp_cache_clean_cache( $file_prefix, true );` con `wp eval`.
+- Consultas de solo lectura previas: contar adjuntos, tamaños registrados contra archivos en disco, espacio libre y carga del servidor.
