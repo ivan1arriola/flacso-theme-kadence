@@ -14,13 +14,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Prevenir la indexación de las cartas de presentación en buscadores
-if (!headers_sent()) {
-    header('X-Robots-Tag: noindex, nofollow', true);
-}
-add_action('wp_head', static function () {
-    echo '<meta name="robots" content="noindex, nofollow">' . "\n";
-}, 1);
+// La directiva robots de la Carta se resuelve temprano en inc/open-graph.php.
 
 // Encolar estilos dedicados de la carta
 wp_enqueue_style(

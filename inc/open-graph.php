@@ -284,15 +284,41 @@ function flacso_theme_has_external_og_provider() {
 }
 
 /**
- * Emite la metaetiqueta robots noindex, nofollow y encabezado HTTP en cartas de presentación.
+ * Cartas de presentación: noindex, nofollow en el encabezado HTTP y en una sola etiqueta robots.
+ * Con un plugin SEO activo, su propia etiqueta se corrige por filtro en vez de sumar otra.
  */
 function flacso_theme_render_carta_robots_meta() {
-    if ( function_exists( 'flacso_theme_is_carta' ) && flacso_theme_is_carta() ) {
-        if ( ! headers_sent() ) {
-            header( 'X-Robots-Tag: noindex, nofollow', true );
-        }
+    if ( ! function_exists( 'flacso_theme_is_carta' ) || ! flacso_theme_is_carta() ) {
+        return;
+    }
+    if ( ! headers_sent() ) {
+        header( 'X-Robots-Tag: noindex, nofollow', true );
+    }
+    if ( ! flacso_theme_has_external_og_provider() && ! function_exists( 'wp_robots' ) ) {
         echo '<meta name="robots" content="noindex, nofollow">' . "\n";
     }
 }
 add_action( 'wp_head', 'flacso_theme_render_carta_robots_meta', 1 );
+
+/** Directivas robots de la Carta para Rank Math y Yoast (arreglos asociativos). */
+function flacso_theme_filter_carta_robots_array( $robots ) {
+    if ( is_array( $robots ) && function_exists( 'flacso_theme_is_carta' ) && flacso_theme_is_carta() ) {
+        $robots['index']  = 'noindex';
+        $robots['follow'] = 'nofollow';
+    }
+    return $robots;
+}
+add_filter( 'rank_math/frontend/robots', 'flacso_theme_filter_carta_robots_array' );
+add_filter( 'wpseo_robots_array', 'flacso_theme_filter_carta_robots_array' );
+
+/** Etiqueta robots nativa de WordPress (5.7+). */
+function flacso_theme_filter_carta_wp_robots( $robots ) {
+    if ( is_array( $robots ) && function_exists( 'flacso_theme_is_carta' ) && flacso_theme_is_carta() ) {
+        unset( $robots['index'], $robots['follow'] );
+        $robots['noindex']  = true;
+        $robots['nofollow'] = true;
+    }
+    return $robots;
+}
+add_filter( 'wp_robots', 'flacso_theme_filter_carta_wp_robots' );
 
