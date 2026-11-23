@@ -157,63 +157,36 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
     </section>
 
     <?php
-    $render_formacion_card = static function (array $item) use ($flacso_formacion_offer_accent): void {
+    $flacso_formacion_card_sizes = '(max-width: 600px) 40vw, (max-width: 900px) 46vw, (max-width: 1100px) 31vw, 400px';
+    $flacso_formacion_card_meta = static function (string $fechas, string $carga_horaria): array {
+        $meta = [];
+        if ($fechas !== '') {
+            $meta[] = ['icon' => 'bi-calendar3', 'text' => $fechas];
+        }
+        if ($carga_horaria !== '' && is_numeric($carga_horaria) && (float) $carga_horaria > 0) {
+            $meta[] = ['icon' => 'bi-clock', 'text' => $carga_horaria . ' hs.'];
+        }
+        return $meta;
+    };
+
+    $render_formacion_card = static function (array $item) use ($flacso_formacion_offer_accent, $flacso_formacion_card_sizes, $flacso_formacion_card_meta): void {
         $accent = $flacso_formacion_offer_accent($item);
         $is_open = !empty($item['registration']['is_open']);
         $fecha_inicio = (string) ($item['instance']['fecha_inicio'] ?? '');
         $carga_horaria = (string) ($item['academic']['carga_horaria'] ?? '');
         $fechas_card = !empty($item['instance']['fechas_formateadas']) ? $item['instance']['fechas_formateadas'] : ($fecha_inicio !== '' ? flacso_theme_format_date_es($fecha_inicio, false) : '');
-        ?>
-        <a href="<?php echo esc_url($item['permalink']); ?>"
-           class="flacso-formacion-card<?php echo $accent !== '' ? ' flacso-formacion-card--accented' : ''; ?>"
-           <?php if ($accent !== '') : ?>style="--offer-accent: <?php echo esc_attr($accent); ?>;"<?php endif; ?>>
-            <div class="flacso-formacion-card__media">
-                <?php if (!empty($item['thumbnail_url'])) : ?>
-                    <?php echo flacso_child_card_image_html((int) ($item['thumbnail_id'] ?? 0), (string) $item['thumbnail_url'], (string) $item['title'], '(max-width: 600px) 40vw, (max-width: 900px) 46vw, (max-width: 1100px) 31vw, 400px', ['onerror' => "this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';"]); ?>
-                    <div class="flacso-formacion-card__placeholder" style="display:none;">
-                        <i class="bi bi-mortarboard" aria-hidden="true"></i>
-                    </div>
-                <?php else : ?>
-                    <div class="flacso-formacion-card__placeholder">
-                        <i class="bi bi-mortarboard" aria-hidden="true"></i>
-                    </div>
-                <?php endif; ?>
-                <span class="flacso-formacion-card__badge"><?php echo esc_html($item['type_label']); ?></span>
-            </div>
-            <div class="flacso-formacion-card__body">
-                <h3 class="flacso-formacion-card__title"><?php echo esc_html($item['title']); ?></h3>
-                <?php if (!empty($item['academic']['presentacion'])) : ?>
-                    <p class="flacso-formacion-card__excerpt">
-                        <?php echo esc_html(wp_trim_words(wp_strip_all_tags($item['academic']['presentacion']), 22)); ?>
-                    </p>
-                <?php endif; ?>
-
-                <div class="flacso-formacion-card__meta">
-                    <?php if ($fechas_card !== '') : ?>
-                        <span class="flacso-formacion-card__meta-item">
-                            <i class="bi bi-calendar3" aria-hidden="true"></i>
-                            <?php echo esc_html($fechas_card); ?>
-                        </span>
-                    <?php endif; ?>
-                    <?php if ($carga_horaria !== '' && is_numeric($carga_horaria) && (float) $carga_horaria > 0) : ?>
-                        <span class="flacso-formacion-card__meta-item">
-                            <i class="bi bi-clock" aria-hidden="true"></i>
-                            <?php echo esc_html($carga_horaria); ?> hs.
-                        </span>
-                    <?php endif; ?>
-                </div>
-
-                <div class="flacso-formacion-card__footer">
-                    <span class="flacso-formacion-card__status<?php echo $is_open ? ' is-open' : ''; ?>">
-                        <?php echo esc_html($is_open ? __('Inscripciones abiertas', 'flacso-uruguay') : __('Próxima apertura', 'flacso-uruguay')); ?>
-                    </span>
-                    <span class="flacso-formacion-card__action">
-                        <?php esc_html_e('Conocer más', 'flacso-uruguay'); ?> →
-                    </span>
-                </div>
-            </div>
-        </a>
-        <?php
+        get_template_part('template-parts/components/academic-card', null, [
+            'title'       => (string) $item['title'],
+            'url'         => (string) $item['permalink'],
+            'badge'       => (string) $item['type_label'],
+            'description' => !empty($item['academic']['presentacion']) ? wp_trim_words(wp_strip_all_tags($item['academic']['presentacion']), 22) : '',
+            'image_id'    => (int) ($item['thumbnail_id'] ?? 0),
+            'image_url'   => (string) ($item['thumbnail_url'] ?? ''),
+            'image_sizes' => $flacso_formacion_card_sizes,
+            'accent'      => $accent,
+            'is_open'     => $is_open,
+            'meta'        => $flacso_formacion_card_meta((string) $fechas_card, $carga_horaria),
+        ]);
     };
     ?>
 
@@ -335,53 +308,19 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
                         $fecha_inicio = (string) ($sem['instance']['fecha_inicio'] ?? '');
                         $carga_horaria = (string) ($sem['academic']['carga_horaria'] ?? '');
                     ?>
-                        <a href="<?php echo esc_url($sem['permalink']); ?>" class="flacso-formacion-card">
-                            <div class="flacso-formacion-card__media">
-                                <?php if (!empty($sem['thumbnail_url'])) : ?>
-                                    <?php echo flacso_child_card_image_html((int) ($sem['thumbnail_id'] ?? 0), (string) $sem['thumbnail_url'], (string) $sem['title'], '(max-width: 600px) 40vw, (max-width: 900px) 46vw, (max-width: 1100px) 31vw, 400px', ['onerror' => "this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';"]); ?>
-                                    <div class="flacso-formacion-card__placeholder" style="display:none;">
-                                        <i class="bi bi-mortarboard" aria-hidden="true"></i>
-                                    </div>
-                                <?php else : ?>
-                                    <div class="flacso-formacion-card__placeholder">
-                                        <i class="bi bi-mortarboard" aria-hidden="true"></i>
-                                    </div>
-                                <?php endif; ?>
-                                <span class="flacso-formacion-card__badge"><?php esc_html_e('Seminario', 'flacso-uruguay'); ?></span>
-                            </div>
-                            <div class="flacso-formacion-card__body">
-                                <h3 class="flacso-formacion-card__title"><?php echo esc_html($sem['title']); ?></h3>
-                                <?php if (!empty($sem['academic']['presentacion'])) : ?>
-                                    <p class="flacso-formacion-card__excerpt">
-                                        <?php echo esc_html(wp_trim_words(wp_strip_all_tags($sem['academic']['presentacion']), 20)); ?>
-                                    </p>
-                                <?php endif; ?>
-
-                                <div class="flacso-formacion-card__meta">
-                                    <?php if ($fecha_inicio !== '') : ?>
-                                        <span class="flacso-formacion-card__meta-item">
-                                            <i class="bi bi-calendar3" aria-hidden="true"></i>
-                                            <?php echo esc_html(flacso_theme_format_date_es($fecha_inicio, false)); ?>
-                                        </span>
-                                    <?php endif; ?>
-                                    <?php if ($carga_horaria !== '' && is_numeric($carga_horaria) && (float) $carga_horaria > 0) : ?>
-                                        <span class="flacso-formacion-card__meta-item">
-                                            <i class="bi bi-clock" aria-hidden="true"></i>
-                                            <?php echo esc_html($carga_horaria); ?> hs.
-                                        </span>
-                                    <?php endif; ?>
-                                </div>
-
-                                <div class="flacso-formacion-card__footer">
-                                    <span class="flacso-formacion-card__status<?php echo $is_open ? ' is-open' : ''; ?>">
-                                        <?php echo esc_html($is_open ? __('Inscripciones abiertas', 'flacso-uruguay') : __('Próxima apertura', 'flacso-uruguay')); ?>
-                                    </span>
-                                    <span class="flacso-formacion-card__action">
-                                        <?php esc_html_e('Conocer más', 'flacso-uruguay'); ?> →
-                                    </span>
-                                </div>
-                            </div>
-                        </a>
+                        <?php
+                        get_template_part('template-parts/components/academic-card', null, [
+                            'title'       => (string) $sem['title'],
+                            'url'         => (string) $sem['permalink'],
+                            'badge'       => __('Seminario', 'flacso-uruguay'),
+                            'description' => !empty($sem['academic']['presentacion']) ? wp_trim_words(wp_strip_all_tags($sem['academic']['presentacion']), 20) : '',
+                            'image_id'    => (int) ($sem['thumbnail_id'] ?? 0),
+                            'image_url'   => (string) ($sem['thumbnail_url'] ?? ''),
+                            'image_sizes' => $flacso_formacion_card_sizes,
+                            'is_open'     => $is_open,
+                            'meta'        => $flacso_formacion_card_meta($fecha_inicio !== '' ? flacso_theme_format_date_es($fecha_inicio, false) : '', $carga_horaria),
+                        ]);
+                        ?>
                     <?php endforeach; ?>
                 </div>
             </section>
