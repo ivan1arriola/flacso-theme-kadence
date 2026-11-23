@@ -13,6 +13,8 @@ ec_check(preg_match('/<input[^>]*type="search"[^>]*id="archive-search"/', $php) 
 ec_check(preg_match('/<label[^>]*for="archive-search"/', $php) === 1, 'el campo del Equipo tiene label for visible');
 ec_check(preg_match('/\.search-box input\s*\{[^}]*outline:\s*none/', $css) !== 1, '.search-box input no anula el foco con outline: none');
 
+ec_check(preg_match('/\.search-box:focus-within\s*\{[^}]*outline:\s*3px solid/', $css) === 1, 'la caja del buscador muestra un anillo al recibir foco (Kadence anula el outline del input)');
+
 $contacto = ec_read($root . '/page-contacto.php');
 ec_check(preg_match("/fc_render_form\(array\([^)]*'mostrar_encabezado'\s*=>\s*false/", $contacto) === 1, 'page-contacto pasa mostrar_encabezado false al plugin');
 echo "OK equipo y contacto\n";

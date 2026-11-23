@@ -79,6 +79,8 @@
         gap: 1rem;
         box-shadow: 0 20px 40px rgba(0,0,0,0.15);
     }
+    /* Foco visible: el anillo global (:where) pierde frente a las reglas de formulario de Kadence; se marca la caja entera sobre el fondo oscuro. */
+    .search-box:focus-within { outline: 3px solid var(--global-palette9); outline-offset: 3px; }
     .search-icon { font-size: 1.2rem; }
     .search-box input {
         border: none;
