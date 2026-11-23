@@ -69,7 +69,7 @@
 
     /* Search Bar */
     .search-container { max-width: 700px; margin: 0 auto; position: relative; z-index: 10; }
-    .search-label { display: block; margin-bottom: 0.5rem; font-size: 0.95rem; font-weight: 600; color: #fff; }
+    .search-label { display: block; margin-bottom: 0.5rem; font-size: 0.95rem; font-weight: 600; color: var(--global-palette9); }
     .search-box {
         background: #fff;
         border-radius: 20px;
