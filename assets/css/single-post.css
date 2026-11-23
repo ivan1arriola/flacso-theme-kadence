@@ -534,8 +534,9 @@
                 display: none;
             }
 
-            .flacso-single-evento.has-signup-bar {
-                padding-bottom: 6.5rem;
+            /* El espacio de la barra fija se reserva en body: el pie queda fuera del contenedor del evento y la barra lo tapaba. */
+            body:has(.flacso-evento-signup:not([hidden])) {
+                padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
             }
 
             .flacso-evento-signup {
