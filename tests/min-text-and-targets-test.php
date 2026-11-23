@@ -25,4 +25,5 @@ mt_check(preg_match('/\.flacso-footer__menu a \{[^}]*min-height: 44px/', $chrome
 mt_check(preg_match('/div:last-child \.flacso-footer__menu a \{[^}]*min-height: 44px/', $chrome) === 1, 'los accesos en pastilla del pie miden 44 px');
 $ph = str_replace("\r\n", "\n", (string) file_get_contents($root . '/assets/css/components/page-header.css'));
 mt_check(preg_match('/max-width: 767px\) \{[^@]*\.flacso-page-header__breadcrumb a \{[^}]*min-height: 44px/s', $ph) === 1, 'las migas del encabezado compartido miden 44 px en móvil');
+mt_check(preg_match('/\.flacso-footer__contact a,\s*\.flacso-footer__bottom a,\s*nav\[aria-label="Navegación"\] a \{[^}]*min-height: 44px/', $chrome) === 1, 'contacto y legales del pie y todas las migas «Navegación» miden 44 px en móvil');
 echo "OK texto mínimo de 12 px y áreas táctiles de 44 px\n";

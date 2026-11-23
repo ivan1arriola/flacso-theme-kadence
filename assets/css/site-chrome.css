@@ -1278,3 +1278,14 @@
         font-size: 0.75rem !important;
     }
 }
+
+/* Áreas táctiles de 44 px en móvil: contacto y enlaces legales del pie, y todas las migas de pan etiquetadas «Navegación». */
+@media (max-width: 782px) {
+    .flacso-footer__contact a,
+    .flacso-footer__bottom a,
+    nav[aria-label="Navegación"] a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+}
