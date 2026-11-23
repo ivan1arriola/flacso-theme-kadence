@@ -82,7 +82,7 @@ Asignación sugerida; el coordinador puede cambiarla si lo justifica. Quien impl
 
 ### 4.5 Persistencia
 
-Estas instrucciones se aplican a todas las sesiones de agentes que trabajen en este repositorio. Codex y otros agentes que leen `AGENTS.md` las cargan al abrir el repositorio; Claude Code lee `CLAUDE.md`, que no existe hoy en este repositorio, así que solo las aplica si se le indica este archivo.
+Estas instrucciones se aplican a todas las sesiones de agentes que trabajen en este repositorio. Codex y otros agentes que leen `AGENTS.md` las cargan al abrir el repositorio; Claude Code lee `CLAUDE.md`, que importa este archivo con `@AGENTS.md` (única fuente: no se copian las reglas).
 
 ## 5. Herramientas de calidad (PHP)
 

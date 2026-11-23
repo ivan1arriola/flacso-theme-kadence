@@ -32,9 +32,10 @@ f0_check(flacso_child_demote_content_h1('<h2>A</h2><h3>B</h3>') === '<h2>A</h2><
 // 3) Espacio para la barra fija.
 $css = str_replace("\r\n", "\n", (string) file_get_contents($root . '/oferta-academica/style.css'));
 f0_check(preg_match('/body:has\(\.flacso-mobile-sheet-ready\)\s*\{[^}]*padding-bottom:\s*calc\(/', $css) === 1, 'el espacio de la barra fija se reserva en body (el pie no queda tapado)');
-$post_css = str_replace("
+$post_css = str_replace("
 ", "
 ", (string) file_get_contents($root . '/assets/css/single-post.css'));
 f0_check(preg_match('/body:has\(\.flacso-evento-signup:not\(\[hidden\]\)\)\s*\{[^}]*padding-bottom:\s*calc\(/', $post_css) === 1, 'la barra fija del evento reserva su espacio en body (el pie no queda tapado)');
 f0_check(strpos((string) file_get_contents($root . '/oferta-academica/page.php'), 'wp_get_attachment_image($hero_thumb_id, \'large\'') !== false, 'la imagen de la ficha de oferta usa tamaño large con srcset, no la placa original');
+f0_check(preg_match("/the_post_thumbnail\('thumbnail',[^;]*'sizes' => '100px'/", (string) file_get_contents($root . '/archive-docente.php')) === 1, 'el avatar del equipo (100 px) usa miniatura, no medium');
 echo "OK fase 0: equipo por tandas, un solo h1 y pie visible con barra fija\n";
