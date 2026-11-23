@@ -36,4 +36,5 @@ $post_css = str_replace("
 ", "
 ", (string) file_get_contents($root . '/assets/css/single-post.css'));
 f0_check(preg_match('/body:has\(\.flacso-evento-signup:not\(\[hidden\]\)\)\s*\{[^}]*padding-bottom:\s*calc\(/', $post_css) === 1, 'la barra fija del evento reserva su espacio en body (el pie no queda tapado)');
+f0_check(strpos((string) file_get_contents($root . '/oferta-academica/page.php'), 'wp_get_attachment_image($hero_thumb_id, \'large\'') !== false, 'la imagen de la ficha de oferta usa tamaño large con srcset, no la placa original');
 echo "OK fase 0: equipo por tandas, un solo h1 y pie visible con barra fija\n";
