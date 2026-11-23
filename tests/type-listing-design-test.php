@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 $root = dirname(__DIR__);
-$taxonomy = (string) file_get_contents($root . '/taxonomy-tipo-oferta-academica.php');
+$taxonomy = (string) file_get_contents($root . '/taxonomy-tipo-oferta-academica.php') . (string) file_get_contents($root . '/template-parts/components/academic-card.php'); // la tarjeta vive en el componente
 $seminars = (string) file_get_contents($root . '/seminarios-listado.php');
 $archive = (string) file_get_contents($root . '/archive-seminario.php');
 

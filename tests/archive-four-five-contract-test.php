@@ -9,7 +9,7 @@ function expect_archive_design(bool $condition, string $message): void {
         exit(1);
     }
 }
-$taxonomy = file_get_contents($root . '/taxonomy-tipo-oferta-academica.php');
+$taxonomy = file_get_contents($root . '/taxonomy-tipo-oferta-academica.php') . file_get_contents($root . '/template-parts/components/academic-card.php'); // la tarjeta vive en el componente
 $css = file_get_contents($root . '/assets/css/taxonomy-oferta.css');
 $listing_css = file_get_contents($root . '/assets/css/type-listing-cards.css');
 $seminars = file_get_contents($root . '/seminarios-listado.php');

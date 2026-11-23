@@ -139,78 +139,30 @@ usort($offers_closed, $sort_offers);
 $render_offer_card = static function (array $item) use ($taxonomy_name): void {
     ?>
     <article class="grid-item-wrap">
-        <a
-            href="<?php echo esc_url((string) $item['permalink']); ?>"
-            class="flacso-formacion-card flacso-formacion-card--accented"
-            style="--offer-accent: <?php echo esc_attr((string) ($item['brand_color'] ?? '#0a3470')); ?>;"
-            aria-label="<?php echo esc_attr(sprintf(__('Ver información de %s', 'flacso-uruguay'), (string) $item['title'])); ?>"
-            data-flacso-offer-click="1"
-            data-offer-title="<?php echo esc_attr((string) $item['title']); ?>"
-            data-offer-status="<?php echo !empty($item['is_open']) ? 'inscripciones_abiertas' : 'proxima_apertura'; ?>"
-        >
-            <div class="flacso-formacion-card__media">
-                <?php if (!empty($item['thumbnail_url'])) : ?>
-                    <?php
-                    if (!empty($item['image_id'])) {
-                        echo wp_get_attachment_image(
-                            (int) $item['image_id'],
-                            'flacso-card',
-                            false,
-                            [
-                                'class'    => 'flacso-formacion-card__image',
-                                'alt'      => (string) $item['title'],
-                                'loading'  => 'lazy',
-                                'decoding' => 'async',
-                                'sizes'    => '(max-width: 767px) 42vw, (max-width: 1200px) 33vw, 340px',
-                            ]
-                        );
-                    } else {
-                        ?>
-                        <img src="<?php echo esc_url((string) $item['thumbnail_url']); ?>" class="flacso-formacion-card__image" alt="<?php echo esc_attr((string) $item['title']); ?>" loading="lazy" decoding="async" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
-                        <?php
-                    }
-                    ?>
-                    <div class="flacso-formacion-card__placeholder" style="display:none;">
-                        <i class="bi bi-mortarboard" style="font-size: 3rem;"></i>
-                    </div>
-                <?php else : ?>
-                    <div class="flacso-formacion-card__placeholder">
-                        <i class="bi bi-mortarboard" style="font-size: 3rem;"></i>
-                    </div>
-                <?php endif; ?>
-
-                <span class="flacso-formacion-card__badge"><?php echo esc_html($taxonomy_name); ?></span>
-            </div>
-
-            <div class="flacso-formacion-card__body">
-                <h3 class="flacso-formacion-card__title"><?php echo esc_html((string) $item['title']); ?></h3>
-                <p class="flacso-formacion-card__excerpt"><?php echo esc_html((string) $item['excerpt']); ?></p>
-                <div class="flacso-formacion-card__meta">
-                    <?php if (!empty($item['duracion'])) : ?>
-                        <span class="flacso-formacion-card__meta-item">
-                            <i class="bi bi-clock" aria-hidden="true"></i>
-                            <?php echo esc_html((string) $item['duracion']); ?>
-                        </span>
-                    <?php endif; ?>
-
-                    <?php if (!empty($item['start_label'])) : ?>
-                        <span class="flacso-formacion-card__meta-item">
-                            <i class="bi bi-calendar3" aria-hidden="true"></i>
-                            <time datetime="<?php echo esc_attr((string) $item['start_iso']); ?>"><?php echo esc_html((string) $item['start_label']); ?></time>
-                        </span>
-                    <?php endif; ?>
-                </div>
-
-                <div class="flacso-formacion-card__footer">
-                    <span class="flacso-formacion-card__status<?php echo !empty($item['is_open']) ? ' is-open' : ''; ?>">
-                        <?php echo esc_html(!empty($item['is_open']) ? __('Inscripciones abiertas', 'flacso-uruguay') : __('Próxima apertura', 'flacso-uruguay')); ?>
-                    </span>
-                    <span class="flacso-formacion-card__action">
-                        <?php esc_html_e('Conocer más', 'flacso-uruguay'); ?> →
-                    </span>
-                </div>
-            </div>
-        </a>
+        <?php
+        get_template_part('template-parts/components/academic-card', null, [
+            'title'       => (string) $item['title'],
+            'url'         => (string) $item['permalink'],
+            'badge'       => (string) $taxonomy_name,
+            'description' => (string) $item['excerpt'],
+            'image_id'    => (int) ($item['image_id'] ?? 0),
+            'image_url'   => (string) ($item['thumbnail_url'] ?? ''),
+            'image_sizes' => '(max-width: 767px) 42vw, (max-width: 1200px) 33vw, 340px',
+            'accent'      => (string) ($item['brand_color'] ?? '#0a3470'),
+            'is_open'     => !empty($item['is_open']),
+            'icon_style'  => 'font-size: 3rem;',
+            'meta'        => array_values(array_filter([
+                !empty($item['duracion']) ? ['icon' => 'bi-clock', 'text' => (string) $item['duracion']] : null,
+                !empty($item['start_label']) ? ['icon' => 'bi-calendar3', 'text' => (string) $item['start_label'], 'datetime' => (string) $item['start_iso']] : null,
+            ])),
+            'link_attrs'  => [
+                'aria-label'              => sprintf(__('Ver información de %s', 'flacso-uruguay'), (string) $item['title']),
+                'data-flacso-offer-click' => '1',
+                'data-offer-title'        => (string) $item['title'],
+                'data-offer-status'       => !empty($item['is_open']) ? 'inscripciones_abiertas' : 'proxima_apertura',
+            ],
+        ]);
+        ?>
     </article>
     <?php
 };

@@ -91,13 +91,15 @@ card_img_check(flacso_child_card_image_html(0, '', 'Nada', '') === '', 'sin imag
 
 // Plantillas de listado: usan el helper y no imprimen la URL original en un <img src>.
 $formacion = (string) file_get_contents($root . '/formacion-page.php');
-card_img_check(substr_count($formacion, 'flacso_child_card_image_html(') === 2, 'formacion-page.php usa el helper en las dos tarjetas (ofertas y seminarios)');
-card_img_check(strpos($formacion, '<img src="<?php echo esc_url($item[\'thumbnail_url\'])') === false && strpos($formacion, '<img src="<?php echo esc_url($sem[\'thumbnail_url\'])') === false, 'formacion-page.php no imprime thumbnail_url en un <img src>');
+// La tarjeta vive ahora en el componente compartido: Formación lo invoca para ofertas y seminarios y él usa el helper.
+$tarjeta = (string) file_get_contents($root . '/template-parts/components/academic-card.php');
+card_img_check(substr_count($tarjeta, 'flacso_child_card_image_html(') === 1 && substr_count($formacion, "'template-parts/components/academic-card'") === 2, 'formacion-page.php usa el componente en las dos tarjetas (ofertas y seminarios) y este usa el helper');
+card_img_check(strpos($formacion, '<img src=') === false && strpos($tarjeta, '<img src=') === false, 'ni formacion-page.php ni el componente imprimen thumbnail_url en un <img src>');
 // El atributo sizes debe reflejar el ancho real de la tarjeta (medido: 154-159px en 412px, 346px en 768px, 307px en 1024px,
 // 392px en 1280px). Con 92vw un teléfono retina elegía la variante de 800px (1,2 MB) en vez de la de 480px.
 card_img_check(strpos($formacion, '92vw') === false, 'formacion-page.php no declara sizes de 92vw: la tarjeta ocupa un 40 % del ancho en móvil');
-card_img_check(substr_count($formacion, '(max-width: 600px) 40vw, (max-width: 900px) 46vw, (max-width: 1100px) 31vw, 400px') === 2, 'las dos tarjetas declaran los sizes medidos');
+card_img_check(substr_count($formacion, '(max-width: 600px) 40vw, (max-width: 900px) 46vw, (max-width: 1100px) 31vw, 400px') === 1 && substr_count($formacion, "'image_sizes' => \$flacso_formacion_card_sizes") === 2, 'las dos tarjetas declaran los sizes medidos (una sola definición compartida)');
 $taxonomia = (string) file_get_contents($root . '/taxonomy-tipo-oferta-academica.php');
-card_img_check(strpos($taxonomia, "'flacso-card'") !== false && strpos($taxonomia, "'large'") === false, 'el listado por tipo pide flacso-card y no large');
+card_img_check(strpos($tarjeta, "flacso_child_card_image_html(") !== false && strpos($taxonomia, "'large'") === false && strpos($taxonomia, "'image_sizes'") !== false, 'el listado por tipo usa el componente (que pide flacso-card vía el helper) y no large');
 
 echo "OK tamaños de imagen de tarjeta sin servir el original\n";
