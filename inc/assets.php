@@ -161,15 +161,6 @@ function child_theme_register_bootstrap() {
         '1.13.1',
         'all'
     );
-
-    // Registrar JS Bootstrap Bundle (incluye Popper)
-    wp_register_script(
-        'bootstrap-js',
-        get_stylesheet_directory_uri() . '/assets/vendor/bootstrap/js/bootstrap.bundle.min.js',
-        array(),
-        '5.3.8',
-        true
-    );
 }
 add_action( 'wp_enqueue_scripts', 'child_theme_register_bootstrap', 5 ); // prioridad 5 para que enqueue_block_assets del plugin reutilice nuestro src local de bootstrap-icons
 
@@ -178,7 +169,6 @@ function child_theme_enqueue_bootstrap() {
     // Bootstrap forma parte de la base visual del tema FLACSO.
     wp_enqueue_style( 'bootstrap-css' );
     wp_enqueue_style( 'bootstrap-icons' );
-    wp_enqueue_script( 'bootstrap-js' );
 }
 add_action( 'wp_enqueue_scripts', 'child_theme_enqueue_bootstrap', 20 ); // prioridad 20, antes del child CSS
 
