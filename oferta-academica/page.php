@@ -561,6 +561,13 @@ $render_coordinador = static function ($docente_id, $rol = '') {
                             </div>
                             <div class="flacso-academic-hero__media">
                                 <?php if ($thumbnail_url !== '') : ?>
+                                    <?php
+                                    // La placa original pesa varios MB: se sirve el tamaño «large» con srcset (se ve a ~560 px como máximo).
+                                    $hero_thumb_id = (int) ($context['thumbnail_id'] ?? 0);
+                                    $hero_image_attr = ['class' => 'flacso-academic-hero__image', 'alt' => $title, 'loading' => 'eager', 'fetchpriority' => 'high', 'decoding' => 'async', 'sizes' => '(min-width: 1100px) 560px, 100vw', 'onerror' => 'this.hidden=true;this.nextElementSibling.hidden=false'];
+                                    $hero_image_html = $hero_thumb_id > 0 ? wp_get_attachment_image($hero_thumb_id, 'large', false, $hero_image_attr) : '';
+                                    ?>
+                                    <?php if ($hero_image_html !== '') : echo $hero_image_html; /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- HTML de wp_get_attachment_image */ else : ?>
                                     <img
                                         class="flacso-academic-hero__image"
                                         src="<?php echo esc_url($thumbnail_url); ?>"
@@ -570,6 +577,7 @@ $render_coordinador = static function ($docente_id, $rol = '') {
                                         decoding="async"
                                         onerror="this.hidden=true;this.nextElementSibling.hidden=false"
                                     >
+                                    <?php endif; ?>
                                     <div class="flacso-academic-hero__placeholder" hidden>
                                         <span class="flacso-academic-hero__placeholder-mark" aria-hidden="true">F</span>
                                         <span><?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?></span>
