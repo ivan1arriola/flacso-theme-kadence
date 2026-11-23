@@ -133,7 +133,7 @@ $total_count  = (int) $equipo_query->post_count;
                             <div class="card-inner">
                                 <div class="card-avatar">
                                     <?php if (has_post_thumbnail()) : ?>
-                                        <?php the_post_thumbnail('medium', ['class' => 'avatar-img']); ?>
+                                        <?php the_post_thumbnail('thumbnail', ['class' => 'avatar-img', 'sizes' => '100px']); // se ve a 100 px: no cargar 300 px ?>
                                     <?php else : ?>
                                         <div class="avatar-fallback"><?php echo esc_html($iniciales); ?></div>
                                     <?php endif; ?>
