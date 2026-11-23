@@ -11,6 +11,7 @@ $GLOBALS['bridge_mods'] = array();
 $GLOBALS['bridge_actions'] = array();
 function get_theme_mod( $key, $default = false ) { return $GLOBALS['bridge_mods'][ $key ] ?? $default; }
 function add_action( $hook, $callback ) { $GLOBALS['bridge_actions'][ $hook ] = $callback; }
+function add_filter( $hook, $callback ) { $GLOBALS['bridge_actions'][ $hook ] = $callback; }
 function __( $text, $domain ) { return $text; }
 require $root . '/inc/kadence-compat.php';
 

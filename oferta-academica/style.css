@@ -4948,8 +4948,12 @@
 }
 
 @media (max-width: 760px) {
+    /* El espacio de la barra fija se reserva en body: el pie del sitio queda fuera del contenedor de la ficha y la barra lo tapaba. */
+    body:has(.flacso-mobile-sheet-ready) {
+        padding-bottom: calc(83px + env(safe-area-inset-bottom, 0px));
+    }
+
     .flacso-oferta-responsive.flacso-mobile-sheet-ready {
-        padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px));
         scroll-padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
     }
 

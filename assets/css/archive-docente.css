@@ -198,3 +198,6 @@
         .docentes-grid { grid-template-columns: 1fr; }
         .flacso-equipo-tabs { border-radius: 16px; }
     }
+
+.flacso-load-more { text-align: center; margin: 2rem 0 1rem; }
+.flacso-load-more[hidden], .empty-results[hidden] { display: none; }

@@ -56,3 +56,15 @@ function flacso_child_register_kadence_compat( $wp_customize ): void {
     );
 }
 add_action( 'customize_register', 'flacso_child_register_kadence_compat' );
+
+/**
+ * Un solo <h1> por página: el tema imprime el título de noticias y eventos, así que un <h1> dentro del contenido
+ * (p. ej. el título repetido por quien edita) pasa a <h2> conservando sus atributos.
+ */
+function flacso_child_demote_content_h1( $content ) {
+	if ( ! is_singular( array( 'post', 'evento' ) ) || ! in_the_loop() || ! is_main_query() ) {
+		return $content;
+	}
+	return preg_replace( array( '/<h1(?=[\s>])/i', '/<\/h1>/i' ), array( '<h2', '</h2>' ), (string) $content );
+}
+add_filter( 'the_content', 'flacso_child_demote_content_h1', 20 );
