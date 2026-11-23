@@ -544,3 +544,11 @@
             min-height: 300px;
         }
     }
+
+@media (max-width: 782px) {
+    .flacso-contact-data a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+}
