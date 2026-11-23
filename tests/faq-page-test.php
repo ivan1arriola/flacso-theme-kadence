@@ -22,4 +22,10 @@ foreach ($checks as $check) {
     }
 }
 
+// Las respuestas nunca quedan invisibles esperando una animación de entrada (capturas, impresión, búsqueda en la página).
+if (preg_match('/\.flacso-faq--reveal[^{]*\{[^}]*opacity\s*:\s*0/s', $css) === 1) {
+    fwrite(STDERR, 'La animación de entrada no debe dejar las preguntas con opacity: 0.' . PHP_EOL);
+    exit(1);
+}
+
 echo "Tema FAQ: plantilla, assets y contrato con el plugin correctos.\n";
