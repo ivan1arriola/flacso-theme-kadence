@@ -260,7 +260,7 @@
 .flacso-carta-virtual .fc-chip-block p {
     margin: 0 0 6px;
     color: rgba(255,255,255,.76);
-    font-size: 11.5px;
+    font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: .045em;
     text-transform: uppercase;
@@ -364,7 +364,7 @@
 .flacso-carta-virtual .fc-intermediate-kicker {
     margin-bottom: 2px;
     color: var(--fc-ui-muted);
-    font-size: 10.5px;
+    font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: .06em;
     text-transform: uppercase;
@@ -444,7 +444,7 @@
 .flacso-carta-virtual .fc-feature-card h3 {
     margin: 0 0 4px;
     color: var(--fc-ui-muted);
-    font-size: 10.5px;
+    font-size: 0.75rem;
     line-height: 1.15;
     font-weight: 850;
     letter-spacing: .065em;
@@ -530,7 +530,7 @@
     border-radius: 50%;
     color: #fff;
     background: var(--fc-ui-navy);
-    font-size: 11px;
+    font-size: 0.75rem;
     line-height: 1;
     font-weight: 850;
     letter-spacing: .04em;
@@ -1027,7 +1027,7 @@
     display: block;
     margin-top: 2px;
     color: var(--fc-ui-muted);
-    font-size: 10px;
+    font-size: 0.75rem;
     font-weight: 700;
 }
 
@@ -1086,7 +1086,7 @@
     display: block;
     margin-bottom: 2px;
     color: rgba(255,255,255,.7);
-    font-size: 10.5px;
+    font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: .06em;
     text-transform: uppercase;
@@ -1288,7 +1288,7 @@
     display: block;
     margin-bottom: 2px;
     color: var(--fc-ui-navy);
-    font-size: 10.5px;
+    font-size: 0.75rem;
     font-weight: 850;
     letter-spacing: .055em;
     text-transform: uppercase;
@@ -1366,7 +1366,7 @@
     display: block;
     margin-bottom: 4px;
     color: var(--fc-ui-yellow);
-    font-size: 10.5px;
+    font-size: 0.75rem;
     font-weight: 850;
     letter-spacing: .065em;
     text-transform: uppercase;
@@ -1763,7 +1763,7 @@
     .flacso-carta-virtual .fc-major-heading__kicker {
         width: 38px;
         height: 38px;
-        font-size: 10px;
+        font-size: 0.75rem;
     }
 
     .flacso-carta-virtual .fc-major-heading h2 {
@@ -1815,7 +1815,7 @@
     .flacso-carta-virtual .fc-pricing-table td::before {
         content: attr(data-label);
         color: var(--fc-ui-muted);
-        font-size: 11px;
+        font-size: 0.75rem;
         font-weight: 800;
         letter-spacing: .035em;
         text-transform: uppercase;
@@ -1898,7 +1898,7 @@
 
     .flacso-carta-virtual .fc-hero-meta span {
         padding: 5px 7px;
-        font-size: 11px;
+        font-size: 0.75rem;
     }
 
     .flacso-carta-virtual .fc-hero-actions {
@@ -1924,7 +1924,7 @@
     }
 
     .flacso-carta-virtual .fc-feature-card h3 {
-        font-size: 9.5px;
+        font-size: 0.75rem;
     }
 
     .flacso-carta-virtual .fc-feature-card p {
@@ -1957,7 +1957,7 @@
     .flacso-carta-virtual .fc-major-heading__kicker {
         width: 30px;
         height: 30px;
-        font-size: 9px;
+        font-size: 0.75rem;
     }
 
     .flacso-carta-virtual .fc-major-heading h2 {
@@ -2266,7 +2266,7 @@
     .flacso-carta-virtual .fc-major-heading__kicker {
         width: 42px;
         height: 42px;
-        font-size: 11px;
+        font-size: 0.75rem;
     }
 
     .flacso-carta-virtual .fc-major-heading h2 {
@@ -2504,7 +2504,7 @@
     border-radius: 8px;
     color: var(--fc-ui-navy);
     background: #e8eff8;
-    font-size: 11px;
+    font-size: 0.75rem;
 }
 
 .flacso-carta-virtual .fc-major-heading h2 {
@@ -2759,7 +2759,7 @@
     .flacso-carta-virtual .fc-jump-nav__links a::before {
         content: counter(fc-chapter, decimal-leading-zero);
         color: #8190a1;
-        font-size: 10.5px;
+        font-size: 0.75rem;
         font-weight: 850;
     }
 

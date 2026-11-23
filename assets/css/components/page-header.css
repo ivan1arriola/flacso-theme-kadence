@@ -24,7 +24,7 @@
 	border-radius: 999px;
 	background: var(--global-palette2, #ffd12f);
 	color: var(--global-palette3, #082b60);
-	font-size: .7rem;
+	font-size: 0.75rem;
 	font-weight: 900;
 	letter-spacing: .08em;
 	text-transform: uppercase;
@@ -54,6 +54,7 @@
 .flacso-page-header--reading .flacso-page-header__image { aspect-ratio: 3 / 2; }
 
 @media (max-width: 767px) {
+	.flacso-page-header__breadcrumb a { display: inline-flex; align-items: center; min-height: 44px; }
 	/* La variante de lectura con imagen tiene mayor especificidad que .--has-media: también debe pasar a una columna. */
 	.flacso-page-header--has-media,
 	.flacso-page-header--reading.flacso-page-header--has-media { grid-template-columns: 1fr; }

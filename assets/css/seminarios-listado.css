@@ -164,7 +164,7 @@
 }
 
 .flacso-seminarios-page .seminarios-stat__label {
-    font-size: 0.68rem;
+    font-size: 0.75rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: rgba(216, 231, 255, 0.78);
@@ -309,7 +309,7 @@
 .flacso-seminarios-page .seminarios-featured__kicker {
     display: block;
     margin-bottom: 0.45rem;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: rgba(229, 237, 255, 0.78);
@@ -672,7 +672,7 @@
 
 .flacso-seminarios-page .seminarios-contacto__kicker {
     margin: 0;
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     color: rgba(161, 201, 255, 0.9);
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -965,7 +965,7 @@
     flex: 0 0 auto;
     margin-right: 0.75rem;
     color: var(--seminario-muted);
-    font-size: 0.74rem;
+    font-size: 0.75rem;
     font-weight: 700;
     white-space: nowrap;
 }

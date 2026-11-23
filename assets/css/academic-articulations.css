@@ -16,7 +16,7 @@
 }
 .flacso-art-public *{box-sizing:border-box}
 .flacso-art-public__header{margin-bottom:22px}
-.flacso-art-public__eyebrow{text-transform:uppercase;font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--art-blue);margin:0 0 6px}
+.flacso-art-public__eyebrow{text-transform:uppercase;font-size:0.75rem;font-weight:800;letter-spacing:.08em;color:var(--art-blue);margin:0 0 6px}
 .flacso-art-public__header h2{font-size:clamp(21px,3vw,28px);margin:0 0 8px;color:var(--art-ink);line-height:1.22}
 .flacso-art-public__header>p:last-child{margin:0;font-size:14px;line-height:1.6;color:#52647b}
 .flacso-art-public__levels{display:grid;gap:20px;min-width:0}
@@ -24,7 +24,7 @@
 .flacso-art-public__level-head{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:10px}
 .flacso-art-public__level-head h3{font-size:17px;color:var(--art-ink);margin:0;line-height:1.35}
 .flacso-art-public__number{display:grid;place-items:center;width:30px;height:30px;flex:0 0 30px;border-radius:9px;background:#e9f0fa;color:var(--art-blue);font-weight:800}
-.flacso-art-public__variant{font-size:11px;font-weight:700;color:#51647e;border:1px solid #d9e2ee;border-radius:20px;padding:4px 8px}
+.flacso-art-public__variant{font-size:0.75rem;font-weight:700;color:#51647e;border:1px solid #d9e2ee;border-radius:20px;padding:4px 8px}
 .flacso-art-public__cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px;min-width:0}
 .flacso-art-public__card{min-width:0;border:1px solid var(--art-border);border-radius:12px;background:#f8fafc;padding:15px}
 .flacso-art-public__card h4{margin:0 0 7px;font-size:16px;color:var(--art-ink);line-height:1.35;overflow-wrap:anywhere}

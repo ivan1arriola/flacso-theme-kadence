@@ -429,7 +429,7 @@
 }
 
 .flacso-oa-aside-doc-btn__text small {
-    font-size: 0.74rem;
+    font-size: 0.75rem;
     color: var(--flacso-muted);
 }
 
@@ -1829,7 +1829,7 @@
 .flacso-oferta-responsive .kicker {
     margin-bottom: 10px;
     color: #4473a8;
-    font-size: .72rem;
+    font-size: 0.75rem;
     letter-spacing: .12em;
 }
 
@@ -2626,7 +2626,7 @@
 
     .flacso-oferta-responsive .kicker {
         margin-bottom: 6px;
-        font-size: .62rem;
+        font-size: 0.75rem;
     }
 
     .flacso-oferta-responsive .cohort {
@@ -2994,7 +2994,7 @@
     display: block;
     margin-bottom: 10px;
     color: #66758a;
-    font-size: .67rem;
+    font-size: 0.75rem;
     font-weight: 900;
     letter-spacing: .08em;
     text-transform: uppercase;
@@ -3066,7 +3066,7 @@
     display: block;
     margin-top: 2px;
     color: #6f7f93;
-    font-size: .72rem;
+    font-size: 0.75rem;
     line-height: 1.3;
 }
 
@@ -3239,7 +3239,7 @@
 .flacso-oferta-responsive .contact-support__eyebrow {
     margin-bottom: 8px;
     color: #53657c;
-    font-size: .72rem;
+    font-size: 0.75rem;
     font-weight: 850;
     letter-spacing: .045em;
     text-transform: none;
@@ -3307,7 +3307,7 @@
 }
 
 .flacso-oferta-responsive .flacso-oa-aside-person__info small {
-    font-size: .7rem;
+    font-size: 0.75rem;
 }
 
 .flacso-oferta-responsive .flacso-oa-aside-contact__email {
@@ -3916,7 +3916,7 @@
     border-radius: 999px;
     background: rgba(255, 255, 255, .89);
     color: #264566 !important;
-    font-size: .72rem;
+    font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: .025em;
     line-height: 1.2;
@@ -4248,7 +4248,7 @@
     .flacso-oferta-responsive .flacso-academic-hero__badge {
         min-height: 26px;
         padding: 4px 8px;
-        font-size: .62rem;
+        font-size: 0.75rem;
     }
 
     .flacso-oferta-responsive .flacso-academic-hero__title {
@@ -4792,7 +4792,7 @@
 .flacso-oferta-responsive .flacso-academic-trust-strip h2 {
     flex: 0 0 auto;
     margin: 0;
-    font-size: .7rem;
+    font-size: 0.75rem;
     font-weight: 850;
     line-height: 1.45;
     letter-spacing: .09em;
@@ -5258,7 +5258,7 @@
 
 .flacso-oferta-responsive .flacso-academic-menciones__title {
     margin: 0 0 12px;
-    font-size: .7rem;
+    font-size: 0.75rem;
     font-weight: 850;
     line-height: 1.45;
     letter-spacing: .09em;
@@ -5393,7 +5393,7 @@
     border-radius: 999px;
     background: var(--oa-brand-light, #ecf1f8);
     color: var(--oa-brand-dark, #0a3470);
-    font-size: .74rem;
+    font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: .04em;
     text-transform: uppercase;
