@@ -151,6 +151,9 @@
     }
 
     .flacso-contact-quick__link {
+        display: flex;
+        align-items: center;
+        min-height: 44px;
         margin-top: 0.48rem;
         font-weight: 750;
         text-decoration: none;

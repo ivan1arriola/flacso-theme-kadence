@@ -1281,6 +1281,8 @@
 
 /* Áreas táctiles de 44 px en móvil: contacto y enlaces legales del pie, y todas las migas de pan etiquetadas «Navegación». */
 @media (max-width: 782px) {
+    .flacso-footer__brand,
+    nav > a,
     .flacso-footer__contact a,
     .flacso-footer__bottom a,
     nav[aria-label="Navegación"] a {
