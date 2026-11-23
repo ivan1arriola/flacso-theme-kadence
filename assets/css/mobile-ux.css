@@ -48,7 +48,7 @@ html {
 
     .flacso-topbar__menu a {
         display: inline-flex;
-        min-height: 40px;
+        min-height: 44px;
         align-items: center;
         padding-inline: 0.45rem;
     }
@@ -170,7 +170,7 @@ html {
     .flacso-footer__menu a,
     .flacso-footer__contact a {
         display: inline-flex;
-        min-height: 40px;
+        min-height: 44px;
         align-items: center;
     }
 

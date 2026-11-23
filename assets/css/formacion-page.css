@@ -983,8 +983,17 @@
 @media (max-width: 720px) {
     .flacso-formacion-nav__link,
     .flacso-formacion-nav__link + .flacso-formacion-nav__link {
+        min-height: 44px;
         padding: .85rem .5rem .85rem 0;
         border-left: 0;
         border-bottom: 1px solid rgba(255, 255, 255, .18);
+    }
+}
+
+@media (max-width: 782px) {
+    .flacso-formacion-group__more {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
     }
 }

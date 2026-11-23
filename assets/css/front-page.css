@@ -303,3 +303,4 @@
   .flacso-home .hero-media img{transform:none;will-change:auto}
   .flacso-home .news-bento .news-card:hover,.flacso-home .hero-cta:hover{transform:none}
 }
+@media(max-width:767px){.flacso-home .text-link{display:inline-flex;align-items:center;min-height:44px}}
