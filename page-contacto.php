@@ -77,7 +77,7 @@ $telefono_tel = preg_replace('/\D/', '', $telefono);
                 <div class="flacso-contact-form-wrap">
                     <?php
                     if (function_exists('fc_render_form')) {
-                        echo fc_render_form(array('titulo' => '', 'descripcion' => ''));
+                        echo fc_render_form(array('titulo' => '', 'descripcion' => '', 'mostrar_encabezado' => false));
                     } else {
                         echo '<p class="flacso-contact-error">El formulario de consulta no está disponible en este momento.</p>';
                     }
