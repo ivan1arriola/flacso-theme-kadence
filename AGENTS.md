@@ -29,6 +29,9 @@ Este documento rige para cualquier agente o herramienta (Claude Code, Codex, Ant
 - **La única excepción de color permitida es el color de cada oferta académica** (`--offer-accent`). Seminarios, Convenios, Carta, Equipo, Programas y el resto usan la paleta de Kadence: no tienen celeste ni azules propios.
 - Anchos de contenido: solo el general de Kadence y el de lectura (1080 px). Ver `docs/sistema-de-diseno.md`.
 - No agregar `!important` ni estilos en línea nuevos; no agregar CSS a las hojas apiladas de seminarios.
+- **Consulta obligatoria del plan.** Antes de cualquier cambio de UI/UX (CSS, plantillas o componentes), leer `docs/sistema-de-diseno.md` y el plan maestro vigente al que remite, e indicar en el informe qué paso (U0 a U4) y qué familia de plantillas se está tocando. No se copia el plan dentro de este archivo ni se nombra aquí su versión: la fuente es siempre el documento vigente referenciado por `docs/sistema-de-diseno.md`, para que estas instrucciones no queden desactualizadas cuando el plan cambie.
+- **Pruebas de gobierno del diseño** (las que impiden anchos, radios, sombras o colores fuera de los tokens): admiten excepciones solo si son explícitas, justificadas y están listadas en la propia prueba (por ejemplo el color de cada oferta académica). Nunca se afloja una prueba borrando sus aserciones.
+- **Regresión visual** (comparación de capturas): antes de comparar hay que controlar las fuentes (cargadas y fijas), las animaciones y transiciones (desactivadas), el contenido dinámico (datos fijos o zonas enmascaradas: fechas, contadores, campañas), la carga diferida de imágenes y los tiempos de carga (esperar a fuentes y red inactiva), y fijar un umbral de tolerancia. Una diferencia se investiga; no se rehace la línea base solo para que pase.
 
 ## 4. Sistema de trabajo: coordinador y perfiles
 
@@ -41,6 +44,8 @@ El agente principal es el coordinador y conserva las decisiones de arquitectura 
 - Permitir y registrar los desacuerdos técnicos fundamentados entre perfiles; decide el coordinador, explicando por qué.
 - Revisar cada implementación antes de integrarla (diff, pruebas y verificación propia, sin confiar solo en el informe del subagente).
 - Informar a la persona antes de cualquier push, PR, merge o acción sobre producción, según las reglas de la sección 1.
+
+**Personalidad y modelo son cosas distintas.** No hay un modelo fijo por perfil. Se elige el modelo por tipo de trabajo: exploración y medición de solo lectura con un modelo liviano (nivel T1 de la guía del plugin), implementación con uno intermedio (T2) y revisión final con el más capaz disponible (T3). En Claude Code corresponden a Haiku, Sonnet y Opus; en otras herramientas, a sus equivalentes.
 
 **Los subagentes no pueden crear otros subagentes.** Los perfiles siguientes son modos de comportamiento, no una autorización para ejecutar agentes adicionales. Si el entorno permite definir agentes mediante archivos de configuración nativos, se pueden proponer, pero no se crean sin autorización de una persona.
 
@@ -62,7 +67,20 @@ Cada tarea sigue, cuando corresponda, estas etapas:
 4. **Revisión crítica y pruebas**, con las herramientas de calidad de la sección 5.
 5. **Informe final** con cambios, resultados de pruebas (indicando cuáles se ejecutaron y cuáles quedan pendientes), riesgos y pendientes.
 
-### 4.4 Persistencia
+### 4.4 Responsables por fase del plan UI/UX
+
+Asignación sugerida; el coordinador puede cambiarla si lo justifica. Quien implementa no se revisa a sí mismo.
+
+| Fase del plan | Perfil responsable | Revisa |
+|---|---|---|
+| U0 · Arnés de regresión visual | Auditor implacable | Arquitecto pragmático |
+| U1 · Tokens y anchos | Arquitecto pragmático | Diseñador exigente |
+| U2 · Componentes | Diseñador exigente | Arquitecto pragmático y Auditor implacable |
+| U3 · Consolidación de CSS | Arquitecto pragmático | Auditor implacable |
+| U4 · Documentación y gobierno | Arquitecto pragmático | Los tres perfiles |
+| Correcciones puntuales | Según su especialidad | Auditor implacable |
+
+### 4.5 Persistencia
 
 Estas instrucciones se aplican a todas las sesiones de agentes que trabajen en este repositorio. Codex y otros agentes que leen `AGENTS.md` las cargan al abrir el repositorio; Claude Code lee `CLAUDE.md`, que no existe hoy en este repositorio, así que solo las aplica si se le indica este archivo.
 
