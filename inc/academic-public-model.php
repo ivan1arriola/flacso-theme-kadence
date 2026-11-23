@@ -435,6 +435,56 @@ function flacso_theme_get_offer_context(int $offer_id): array {
 }
 
 /**
+ * Mapas de relaciones entre seminarios y ofertas, calculados una vez por petición.
+ * Antes cada contexto de seminario recorría todos los seminarios y todas las ofertas (O(S·(S+O))).
+ *
+ * @return array{parent_of: array<int, WP_Post>, offers_of: array<int, WP_Post[]>}
+ */
+function flacso_theme_seminar_relation_maps(): array {
+    static $maps = null;
+    if ($maps !== null) {
+        return $maps;
+    }
+    $maps = ["parent_of" => [], "offers_of" => []];
+    foreach (get_posts([
+        "post_type"      => "seminario",
+        "post_status"    => "publish",
+        "posts_per_page" => -1,
+    ]) as $candidate) {
+        $components = get_post_meta($candidate->ID, "componentes", true);
+        if (!is_array($components)) {
+            continue;
+        }
+        foreach ($components as $comp) {
+            $component_id = absint($comp["seminario_id"] ?? 0);
+            // El primer seminario que lo incluye (orden de la consulta) es el padre; nunca uno mismo.
+            if ($component_id > 0 && $component_id !== (int) $candidate->ID && !isset($maps["parent_of"][$component_id])) {
+                $maps["parent_of"][$component_id] = $candidate;
+            }
+        }
+    }
+    foreach (get_posts([
+        "post_type"      => "oferta-academica",
+        "post_status"    => "publish",
+        "posts_per_page" => -1,
+    ]) as $offer) {
+        $offer_seminars = get_post_meta($offer->ID, "seminarios", true);
+        if (!is_array($offer_seminars)) {
+            continue;
+        }
+        $seen = [];
+        foreach ($offer_seminars as $item) {
+            $component_id = absint($item["seminario_id"] ?? 0);
+            if ($component_id > 0 && !isset($seen[$component_id])) {
+                $seen[$component_id] = true;
+                $maps["offers_of"][$component_id][] = $offer;
+            }
+        }
+    }
+    return $maps;
+}
+
+/**
  * Obtiene el View Model de un Seminario.
  */
 function flacso_theme_get_seminar_context(int $seminar_id): array {
@@ -595,48 +645,20 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
 
     // Si es un componente hijo de otro seminario integrado, encontrar al padre
     $parent = null;
+    $relation_maps = flacso_theme_seminar_relation_maps();
     if (!$is_integrated) {
-        $parent_candidates = get_posts([
-            "post_type"      => "seminario",
-            "post_status"    => "publish",
-            "posts_per_page" => -1,
-            "post__not_in"   => [$seminar_id],
-        ]);
-        foreach ($parent_candidates as $candidate) {
-            $candidate_components = get_post_meta($candidate->ID, "componentes", true);
-            if (is_array($candidate_components)) {
-                foreach ($candidate_components as $comp) {
-                    if (absint($comp["seminario_id"] ?? 0) === $seminar_id) {
-                        $parent = $candidate;
-                        break 2;
-                    }
-                }
-            }
-        }
+        $parent = $relation_maps["parent_of"][$seminar_id] ?? null;
     }
 
     // Programas academicos que integran este seminario en su plan
     $related_programs = [];
-    $offers = get_posts([
-        "post_type"      => "oferta-academica",
-        "post_status"    => "publish",
-        "posts_per_page" => -1,
-    ]);
-    foreach ($offers as $offer) {
-        $offer_seminars = get_post_meta($offer->ID, "seminarios", true);
-        if (is_array($offer_seminars)) {
-            foreach ($offer_seminars as $item) {
-                if (absint($item["seminario_id"] ?? 0) === $seminar_id) {
-                    $related_programs[] = [
-                        "id"    => (int) $offer->ID,
-                        "title" => get_the_title($offer),
-                        "slug"  => (string) $offer->post_name,
-                        "url"   => get_permalink($offer),
-                    ];
-                    break;
-                }
-            }
-        }
+    foreach ($relation_maps["offers_of"][$seminar_id] ?? [] as $offer) {
+        $related_programs[] = [
+            "id"    => (int) $offer->ID,
+            "title" => get_the_title($offer),
+            "slug"  => (string) $offer->post_name,
+            "url"   => get_permalink($offer),
+        ];
     }
     $oferta_id = absint($data["oferta_academica_id"] ?? get_post_meta($seminar_id, "oferta_academica_id", true));
     if ($oferta_id > 0) {
