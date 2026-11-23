@@ -61,17 +61,14 @@
     box-shadow: var(--flacso-shadow-card, 0 8px 24px rgb(7 28 61 / 10%));
 }
 
+/* La entrada es solo un desplazamiento: las respuestas nunca quedan invisibles (capturas, impresión, búsqueda en la página). */
 .flacso-faq--reveal .flacso-faq__item {
-    opacity: 0;
     transform: translateY(0.75rem);
-    transition:
-        opacity 480ms ease,
-        transform 480ms ease;
+    transition: transform 480ms ease;
     transition-delay: min(calc(var(--faq-order, 0) * 55ms), 440ms);
 }
 
 .flacso-faq--reveal .flacso-faq__item.is-visible {
-    opacity: 1;
     transform: translateY(0);
 }
 
@@ -151,7 +148,6 @@
 
 @media (prefers-reduced-motion: reduce) {
     .flacso-faq--reveal .flacso-faq__item {
-        opacity: 1;
         transform: none;
         transition: none;
     }
