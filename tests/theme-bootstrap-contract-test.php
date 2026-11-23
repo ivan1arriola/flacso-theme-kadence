@@ -39,7 +39,6 @@ theme_bootstrap_assert(strpos($assets, 'cdn.jsdelivr.net/npm/bootstrap') === fal
 
 $vendor_assets = array(
     'assets/vendor/bootstrap/css/bootstrap.min.css',
-    'assets/vendor/bootstrap/js/bootstrap.bundle.min.js',
     'assets/vendor/bootstrap-icons/font/bootstrap-icons.min.css',
     'assets/vendor/bootstrap-icons/font/fonts/bootstrap-icons.woff2',
     'assets/vendor/bootstrap-icons/font/fonts/bootstrap-icons.woff',
