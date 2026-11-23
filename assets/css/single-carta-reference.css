@@ -272,7 +272,7 @@
 .flacso-carta-virtual .fc-hero .fc-feature-card h3 {
     margin: 0 0 6px;
     color: #bfcfe8;
-    font-size: 11px;
+    font-size: 0.75rem;
     line-height: 1.3;
     font-weight: 750;
     letter-spacing: .10em;
@@ -772,7 +772,7 @@
 .flacso-carta-virtual .fc-pricing-table thead th span {
     margin-top: 4px;
     color: #cfdbed;
-    font-size: 11px;
+    font-size: 0.75rem;
     letter-spacing: normal;
     text-transform: none;
 }

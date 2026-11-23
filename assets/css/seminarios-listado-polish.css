@@ -115,7 +115,7 @@
 
     .flacso-seminarios-page .seminarios-hero__search-count {
         margin-right: 0.65rem;
-        font-size: 0.68rem;
+        font-size: 0.75rem;
     }
 
     .flacso-seminarios-page .seminarios-hero__months {
@@ -157,7 +157,7 @@
     .flacso-seminarios-page .seminarios-chip {
         min-height: 1.7rem;
         padding: 0.26rem 0.62rem;
-        font-size: 0.69rem;
+        font-size: 0.75rem;
     }
 
     .flacso-seminarios-page .seminario-featured__title {
@@ -215,7 +215,7 @@
     .flacso-seminarios-page .seminarios-catalog__total {
         min-height: 2rem;
         padding: 0.38rem 0.72rem;
-        font-size: 0.74rem;
+        font-size: 0.75rem;
     }
 
     .flacso-seminarios-page .seminarios-groups {
@@ -232,7 +232,7 @@
     }
 
     .flacso-seminarios-page .seminarios-group__count {
-        font-size: 0.72rem;
+        font-size: 0.75rem;
     }
 
     .flacso-seminarios-page .seminarios-grid {
@@ -269,7 +269,7 @@
     .flacso-seminarios-page .seminario-card__badges .seminarios-chip {
         min-height: 1.45rem;
         padding: 0.2rem 0.42rem;
-        font-size: 0.58rem;
+        font-size: 0.75rem;
         line-height: 1.1;
     }
 
@@ -294,7 +294,7 @@
     .flacso-seminarios-page .seminario-card__meta {
         gap: 0.28rem;
         margin-top: 0.55rem;
-        font-size: 0.72rem;
+        font-size: 0.75rem;
     }
 
     .flacso-seminarios-page .seminario-card__meta li {
@@ -311,7 +311,7 @@
 
     .flacso-seminarios-page .seminario-card__credits,
     .flacso-seminarios-page .seminario-card__cta {
-        font-size: 0.72rem;
+        font-size: 0.75rem;
     }
 }
 
@@ -457,7 +457,7 @@
 
     .flacso-seminarios-page .seminarios-intro__eyebrow {
         margin-bottom: .6rem;
-        font-size: .68rem;
+        font-size: 0.75rem;
     }
 
     .flacso-seminarios-page .seminarios-intro h2 {
@@ -601,7 +601,7 @@
     border-radius: 999px;
     background: #ffd12f;
     color: #082b60;
-    font-size: .7rem;
+    font-size: 0.75rem;
     font-weight: 900;
     letter-spacing: .06em;
     text-transform: uppercase;
@@ -819,7 +819,7 @@
     .flacso-seminarios-page .seminarios-hero__kicker {
         margin-bottom: .55rem;
         padding: .32rem .55rem;
-        font-size: .58rem;
+        font-size: 0.75rem;
     }
 
     .flacso-seminarios-page .seminarios-hero__title {
@@ -845,12 +845,12 @@
     .flacso-seminarios-page .seminarios-hero__facts span {
         min-height: 0;
         padding: .38rem .55rem;
-        font-size: .68rem;
+        font-size: 0.75rem;
     }
 
     .flacso-seminarios-page .seminarios-hero__contact {
         margin-top: .75rem;
-        font-size: .72rem;
+        font-size: 0.75rem;
     }
 
     .flacso-seminarios-page .seminarios-hero__tools {
@@ -1049,12 +1049,12 @@
 
     .flacso-seminarios-page .seminarios-hero__facts span {
         padding: .34rem .5rem;
-        font-size: .64rem;
+        font-size: 0.75rem;
     }
 
     .flacso-seminarios-page .seminarios-hero__contact {
         margin-top: .65rem;
-        font-size: .68rem;
+        font-size: 0.75rem;
     }
 
     .flacso-seminarios-page .seminario-card {
@@ -1216,7 +1216,7 @@
     .flacso-seminarios-page .seminarios-hero__details summary {
         min-height: 2.45rem;
         padding: .5rem 0;
-        font-size: .74rem;
+        font-size: 0.75rem;
     }
 
     .flacso-seminarios-page .seminarios-hero__details-body {
@@ -1282,7 +1282,7 @@
     .flacso-seminarios-page .seminarios-hero__kicker {
         margin-bottom: .45rem !important;
         padding: .28rem .48rem !important;
-        font-size: .56rem !important;
+        font-size: 0.75rem !important;
     }
 
     .flacso-seminarios-page .seminarios-hero__title {
@@ -1309,7 +1309,7 @@
     .flacso-seminarios-page .seminarios-hero__details summary {
         min-height: 2.25rem;
         padding: .4rem 0;
-        font-size: .7rem;
+        font-size: 0.75rem;
     }
 
     .flacso-seminarios-page .seminarios-hero__details-body {
@@ -1332,7 +1332,7 @@
         padding: .34rem .4rem;
         border-radius: 9px;
         text-align: center;
-        font-size: .62rem;
+        font-size: 0.75rem;
         line-height: 1.2;
     }
 
@@ -1342,7 +1342,7 @@
 
     .flacso-seminarios-page .seminarios-hero__contact {
         margin-top: .6rem;
-        font-size: .66rem;
+        font-size: 0.75rem;
         overflow-wrap: anywhere;
     }
 
@@ -1374,7 +1374,7 @@
     .flacso-seminarios-page .seminarios-hero__months button {
         min-height: 2rem !important;
         padding: .35rem .65rem !important;
-        font-size: .68rem !important;
+        font-size: 0.75rem !important;
         scroll-snap-align: start;
     }
 
@@ -1415,7 +1415,7 @@
     .flacso-seminarios-page .seminarios-chip {
         min-height: 1.45rem !important;
         padding: .22rem .44rem !important;
-        font-size: .58rem !important;
+        font-size: 0.75rem !important;
     }
 
     .flacso-seminarios-page .seminario-featured__title {
@@ -1436,7 +1436,7 @@
     .flacso-seminarios-page .seminario-featured__meta {
         gap: .28rem !important;
         margin-top: .55rem !important;
-        font-size: .68rem !important;
+        font-size: 0.75rem !important;
     }
 
     .flacso-seminarios-page .seminario-featured__footer {
@@ -1446,13 +1446,13 @@
     }
 
     .flacso-seminarios-page .seminario-featured__credits {
-        font-size: .66rem !important;
+        font-size: 0.75rem !important;
     }
 
     .flacso-seminarios-page .seminario-featured__footer .seminarios-btn {
         min-height: 2.2rem !important;
         padding: .4rem .65rem !important;
-        font-size: .7rem !important;
+        font-size: 0.75rem !important;
     }
 
     /* Catálogo: tarjetas horizontales y compactas; la imagen sigue siendo 4:5. */
@@ -1476,7 +1476,7 @@
     .flacso-seminarios-page .seminarios-catalog__total {
         min-height: 1.8rem !important;
         padding: .3rem .55rem !important;
-        font-size: .68rem !important;
+        font-size: 0.75rem !important;
     }
 
     .flacso-seminarios-page .seminarios-groups {
@@ -1493,7 +1493,7 @@
     }
 
     .flacso-seminarios-page .seminarios-group__count {
-        font-size: .65rem !important;
+        font-size: 0.75rem !important;
     }
 
     .flacso-seminarios-page .seminarios-grid {
@@ -1534,7 +1534,7 @@
     .flacso-seminarios-page .seminario-card__badges .seminarios-chip {
         min-height: 1.25rem !important;
         padding: .16rem .34rem !important;
-        font-size: .52rem !important;
+        font-size: 0.75rem !important;
     }
 
     .flacso-seminarios-page .seminario-card__title {
@@ -1549,7 +1549,7 @@
     .flacso-seminarios-page .seminario-card__meta {
         gap: .22rem !important;
         margin-top: .42rem !important;
-        font-size: .64rem !important;
+        font-size: 0.75rem !important;
         line-height: 1.25 !important;
     }
 
@@ -1562,7 +1562,7 @@
 
     .flacso-seminarios-page .seminario-card__credits,
     .flacso-seminarios-page .seminario-card__cta {
-        font-size: .64rem !important;
+        font-size: 0.75rem !important;
     }
 
     /* Secciones inferiores más compactas. */
@@ -1679,7 +1679,7 @@
     }
 
     .flacso-seminarios-page .seminarios-group__count {
-        font-size: .63rem !important;
+        font-size: 0.75rem !important;
     }
 
     .flacso-seminarios-page .seminarios-group__header-meta {
@@ -1751,7 +1751,7 @@
     .flacso-seminarios-page .seminarios-hero__kicker {
         margin: 0 0 7px !important;
         padding: 4px 7px !important;
-        font-size: 9px !important;
+        font-size: 0.75rem !important;
         line-height: 1 !important;
     }
 
@@ -1799,7 +1799,7 @@
         flex: 1 1 auto;
         padding: 5px 8px !important;
         border-radius: 999px !important;
-        font-size: 10px !important;
+        font-size: 0.75rem !important;
         white-space: nowrap;
     }
 
@@ -1807,7 +1807,7 @@
         margin: 9px 0 0 !important;
         padding-top: 8px;
         border-top: 1px solid rgba(255,255,255,.14);
-        font-size: 10px !important;
+        font-size: 0.75rem !important;
         line-height: 1.35;
     }
 
@@ -1836,7 +1836,7 @@
     .flacso-seminarios-page .seminarios-hero__search-count {
         flex: 0 0 auto;
         margin-right: 8px !important;
-        font-size: 10px !important;
+        font-size: 0.75rem !important;
         white-space: nowrap;
     }
 
@@ -1849,7 +1849,7 @@
     .flacso-seminarios-page .seminarios-hero__months button {
         min-height: 34px !important;
         padding: 6px 10px !important;
-        font-size: 11px !important;
+        font-size: 0.75rem !important;
     }
 
     /* DESTACADO */
@@ -1886,7 +1886,7 @@
 
     .flacso-seminarios-page .seminario-featured__description {
         margin-top: 5px !important;
-        font-size: 11px !important;
+        font-size: 0.75rem !important;
         line-height: 1.35 !important;
         -webkit-line-clamp: 2 !important;
     }
@@ -1894,7 +1894,7 @@
     .flacso-seminarios-page .seminario-featured__meta {
         gap: 3px !important;
         margin-top: 6px !important;
-        font-size: 10px !important;
+        font-size: 0.75rem !important;
     }
 
     .flacso-seminarios-page .seminario-featured__footer {
@@ -1905,14 +1905,14 @@
     }
 
     .flacso-seminarios-page .seminario-featured__credits {
-        font-size: 10px !important;
+        font-size: 0.75rem !important;
     }
 
     .flacso-seminarios-page .seminario-featured__footer .seminarios-btn {
         width: 100% !important;
         min-height: 34px !important;
         padding: 6px 9px !important;
-        font-size: 11px !important;
+        font-size: 0.75rem !important;
     }
 
     /* CATÁLOGO */
@@ -1940,14 +1940,14 @@
     .flacso-seminarios-page .seminarios-catalog__lead {
         max-width: 100%;
         margin-top: 4px !important;
-        font-size: 11px !important;
+        font-size: 0.75rem !important;
         line-height: 1.35 !important;
     }
 
     .flacso-seminarios-page .seminarios-catalog__total {
         min-height: 28px !important;
         padding: 4px 7px !important;
-        font-size: 10px !important;
+        font-size: 0.75rem !important;
         white-space: nowrap;
     }
 
@@ -1973,7 +1973,7 @@
     }
 
     .flacso-seminarios-page .seminarios-group__count {
-        font-size: 10px !important;
+        font-size: 0.75rem !important;
     }
 
     .flacso-seminarios-page .seminarios-group__toggle {
@@ -2010,7 +2010,7 @@
 
     .flacso-seminarios-page .seminario-card__meta {
         margin-top: 5px !important;
-        font-size: 9.5px !important;
+        font-size: 0.75rem !important;
         line-height: 1.25 !important;
     }
 
@@ -2021,7 +2021,7 @@
 
     .flacso-seminarios-page .seminario-card__credits,
     .flacso-seminarios-page .seminario-card__cta {
-        font-size: 10px !important;
+        font-size: 0.75rem !important;
     }
 
     /* CONTACTO */
@@ -2035,7 +2035,7 @@
     }
 
     .flacso-seminarios-page .seminarios-contacto__kicker {
-        font-size: 9px !important;
+        font-size: 0.75rem !important;
         letter-spacing: .12em;
     }
 
@@ -2057,7 +2057,7 @@
     .flacso-seminarios-page .seminarios-contacto__actions .seminarios-btn {
         min-height: 42px !important;
         padding: 8px 10px !important;
-        font-size: 11px !important;
+        font-size: 0.75rem !important;
     }
 }
 
@@ -2208,7 +2208,7 @@
 
     .flacso-seminarios-page .seminarios-hero__editorial {
         margin-top: 8px !important;
-        font-size: 11.5px !important;
+        font-size: 0.75rem !important;
         line-height: 1.46 !important;
     }
 
@@ -2240,7 +2240,7 @@
     .flacso-seminarios-page .seminarios-hero__search-count {
         margin: 0 !important;
         color: #65758a;
-        font-size: 10px !important;
+        font-size: 0.75rem !important;
         line-height: 1.2;
     }
 
@@ -2269,7 +2269,7 @@
 
     .flacso-seminarios-page .seminario-featured__description {
         -webkit-line-clamp: 2 !important;
-        font-size: 10.5px !important;
+        font-size: 0.75rem !important;
     }
 
     .flacso-seminarios-page .seminario-featured__meta .seminario-meta--teachers {
@@ -2277,7 +2277,7 @@
     }
 
     .flacso-seminarios-page .seminario-featured__meta {
-        font-size: 9.5px !important;
+        font-size: 0.75rem !important;
     }
 
     /* Separación clara entre secciones */
@@ -2349,13 +2349,13 @@
     }
 
     .flacso-seminarios-page .seminario-card__meta {
-        font-size: 10.5px !important;
+        font-size: 0.75rem !important;
         line-height: 1.3 !important;
     }
 
     .flacso-seminarios-page .seminario-card__credits,
     .flacso-seminarios-page .seminario-card__cta {
-        font-size: 10.5px !important;
+        font-size: 0.75rem !important;
     }
 
     /* Contacto: un CTA principal y un enlace secundario */

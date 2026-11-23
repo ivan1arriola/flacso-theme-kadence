@@ -541,7 +541,7 @@
 
 .flacso-formacion-nav__count {
     color: rgba(255, 255, 255, 0.76);
-    font-size: 0.73rem;
+    font-size: 0.75rem;
     font-weight: 500;
     line-height: 1.35;
 }
@@ -699,7 +699,7 @@
     top: 0.65rem;
     left: 0.65rem;
     border-radius: 2px;
-    font-size: 0.67rem;
+    font-size: 0.75rem;
     line-height: 1.4;
     background: rgba(19, 42, 73, 0.92);
 }
@@ -748,7 +748,7 @@
 }
 
 .flacso-formacion-card__status {
-    font-size: 0.71rem;
+    font-size: 0.75rem;
     background: #edf3fa;
     color: #314b6a;
 }
@@ -870,7 +870,7 @@
 
     .flacso-formacion-card__status,
     .flacso-formacion-card__action {
-        font-size: 0.71rem;
+        font-size: 0.75rem;
     }
 
     .flacso-formacion-card__action {
@@ -878,7 +878,7 @@
     }
 
     .flacso-formacion-card__meta {
-        font-size: 0.74rem;
+        font-size: 0.75rem;
     }
 }
 
@@ -888,7 +888,7 @@
     }
 
     .flacso-formacion-card__badge {
-        font-size: 0.61rem;
+        font-size: 0.75rem;
         padding: 0.2rem 0.4rem;
         left: 0.35rem;
         top: 0.35rem;

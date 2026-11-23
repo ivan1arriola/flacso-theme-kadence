@@ -219,7 +219,7 @@
   .flacso-home .feature>.poster{margin-top:2px}
   .flacso-home .feature h3,.flacso-home .feature.secondary h3{font-size:17px;line-height:1.25;letter-spacing:-.25px;margin:10px 0 13px}
   .flacso-home .feature .news-meta{font-size:13px}
-  .flacso-home .feature .pin-label{font-size:8px;letter-spacing:.4px;gap:5px;margin:0 0 9px}
+  .flacso-home .feature .pin-label{font-size:0.75rem;letter-spacing:.4px;gap:5px;margin:0 0 9px}
   .flacso-home .feature .text-link{font-size:14px}
   .flacso-home .recent-heading{padding:20px 0;gap:10px}
   .flacso-home .recent-heading h3{font-size:17px}
