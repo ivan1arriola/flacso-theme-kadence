@@ -156,9 +156,9 @@ function child_theme_register_bootstrap() {
     // Registrar CSS Bootstrap Icons
     wp_register_style(
         'bootstrap-icons',
-        get_stylesheet_directory_uri() . '/assets/vendor/bootstrap-icons/font/bootstrap-icons.min.css',
+        get_stylesheet_directory_uri() . '/assets/vendor/bootstrap-icons/font/bootstrap-icons-subset.min.css',
         array(),
-        '1.13.1',
+        '1.13.1-subset',
         'all'
     );
 }
