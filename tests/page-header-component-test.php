@@ -87,4 +87,7 @@ ph_check(preg_match("/get_template_part\(\s*'template-parts\/components\/page-he
 ph_check(strpos($single, 'flacso-post-hero') === false && substr_count($single, '<h1') === 0, 'las noticias ya no tienen encabezado propio');
 ph_check(strpos($css, 'flacso-page-header--reading') !== false && strpos($css, '--flacso-w-lectura') !== false, 'el componente tiene la variante de lectura (1080)');
 
+$mobile = substr($css, (int) strpos($css, '@media (max-width: 767px)'));
+ph_check(strpos($mobile, '.flacso-page-header--reading.flacso-page-header--has-media { grid-template-columns: 1fr; }') !== false, 'en móvil la variante de lectura con imagen pasa a una columna (si no, el título queda en una columna de 0 px)');
+
 echo "OK encabezado de página compartido\n";

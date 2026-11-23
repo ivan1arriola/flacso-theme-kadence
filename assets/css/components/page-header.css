@@ -54,6 +54,8 @@
 .flacso-page-header--reading .flacso-page-header__image { aspect-ratio: 3 / 2; }
 
 @media (max-width: 767px) {
-	.flacso-page-header--has-media { grid-template-columns: 1fr; }
+	/* La variante de lectura con imagen tiene mayor especificidad que .--has-media: también debe pasar a una columna. */
+	.flacso-page-header--has-media,
+	.flacso-page-header--reading.flacso-page-header--has-media { grid-template-columns: 1fr; }
 	.flacso-page-header__image { aspect-ratio: 16 / 9; }
 }
