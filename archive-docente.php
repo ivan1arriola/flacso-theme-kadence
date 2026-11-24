@@ -96,9 +96,10 @@ $total_count  = (int) $equipo_query->post_count;
                 </nav>
 
                 <div class="search-container">
+                    <label class="search-label" for="archive-search"><?php esc_html_e('Buscar en el equipo', 'flacso-uruguay'); ?></label>
                     <div class="search-box">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" id="archive-search" placeholder="<?php echo esc_attr($search_placeholder); ?>" aria-label="<?php esc_attr_e('Buscar en el equipo', 'flacso-uruguay'); ?>">
+                        <span class="search-icon" aria-hidden="true">🔍</span>
+                        <input type="search" id="archive-search" placeholder="<?php echo esc_attr($search_placeholder); ?>">
                     </div>
                     <div class="search-stats" id="search-stats">
                         <?php printf(esc_html__('Mostrando %d perfiles', 'flacso-uruguay'), $total_count); ?>
