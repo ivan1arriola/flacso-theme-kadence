@@ -348,6 +348,11 @@
     transition: transform 0.2s ease, background 0.2s ease, filter 0.2s ease;
 }
 
+/* Copia del botón dentro del menú lateral: solo se muestra en móvil. */
+.flacso-navbar__navigation .flacso-navbar__cta {
+    display: none;
+}
+
 .flacso-navbar__cta:hover,
 .flacso-navbar__cta:focus-visible {
     background: var(--global-palette2, var(--flacso-chrome-yellow));
@@ -786,6 +791,11 @@
 
     .flacso-navbar__cta {
         display: none;
+    }
+
+    .flacso-navbar__navigation .flacso-navbar__cta {
+        display: flex;
+        margin-top: 1.25rem;
     }
 
     .flacso-navbar__icon-button,
