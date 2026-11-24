@@ -155,8 +155,24 @@ if (!defined('ABSPATH')) {
 
                 <div class="fc-hero-visual">
                     <?php if ($thumbnail_url !== '') : ?>
+                        <?php
+                        $hero_thumb_id = (int) ($args['carta']['thumbnail_id'] ?? 0);
+                        $hero_cover_attr = [
+                            'alt' => '',
+                            'loading' => 'eager',
+                            'fetchpriority' => 'high',
+                            'decoding' => 'async',
+                            'sizes' => '(min-width: 1100px) 420px, 100vw',
+                            'onerror' => "this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';",
+                        ];
+                        $hero_cover_html = $hero_thumb_id > 0 && function_exists('wp_get_attachment_image')
+                            ? wp_get_attachment_image($hero_thumb_id, 'large', false, $hero_cover_attr)
+                            : '';
+                        ?>
                         <div class="fc-cover-card">
-                            <img src="<?php echo esc_url($thumbnail_url); ?>" alt="" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                            <?php if ($hero_cover_html !== '') : echo $hero_cover_html; /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- HTML de wp_get_attachment_image */ else : ?>
+                                <img src="<?php echo esc_url($thumbnail_url); ?>" alt="" loading="eager" fetchpriority="high" decoding="async" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';">
+                            <?php endif; ?>
                             <div class="fc-cover-card fc-cover-placeholder" style="display:none;">
                                 <i class="bi bi-mortarboard-fill" aria-hidden="true"></i>
                                 <span><?php esc_html_e('FLACSO Uruguay', 'flacso-uruguay'); ?></span>

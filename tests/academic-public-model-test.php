@@ -226,6 +226,7 @@ final class FLACSO_Oferta_Academica {
 
 final class FLACSO_Academic_Catalog {
     public static function get_offer(int $id): array {
+        $GLOBALS["offer_catalog_calls"][$id] = ($GLOBALS["offer_catalog_calls"][$id] ?? 0) + 1;
         if ($id === 40) {
             return [
                 "id" => 40,
@@ -368,6 +369,7 @@ final class FLACSO_Academic_Catalog {
     }
 
     public static function get_seminar(int $id): array {
+        $GLOBALS["seminar_catalog_calls"][$id] = ($GLOBALS["seminar_catalog_calls"][$id] ?? 0) + 1;
         if ($id === 20) {
             return [
                 "id" => 20,
@@ -705,6 +707,30 @@ assert_same(true, strpos($carta_template, "\$textos['titulo_exterior']") !== fal
 assert_same(true, strpos($carta_template, 'FLACSO_Carta_Settings::visible_text') !== false, "Los textos institucionales salen de FLACSO_Carta_Settings");
 assert_same(false, strpos($carta_template, 'if ($mostrar_expedicion)') !== false, "No puede condicionarse la expedición a una opción");
 assert_same(true, strpos($offer_template, "Apostillado de La Haya") !== false, "La página pública identifica por separado la titulación apostillada");
+
+// 8. E2: memoización de contextos (P3a), retiro de código muerto (M1) y LCP de carta/programa (P2)
+$offer_calls_before = $GLOBALS["offer_catalog_calls"][40] ?? 0;
+$offer_40_again = flacso_theme_get_offer_context(40);
+assert_same($offer_40_context, $offer_40_again, "flacso_theme_get_offer_context devuelve el mismo resultado memorizado");
+assert_same($offer_calls_before, $GLOBALS["offer_catalog_calls"][40] ?? 0, "flacso_theme_get_offer_context no recalcula en la misma petición");
+
+$sem_calls_before = $GLOBALS["seminar_catalog_calls"][20] ?? 0;
+$seminar_again = flacso_theme_get_seminar_context(20);
+assert_same($seminar_context, $seminar_again, "flacso_theme_get_seminar_context devuelve el mismo resultado memorizado");
+assert_same($sem_calls_before, $GLOBALS["seminar_catalog_calls"][20] ?? 0, "flacso_theme_get_seminar_context no recalcula en la misma petición");
+
+assert_same(false, function_exists("flacso_theme_normalize_duration_html"), "M1: flacso_theme_normalize_duration_html eliminada");
+if (!function_exists("add_action")) { function add_action($hook, $cb, $p = 10, $a = 1) {} }
+if (!function_exists("add_filter")) { function add_filter($hook, $cb, $p = 10, $a = 1) {} }
+require_once __DIR__ . "/../inc/open-graph.php";
+assert_same(false, function_exists("flacso_theme_build_url_image_data"), "M1: flacso_theme_build_url_image_data eliminada");
+assert_same(false, function_exists("flacso_theme_get_current_request_url"), "M1: flacso_theme_get_current_request_url eliminada");
+assert_same(false, file_exists(__DIR__ . "/../assets/js/page-formacion.js"), "M1: assets/js/page-formacion.js eliminado");
+
+$carta_hero_tpl = (string) file_get_contents(__DIR__ . "/../template-parts/carta/hero.php");
+assert_same(true, strpos($carta_hero_tpl, "wp_get_attachment_image(") !== false && strpos($carta_hero_tpl, "'fetchpriority' => 'high'") !== false && strpos($carta_hero_tpl, 'loading="lazy"') === false, "P2: hero de carta usa large/srcset con fetchpriority y sin lazy");
+$prog_tpl = (string) file_get_contents(__DIR__ . "/../single-programa-academico.php");
+assert_same(true, strpos($prog_tpl, "'fetchpriority' => 'high'") !== false, "P2: hero de programa marca fetchpriority high");
 
 exit($failures > 0 ? 1 : 0);
 

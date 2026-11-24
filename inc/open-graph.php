@@ -210,21 +210,6 @@ function flacso_theme_get_attachment_og_image_data($attachment_id, $fallback_alt
     ];
 }
 
-function flacso_theme_build_url_image_data($image_url, $fallback_alt = '', $width = 0, $height = 0) {
-    $image_url = esc_url_raw((string) $image_url);
-    if ($image_url === '') {
-        return [];
-    }
-
-    return [
-        'image_url' => $image_url,
-        'image_width' => (int) $width,
-        'image_height' => (int) $height,
-        'image_alt' => trim((string) $fallback_alt),
-        'mime_type' => '',
-    ];
-}
-
 function flacso_theme_build_post_description($post_id) {
     $post_type = get_post_type($post_id);
     if ($post_type === 'oferta-academica' && function_exists('flacso_theme_get_offer_context')) {
@@ -261,20 +246,6 @@ function flacso_theme_build_post_description($post_id) {
     }
 
     return trim((string) get_bloginfo('description'));
-}
-
-function flacso_theme_get_current_request_url() {
-    $request_uri = wp_unslash($_SERVER['REQUEST_URI'] ?? '');
-    if (!is_string($request_uri) || $request_uri === '') {
-        return home_url('/');
-    }
-
-    $path = strtok($request_uri, '?');
-    if (!is_string($path) || $path === '') {
-        return home_url('/');
-    }
-
-    return home_url($path);
 }
 
 function flacso_theme_has_external_og_provider() {

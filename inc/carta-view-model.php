@@ -297,6 +297,7 @@ function flacso_theme_get_carta_view(array $context): array {
         'post_id' => $post_id,
         'titulo' => (string) $context['title'],
         'tipo_oferta' => (string) $context['type_label'],
+        'thumbnail_id' => (int) ($context['thumbnail_id'] ?? 0),
         'thumbnail_url' => (string) ($context['thumbnail_url'] ?? ''),
         'academic' => $academic,
         'inline_brand_styles' => flacso_theme_carta_brand_styles($context, $academic, $post_id),

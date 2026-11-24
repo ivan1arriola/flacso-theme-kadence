@@ -216,11 +216,24 @@ function flacso_theme_get_price_table_data(?int $table_id): ?array {
 }
 
 /**
+ * El memo estático por ID solo aplica en lectura pública para evitar datos viejos al guardar, en AJAX o cron.
+ */
+function flacso_theme_can_memoize_context(): bool {
+    return !(function_exists('is_admin') && is_admin())
+        && !(function_exists('wp_doing_ajax') && wp_doing_ajax())
+        && !(function_exists('wp_doing_cron') && wp_doing_cron());
+}
+
+/**
  * Obtiene el View Model unificado de una Oferta Academica.
  */
 function flacso_theme_get_offer_context(int $offer_id): array {
+    static $memo = [];
     if ($offer_id <= 0) {
         return [];
+    }
+    if (flacso_theme_can_memoize_context() && isset($memo[$offer_id])) {
+        return $memo[$offer_id];
     }
 
     $post = get_post($offer_id);
@@ -403,7 +416,7 @@ function flacso_theme_get_offer_context(int $offer_id): array {
             : '',
     ];
 
-    return [
+    $result = [
         "offer_id"        => $offer_id,
         "instance_id"     => $instance["id"],
         "type"            => $type,
@@ -432,6 +445,12 @@ function flacso_theme_get_offer_context(int $offer_id): array {
             "related_programs"      => [],
         ],
     ];
+
+    if (flacso_theme_can_memoize_context()) {
+        $memo[$offer_id] = $result;
+    }
+
+    return $result;
 }
 
 /**
@@ -489,8 +508,12 @@ function flacso_theme_seminar_relation_maps(): array {
  */
 function flacso_theme_get_seminar_context(int $seminar_id): array {
     static $resolving = [];
+    static $memo = [];
     if ($seminar_id <= 0 || isset($resolving[$seminar_id])) {
         return [];
+    }
+    if (flacso_theme_can_memoize_context() && isset($memo[$seminar_id])) {
+        return $memo[$seminar_id];
     }
     $resolving[$seminar_id] = true;
 
@@ -705,6 +728,9 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
     ];
 
     unset($resolving[$seminar_id]);
+    if (flacso_theme_can_memoize_context()) {
+        $memo[$seminar_id] = $result;
+    }
     return $result;
 }
 
@@ -1001,30 +1027,6 @@ function flacso_theme_format_duration_months($months_str): string {
     $display_value = abs($value - round($value)) < 0.001 ? (string) ((int) round($value)) : rtrim(rtrim(number_format($value, 2, '.', ''), '0'), '.');
     return sprintf('%1$s %2$s', $display_value, (abs($value - 1.0) < 0.001) ? __('mes', 'flacso-uruguay') : __('meses', 'flacso-uruguay'));
 }
-
-/**
- * Normaliza el HTML de duración.
- */
-function flacso_theme_normalize_duration_html($html, $months_str = ''): string {
-    $html = trim((string) $html);
-    $formatted_months = flacso_theme_format_duration_months($months_str);
-    if ($html === '') {
-        return $formatted_months !== '' ? '<p>' . esc_html($formatted_months) . '</p>' : '';
-    }
-    $text = html_entity_decode(wp_strip_all_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-    $text = trim((string) preg_replace('/\s+/u', ' ', $text));
-    if ($text === '') {
-        return $formatted_months !== '' ? '<p>' . esc_html($formatted_months) . '</p>' : '';
-    }
-    if (preg_match('/^(\d+(?:[.,]\d+)?)\s*mes(?:es)?$/iu', $text, $matches) || preg_match('/^(\d+(?:[.,]\d+)?)$/u', $text, $matches)) {
-        $formatted_text = flacso_theme_format_duration_months((string) $matches[1]);
-        if ($formatted_text !== '') {
-            return '<p>' . esc_html($formatted_text) . '</p>';
-        }
-    }
-    return $html;
-}
-
 
 /**
  * Normaliza y capitaliza la modalidad académica (ej: 'virtual' -> 'Virtual').
