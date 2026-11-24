@@ -2,6 +2,8 @@
 $root = dirname(__DIR__);
 if (!defined('ABSPATH')) { define('ABSPATH', __DIR__); }
 function check($condition, $message) { if (!$condition) { fwrite(STDERR, "FAIL: $message\n"); exit(1); } }
+if (!function_exists('__')) { function __($text, $domain = '') { return (string) $text; } }
+if (!function_exists('esc_html__')) { function esc_html__($text, $domain = '') { return esc_html($text); } }
 function absint($value) { return abs((int) $value); }
 function wp_strip_all_tags($value) { return strip_tags((string) $value); }
 function remove_accents($value) { return strtr($value, ['í'=>'i','ó'=>'o','á'=>'a','é'=>'e','ú'=>'u']); }
@@ -27,6 +29,12 @@ function get_permalink($id) { return 'https://example.test/noticia-' . $id; }
 function get_post_thumbnail_id($id) { return $id === 101 || $id === ($GLOBALS['thumb_for'] ?? 0) ? 55 : 0; }
 function wp_get_attachment_image($id, $size, $icon=false, $attrs=[]) { return '<img src="https://example.test/image.jpg" alt="">'; }
 function wp_get_attachment_image_url($id, $size) { return 'https://example.test/hero-' . $id . '.jpg'; }
+function wp_get_attachment_image_src($id, $size) {
+    $widths = ['1536x1536' => [1536, 865], '2048x2048' => [2048, 1154], 'full' => [2560, 1442]];
+    $dims = $widths[$size] ?? [1024, 577];
+    $url = $size === 'full' ? 'https://example.test/hero-' . $id . '.jpg' : 'https://example.test/hero-' . $id . '-' . $size . '.jpg';
+    return [$url, $dims[0], $dims[1], $size !== 'full'];
+}
 function flacso_section_oferta_educativa_get_cards() { return $GLOBALS['cards'] ?? [
     ['title'=>'Seminarios','url'=>'/formacion/seminarios/'], ['title'=>'Maestrías','url'=>'/formacion/maestrias/'],
     ['title'=>'Diplomas','url'=>'/formacion/diplomas/'], ['title'=>'Diplomados','url'=>'/formacion/diplomados/'],
@@ -112,6 +120,10 @@ $c = flacso_home_get_data()['hero'];
 check($c['title_lead'] === 'Convocatoria de prueba' && $c['title_em'] === '', 'campaña CPT reemplaza el título');
 check($c['eyebrow'] === 'Inscripciones' && $c['cta'] === ['label'=>'Postular','url'=>'https://example.test/postular'], 'campaña CPT reemplaza kicker y CTA');
 check($c['image'] === 'https://example.test/hero-7.jpg' && $c['image_mobile'] === 'https://example.test/hero-8.jpg', 'campaña CPT aporta imágenes');
+check(strpos($c['image_srcset'], '1536w') !== false && strpos($c['image_srcset'], '2048w') !== false && strpos($c['image_srcset'], '2560w') !== false, 'campaña CPT arma srcset del hero con 1536w, 2048w y 2560w');
+check($c['image_sizes'] === '100vw', 'hero de portada usa sizes="100vw"');
+$campaign_html = flacso_home_render();
+check(strpos($campaign_html, 'srcset="https://example.test/hero-7-1536x1536.jpg 1536w') !== false && strpos($campaign_html, 'sizes="100vw"') !== false && strpos($campaign_html, 'fetchpriority="high"') !== false, 'hero renderiza srcset, sizes y fetchpriority');
 unset($GLOBALS['campaign']);
 
 $GLOBALS['hero_settings'] = ['background_image'=>'https://example.test/ajustes.jpg'];
@@ -217,4 +229,18 @@ $GLOBALS['content']['campaign']['enabled'] = false;
 $off = flacso_home_render();
 check(strpos($off, 'Tu próximo paso empieza acá.') === false && strpos($off, 'class="campaign"') === false, 'campaña apagada oculta');
 unset($GLOBALS['content']);
+
+// E2: retiro de fuentes TTF, logo local, no_found_rows, MutationObserver desconectado y cadenas traducibles.
+check(strpos($css, '@font-face') === false && strpos($css, '.ttf') === false, 'front-page.css ya no declara @font-face TTF locales');
+check(!is_dir($root . '/assets/fonts/roboto'), 'los 4 archivos TTF locales de Roboto se eliminaron');
+$about_tpl = (string) file_get_contents($root . '/template-parts/home/about.php');
+check(strpos($about_tpl, '/assets/img/logo-flacso-claro.png') !== false && strpos($about_tpl, 'wp-content/uploads') === false, 'about.php carga el logo local del tema');
+check(is_file($root . '/assets/img/logo-flacso-claro.png'), 'existe assets/img/logo-flacso-claro.png');
+$featured_js = (string) file_get_contents($root . '/assets/js/featured-images.js');
+check(strpos($featured_js, 'observer.disconnect()') !== false, 'featured-images.js desconecta el MutationObserver tras load');
+check(strpos((string) file_get_contents($root . '/single.php'), "'no_found_rows'") !== false, 'single.php usa no_found_rows en consulta lateral');
+check(strpos((string) file_get_contents($root . '/single-evento.php'), "'no_found_rows'") !== false, 'single-evento.php usa no_found_rows en consulta lateral');
+$home_php = (string) file_get_contents($root . '/inc/home.php');
+check(strpos($home_php, "esc_html__('Leer noticia'") !== false && strpos($home_php, "esc_html__('NOTICIA FIJADA'") !== false, 'inc/home.php internacionaliza los textos de tarjetas de noticias');
+
 echo "Portada: contrato de datos correcto.\n";

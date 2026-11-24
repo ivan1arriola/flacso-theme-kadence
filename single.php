@@ -67,6 +67,7 @@ while (have_posts()) :
                         'posts_per_page'      => 5,
                         'post__not_in'        => array(get_the_ID()),
                         'ignore_sticky_posts' => true,
+                        'no_found_rows'       => true,
                     ));
 
                     if ($recent_posts->have_posts()) :

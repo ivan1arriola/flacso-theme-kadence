@@ -62,12 +62,17 @@ function flacso_home_get_data(): array {
         $plugin_default = method_exists('Flacso_Main_Page_Settings', 'default_hero_image') ? trim((string) Flacso_Main_Page_Settings::default_hero_image()) : '';
         if ($configured !== '' && $configured !== $plugin_default) {
             $hero_image = esc_url_raw($configured);
+            if ($image_id === 0 && function_exists('attachment_url_to_postid')) {
+                $image_id = absint(attachment_url_to_postid($hero_image));
+            }
         }
     }
     if (!$hero_image) {
         $hero_image = get_stylesheet_directory_uri() . '/assets/img/home-hero.jpg';
         $image_alt = 'Personas adultas participando en una instancia de intercambio académico';
     }
+    $hero_srcset = flacso_home_hero_srcset($image_id, $hero_image);
+    $hero_sizes = $hero_srcset !== '' ? '100vw' : '';
     $mobile_image_id = $custom_campaign ? absint($campaign['mobile_image_id'] ?? 0) : 0;
     $hero_mobile_image = $mobile_image_id ? (string) wp_get_attachment_image_url($mobile_image_id, 'large') : '';
 
@@ -149,6 +154,8 @@ function flacso_home_get_data(): array {
             'intro' => (string) ($hero_text['intro'] ?? ''),
             'cta' => $hero_cta,
             'image' => $hero_image,
+            'image_srcset' => $hero_srcset,
+            'image_sizes' => $hero_sizes,
             'image_mobile' => $hero_mobile_image,
             'image_alt' => $image_alt,
         ],
@@ -166,6 +173,44 @@ function flacso_home_get_data(): array {
         ],
         'institution' => $institution,
     ];
+}
+
+function flacso_home_hero_srcset(int $image_id, string $full_url): string {
+    if ($image_id <= 0) {
+        return '';
+    }
+    $entries = [];
+    foreach (['1536x1536' => 1536, '2048x2048' => 2048, 'full' => 2560] as $size => $fallback_width) {
+        $url = '';
+        $width = $fallback_width;
+        if (function_exists('wp_get_attachment_image_src')) {
+            $src = wp_get_attachment_image_src($image_id, $size);
+            if (!is_array($src) || empty($src[0])) {
+                continue;
+            }
+            $url = (string) $src[0];
+            $reported = (int) ($src[1] ?? 0);
+            if ($reported > 0) {
+                $width = $reported;
+            }
+            if ($size !== 'full' && $width < 1536) {
+                continue;
+            }
+        } elseif (function_exists('wp_get_attachment_image_url')) {
+            $candidate = (string) wp_get_attachment_image_url($image_id, $size);
+            if ($candidate === '') {
+                continue;
+            }
+            $url = $candidate;
+        }
+        if ($url !== '' && !isset($entries[$url])) {
+            $entries[$url] = esc_url($url) . ' ' . $width . 'w';
+        }
+    }
+    if ($full_url !== '' && !isset($entries[$full_url]) && count($entries) >= 1) {
+        $entries[$full_url] = esc_url($full_url) . ' 2560w';
+    }
+    return count($entries) >= 2 ? implode(', ', $entries) : '';
 }
 
 function flacso_home_part(string $name, array $data): void {
@@ -197,7 +242,7 @@ function flacso_home_news_card($post, string $variant, bool $is_pinned = false):
     $is_feature = $variant === 'featured' || $variant === 'secondary';
     // Una noticia sin miniatura se presenta a ancho completo, sin enlaces vacíos.
     $poster = $image_id
-        ? '<a class="poster" href="' . esc_url($url) . '" aria-label="' . esc_attr('Leer noticia: ' . $title) . '">'
+        ? '<a class="poster" href="' . esc_url($url) . '" aria-label="' . esc_attr(sprintf(__('Leer noticia: %s', 'flacso-uruguay'), $title)) . '">'
             . wp_get_attachment_image($image_id, 'medium_large', false, ['alt' => '', 'loading' => 'lazy'])
             . '</a>'
         : '';
@@ -205,12 +250,12 @@ function flacso_home_news_card($post, string $variant, bool $is_pinned = false):
     $meta = '<p class="news-meta">' . ($category !== '' ? esc_html($category) . ' · ' : '')
         . '<time datetime="' . esc_attr(get_the_date('c', $id)) . '">' . esc_html(get_the_date('j M Y', $id)) . '</time></p>';
     $heading = '<h3><a href="' . esc_url($url) . '">' . esc_html($title) . '</a></h3>';
-    $link = '<a class="text-link" href="' . esc_url($url) . '">Leer noticia <span aria-hidden="true">↗</span></a>';
+    $link = '<a class="text-link" href="' . esc_url($url) . '">' . esc_html__('Leer noticia', 'flacso-uruguay') . ' <span aria-hidden="true">↗</span></a>';
     if ($is_feature) {
-        $pin = $is_pinned ? '<p class="pin-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 3 7 7-4 1-4 5-2-2-6 6M4 13l7-7 1-4"/></svg> NOTICIA FIJADA</p>' : '';
+        $pin = $is_pinned ? '<p class="pin-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 3 7 7-4 1-4 5-2-2-6 6M4 13l7-7 1-4"/></svg> ' . esc_html__('NOTICIA FIJADA', 'flacso-uruguay') . '</p>' : '';
         echo '<article class="news-card feature' . ($variant === 'secondary' ? ' secondary' : '') . $visual_class . '">' . $poster . '<div>' . $pin . $meta . $heading . $link . '</div></article>';
         return;
     }
-    $pin = $is_pinned ? '<p class="pin-label">NOTICIA FIJADA</p>' : '';
+    $pin = $is_pinned ? '<p class="pin-label">' . esc_html__('NOTICIA FIJADA', 'flacso-uruguay') . '</p>' : '';
     echo '<article class="news-card recent' . $visual_class . '">' . $poster . '<div>' . $pin . $meta . $heading . $link . '</div></article>';
 }
