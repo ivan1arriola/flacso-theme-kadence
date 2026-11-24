@@ -2,11 +2,11 @@
 
 La auditoría UI/UX de este tema y del plugin se documenta en el repositorio **`flacso-uruguay-plugin`**, carpeta `docs/auditoria-ui-ux/`:
 
-- `../plan/plan-maestro-v9-2026-11-23.md` (en el plugin: `docs/plan/`): **plan vigente**; el v8.3 queda como catálogo de referencia.
+- `docs/plan/plan-maestro-v9-2026-11-23.md` (en el plugin): **plan vigente**; el v8.3 queda como catálogo de referencia.
 - `BITACORA.md`: registro de solo-agregar de cada intervención, humana o de agente.
 - `HALLAZGOS.md`: lista consolidada con ID, evidencia y estado.
 - `GUIA-SUBAGENTES.md`: tiers T1/T2/T3, preámbulo obligatorio y plantillas de prompt, para cualquier herramienta.
-- `TAREAS-CI.md`: paquetes de trabajo, ramas, dueños de archivos y compuertas de CI (referencia histórica)
+- `TAREAS-CI.md`: paquetes de trabajo, ramas, dueños de archivos y compuertas de CI (referencia histórica).
 
 Reglas que valen también aquí:
 - Los agentes no hacen push a `main` ni despliegan: abren PR y una persona mergea. `main` despliega a producción.
