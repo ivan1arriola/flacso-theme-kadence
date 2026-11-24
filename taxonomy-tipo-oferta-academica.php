@@ -103,6 +103,7 @@ if ($ofertas_query->have_posts()) {
                 'thumbnail_url'  => $thumbnail_url,
                 'brand_color'    => $brand_color,
                 'is_open'        => $is_open,
+                'status'         => (string) ($ctx['instance']['estado'] ?? ''),
                 'duracion'       => $carga_horaria !== '' ? $carga_horaria . ' hs.' : '',
                 'excerpt'        => wp_trim_words(wp_strip_all_tags($ctx['academic']['presentacion'] ?: get_the_excerpt($post_id)), 18, '...'),
                 'start_label'    => !empty($ctx['instance']['fechas_formateadas']) ? $ctx['instance']['fechas_formateadas'] : ($fecha_inicio !== '' ? flacso_theme_format_date_es($fecha_inicio, false) : ''),
@@ -150,6 +151,7 @@ $render_offer_card = static function (array $item) use ($taxonomy_name): void {
             'image_sizes' => '(max-width: 767px) 42vw, (max-width: 1200px) 33vw, 340px',
             'accent'      => (string) ($item['brand_color'] ?? '#0a3470'),
             'is_open'     => !empty($item['is_open']),
+            'status'      => (string) ($item['status'] ?? ''),
             'icon_style'  => 'font-size: 3rem;',
             'meta'        => array_values(array_filter([
                 !empty($item['duracion']) ? ['icon' => 'bi-clock', 'text' => (string) $item['duracion']] : null,
@@ -226,7 +228,7 @@ get_header();
                         <div class="flacso-ofertas-toolbar__header">
                             <h2 id="flacso-ofertas-proximas-titulo" class="flacso-ofertas-toolbar__title">
                                 <i class="bi bi-clock-history text-secondary" aria-hidden="true"></i>
-                                <?php esc_html_e('Próxima apertura', 'flacso-uruguay'); ?>
+                                <?php esc_html_e('Sin inscripciones abiertas', 'flacso-uruguay'); ?>
                             </h2>
                             <span class="flacso-ofertas-toolbar__count flacso-ofertas-toolbar__count--soon">
                                 <?php echo count($offers_closed); ?> <?php echo count($offers_closed) === 1 ? esc_html__('propuesta', 'flacso-uruguay') : esc_html__('propuestas', 'flacso-uruguay'); ?>

@@ -185,6 +185,7 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
             'image_sizes' => $flacso_formacion_card_sizes,
             'accent'      => $accent,
             'is_open'     => $is_open,
+            'status'      => (string) ($item['instance']['estado'] ?? ''),
             'meta'        => $flacso_formacion_card_meta((string) $fechas_card, $carga_horaria),
         ]);
     };
@@ -270,7 +271,7 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
                             <div class="flacso-formacion-subgroup__header">
                                 <h3 class="flacso-formacion-subgroup__title flacso-formacion-subgroup__title--soon">
                                     <i class="bi bi-clock-history text-secondary" aria-hidden="true"></i>
-                                    <?php esc_html_e('Próxima apertura', 'flacso-uruguay'); ?>
+                                    <?php esc_html_e('Sin inscripciones abiertas', 'flacso-uruguay'); ?>
                                 </h3>
                                 <span class="flacso-formacion-subgroup__count flacso-formacion-subgroup__count--soon">
                                     <?php echo count($group_closed); ?>
@@ -318,6 +319,7 @@ $seminarios = function_exists('flacso_theme_get_seminars_catalog')
                             'image_url'   => (string) ($sem['thumbnail_url'] ?? ''),
                             'image_sizes' => $flacso_formacion_card_sizes,
                             'is_open'     => $is_open,
+            'status'      => (string) ($sem['instance']['estado'] ?? ''),
                             'meta'        => $flacso_formacion_card_meta($fecha_inicio !== '' ? flacso_theme_format_date_es($fecha_inicio, false) : '', $carga_horaria),
                         ]);
                         ?>

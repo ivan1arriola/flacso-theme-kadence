@@ -14,6 +14,7 @@ function esc_html($v) { return htmlspecialchars((string) $v, ENT_QUOTES); }
 function esc_attr($v) { return htmlspecialchars((string) $v, ENT_QUOTES); }
 function esc_url($v) { return (string) $v; }
 function __($t) { return $t; }
+function sanitize_key($v) { return strtolower(preg_replace('/[^a-z0-9_\-]/i', '', (string) $v)); }
 function esc_html_e($t) { echo htmlspecialchars((string) $t, ENT_QUOTES); }
 function flacso_child_card_image_html(int $id, string $url, string $alt, string $sizes = '', array $extra = array()): string {
     return '<img data-id="' . $id . '" src="' . $url . '" alt="' . htmlspecialchars($alt, ENT_QUOTES) . '" sizes="' . $sizes . '" class="' . ($extra['class'] ?? '') . '">';
@@ -60,10 +61,17 @@ ac_check(strpos($min, '<img') === false && strpos($min, 'display:none;') === fal
 ac_check(strpos($min, 'flacso-formacion-card__excerpt') === false, 'sin descripción no hay párrafo');
 ac_check(strpos($min, 'is-open') === false && strpos($min, 'Próxima apertura') !== false, 'estado próxima apertura');
 
+foreach ([['finalizada', false, 'Sin convocatoria vigente'], ['cancelada', false, 'Sin convocatoria vigente'], ['planificada', false, 'Próxima apertura'], ['finalizada', true, 'Inscripciones abiertas']] as [$st, $op, $txt]) {
+    $h = render_card($partial, ['title' => 'T', 'url' => '/t/', 'badge' => 'B', 'is_open' => $op, 'status' => $st]);
+    $other = $txt === 'Sin convocatoria vigente' ? 'Próxima apertura' : 'Sin convocatoria vigente';
+    ac_check(strpos($h, $txt) !== false && strpos($h, $other) === false, "estado $st / abierta=" . var_export($op, true));
+}
+
 // Las plantillas usan el componente y ya no repiten la anatomía.
 foreach (['formacion-page.php', 'taxonomy-tipo-oferta-academica.php'] as $file) {
     $src = (string) file_get_contents($root . '/' . $file);
     ac_check(preg_match("/get_template_part\(\s*'template-parts\/components\/academic-card'/", $src) === 1, "$file usa el componente");
+    ac_check(strpos($src, "'status'") !== false && strpos($src, 'Sin inscripciones abiertas') !== false && strpos($src, "esc_html_e('Próxima apertura'") === false, "$file pasa status y rotula el grupo");
     ac_check(strpos($src, 'flacso-formacion-card__body') === false, "$file ya no repite el cuerpo de la tarjeta");
 }
 
