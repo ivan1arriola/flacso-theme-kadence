@@ -2,7 +2,7 @@
 /**
  * Tarjeta académica compartida (componente C4): oferta o seminario en los listados de Formación y por tipo.
  *
- * Args: title, url, badge, description, image_id, image_url, image_sizes, accent (#rrggbb, opcional), is_open,
+ * Args: title, url, badge, description, image_id, image_url, image_sizes, accent (#rrggbb, opcional), is_open, status (estado de la cohorte; finalizada/cancelada → «Sin convocatoria vigente»),
  * meta [[icon, text, datetime?]], link_attrs [atributo => valor] (aria-label, data-*), icon_style.
  *
  * @package kadence-child-flacso
@@ -16,6 +16,8 @@ $args      = isset( $args ) && is_array( $args ) ? $args : array();
 $title     = (string) ( $args['title'] ?? '' );
 $accent    = (string) ( $args['accent'] ?? '' );
 $is_open   = ! empty( $args['is_open'] );
+$status    = sanitize_key( (string) ( $args['status'] ?? '' ) );
+$closed    = ! $is_open && in_array( $status, array( 'finalizada', 'finalizado', 'cancelada', 'cancelado', 'cerrada', 'cerrado' ), true );
 $image_url = (string) ( $args['image_url'] ?? '' );
 $meta      = isset( $args['meta'] ) && is_array( $args['meta'] ) ? $args['meta'] : array();
 $attrs     = isset( $args['link_attrs'] ) && is_array( $args['link_attrs'] ) ? $args['link_attrs'] : array();
@@ -58,8 +60,8 @@ $icon_attr = ! empty( $args['icon_style'] ) ? ' style="' . esc_attr( $args['icon
 			<?php endforeach; ?>
 		</div>
 		<div class="flacso-formacion-card__footer">
-			<span class="flacso-formacion-card__status<?php echo $is_open ? ' is-open' : ''; ?>">
-				<?php echo esc_html( $is_open ? __( 'Inscripciones abiertas', 'flacso-uruguay' ) : __( 'Próxima apertura', 'flacso-uruguay' ) ); ?>
+			<span class="flacso-formacion-card__status<?php echo $is_open ? ' is-open' : ( $closed ? ' is-closed' : '' ); ?>">
+				<?php echo esc_html( $is_open ? __( 'Inscripciones abiertas', 'flacso-uruguay' ) : ( $closed ? __( 'Sin convocatoria vigente', 'flacso-uruguay' ) : __( 'Próxima apertura', 'flacso-uruguay' ) ) ); ?>
 			</span>
 			<span class="flacso-formacion-card__action">
 				<?php esc_html_e( 'Conocer más', 'flacso-uruguay' ); ?> →
