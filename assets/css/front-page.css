@@ -1,8 +1,4 @@
-/* Portada FLACSO Uruguay: estilos de la maqueta aprobada, acotados a .flacso-home. Roboto se sirve en local desde assets/fonts/roboto (licencia OFL). */
-@font-face{font-family:Roboto;font-style:normal;font-weight:400;font-display:swap;src:url("../fonts/roboto/roboto-400.ttf") format("truetype")}
-@font-face{font-family:Roboto;font-style:normal;font-weight:500;font-display:swap;src:url("../fonts/roboto/roboto-500.ttf") format("truetype")}
-@font-face{font-family:Roboto;font-style:normal;font-weight:600;font-display:swap;src:url("../fonts/roboto/roboto-600.ttf") format("truetype")}
-@font-face{font-family:Roboto;font-style:normal;font-weight:700;font-display:swap;src:url("../fonts/roboto/roboto-700.ttf") format("truetype")}
+/* Portada FLACSO Uruguay: estilos de la maqueta aprobada, acotados a .flacso-home. Roboto se sirve desde Kadence (WOFF2). */
 .flacso-home{--blue:var(--global-palette1,#2c4777);--deep:var(--global-palette3,#1d3358);--yellow:var(--global-palette2,#fed222);--ink:var(--global-palette4,#293c59);--muted:var(--global-palette5,#68778c);--paper:var(--global-palette8,#f6f7f9);--line:var(--global-gray-400,#d9e0e9);display:block;width:100%;margin:0;padding:0;color:var(--ink);background:var(--global-palette9,#fff);font-family:var(--global-body-font-family,Roboto,Arial,sans-serif);font-size:1rem;line-height:1.5}
 .flacso-home *,.flacso-home *::before,.flacso-home *::after{box-sizing:border-box}
 .flacso-home button,.flacso-home input{font:inherit}

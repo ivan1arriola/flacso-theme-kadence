@@ -136,6 +136,7 @@ while (have_posts()) :
                         ],
                         'orderby'        => 'meta_value',
                         'order'          => 'ASC',
+                        'no_found_rows'  => true,
                     ]);
 
                     if ($events->have_posts()) :

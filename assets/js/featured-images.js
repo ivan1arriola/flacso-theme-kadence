@@ -56,7 +56,11 @@
     function init() {
         scan(document);
 
-        new MutationObserver(function (mutations) {
+        if (document.readyState === 'complete') {
+            return;
+        }
+
+        var observer = new MutationObserver(function (mutations) {
             mutations.forEach(function (mutation) {
                 mutation.addedNodes.forEach(function (node) {
                     if (node.nodeType === 1) {
@@ -64,7 +68,12 @@
                     }
                 });
             });
-        }).observe(document.body, { childList: true, subtree: true });
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+        window.addEventListener('load', function () {
+            observer.disconnect();
+        }, { once: true });
     }
 
     if (document.readyState === 'loading') {
