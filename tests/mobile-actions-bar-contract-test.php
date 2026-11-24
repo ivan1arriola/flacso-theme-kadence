@@ -32,4 +32,13 @@ bar_check(preg_match('/font-size:\s*clamp\(1rem,/', $botones) === 1, 'el texto d
 // Ninguna regla para pantallas angostas debe volver a achicar el texto por debajo de 16px.
 bar_check(!preg_match('/@media \(max-width: 385px\)\s*\{[^@]*?flacso-mobile-actions[^}]*font-size/s', $css), 'ningún bloque de pantallas angostas fija un tamaño de texto menor');
 
+// L18 (H-G02/H-I02): con la barra activa, un solo llamado a preinscribirse antes del contenido y una sola etiqueta.
+bar_check(preg_match('/@media \(max-width: 760px\) \{[^@]*\.flacso-oferta-responsive\.flacso-mobile-sheet-ready \.flacso-academic-hero__actions \{\s*display: none;/', $css) === 1, 'con la barra fija activa se oculta el llamado del encabezado');
+$labels = '';
+foreach (['/oferta-academica/page.php', '/template-parts/carta/hero.php', '/template-parts/carta/cierre.php', '/template-parts/carta/planificacion.php'] as $f) {
+    $labels .= (string) file_get_contents($root . $f);
+}
+foreach (['Preinscripción %s', 'Iniciar preinscripción', 'Formulario de Preinscripción', 'Abrir formulario de preinscripción'] as $vieja) {
+    bar_check(strpos($labels, $vieja) === false, 'el llamado a preinscribirse dice «Preinscribirme», no «' . $vieja . '»');
+}
 echo "OK barra fija inferior en móvil\n";

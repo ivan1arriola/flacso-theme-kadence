@@ -4949,6 +4949,11 @@
 
 @media (max-width: 760px) {
     /* El espacio de la barra fija se reserva en body: el pie del sitio queda fuera del contenedor de la ficha y la barra lo tapaba. */
+    /* L18: con la barra fija activa, el llamado del encabezado sobra (sería el segundo antes del contenido). */
+    .flacso-oferta-responsive.flacso-mobile-sheet-ready .flacso-academic-hero__actions {
+        display: none;
+    }
+
     body:has(.flacso-mobile-sheet-ready) {
         padding-bottom: calc(83px + env(safe-area-inset-bottom, 0px));
     }

@@ -103,7 +103,7 @@ if (!defined('ABSPATH')) {
                         <?php if ($inscripciones_abiertas) : ?>
                             <a data-flacso-preinscription-cta="1" href="<?php echo esc_url($url_inscripcion); ?>" class="fc-primary-button">
                                 <i class="bi bi-pencil-square" aria-hidden="true"></i>
-                                <?php esc_html_e('Formulario de Preinscripción', 'flacso-uruguay'); ?>
+                                <?php esc_html_e('Preinscribirme', 'flacso-uruguay'); ?>
                             </a>
                         <?php endif; ?>
 

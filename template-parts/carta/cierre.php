@@ -29,9 +29,9 @@ if (!defined('ABSPATH')) {
                 </div>
 
                 <?php if ($inscripciones_abiertas) : ?>
-                    <a data-flacso-preinscription-cta="1" href="<?php echo esc_url($url_inscripcion); ?>" aria-label="<?php echo esc_attr(sprintf(__('Abrir formulario de preinscripción para %s', 'flacso-uruguay'), $titulo)); ?>">
+                    <a data-flacso-preinscription-cta="1" href="<?php echo esc_url($url_inscripcion); ?>" aria-label="<?php echo esc_attr(sprintf(/* translators: %s: offer title */ __('Preinscribirme en %s', 'flacso-uruguay'), $titulo)); ?>">
                         <i class="bi bi-pencil-square" aria-hidden="true"></i>
-                        <?php esc_html_e('Formulario de Preinscripción', 'flacso-uruguay'); ?>
+                        <?php esc_html_e('Preinscribirme', 'flacso-uruguay'); ?>
                     </a>
                 <?php elseif ($textos['correo_inscripciones'] !== '') : ?>
                     <a href="mailto:<?php echo esc_attr($textos['correo_inscripciones']); ?>" aria-label="<?php echo esc_attr(sprintf(__('Solicitar información para %s', 'flacso-uruguay'), $titulo)); ?>">
