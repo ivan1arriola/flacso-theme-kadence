@@ -142,11 +142,7 @@ $inscripciones_year = !empty($instance['anio_inicio'])
     : (!empty($instance['fecha_inicio']) ? substr((string) $instance['fecha_inicio'], 0, 4) : wp_date('Y'));
 
 $hero_primary_label = $has_preinscription_cta
-    ? sprintf(
-        /* translators: %s: academic year */
-        __('Preinscripción %s', 'flacso-uruguay'),
-        $inscripciones_year
-    )
+    ? __('Preinscribirme', 'flacso-uruguay')
     : __('Solicitar información', 'flacso-uruguay');
 $hero_primary_url = $has_preinscription_cta ? $preinscripcion_url : '#flacso-oa-consulta';
 
@@ -864,7 +860,7 @@ $render_coordinador = static function ($docente_id, $rol = '') {
                                             <h3><?php esc_html_e('¿Querés postularte a la próxima cohorte?', 'flacso-uruguay'); ?></h3>
                                         </div>
                                         <a class="btn btn--primary" href="<?php echo esc_url($preinscripcion_url); ?>" data-flacso-preinscription-cta="1">
-                                            <?php esc_html_e('Iniciar preinscripción', 'flacso-uruguay'); ?> <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                                            <?php esc_html_e('Preinscribirme', 'flacso-uruguay'); ?> <i class="bi bi-arrow-right" aria-hidden="true"></i>
                                         </a>
                                     </section>
                                 <?php endif; ?>
