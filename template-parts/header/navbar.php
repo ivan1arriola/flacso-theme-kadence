@@ -80,7 +80,7 @@ $header_cta = flacso_child_get_header_cta();
 				<form role="search" method="get" class="flacso-header-search__form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
 					<label class="screen-reader-text" for="flacso-header-search-field"><?php esc_html_e( 'Buscar en FLACSO Uruguay', 'kadence-child-flacso' ); ?></label>
 					<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
-					<input id="flacso-header-search-field" type="search" name="s" placeholder="<?php esc_attr_e( 'Buscar formación, noticias, eventos…', 'kadence-child-flacso' ); ?>">
+					<input id="flacso-header-search-field" type="search" name="s" value="<?php echo esc_attr( get_search_query() ); ?>" placeholder="<?php esc_attr_e( 'Buscar formación, noticias, eventos…', 'kadence-child-flacso' ); ?>">
 					<button type="submit"><?php esc_html_e( 'Buscar', 'kadence-child-flacso' ); ?></button>
 				</form>
 			</div>
