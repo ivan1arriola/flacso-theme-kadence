@@ -40,38 +40,12 @@ $telefono_tel = preg_replace('/\D/', '', $telefono);
                     Comunicate con Secretaría, enviá tu consulta o encontrá los datos de referencia de nuestras áreas.
                 </p>
             </div>
-
-            <aside class="flacso-contact-hero__panel" aria-label="Datos principales de contacto">
-                <div class="flacso-contact-quick">
-                    <span class="flacso-contact-quick__label">Secretaría</span>
-
-                    <a class="flacso-contact-quick__link" href="mailto:<?php echo esc_attr($correo); ?>">
-                        <?php echo esc_html($correo); ?>
-                    </a>
-
-                    <?php if ($telefono_tel) : ?>
-                        <a class="flacso-contact-quick__link" href="tel:<?php echo esc_attr($telefono_tel); ?>">
-                            <?php echo esc_html($telefono); ?>
-                        </a>
-                    <?php else : ?>
-                        <span class="flacso-contact-quick__link"><?php echo esc_html($telefono); ?></span>
-                    <?php endif; ?>
-
-                    <span class="flacso-contact-quick__address">
-                        <?php echo esc_html($direccion); ?>
-                    </span>
-                </div>
-            </aside>
         </header>
 
         <section class="flacso-contact-main" aria-label="Formulario y datos de contacto">
             <div class="flacso-contact-form-card">
                 <div class="flacso-contact-section-head">
-                    <p class="flacso-contact-section-kicker">Consultas</p>
                     <h2>Formulario de consulta</h2>
-                    <p>
-                        Completá tus datos y el equipo de FLACSO Uruguay responderá tu consulta.
-                    </p>
                 </div>
 
                 <div class="flacso-contact-form-wrap">
