@@ -96,9 +96,10 @@ $total_count  = (int) $equipo_query->post_count;
                 </nav>
 
                 <div class="search-container">
+                    <label class="search-label" for="archive-search"><?php esc_html_e('Buscar en el equipo', 'flacso-uruguay'); ?></label>
                     <div class="search-box">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" id="archive-search" placeholder="<?php echo esc_attr($search_placeholder); ?>" aria-label="<?php esc_attr_e('Buscar en el equipo', 'flacso-uruguay'); ?>">
+                        <span class="search-icon" aria-hidden="true">🔍</span>
+                        <input type="search" id="archive-search" placeholder="<?php echo esc_attr($search_placeholder); ?>">
                     </div>
                     <div class="search-stats" id="search-stats">
                         <?php printf(esc_html__('Mostrando %d perfiles', 'flacso-uruguay'), $total_count); ?>
@@ -133,7 +134,7 @@ $total_count  = (int) $equipo_query->post_count;
                             <div class="card-inner">
                                 <div class="card-avatar">
                                     <?php if (has_post_thumbnail()) : ?>
-                                        <?php the_post_thumbnail('medium', ['class' => 'avatar-img']); ?>
+                                        <?php the_post_thumbnail('thumbnail', ['class' => 'avatar-img', 'sizes' => '100px']); // se ve a 100 px: no cargar 300 px ?>
                                     <?php else : ?>
                                         <div class="avatar-fallback"><?php echo esc_html($iniciales); ?></div>
                                     <?php endif; ?>

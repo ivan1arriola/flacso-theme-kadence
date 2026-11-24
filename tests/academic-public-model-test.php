@@ -638,6 +638,9 @@ assert_same("https://preinscripciones.flacso.edu.uy/seminarios/20/ediciones/200/
 assert_same(2, count($seminar_context["instance"]["docentes_ids"]), "Resuelve docentes de la edición");
 assert_same(1, count($seminar_context["instance"]["encuentros"]), "Resuelve encuentros sincrónicos de la edición");
 
+assert_same(22, $seminar_context["relations"]["integrated_parent"]["id"] ?? null, "El componente encuentra a su seminario integrado padre (mapa por petición)");
+assert_same([10], array_column($seminar_context["relations"]["related_programs"], "id"), "Los programas relacionados salen del mapa seminario→ofertas, sin repetir ofertas");
+
 // 3.b Seminario Integrado (hereda transitivamente docentes y fechas de componentes)
 $integrated_context = flacso_theme_get_seminar_context(22);
 assert_same(true, $integrated_context["is_integrated"], "Identifica seminario integrado");

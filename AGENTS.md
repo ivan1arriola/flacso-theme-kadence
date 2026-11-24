@@ -82,10 +82,10 @@ Asignación sugerida; el coordinador puede cambiarla si lo justifica. Quien impl
 
 ### 4.5 Persistencia
 
-Estas instrucciones se aplican a todas las sesiones de agentes que trabajen en este repositorio. Codex y otros agentes que leen `AGENTS.md` las cargan al abrir el repositorio; Claude Code lee `CLAUDE.md`, que no existe hoy en este repositorio, así que solo las aplica si se le indica este archivo.
+Estas instrucciones se aplican a todas las sesiones de agentes que trabajen en este repositorio. Codex y otros agentes que leen `AGENTS.md` las cargan al abrir el repositorio; Claude Code lee `CLAUDE.md`, que importa este archivo con `@AGENTS.md` (única fuente: no se copian las reglas).
 
 ## 5. Herramientas de calidad (PHP)
 
 - Instalar: `composer install` (solo desarrollo; `vendor/` no se versiona).
 - `composer phpstan`: análisis estático nivel 3; lo viejo está congelado en `phpstan-baseline.neon`. En Windows con tildes en la ruta, correrlo desde la ruta corta 8.3.
-- `composer phpcs`: seguridad y compatibilidad PHP 7.4; en CI bloquea en archivos nuevos e informa en los modificados.
+- `composer phpcs`: seguridad y compatibilidad con la última versión estable de PHP, mínimo 8.3 (producción); en CI bloquea en archivos nuevos e informa en los modificados.

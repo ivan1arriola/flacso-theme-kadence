@@ -5,7 +5,7 @@ Tema hijo de WordPress para el sitio institucional de FLACSO Uruguay. Extiende K
 ## Requisitos
 
 - WordPress 6.2 o posterior.
-- PHP 7.4 o posterior.
+- PHP 8.3 o posterior (se prueba también con la última versión estable).
 - Tema padre `kadence` instalado.
 - Bash, PHP CLI y grep compatible con -P para la validación local. Usar un navegador para las comprobaciones visuales por separado.
 - WP-CLI en el servidor para el smoke test de despliegue.
