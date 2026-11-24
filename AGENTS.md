@@ -88,4 +88,4 @@ Estas instrucciones se aplican a todas las sesiones de agentes que trabajen en e
 
 - Instalar: `composer install` (solo desarrollo; `vendor/` no se versiona).
 - `composer phpstan`: análisis estático nivel 3; lo viejo está congelado en `phpstan-baseline.neon`. En Windows con tildes en la ruta, correrlo desde la ruta corta 8.3.
-- `composer phpcs`: seguridad y compatibilidad PHP 7.4; en CI bloquea en archivos nuevos e informa en los modificados.
+- `composer phpcs`: seguridad y compatibilidad con la última versión estable de PHP, mínimo 8.3 (producción); en CI bloquea en archivos nuevos e informa en los modificados.

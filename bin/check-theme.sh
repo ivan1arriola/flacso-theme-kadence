@@ -52,6 +52,11 @@ php "$theme_dir/tests/carta-info-extra-test.php"
 php "$theme_dir/tests/carta-planning-layout-test.php"
 php "$theme_dir/tests/carta-editorial-navigation-contract-test.php"
 php "$theme_dir/tests/carta-reference-layout-contract-test.php"
+php "$theme_dir/tests/academic-menciones-public-test.php"
+php "$theme_dir/tests/carta-audience-layout-contract-test.php"
+php "$theme_dir/tests/carta-editorial-rhythm-test.php"
+php "$theme_dir/tests/carta-objective-layout-contract-test.php"
+php "$theme_dir/tests/cohort-card-layout-test.php"
 
 if grep -n -F -e "--exclude='vendor/'" "$theme_dir/.github/workflows/deploy-theme.yml"; then
     echo "deploy-theme.yml: usar --exclude='/vendor/' (anclado) para no borrar assets/vendor." >&2
