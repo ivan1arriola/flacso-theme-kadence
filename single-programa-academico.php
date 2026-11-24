@@ -78,7 +78,7 @@ while (have_posts()) :
 
                     <?php if (has_post_thumbnail()) : ?>
                         <div class="programa-hero__image">
-                            <?php the_post_thumbnail('large', ['class' => 'programa-hero__img']); ?>
+                            <?php the_post_thumbnail('large', ['class' => 'programa-hero__img', 'loading' => 'eager', 'fetchpriority' => 'high', 'decoding' => 'async']); ?>
                         </div>
                     <?php endif; ?>
                 </div>
