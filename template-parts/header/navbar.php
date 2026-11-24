@@ -57,6 +57,8 @@ $header_cta = flacso_child_get_header_cta();
 					)
 				);
 				?>
+				<?php // En móvil el botón de la barra se oculta por espacio; se repite en el menú lateral (ver site-chrome.css). ?>
+				<a class="flacso-navbar__cta" href="<?php echo esc_url( $header_cta['url'] ); ?>"<?php echo '_blank' === $header_cta['target'] ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>><?php echo esc_html( $header_cta['label'] ); ?></a>
 			</nav>
 			<button class="flacso-navbar__overlay" type="button" tabindex="-1" aria-hidden="true" data-flacso-menu-overlay></button>
 
