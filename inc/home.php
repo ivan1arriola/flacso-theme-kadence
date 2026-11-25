@@ -222,7 +222,7 @@ function flacso_home_render(): string {
     $data = flacso_home_get_data();
     ob_start();
     echo '<' . flacso_child_main_tag() . ' id="main" class="flacso-home">';
-    foreach (['hero', 'offer', 'campaign', 'agenda', 'news', 'research', 'about'] as $part) {
+    foreach (['hero', 'agenda', 'offer', 'news', 'about'] as $part) {
         flacso_home_part($part, $data);
     }
     echo '</' . flacso_child_main_tag() . '>';
