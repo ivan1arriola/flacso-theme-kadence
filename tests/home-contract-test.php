@@ -151,7 +151,7 @@ check(strpos($card, 'class="news-card feature news-card--no-image"') !== false &
 $html = flacso_home_render();
 check(strpos($html, '<main id="main" class="flacso-home">') === 0, 'main con id y clase de la portada');
 $last = -1;
-foreach (['Formación que conecta', 'Encontrá tu próxima formación', 'Tu próximo paso empieza acá.', 'Noticias</h2>', 'Pensar la región.', '¿Qué es FLACSO Uruguay?'] as $heading) {
+foreach (['Formación que conecta', 'Encontrá tu próximo posgrado', 'Noticias</h2>', '¿Qué es FLACSO Uruguay?'] as $heading) {
     $pos = strpos($html, $heading);
     check($pos !== false && $pos > $last, "encabezado en orden: $heading");
     $last = $pos;
@@ -159,14 +159,15 @@ foreach (['Formación que conecta', 'Encontrá tu próxima formación', 'Tu pró
 check(substr_count($html, '<h1') === 1, 'exactamente un h1');
 check(strpos($html, 'Próximas actividades') === false, 'sin eventos no hay agenda');
 check(substr_count($html, 'class="offer-grid"') === 1 && preg_match_all('#<div class="offer-grid">(.*?)</div>#s', $html, $m) && substr_count($m[1][0], '<a ') === 5, 'cinco enlaces de oferta');
-foreach (['01', '02', '03'] as $n) { check(strpos($html, '<span>' . $n . '</span>') !== false, "enlace de investigación $n"); }
-check(substr_count($html, 'class="research-links"') === 1 && preg_match('#class="research-links">(.*?)</div>#s', $html, $m) && substr_count($m[1], '<a ') === 3, 'tres enlaces de investigación');
+check(strpos($html, 'research-section') === false && strpos($html, 'Pensar la región.') === false && strpos($html, 'research-links') === false, 'la investigación no se renderiza en portada');
+check(strpos($html, 'campaignSection') === false && strpos($html, 'Tu próximo paso empieza acá.') === false, 'sin bloque redundante de inscripciones');
+check(strpos($html, 'VIDA ACADÉMICA E INSTITUCIONAL') === false && strpos($html, 'ACTUALIDAD INSTITUCIONAL') === false, 'noticias sin antetítulo redundante');
 check(strpos($html, 'Conocer las novedades') === false, 'sin texto retirado');
 check(strpos($html, 'class="news-bento"') !== false && substr_count($html, 'class="news-card') === 5, 'cinco noticias en una sola cuadrícula');
 check(strpos($html, 'class="hero-media"') !== false && strpos($html, 'class="primary hero-cta"') !== false, 'hero con imagen y CTA neumórfico');
-check(strpos($html, 'Explorar investigaciones <span') !== false, 'enlace de investigación con la etiqueta del contenido');
+check(strpos($html, 'Explorar investigaciones <span') === false, 'sin enlace al bloque de investigación retirado');
 check(strpos($html, '<p><strong>FLACSO Uruguay</strong> es la sede uruguaya') !== false, 'texto institucional sin <p> se envuelve en párrafos');
-foreach (['hero', 'offer-section', 'campaign', 'news-section', 'research-section', 'about-section'] as $cls) { check(strpos($html, 'class="' . $cls) !== false, "sección $cls"); }
+foreach (['hero', 'offer-section', 'news-section', 'about-section'] as $cls) { check(strpos($html, 'class="' . $cls) !== false, "sección $cls"); }
 check(strpos($html, 'agenda-section') === false, 'agenda oculta sin eventos');
 $blank_attr = 'target="_' . 'blank"';
 if (preg_match_all('/<a [^>]*' . preg_quote($blank_attr, '/') . '[^>]*>/', $html, $blank)) { foreach ($blank[0] as $tag) { check(strpos($tag, 'noopener noreferrer') !== false, 'enlace externo con rel'); } }
@@ -174,11 +175,12 @@ if (preg_match_all('/<a [^>]*' . preg_quote($blank_attr, '/') . '[^>]*>/', $html
 $GLOBALS['events'] = [['id'=>301,'link'=>'https://example.test/evento-301','title'=>'Actividad abierta','day'=>'18','month'=>'Octubre','hora'=>'18:00','status'=>'Virtual']];
 $with = flacso_home_render();
 check(strpos($with, 'Próximas actividades') !== false && strpos($with, 'Actividad abierta') !== false && strpos($with, '18:00 · Virtual') !== false, 'agenda con un evento');
+check(strpos($with, 'Próximas actividades') < strpos($with, 'Encontrá tu próximo posgrado'), 'agenda antes de oferta con un evento');
 unset($GLOBALS['events']);
 
 $GLOBALS['content'] = Flacso_Home_Content::defaults();
 $GLOBALS['content']['research']['link_label'] = 'Etiqueta propia';
-check(strpos(flacso_home_render(), 'Etiqueta propia <span') !== false, 'la etiqueta editada del enlace se imprime');
+check(strpos(flacso_home_render(), 'Etiqueta propia <span') === false, 'la configuración histórica no vuelve a mostrar investigación');
 unset($GLOBALS['content']);
 
 $GLOBALS['events'] = [['id'=>301,'title'=>'Sin enlace','day'=>'1','month'=>'Mayo']]; // id 301: sin miniatura en el stub
@@ -191,7 +193,7 @@ $GLOBALS['campaign_raw'] = true;
 $GLOBALS['content'] = Flacso_Home_Content::defaults();
 $GLOBALS['content']['campaign'] = ['enabled'=>true, 'cta_label'=>'', 'cta_url'=>''];
 $partial = flacso_home_render();
-check(strpos($partial, 'campaign-grid') !== false, 'campaña con claves faltantes se imprime sin avisos');
+check(strpos($partial, 'campaign-grid') === false, 'el bloque redundante no reaparece con configuración parcial');
 unset($GLOBALS['content'], $GLOBALS['campaign_raw']);
 
 $css = file_get_contents($root . '/assets/css/front-page.css');
@@ -203,6 +205,9 @@ check(strpos($css, '.news-card.news-card--no-image') !== false, 'tarjetas sin im
 check(strpos($css, '.news-bento .news-meta{margin:0 0 9px;font-size:12px;color:#53647e}') !== false, 'metadatos de Bento con contraste reforzado');
 check(strpos($css, '.flacso-home .hero-media img{transform:translate3d(') !== false, 'parallax actúa sobre la imagen real');
 check(strpos($css, '@media(max-width:760px)') !== false && strpos($css, '@media(prefers-reduced-motion:reduce)') !== false, 'adaptación móvil y movimiento reducido');
+check(strpos($css, 'flex-direction:column-reverse') === false, 'hero móvil sigue el orden del DOM: texto antes de imagen');
+check(strpos($css, '.flacso-home .offer-grid{grid-template-columns:repeat(2,minmax(0,1fr))') !== false, 'oferta móvil en dos columnas');
+check(strpos($css, '.flacso-home .research-section') === false && strpos($css, '.flacso-home .campaign-grid') === false, 'sin estilos de los bloques retirados');
 $js = file_get_contents($root . '/assets/js/front-page.js');
 check(strpos($js, 'min-width: 761px') !== false && strpos($js, 'prefers-reduced-motion: reduce') !== false, 'parallax desactivado en móvil o movimiento reducido');
 check(preg_match('#\.flacso-home \.container\{[^}]*padding-inline:0#', $css) === 1, 'el contenedor no depende del padding de Bootstrap');
