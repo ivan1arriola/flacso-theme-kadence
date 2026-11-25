@@ -265,3 +265,48 @@
   .flacso-home .news-bento .news-card:hover,.flacso-home .hero-cta:hover{transform:none}
 }
 @media(max-width:767px){.flacso-home .text-link{display:inline-flex;align-items:center;min-height:44px}}
+
+
+/* Piloto U1: roles visuales de Portada consumen la escala nativa derivada.
+   La clase no existe mientras el modo está desactivado. */
+body.flacso-modular-type .flacso-home{font-size:var(--flacso-type-0);font-weight:400;line-height:1.6}
+body.flacso-modular-type .flacso-home .hero h1{font-size:var(--flacso-type-5);font-weight:600;line-height:1.1}
+body.flacso-modular-type .flacso-home h1 em{font-weight:600}
+body.flacso-modular-type .flacso-home h2,
+body.flacso-modular-type .flacso-home .section-head h2,
+body.flacso-modular-type .flacso-home .agenda-grid h2,
+body.flacso-modular-type .flacso-home .news-section .section-head h2,
+body.flacso-modular-type .flacso-home .about-section h2{font-size:var(--flacso-type-3);font-weight:600;line-height:1.2}
+body.flacso-modular-type .flacso-home h3,
+body.flacso-modular-type .flacso-home .offer-grid h3,
+body.flacso-modular-type .flacso-home .event h3,
+body.flacso-modular-type .flacso-home .news-bento h3,
+body.flacso-modular-type .flacso-home .news-bento .feature h3,
+body.flacso-modular-type .flacso-home .news-bento .feature.secondary h3,
+body.flacso-modular-type .flacso-home .news-bento .news-card:first-child h3{font-size:var(--flacso-type-1);font-weight:600;line-height:1.3}
+body.flacso-modular-type .flacso-home .offer-grid h3{font-size:var(--flacso-type-0);line-height:1.35}
+body.flacso-modular-type .flacso-home .news-bento .news-card:first-child h3{font-size:var(--flacso-type-2);line-height:1.25}
+body.flacso-modular-type .flacso-home .hero-intro,
+body.flacso-modular-type .flacso-home .about-grid>div:not(.about-identity) p{font-size:var(--flacso-type-0);font-weight:400;line-height:1.6}
+body.flacso-modular-type .flacso-home .eyebrow,
+body.flacso-modular-type .flacso-home .pin-label{font-size:var(--flacso-type-small);font-weight:600;line-height:1.5}
+body.flacso-modular-type .flacso-home .news-bento .news-meta,
+body.flacso-modular-type .flacso-home .event-copy>p,
+body.flacso-modular-type .flacso-home .event-date span{font-size:var(--flacso-type-small);font-weight:400;line-height:1.5}
+body.flacso-modular-type .flacso-home .primary,
+body.flacso-modular-type .flacso-home .hero-cta,
+body.flacso-modular-type .flacso-home .text-link,
+body.flacso-modular-type .flacso-home .news-bento .text-link,
+body.flacso-modular-type .flacso-home .section-head>.text-link,
+body.flacso-modular-type .flacso-home .agenda-grid>div>.text-link{font-size:var(--flacso-type-0);font-weight:600;line-height:1.35}
+body.flacso-modular-type .flacso-home .event-date strong{font-size:var(--flacso-type-4);font-weight:400;line-height:1.15}
+body.flacso-modular-type .flacso-home .about-identity>p:not(.eyebrow){font-size:var(--flacso-type-3);font-weight:400;line-height:1.2}
+@media(max-width:767px){
+  body.flacso-modular-type .flacso-home .hero h1{font-size:var(--flacso-type-3);line-height:1.2}
+  body.flacso-modular-type .flacso-home h2,
+  body.flacso-modular-type .flacso-home .section-head h2,
+  body.flacso-modular-type .flacso-home .agenda-grid h2,
+  body.flacso-modular-type .flacso-home .news-section .section-head h2,
+  body.flacso-modular-type .flacso-home .about-section h2{font-size:var(--flacso-type-2);line-height:1.25}
+  body.flacso-modular-type .flacso-home .event-date strong{font-size:var(--flacso-type-2);line-height:1.25}
+}
