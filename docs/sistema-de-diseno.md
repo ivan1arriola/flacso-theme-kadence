@@ -25,6 +25,25 @@ Cada plantilla se construyó por separado y por eso no comparten un estilo. Medi
 5. **Kadence gobierna el diseño y los títulos visibles** de Portada y de las páginas fijas (Formación, Contacto y Preguntas frecuentes); los contenidos siguen en sus editores (ver `docs/auditoria-ui-ux/baseline/2026-11-22-kadence/` y el paquete de plantillas).
 6. **No hay doctorados** en FLACSO Uruguay: no se promueven ni se diseñan para ellos.
 
+## Tipografía modular (decisión 25/11/2026)
+
+La fuente de verdad es **Personalizar → Colores y fuentes → Tipografía → Fuente base** de Kadence. En **Integración con Kadence → Escala tipográfica modular FLACSO** se activa el puente reversible (desactivado hasta validación). No guarda ni reescribe los valores nativos. El tamaño base existente se conserva; si no hay valor guardado se toma 16 px. Se aceptan tamaños numéricos px y rem, incluidos los ajustes por dispositivo; otros formatos mantienen Kadence sin transformación.
+
+| Rol | Paso | Tamaño con base 16 px | Peso | Interlineado |
+|---|---:|---:|---:|---:|
+| H1 | +5 | 48,83 | 600 | 1,10 |
+| H2 | +4 | 39,06 | 600 | 1,15 |
+| H3 | +3 | 31,25 | 600 | 1,20 |
+| H4 | +2 | 25 | 600 | 1,25 |
+| H5 | +1 | 20 | 600 | 1,30 |
+| H6 | 0 | 16 | 600 | 1,35 |
+| Cuerpo | 0 | 16 | 400 | 1,60 |
+| Auxiliar | −1 | 12,8 | 400 | 1,50 |
+
+Los roles visuales de tarjetas y navegación pueden usar un paso menor sin cambiar el nivel semántico HTML. Familia y color siguen bajo Kadence. No introducir grosores nuevos. Los controles H1–H6 nativos son compuestos y se ocultan al activar el modo (recargar el Personalizador); para editar sus otras propiedades, desactivar temporalmente el modo. La fuente base permanece editable; los tamaños y pesos derivados son calculados. 
+
+**U1 — primera entrega:** puente de opciones nativas y tokens de escala; piloto en Portada. Las hojas de las demás familias, widgets, bloques y estilos explícitos del editor todavía requieren inventario/migración y regresión visual. No dar por finalizada la adopción global hasta completarla. Verificar también la versión instalada de Kadence, su vista previa, fuentes 400/600 y los breakpoints nativos en entorno de prueba antes de activar.
+
 ## Fundamentos (tokens propuestos)
 
 | Token | Valor propuesto |

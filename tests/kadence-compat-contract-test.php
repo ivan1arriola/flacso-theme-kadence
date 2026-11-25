@@ -10,8 +10,9 @@ function bridge_check( $ok, $message ) {
 $GLOBALS['bridge_mods'] = array();
 $GLOBALS['bridge_actions'] = array();
 function get_theme_mod( $key, $default = false ) { return $GLOBALS['bridge_mods'][ $key ] ?? $default; }
-function add_action( $hook, $callback ) { $GLOBALS['bridge_actions'][ $hook ] = $callback; }
-function add_filter( $hook, $callback ) { $GLOBALS['bridge_actions'][ $hook ] = $callback; }
+function add_action( $hook, $callback, $priority = 10 ) { $GLOBALS['bridge_actions'][ $hook ] = $callback; }
+function add_filter( $hook, $callback, $priority = 10 ) { $GLOBALS['bridge_actions'][ $hook ] = $callback; }
+function apply_filters( $hook, $value ) { return $value; }
 function __( $text, $domain ) { return $text; }
 require $root . '/inc/kadence-compat.php';
 
@@ -59,4 +60,31 @@ bridge_check( strpos( $home, 'var(--global-body-font-family' ) !== false, 'la po
 bridge_check( strpos( $home, 'var(--global-heading-font-family' ) !== false, 'la portada usa títulos Kadence' );
 bridge_check( strpos( $home, 'var(--global-palette2' ) !== false, 'el CTA del hero usa el acento de la paleta Kadence' );
 bridge_check( strpos( $home, 'palette-btn' ) === false, 'la portada no depende del botón de Kadence' );
-echo "Kadence: integración visual y cabecera/pie reversibles correctos.\n";
+bridge_check( ! flacso_child_modular_typography_enabled(), 'la escala nueva es reversible y no cambia el sitio sin activación' );
+bridge_check( isset( $customizer->settings['flacso_modular_typography'] ), 'control para la escala modular' );
+$font = array( 'size' => array( 'desktop' => 16, 'tablet' => 15, 'mobile' => 14 ), 'family' => 'Roboto', 'color' => 'palette4', 'weight' => '700' );
+$heading = flacso_child_typography_font( $font, $font, 1 );
+bridge_check( $heading['size']['desktop'] === 48.8281 && $heading['size']['mobile'] === 42.7246, 'H1 usa cinco pasos y respeta base móvil' );
+bridge_check( $heading['weight'] === '600' && $heading['variant'] === '600' && $heading['lineHeight']['desktop'] === 1.1, 'H1 semibold, interlineado compacto' );
+bridge_check( $heading['family'] === 'Roboto' && $heading['color'] === 'palette4', 'no cambia familia o color' );
+$body = flacso_child_typography_font( $font, $font );
+bridge_check( $body['weight'] === '400' && $body['lineHeight']['desktop'] === 1.6, 'cuerpo regular' );
+bridge_check( flacso_child_typography_font( $font, $font, 6 )['lineHeight']['desktop'] === 1.35, 'interlineado H6' );
+$invalid = array( 'size' => array( 'desktop' => 'clamp(1rem, 2vw, 2rem)' ) );
+bridge_check( flacso_child_typography_font( $font, $invalid, 1 ) === $font, 'formato no soportado conserva opciones' );
+bridge_check( flacso_child_typography_tokens( $invalid ) === '', 'formato no soportado no emite CSS' );
+$GLOBALS['bridge_mods']['flacso_modular_typography'] = true;
+$GLOBALS['bridge_mods']['base_font'] = $font;
+$defaults = flacso_child_typography_defaults( array( 'base_font' => $font, 'h1_font' => $font, 'h6_font' => $font ) );
+bridge_check( $defaults['h1_font']['size']['desktop'] === 48.8281 && $defaults['h6_font']['size']['desktop'] === 16.0, 'defaults nativos derivados' );
+$filtered = $GLOBALS['bridge_actions']['theme_mod_h2_font']( $font );
+bridge_check( $filtered['size']['desktop'] === 39.0625, 'theme_mod de H2 derivado de base guardada' );
+bridge_check( $GLOBALS['bridge_mods']['base_font'] === $font, 'no escribe opciones persistidas' );
+$tokens = flacso_child_typography_tokens( $font );
+bridge_check( strpos( $tokens, '--flacso-type-5:48.8281px' ) !== false && strpos( $tokens, '--flacso-type-small:12.8px' ) !== false, 'tokens de escala' );
+bridge_check( strpos( $tokens, '@media(max-width:767px)' ) !== false, 'tokens responsivos' );
+bridge_check( in_array( 'flacso-modular-type', flacso_child_typography_body_class( array() ), true ), 'clase solo para modo activo compatible' );
+$GLOBALS['bridge_mods']['flacso_modular_typography'] = false;
+bridge_check( $GLOBALS['bridge_actions']['theme_mod_h2_font']( $font ) === $font, 'desactivar devuelve configuración nativa' );
+bridge_check( flacso_child_typography_body_class( array() ) === array(), 'sin clase en modo nativo' );
+echo "Kadence: integración visual, escala modular y cabecera/pie reversibles correctos.\n";
