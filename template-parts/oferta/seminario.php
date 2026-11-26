@@ -45,6 +45,7 @@ $valor_usd_15_descuento = $instance['valor_usd_15_descuento'] ?? null;
 $has_inversion          = !empty($instance['has_inversion']);
 $has_valor_general      = !empty($instance['has_valor_general']);
 $has_valor_descuento    = !empty($instance['has_valor_descuento']);
+$es_gratuito            = !empty($instance['es_gratuito']);
 
 $encuentros = $instance['encuentros'] ?? [];
 $objetivos  = $academic['objetivos_especificos'] ?? [];
@@ -317,12 +318,23 @@ if (!empty($instance['modalidad'])) {
             </div>
         </section>
 
-        <?php if ($abierto_publico && $has_inversion) : ?>
+        <?php if ($abierto_publico && ($has_inversion || $es_gratuito)) : ?>
             <section class="seminario-section seminario-section--investment" aria-labelledby="seminario-inversion-title">
                 <div class="seminario-section-header">
                     <h2 id="seminario-inversion-title" class="seminario-section-title"><?php esc_html_e('Inversión', 'flacso-uruguay'); ?></h2>
                 </div>
 
+                <?php if ($es_gratuito) : ?>
+                <div class="seminario-investment-grid has-one-card">
+                    <article class="seminario-investment-card" aria-label="<?php esc_attr_e('Seminario gratuito', 'flacso-uruguay'); ?>">
+                        <div class="seminario-amounts has-one-amount">
+                            <div class="seminario-amount">
+                                <span class="seminario-amount-value"><?php esc_html_e('Gratuito', 'flacso-uruguay'); ?></span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <?php else : ?>
                 <div class="seminario-investment-grid<?php echo ($has_valor_general xor $has_valor_descuento) ? ' has-one-card' : ''; ?>">
                     <?php if ($has_valor_general) : ?>
                         <article class="seminario-investment-card" aria-label="<?php esc_attr_e('Valor general del seminario', 'flacso-uruguay'); ?>">
@@ -369,6 +381,7 @@ if (!empty($instance['modalidad'])) {
                         </article>
                     <?php endif; ?>
                 </div>
+                <?php endif; ?>
             </section>
         <?php endif; ?>
 

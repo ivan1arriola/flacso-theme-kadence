@@ -559,6 +559,7 @@ function flacso_theme_get_seminar_context(int $seminar_id): array {
         "es_asincronico"         => !empty($current_edition["es_asincronica"]) || empty($current_edition["encuentros_sincronicos"]),
         "docentes_ids"           => array_values(array_unique(array_filter($docentes_ids))),
         "tabla_precio_id"        => $table_id,
+        "es_gratuito"            => !empty($current_edition["es_gratuito"]),
         "tabla_precio"           => $price_table,
         "valor_uyu"              => $price_table["valor_uyu"] ?? null,
         "valor_usd"              => $price_table["valor_usd"] ?? null,
