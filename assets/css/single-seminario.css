@@ -534,7 +534,9 @@
         max-width: 1180px;
         max-width: var(--global-content-width, 1180px);
         margin-inline: auto;
-        padding-inline: var(--global-content-edge-padding, 24px);
+        padding-left: clamp(24px, 5vw, 40px);
+        padding-right: clamp(24px, 5vw, 40px);
+        padding-inline: var(--global-content-edge-padding, clamp(24px, 5vw, 40px));
     }
 
     .seminario-breadcrumb-wrap {
