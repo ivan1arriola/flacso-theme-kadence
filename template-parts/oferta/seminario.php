@@ -309,8 +309,7 @@ if (!empty($instance['modalidad']) || !empty($instance['es_asincronico'])) {
                             <h3><?php esc_html_e('Encuentros sincrónicos', 'flacso-uruguay'); ?></h3>
                         </div>
 
-                        <?php if (!empty($encuentros)) : ?>
-                            <div class="seminario-meetings">
+                        <div class="seminario-meetings">
                                 <?php foreach ($encuentros as $encuentro) :
                                     $fecha = $encuentro['fecha'] ?? '';
                                     $hora_inicio = $encuentro['hora_inicio'] ?? '';
@@ -326,8 +325,7 @@ if (!empty($instance['modalidad']) || !empty($instance['es_asincronico'])) {
                                         <?php if ($plataforma_display) : ?><span class="seminario-meeting-platform"><?php echo esc_html($plataforma_display); ?></span><?php endif; ?>
                                     </div>
                                 <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
+                        </div>
                     </article>
                 <?php endif; ?>
             </div>
