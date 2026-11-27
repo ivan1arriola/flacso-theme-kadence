@@ -48,6 +48,8 @@ $has_valor_descuento    = !empty($instance['has_valor_descuento']);
 $es_gratuito            = !empty($instance['es_gratuito']);
 
 $encuentros = $instance['encuentros'] ?? [];
+$can_register = $abierto_publico && esc_url($preinscripcion_url) !== '';
+$has_information = !empty($instance['fecha_inicio']) || !empty($instance['fecha_fin']) || !empty($academic['carga_horaria']) || !empty($academic['creditos']) || !empty($instance['modalidad']) || !empty($instance['es_asincronico']) || !empty($academic['acredita_maestria']) || !empty($academic['acredita_doctorado']) || (!$is_integrated && !empty($academic['forma_aprobacion'])) || !empty($encuentros);
 $objetivos  = $academic['objetivos_especificos'] ?? [];
 $unidades   = $academic['unidades_academicas'] ?? [];
 
@@ -70,11 +72,19 @@ if (!empty($academic['carga_horaria'])) {
     ];
 }
 
-if (!empty($instance['modalidad'])) {
+if (!empty($academic['creditos'])) {
+    $hero_quick_items[] = [
+        'icon' => 'bi-mortarboard',
+        'label' => __('Créditos', 'flacso-uruguay'),
+        'value' => (string) $academic['creditos'],
+    ];
+}
+
+if (!empty($instance['modalidad']) || !empty($instance['es_asincronico'])) {
     $hero_quick_items[] = [
         'icon'  => 'bi-camera-video',
         'label' => __('Modalidad', 'flacso-uruguay'),
-        'value' => wp_strip_all_tags($instance['modalidad']),
+        'value' => !empty($instance['es_asincronico']) ? __('Asincrónica', 'flacso-uruguay') : wp_strip_all_tags($instance['modalidad']),
     ];
 }
 ?>
@@ -142,6 +152,9 @@ if (!empty($instance['modalidad'])) {
                 $title_class  = $title_length > 110 ? ' seminario-title--xlong' : ($title_length > 60 ? ' seminario-title--long' : '');
                 ?>
                 <h1 id="seminario-title" class="seminario-title<?php echo esc_attr($title_class); ?>"><?php echo esc_html($title); ?></h1>
+                <?php if ($can_register) : ?>
+                    <p class="seminario-registration-status"><?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?><?php if ($es_gratuito) : ?> · <?php esc_html_e('Gratuito', 'flacso-uruguay'); ?><?php endif; ?></p>
+                <?php endif; ?>
 
                 <?php if (!empty($hero_quick_items)) : ?>
                     <div class="seminario-quick-meta" aria-label="<?php esc_attr_e('Datos principales', 'flacso-uruguay'); ?>">
@@ -157,19 +170,24 @@ if (!empty($instance['modalidad'])) {
                     </div>
                 <?php endif; ?>
 
-                <?php if ($abierto_publico && !empty($preinscripcion_url)) : ?>
+                <?php if ($can_register) : ?>
                     <div class="seminario-hero-actions">
                         <a
                             href="<?php echo esc_url($preinscripcion_url); ?>"
                             data-flacso-preinscription-cta="1"
+                            data-seminario-action="preinscripcion" data-seminario-placement="hero"
                             class="seminario-btn-primary"
                         >
-                            <?php echo esc_html($integrado_padre ? __('Inscribirse al seminario integrado', 'flacso-uruguay') : __('Inscribirse ahora', 'flacso-uruguay')); ?>
+                            <?php echo esc_html($integrado_padre ? __('Preinscribirme a la propuesta integrada', 'flacso-uruguay') : __('Preinscribirme', 'flacso-uruguay')); ?>
                             <i class="bi bi-arrow-right" aria-hidden="true"></i>
                         </a>
-                        <a href="#informacion" class="seminario-btn-secondary"><?php esc_html_e('Ver información', 'flacso-uruguay'); ?></a>
+                        <?php if ($has_information) : ?>
+                            <a href="#informacion" data-seminario-action="ver_informacion" data-seminario-placement="hero" class="seminario-btn-secondary"><?php esc_html_e('Ver información', 'flacso-uruguay'); ?></a>
+                        <?php endif; ?>
                     </div>
-                <?php elseif (!$abierto_publico) : ?>
+                <?php elseif ($abierto_publico) : ?>
+                    <p class="seminario-closed-note"><?php esc_html_e('La preinscripción no está disponible en este momento.', 'flacso-uruguay'); ?></p>
+                <?php else : ?>
                     <div class="seminario-closed-note">
                         <i class="bi bi-info-circle-fill" aria-hidden="true"></i>
                         <span><?php esc_html_e('Las inscripciones para la edición actual de este seminario se encuentran cerradas.', 'flacso-uruguay'); ?></span>
@@ -187,6 +205,7 @@ if (!empty($instance['modalidad'])) {
             </section>
         <?php endif; ?>
 
+        <?php if ($has_information) : ?>
         <section id="informacion" class="seminario-section seminario-section--information" aria-labelledby="seminario-info-title">
             <div class="seminario-section-header">
                 <h2 id="seminario-info-title" class="seminario-section-title"><?php esc_html_e('Información del seminario', 'flacso-uruguay'); ?></h2>
@@ -283,16 +302,12 @@ if (!empty($instance['modalidad'])) {
                     </article>
                 <?php endif; ?>
 
-                <?php if (!empty($encuentros) || !empty($instance['es_asincronico'])) : ?>
+                <?php if (!empty($encuentros)) : ?>
                     <article class="seminario-info-card">
                         <div class="seminario-info-card-head">
                             <div class="seminario-info-icon"><i class="bi bi-broadcast" aria-hidden="true"></i></div>
                             <h3><?php esc_html_e('Encuentros sincrónicos', 'flacso-uruguay'); ?></h3>
                         </div>
-
-                        <?php if (!empty($instance['es_asincronico'])) : ?>
-                            <div class="seminario-async-note"><?php esc_html_e('Este seminario se dicta de forma totalmente asincrónica.', 'flacso-uruguay'); ?></div>
-                        <?php endif; ?>
 
                         <?php if (!empty($encuentros)) : ?>
                             <div class="seminario-meetings">
@@ -318,6 +333,8 @@ if (!empty($instance['modalidad'])) {
             </div>
         </section>
 
+        <?php endif; ?>
+
         <?php if ($abierto_publico && ($has_inversion || $es_gratuito)) : ?>
             <section class="seminario-section seminario-section--investment" aria-labelledby="seminario-inversion-title">
                 <div class="seminario-section-header">
@@ -326,7 +343,7 @@ if (!empty($instance['modalidad'])) {
 
                 <?php if ($es_gratuito) : ?>
                 <div class="seminario-investment-grid has-one-card">
-                    <article class="seminario-investment-card" aria-label="<?php esc_attr_e('Seminario gratuito', 'flacso-uruguay'); ?>">
+                    <article class="seminario-investment-card is-free" aria-label="<?php esc_attr_e('Seminario gratuito', 'flacso-uruguay'); ?>">
                         <div class="seminario-amounts has-one-amount">
                             <div class="seminario-amount">
                                 <span class="seminario-amount-value"><?php esc_html_e('Gratuito', 'flacso-uruguay'); ?></span>
@@ -361,8 +378,8 @@ if (!empty($instance['modalidad'])) {
                     <?php if ($has_valor_descuento) : ?>
                         <article class="seminario-investment-card is-discount" aria-label="<?php esc_attr_e('Valor para la comunidad FLACSO', 'flacso-uruguay'); ?>">
                             <div class="seminario-investment-head">
-                                <h3 class="seminario-investment-title"><?php esc_html_e('Comunidad FLACSO', 'flacso-uruguay'); ?></h3>
-                                <span class="seminario-discount-badge">15% OFF</span>
+                                <h3 class="seminario-investment-title"><?php esc_html_e('Comunidad FLACSO Uruguay', 'flacso-uruguay'); ?></h3>
+                                <span class="seminario-discount-badge"><?php esc_html_e('15 % de descuento', 'flacso-uruguay'); ?></span>
                             </div>
                             <div class="seminario-amounts<?php echo (($valor_uyu_15_descuento !== null) xor ($valor_usd_15_descuento !== null)) ? ' has-one-amount' : ''; ?>">
                                 <?php if ($valor_uyu_15_descuento !== null) : ?>
@@ -465,7 +482,7 @@ if (!empty($instance['modalidad'])) {
 
                             <?php if (!empty($comp_docentes_posts)) : ?>
                                 <h4><?php esc_html_e('Equipo docente', 'flacso-uruguay'); ?></h4>
-                                <div class="seminario-teachers-grid seminario-teachers-grid--component">
+                                <div class="seminario-teachers-grid seminario-teachers-grid--component<?php echo count($comp_docentes_posts) === 1 ? ' has-one-teacher' : ''; ?>">
                                     <?php foreach ($comp_docentes_posts as $componente_docente) : ?>
                                         <?php flacso_theme_render_teacher_card($componente_docente); ?>
                                     <?php endforeach; ?>
@@ -534,7 +551,7 @@ if (!empty($instance['modalidad'])) {
                     <h2 id="seminario-docentes-title" class="seminario-section-title"><?php esc_html_e('Equipo docente', 'flacso-uruguay'); ?></h2>
                 </div>
 
-                <div class="seminario-teachers-grid">
+                <div class="seminario-teachers-grid<?php echo count($docentes_posts) === 1 ? ' has-one-teacher' : ''; ?>">
                     <?php foreach ($docentes_posts as $docente) : ?>
                         <?php flacso_theme_render_teacher_card($docente); ?>
                     <?php endforeach; ?>
@@ -542,7 +559,7 @@ if (!empty($instance['modalidad'])) {
             </section>
         <?php endif; ?>
 
-        <?php if ($abierto_publico && !empty($preinscripcion_url)) : ?>
+        <?php if ($can_register) : ?>
             <section class="seminario-final-cta" aria-labelledby="seminario-cta-title">
                 <div>
                     <h2 id="seminario-cta-title"><?php esc_html_e('¿Querés participar?', 'flacso-uruguay'); ?></h2>
@@ -551,9 +568,10 @@ if (!empty($instance['modalidad'])) {
                 <a
                     href="<?php echo esc_url($preinscripcion_url); ?>"
                     data-flacso-preinscription-cta="1"
+                    data-seminario-action="preinscripcion" data-seminario-placement="footer"
                     class="seminario-btn-primary"
                 >
-                    <?php echo esc_html($integrado_padre ? __('Inscribirse al seminario integrado', 'flacso-uruguay') : __('Inscribirse ahora', 'flacso-uruguay')); ?>
+                    <?php echo esc_html($integrado_padre ? __('Preinscribirme a la propuesta integrada', 'flacso-uruguay') : __('Preinscribirme', 'flacso-uruguay')); ?>
                     <i class="bi bi-arrow-right" aria-hidden="true"></i>
                 </a>
             </section>
@@ -566,6 +584,11 @@ if (!empty($instance['modalidad'])) {
             </section>
         <?php endif; ?>
     </div>
+    <?php if ($can_register) : ?>
+        <div class="seminario-mobile-cta">
+            <a href="<?php echo esc_url($preinscripcion_url); ?>" class="seminario-btn-primary" data-flacso-preinscription-cta="1" data-seminario-action="preinscripcion" data-seminario-placement="mobile_sticky"><?php echo esc_html($integrado_padre ? __('Preinscribirme a la propuesta integrada', 'flacso-uruguay') : __('Preinscribirme', 'flacso-uruguay')); ?></a>
+        </div>
+    <?php endif; ?>
 </<?php echo flacso_child_main_tag(); ?>>
 
 <script>
