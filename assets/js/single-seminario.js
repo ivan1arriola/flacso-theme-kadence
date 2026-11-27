@@ -55,7 +55,7 @@
 
         var observer = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
-                if (!entry.isIntersecting || entry.intersectionRatio < 0.5 || sentViews[key]) {
+                if (!entry.isIntersecting || entry.intersectionRect.height < Math.min(entry.boundingClientRect.height * 0.5, 120) || sentViews[key]) {
                     return;
                 }
 
@@ -66,7 +66,7 @@
                 observer.disconnect();
             });
         }, {
-            threshold: [0.5]
+            threshold: [0, 0.01, 0.1, 0.25, 0.5]
         });
 
         observer.observe(section);
@@ -117,7 +117,7 @@
 
     document.addEventListener("click", function (event) {
         var target = event.target && typeof event.target.closest === "function"
-            ? event.target.closest(".flacso-seminario-page a, .flacso-seminario-page button")
+            ? event.target.closest(".flacso-seminario-page [data-seminario-action], .flacso-seminario-page a, .flacso-seminario-page button")
             : null;
 
         if (!target) {
@@ -126,7 +126,7 @@
 
         var isPrimary = target.classList.contains("seminario-btn-primary");
         var isSecondary = target.classList.contains("seminario-btn-secondary");
-        var isButtonLike = isPrimary || isSecondary || target.getAttribute("role") === "button" || target.tagName === "BUTTON";
+        var isButtonLike = target.hasAttribute("data-seminario-action") || isPrimary || isSecondary || target.getAttribute("role") === "button" || target.tagName === "BUTTON";
 
         if (!isButtonLike) {
             return;
@@ -134,12 +134,12 @@
 
         var label = String(target.getAttribute("aria-label") || target.textContent || "").replace(/\s+/g, " ").trim();
         var href = target.tagName === "A" ? target.href : "";
-        var placement = target.closest(".seminario-hero-actions") ? "hero" : "body";
-        var action = "button";
+        var placement = target.getAttribute("data-seminario-placement") || (target.closest(".seminario-hero-actions") ? "hero" : "body");
+        var action = target.getAttribute("data-seminario-action") || "button";
 
-        if (isPrimary || /preinscripcion|inscrib/i.test(href + " " + label)) {
+        if (action === "button" && (isPrimary || /preinscripcion|inscrib/i.test(href + " " + label))) {
             action = "preinscripcion";
-        } else if (/informaci[oó]n/i.test(label) || href.indexOf("#informacion") !== -1) {
+        } else if (action === "button" && (/informaci[oó]n/i.test(label) || href.indexOf("#informacion") !== -1)) {
             action = "ver_informacion";
         }
 
