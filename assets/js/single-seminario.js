@@ -12,7 +12,7 @@
     }
 
     var titleNode = document.getElementById("seminario-title");
-    var seminarTitle = titleNode ? String(titleNode.textContent || "").trim() : document.title;
+    var seminarTitle = titleNode ? String(titleNode.getAttribute("data-seminario-title") || titleNode.textContent || "").trim() : document.title;
     var bodyClass = document.body ? document.body.className : "";
     var postIdMatch = bodyClass.match(/\bpostid-(\d+)\b/);
     var seminarId = postIdMatch ? postIdMatch[1] : "";
