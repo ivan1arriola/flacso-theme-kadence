@@ -956,6 +956,15 @@ function flacso_theme_format_amount($amount): string {
 /**
  * Renderiza la tarjeta de un docente.
  */
+function flacso_theme_normalize_academic_rich_text(string $html): string {
+    $allowed = wp_kses_allowed_html('post');
+    foreach ($allowed as $tag => $attributes) {
+        unset($attributes['style'], $attributes['align'], $attributes['color'], $attributes['face'], $attributes['size'], $attributes['bgcolor'], $attributes['class'], $attributes['id']);
+        $allowed[$tag] = $attributes;
+    }
+    return wp_kses($html, $allowed);
+}
+
 function flacso_theme_render_teacher_card($teacher): void {
     if (!$teacher || empty($teacher->ID)) {
         return;
@@ -991,7 +1000,7 @@ function flacso_theme_render_teacher_card($teacher): void {
             <?php if (has_post_thumbnail($id)) : ?>
                 <?php echo get_the_post_thumbnail($id, "medium", ["alt" => esc_attr($name), "loading" => "lazy"]); ?>
             <?php else : ?>
-                <div class="seminario-teacher-placeholder" style="background:<?php echo esc_attr($bg_color); ?>;color:#fff;font-weight:800;">
+                <div class="seminario-teacher-placeholder" style="background:<?php echo esc_attr($bg_color); ?>;color:#fff;font-weight:600;">
                     <?php echo esc_html($initials); ?>
                 </div>
             <?php endif; ?>
@@ -1002,7 +1011,7 @@ function flacso_theme_render_teacher_card($teacher): void {
                 <p class="seminario-teacher-prefix"><?php echo esc_html($prefix_label); ?></p>
             <?php endif; ?>
             <?php $cv = get_post_meta($id, "cv", true); ?>
-            <?php if ($cv) : ?><div class="seminario-teacher-bio"><?php echo wp_kses_post(wpautop($cv)); ?></div><?php endif; ?>
+            <?php if ($cv) : ?><div class="seminario-teacher-bio"><?php echo flacso_theme_normalize_academic_rich_text(wpautop($cv)); ?></div><?php endif; ?>
         </div>
     </article>
     <?php

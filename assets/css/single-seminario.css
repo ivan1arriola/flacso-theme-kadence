@@ -707,25 +707,14 @@
         font-family: var(--global-heading-font-family, sans-serif);
         font-size: clamp(1.953125rem, 4vw, 2.44140625rem);
         font-weight: 600;
-        letter-spacing: -0.035em;
-        line-height: 1.03;
-        text-wrap: balance;
-    }
-
-    /* Títulos largos: escala más contenida para que no dominen el hero. */
-    .seminario-title.seminario-title--long {
-        font-size: clamp(1.5625rem, 3vw, 2.44140625rem);
-        letter-spacing: -0.025em;
-        line-height: 1.1;
-    }
-
-    .seminario-title.seminario-title--xlong {
-        font-size: clamp(1.5625rem, 2.4vw, 1.953125rem);
         letter-spacing: -0.02em;
         line-height: 1.15;
         overflow-wrap: anywhere;
-        hyphens: auto;
+        text-wrap: balance;
     }
+
+    .seminario-title-main, .seminario-title-subtitle { display: block; }
+    .seminario-title-subtitle { margin-top: 12px; font-size: .64em; font-weight: 400; line-height: 1.3; letter-spacing: normal; }
 
     .seminario-quick-meta {
         display: grid;
@@ -1233,12 +1222,12 @@
 
     .seminario-teachers-grid {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: minmax(0, 1fr);
         gap: 16px;
     }
 
     .seminario-teachers-grid--component {
-        margin-top: 12px;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .seminario-component .seminario-teacher {
@@ -1577,4 +1566,41 @@
     .flacso-seminario-page .seminario-mobile-cta { display: block; position: fixed; inset-inline: 0; bottom: 0; z-index: 100; padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); background: var(--seminario-surface); border-top: 1px solid var(--seminario-border); }
     .flacso-seminario-page .seminario-mobile-cta .seminario-btn-primary { width: 100%; text-align: center; }
     .flacso-seminario-page .seminario-teacher { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Editorial content: keep full biographies and consistent reading rhythm. */
+.flacso-seminario-page .seminario-prose,
+.flacso-seminario-page .seminario-teacher-bio {
+    font-size: 1rem;
+    line-height: 1.65;
+    text-align: start;
+}
+.flacso-seminario-page .seminario-prose p,
+.flacso-seminario-page .seminario-teacher-bio p {
+    margin: 0 0 1em;
+    line-height: inherit;
+    text-align: start;
+}
+.flacso-seminario-page .seminario-prose table,
+.flacso-seminario-page .seminario-teacher-bio table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+}
+.flacso-seminario-page .seminario-teachers-grid { grid-template-columns: minmax(0, 1fr); }
+.flacso-seminario-page .seminario-teacher { grid-template-columns: 96px minmax(0, 1fr); }
+.flacso-seminario-page .seminario-teacher-avatar { width: 96px; }
+.flacso-seminario-page .seminario-teacher-name { font-size: 1.25rem; line-height: 1.35; }
+.flacso-seminario-page .seminario-info-card--meetings { grid-column: 1 / -1; }
+.flacso-seminario-page .seminario-quick-label,
+.flacso-seminario-page .seminario-detail-label,
+.flacso-seminario-page .seminario-meeting-platform { font-size: .875rem; }
+.flacso-seminario-page .seminario-quick-value,
+.flacso-seminario-page .seminario-detail-value,
+.flacso-seminario-page .seminario-meeting-date,
+.flacso-seminario-page .seminario-meeting-time { font-size: 1rem; }
+.flacso-seminario-page .seminario-breadcrumb li:last-child { min-width: 0; }
+@media (max-width: 767.98px) {
+    .flacso-seminario-page .seminario-teacher { grid-template-columns: minmax(0, 1fr); }
+    .flacso-seminario-page .seminario-title { line-height: 1.15; }
 }

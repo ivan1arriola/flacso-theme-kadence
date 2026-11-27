@@ -148,12 +148,14 @@ if (!empty($instance['modalidad']) || !empty($instance['es_asincronico'])) {
             <div class="seminario-hero-content">
                 <p class="seminario-kicker"><?php echo $is_integrated ? esc_html__('Seminario integrado', 'flacso-uruguay') : esc_html__('Seminario', 'flacso-uruguay'); ?></p>
                 <?php
-                $title_length = mb_strlen($title);
-                $title_class  = $title_length > 110 ? ' seminario-title--xlong' : ($title_length > 60 ? ' seminario-title--long' : '');
+                $title_parts = explode(':', $title, 2);
+                $has_subtitle = count($title_parts) === 2 && trim($title_parts[0]) !== '' && trim($title_parts[1]) !== '';
                 ?>
-                <h1 id="seminario-title" class="seminario-title<?php echo esc_attr($title_class); ?>"><?php echo esc_html($title); ?></h1>
+                <h1 id="seminario-title" class="seminario-title" data-seminario-title="<?php echo esc_attr($title); ?>"><?php if ($has_subtitle) : ?><span class="seminario-title-main"><?php echo esc_html(trim($title_parts[0])); ?>:</span> <span class="seminario-title-subtitle"><?php echo esc_html(trim($title_parts[1])); ?></span><?php else : ?><?php echo esc_html($title); ?><?php endif; ?></h1>
                 <?php if ($can_register) : ?>
                     <p class="seminario-registration-status"><?php esc_html_e('Inscripciones abiertas', 'flacso-uruguay'); ?><?php if ($es_gratuito) : ?> · <?php esc_html_e('Gratuito', 'flacso-uruguay'); ?><?php endif; ?></p>
+                <?php elseif ($es_gratuito) : ?>
+                    <p class="seminario-registration-status"><?php esc_html_e('Actividad gratuita', 'flacso-uruguay'); ?></p>
                 <?php endif; ?>
 
                 <?php if (!empty($hero_quick_items)) : ?>
@@ -201,7 +203,7 @@ if (!empty($instance['modalidad']) || !empty($instance['es_asincronico'])) {
                 <div class="seminario-section-header">
                     <h2 id="seminario-presentacion-title" class="seminario-section-title"><?php esc_html_e('Presentación del seminario', 'flacso-uruguay'); ?></h2>
                 </div>
-                <div class="seminario-prose seminario-prose--lead"><?php echo wp_kses_post($academic['presentacion']); ?></div>
+                <div class="seminario-prose seminario-prose--lead"><?php echo flacso_theme_normalize_academic_rich_text($academic['presentacion']); ?></div>
             </section>
         <?php endif; ?>
 
@@ -265,7 +267,7 @@ if (!empty($instance['modalidad']) || !empty($instance['es_asincronico'])) {
                             <h3><?php esc_html_e('Modalidad', 'flacso-uruguay'); ?></h3>
                         </div>
                         <?php if (!empty($instance['modalidad'])) : ?>
-                            <div class="seminario-prose"><?php echo wp_kses_post($instance['modalidad']); ?></div>
+                            <div class="seminario-prose"><?php echo flacso_theme_normalize_academic_rich_text($instance['modalidad']); ?></div>
                         <?php endif; ?>
                         <?php if (!empty($instance['es_asincronico'])) : ?>
                             <div class="seminario-async-note"><?php esc_html_e('Cursada totalmente asincrónica: no requiere conexiones en vivo en horarios fijos.', 'flacso-uruguay'); ?></div>
@@ -298,12 +300,12 @@ if (!empty($instance['modalidad']) || !empty($instance['es_asincronico'])) {
                             <div class="seminario-info-icon"><i class="bi bi-clipboard-check" aria-hidden="true"></i></div>
                             <h3><?php esc_html_e('Evaluación', 'flacso-uruguay'); ?></h3>
                         </div>
-                        <div class="seminario-prose"><?php echo wp_kses_post($academic['forma_aprobacion']); ?></div>
+                        <div class="seminario-prose"><?php echo flacso_theme_normalize_academic_rich_text($academic['forma_aprobacion']); ?></div>
                     </article>
                 <?php endif; ?>
 
                 <?php if (!empty($encuentros)) : ?>
-                    <article class="seminario-info-card">
+                    <article class="seminario-info-card seminario-info-card--meetings">
                         <div class="seminario-info-card-head">
                             <div class="seminario-info-icon"><i class="bi bi-broadcast" aria-hidden="true"></i></div>
                             <h3><?php esc_html_e('Encuentros sincrónicos', 'flacso-uruguay'); ?></h3>
@@ -333,23 +335,12 @@ if (!empty($instance['modalidad']) || !empty($instance['es_asincronico'])) {
 
         <?php endif; ?>
 
-        <?php if ($abierto_publico && ($has_inversion || $es_gratuito)) : ?>
+        <?php if ($abierto_publico && $has_inversion && !$es_gratuito) : ?>
             <section class="seminario-section seminario-section--investment" aria-labelledby="seminario-inversion-title">
                 <div class="seminario-section-header">
                     <h2 id="seminario-inversion-title" class="seminario-section-title"><?php esc_html_e('Inversión', 'flacso-uruguay'); ?></h2>
                 </div>
 
-                <?php if ($es_gratuito) : ?>
-                <div class="seminario-investment-grid has-one-card">
-                    <article class="seminario-investment-card is-free" aria-label="<?php esc_attr_e('Seminario gratuito', 'flacso-uruguay'); ?>">
-                        <div class="seminario-amounts has-one-amount">
-                            <div class="seminario-amount">
-                                <span class="seminario-amount-value"><?php esc_html_e('Gratuito', 'flacso-uruguay'); ?></span>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-                <?php else : ?>
                 <div class="seminario-investment-grid<?php echo ($has_valor_general xor $has_valor_descuento) ? ' has-one-card' : ''; ?>">
                     <?php if ($has_valor_general) : ?>
                         <article class="seminario-investment-card" aria-label="<?php esc_attr_e('Valor general del seminario', 'flacso-uruguay'); ?>">
@@ -396,7 +387,6 @@ if (!empty($instance['modalidad']) || !empty($instance['es_asincronico'])) {
                         </article>
                     <?php endif; ?>
                 </div>
-                <?php endif; ?>
             </section>
         <?php endif; ?>
 
@@ -451,21 +441,21 @@ if (!empty($instance['modalidad']) || !empty($instance['es_asincronico'])) {
 
                             <?php if (!empty($comp_academic['objetivo_general'])) : ?>
                                 <h4><?php esc_html_e('Objetivo general', 'flacso-uruguay'); ?></h4>
-                                <div class="seminario-prose"><?php echo wp_kses_post($comp_academic['objetivo_general']); ?></div>
+                                <div class="seminario-prose"><?php echo flacso_theme_normalize_academic_rich_text($comp_academic['objetivo_general']); ?></div>
                             <?php endif; ?>
 
                             <?php if (!empty($comp_academic['objetivos_especificos'])) : ?>
                                 <h4><?php esc_html_e('Objetivos específicos', 'flacso-uruguay'); ?></h4>
                                 <ul class="seminario-prose">
                                     <?php foreach ($comp_academic['objetivos_especificos'] as $objetivo) : ?>
-                                        <li><?php echo wp_kses_post($objetivo); ?></li>
+                                        <li><?php echo flacso_theme_normalize_academic_rich_text($objetivo); ?></li>
                                     <?php endforeach; ?>
                                 </ul>
                             <?php endif; ?>
 
                             <?php if (!empty($comp_academic['forma_aprobacion'])) : ?>
                                 <h4><?php esc_html_e('Evaluación y aprobación', 'flacso-uruguay'); ?></h4>
-                                <div class="seminario-prose"><?php echo wp_kses_post($comp_academic['forma_aprobacion']); ?></div>
+                                <div class="seminario-prose"><?php echo flacso_theme_normalize_academic_rich_text($comp_academic['forma_aprobacion']); ?></div>
                             <?php endif; ?>
 
                             <?php if (!empty($comp_academic['unidades_academicas'])) : ?>
@@ -473,7 +463,7 @@ if (!empty($instance['modalidad']) || !empty($instance['es_asincronico'])) {
                                 <?php foreach ($comp_academic['unidades_academicas'] as $unidad) : ?>
                                     <div class="seminario-unit">
                                         <?php if (!empty($unidad['titulo'])) : ?><h5><?php echo esc_html($unidad['titulo']); ?></h5><?php endif; ?>
-                                        <?php if (!empty($unidad['contenido'])) : ?><div class="seminario-prose"><?php echo wp_kses_post($unidad['contenido']); ?></div><?php endif; ?>
+                                        <?php if (!empty($unidad['contenido'])) : ?><div class="seminario-prose"><?php echo flacso_theme_normalize_academic_rich_text($unidad['contenido']); ?></div><?php endif; ?>
                                     </div>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -501,7 +491,7 @@ if (!empty($instance['modalidad']) || !empty($instance['es_asincronico'])) {
                 <div class="seminario-section-header">
                     <h2 id="seminario-objetivo-general-title" class="seminario-section-title"><?php esc_html_e('Objetivo general', 'flacso-uruguay'); ?></h2>
                 </div>
-                <div class="seminario-prose"><?php echo wp_kses_post($academic['objetivo_general']); ?></div>
+                <div class="seminario-prose"><?php echo flacso_theme_normalize_academic_rich_text($academic['objetivo_general']); ?></div>
             </section>
         <?php endif; ?>
 
@@ -514,7 +504,7 @@ if (!empty($instance['modalidad']) || !empty($instance['es_asincronico'])) {
                     <?php foreach ($objetivos as $item) : ?>
                         <li class="seminario-objective">
                             <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
-                            <div><?php echo wp_kses_post($item); ?></div>
+                            <div><?php echo flacso_theme_normalize_academic_rich_text($item); ?></div>
                         </li>
                     <?php endforeach; ?>
                 </ul>
@@ -536,7 +526,7 @@ if (!empty($instance['modalidad']) || !empty($instance['es_asincronico'])) {
                     ?>
                         <article class="seminario-unit">
                             <?php if ($titulo !== '') : ?><h3><?php echo esc_html($titulo); ?></h3><?php endif; ?>
-                            <?php if ($contenido !== '') : ?><div class="seminario-prose"><?php echo wp_kses_post($contenido); ?></div><?php endif; ?>
+                            <?php if ($contenido !== '') : ?><div class="seminario-prose"><?php echo flacso_theme_normalize_academic_rich_text($contenido); ?></div><?php endif; ?>
                         </article>
                     <?php endforeach; ?>
                 </div>
